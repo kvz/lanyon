@@ -2,5 +2,9 @@ language: node_js
 node_js:
   - "4"
   - "6"
-before_install: rvm install 2.1.1 && rvm --default use 2.1.1 && ruby -v
+before_install:
+  - rvm install 2.1.1 && rvm --default use 2.1.1 && ruby -v
+  - npm install -g yarn
+after_install:
+  - yarn
 script: test.sh
