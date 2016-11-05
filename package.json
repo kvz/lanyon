@@ -11,7 +11,7 @@
     "build": "node ./build.js",
     "start": "deps/bin/bundle exec jekyll serve",
     "help": "deps/bin/bundle exec jekyll build --help",
-    "test": "npm run test"
+    "test": "./test.sh"
   },
   "repository": {
     "type": "git",
