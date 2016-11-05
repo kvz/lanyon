@@ -1,5 +1,4 @@
 var shell = require('shelljs')
-var projectDir = process.env.PROJECT_DIR || __dirname + '/../..'
 
 console.log('Installing bundler...')
 if (!shell.test('-f', __dirname + '/deps/bin/bundle')) {
@@ -15,7 +14,6 @@ if (shell.exec(__dirname + '/deps/bin/bundle config build.nokogiri --use-system-
 }
 
 console.log('Installing gems...')
-shell.cd(projectDir)
 if (shell.exec(__dirname + '/deps/bin/bundle install --path ' + __dirname + '/deps/gems || bundle update').code !== 0) {
   shell.exit(1)
 }
