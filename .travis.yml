@@ -4,7 +4,7 @@ node_js:
   - "6"
 before_install:
   - rvm install 2.1.1 && rvm --default use 2.1.1 && ruby -v
-  - npm install -g yarn
+  - npm install -g yarn@0.16.1
 after_install:
   - yarn
 script: test.sh
