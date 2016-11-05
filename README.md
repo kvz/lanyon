@@ -13,3 +13,4 @@ By leveraging the Node ecosystem we also get a few extras such as:
 
 - markdown linting
 - spell checking
+- browsersync for automatic browser refreshes on-change
