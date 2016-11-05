@@ -12,4 +12,4 @@ before_install:
   - npm install -g yarn@0.16.1
 after_install:
   - yarn
-script: test.sh
+script: ./test.sh
