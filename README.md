@@ -24,3 +24,8 @@ run like so:
 ```bash
 PROJECT_DIR=$(pwd) npm explore lanyon -- npm run build
 ```
+
+## Requirements
+
+- Node.js
+- Ruby 2.0+

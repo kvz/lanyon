@@ -2,4 +2,5 @@ language: node_js
 node_js:
   - "4"
   - "6"
+before_install: rvm install 2.1.1 && rvm --default use 2.1.1 && ruby -v
 script: test.sh
