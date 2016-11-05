@@ -1,3 +1,14 @@
+#!/usr/bin/env bash
+set -o pipefail
+set -o errexit
+set -o nounset
+# set -o xtrace
+
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "${__dir}"
+which npm
+
 npm link
 tdir=$(mktemp -d)
 pushd "${tdir}"
