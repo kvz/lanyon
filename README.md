@@ -14,3 +14,13 @@ By leveraging the Node ecosystem we also get a few extras such as:
 - markdown linting
 - spell checking
 - browsersync for automatic browser refreshes on-change
+
+
+## Dev
+
+If you used `npm link`, lanyon won't be able to find your project's root by upwards traversing directories, so
+run like so:
+
+```bash
+PROJECT_DIR=$(pwd) npm explore lanyon -- npm run build
+```
