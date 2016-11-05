@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/kvz/lanyon.svg?branch=master)](https://travis-ci.org/kvz/lanyon)
+
 # lanyon
 dr. Jekyll has turned into mr. Hyde. Lanyon to the rescue!
 
