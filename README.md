@@ -8,3 +8,8 @@ Jekyll in my opinion is the #1 static site generator, for content. Things that a
 But there's a problem. Ruby, and its assets builders. We used to have a decent jekyll-assets plugin, but it was replaced with a completely new project as of Jekyll 3, basically throwing away 500% of its features. The SASS gem is behind on C's and Node's. It's slow. File watching in Ruby is broken more often than working, and nobody seems to be interested in fixing it. They seem to be going nowhere.
 
 When these problems are resolved, Lanyon hopes to deteriorate and die, just as in Robert Louis Stevenson's novella. Until that time, we aim to fix asset building and filewatching by leveraging the Node.js ecosystem for that. In addition we aim to solve the "my Ruby is broken" problem by installing Jekyll you and providing a wrapper around it.
+
+By leveraging the Node ecosystem we also get a few extras such as:
+
+- markdown linting
+- spell checking
