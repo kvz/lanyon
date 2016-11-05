@@ -1,4 +1,9 @@
 language: node_js
+cache:
+  apt: true
+  directories:
+    - node_modules
+    - deps
 node_js:
   - "4"
   - "6"
