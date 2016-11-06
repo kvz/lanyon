@@ -3,7 +3,7 @@ var semver = require('semver')
 
 
 var rubyPath = shell.which('ruby')
-var rubyVersion = exec(rubyPath + '-v').stdout
+var rubyVersion = shell.exec(rubyPath + '-v').stdout
 var rvmPath = shell.which('rvm')
 
 console.log('Installing ruby...')
