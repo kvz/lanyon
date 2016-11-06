@@ -1,4 +1,22 @@
 var shell = require('shelljs')
+var semver = require('semver')
+
+
+var rubyPath = shell.which('ruby')
+var rubyVersion = exec(rubyPath + '-v').stdout
+var rvmPath = shell.which('rvm')
+
+console.log('Installing ruby...')
+if (!rubyPath || !semver.satisfies(rubyVersion, '>=2')) {
+  if (!rvmPath) {
+    if (shell.exec('gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 && curl -sSL https://get.rvm.io | bash -s stable').code !== 0) {
+      shell.exit(1)
+    }
+  }
+  if (shell.exec('type rvm | head -n 1 && rvm install 2.1.1 && rvm use 2.1.1 && ruby -v').code !== 0) {
+    shell.exit(1)
+  }
+}
 
 console.log('Installing bundler...')
 if (!shell.test('-f', __dirname + '/deps/bin/bundle')) {
