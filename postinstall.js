@@ -1,3 +1,4 @@
+// @todo: This is writing a `=2` file, probably due to rubyDesired
 var shell = require('shelljs')
 var semver = require('semver')
 var chalk = require('chalk')
