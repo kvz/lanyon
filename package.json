@@ -13,6 +13,20 @@
     "help": "deps/bin/bundle exec jekyll build --help",
     "test": "./test.sh"
   },
+  "lanyon": {
+    "bundlerDesired": "1.13.0",
+    "bundlerSatisfactory": ">=1",
+    "rubyDesired": "2.1.1",
+    "rubySatisfactory": ">=2",
+    "rvmDesired": "1.27.0",
+    "rvmSatisfactory": ">=1",
+    "rvmCmd": "export PATH=\"$PATH:$HOME/.rvm/bin\" && source $HOME/.rvm/scripts/rvm && rvm",
+    "gems": {
+      "github-pages": "104",
+      "jekyll-crosspost-to-medium": "0.1.14",
+      "stringex": "2.6.0"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kvz/lanyon.git"
