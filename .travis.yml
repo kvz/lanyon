@@ -9,7 +9,3 @@ node_js:
   - "0.12"
   - "4"
   - "6"
-before_install:
-  - npm install -g yarn@0.16.1
-install:
-  - yarn
