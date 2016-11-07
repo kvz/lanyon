@@ -40,6 +40,8 @@ var parts = bundlerVersionFull.split(/[\s]+/)
 var bundlerVersion = parts[2]
 var bundlerDir = path.dirname(bundlerPath)
 
+var rubyExe = 'ruby'
+
 process.stdout.write('==> Checking Node \'' + config.nodeSatisfactory + '\' ... ')
 if (semver.satisfies(nodeVersion, config.nodeSatisfactory)) {
   console.log(yes + nodeVersion + ' (' + nodeVersionFull + ')')
@@ -66,7 +68,8 @@ if (semver.satisfies(rubyVersion, config.rubySatisfactory)) {
     fatalExe('curl -sSL https://get.rvm.io | bash -s \'' + config.rvmDesired + '\'')
     console.log(yes)
   }
-  fatalExe(config.rvmCmd + ' install \'' + config.rubyDesired + '\' && rvm use --default \'' + config.rubyDesired + '\' && ruby -v')
+  fatalExe('export PATH=\"$PATH:$HOME/.rvm/bin\" && source $HOME/.rvm/scripts/rvm && rvm install \'' + config.rubyDesired + '\'')
+  var rubyExe = 'export PATH=\"$PATH:$HOME/.rvm/bin\" && source $HOME/.rvm/scripts/rvm && rvm \'' + config.rubyDesired + '\' exec'
 }
 
 process.stdout.write('==> Checking Bundler \'' + config.bundlerSatisfactory + '\' ... ')
@@ -75,11 +78,11 @@ if (semver.satisfies(bundlerVersion, config.bundlerSatisfactory)) {
 } else {
   console.log(no + bundlerVersion + ' (' + bundlerVersionFull + ')')
   shell.mkdir('-p', bundlerDir)
-  fatalExe('gem install bundler -v \'' + config.bundlerDesired + '\' -n ' + bundlerDir)
+  fatalExe(rubyExe + ' ' + 'gem install bundler -v \'' + config.bundlerDesired + '\' -n ' + bundlerDir)
 }
 
 process.stdout.write('==> Configuring Bundler ... ')
-fatalExe(bundlerPath + ' config build.nokogiri --use-system-libraries')
+fatalExe(rubyExe + ' ' + bundlerPath + ' config build.nokogiri --use-system-libraries')
 console.log(yes)
 
 process.stdout.write('==> Installing Gems ... ')
@@ -91,5 +94,5 @@ for (var name in config.gems) {
 }
 fs.writeFileSync(__dirname + '/Gemfile', buf, 'utf-8')
 
-fatalExe(bundlerPath + ' install --path \'' + __dirname + '/deps/gems\' || ' + bundlerPath + ' update')
+fatalExe(rubyExe + ' ' + bundlerPath + ' install --path \'' + __dirname + '/deps/gems\' || ' + rubyExe + ' ' + bundlerPath + ' update')
 console.log(yes)
