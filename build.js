@@ -1,4 +1,5 @@
 var shell = require('shelljs')
+var fs = require('fs')
 var projectDir = process.env.PROJECT_DIR || __dirname + '/../..'
 var rubyExe = fs.readFileSync(__dirname + '/deps/rubyExe', 'utf-8').trim()
 
