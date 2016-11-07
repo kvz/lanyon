@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "node ./postinstall.js",
-    "lint": "eslint .",
-    "fix": "eslint . --fix",
-    "x": "cd .. && echo $(pwd)",
-    "build": "node ./build.js",
-    "start": "deps/bin/bundle exec jekyll serve",
+    "ownlint": "eslint .",
+    "ownfix": "eslint . --fix",
+    "fullbuild": "env PROJECT_DIR=${PROJECT_DIR:-../..} deps/bin/ruby deps/bin/bundler exec jekyll build --source ${PROJECT_DIR} --destination ${PROJECT_DIR}/_site --config ${PROJECT_DIR}/_config.yml",
+    "build": "env PROJECT_DIR=${PROJECT_DIR:-../..} deps/bin/ruby deps/bin/bundler exec jekyll build --incremental --source ${PROJECT_DIR} --destination ${PROJECT_DIR}/_site --config ${PROJECT_DIR}/_config.yml",
+    "start": "",
     "help": "deps/bin/bundle exec jekyll build --help",
     "test": "./test.sh"
   },
