@@ -18,6 +18,8 @@
     "bundlerSatisfactory": ">=1",
     "rubyDesired": "2.1.1",
     "rubySatisfactory": ">=2",
+    "nodeDesired": "4.6.1",
+    "nodeSatisfactory": ">=0.10",
     "rvmDesired": "1.27.0",
     "rvmSatisfactory": ">=1",
     "rvmCmd": "export PATH=\"$PATH:$HOME/.rvm/bin\" && . $HOME/.rvm/scripts/rvm && rvm",

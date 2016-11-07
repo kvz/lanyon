@@ -22,12 +22,16 @@ function fatalExe (cmd) {
 
 var config = require('./package.json').lanyon
 
+var nodeVersionFull = shell.exec('node -v', { 'silent': true }).stdout.trim()
+var parts = nodeVersionFull.split(/[\s]+/)
+var nodeVersion = parts[0]
+
 var rubyVersionFull = shell.exec('ruby -v', { 'silent': true }).stdout.trim()
 var parts = rubyVersionFull.split(/[p\s]+/)
 var rubyVersion = parts[1]
 
 var rvmVersionFull = shell.exec('rvm -v', { 'silent': true }).stdout.trim()
-var parts = rvmVersionFull.split(/[p\s]+/)
+var parts = rvmVersionFull.split(/[\s]+/)
 var rvmVersion = parts[1]
 
 var bundlerPath = __dirname + '/deps/bin/bundler'
@@ -35,6 +39,13 @@ var bundlerVersionFull = shell.exec(bundlerPath + ' -v', { 'silent': true }).std
 var parts = bundlerVersionFull.split(/[\s]+/)
 var bundlerVersion = parts[2]
 var bundlerDir = path.dirname(bundlerPath)
+
+process.stdout.write('==> Checking Node \'' + config.nodeSatisfactory + '\' ... ')
+if (semver.satisfies(nodeVersion, config.nodeSatisfactory)) {
+  console.log(yes + nodeVersion + ' (' + nodeVersionFull + ')')
+} else {
+  console.log(no + nodeVersion + ' (' + nodeVersionFull + ')')
+}
 
 process.stdout.write('==> Checking Ruby \'' + config.rubySatisfactory + '\' ... ')
 if (semver.satisfies(rubyVersion, config.rubySatisfactory)) {

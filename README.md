@@ -18,6 +18,21 @@ By leveraging the Node.js ecosystem we might as well throw in a few extras such 
 - browsersync for automatic browser refreshes on-change
 
 
+## Prerequisistes
+
+Node.js & npm
+
+### Ubuntu Trusty
+
+```bash
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# or
+
+sudo apt-get install nodejs-legacy npm
+```
+
 ## Dev
 
 If you used `npm link`, lanyon won't be able to find your project's root by upwards traversing directories, so
