@@ -1,4 +1,3 @@
-// @todo: This is writing a `=2` file, probably due to rubyDesired
 var shell = require('shelljs')
 var semver = require('semver')
 var chalk = require('chalk')
@@ -23,13 +22,11 @@ function fatalExe (cmd) {
 
 var config = require('./package.json').lanyon
 
-var rubyPath = shell.which('ruby')
-var rubyVersionFull = shell.exec(rubyPath + ' -v', { 'silent': true }).stdout.trim()
+var rubyVersionFull = shell.exec('ruby -v', { 'silent': true }).stdout.trim()
 var parts = rubyVersionFull.split(/[p\s]+/)
 var rubyVersion = parts[1]
 
-var rvmPath = shell.which('rvm')
-var rvmVersionFull = shell.exec(rvmPath + ' -v', { 'silent': true }).stdout.trim()
+var rvmVersionFull = shell.exec('rvm -v', { 'silent': true }).stdout.trim()
 var parts = rvmVersionFull.split(/[p\s]+/)
 var rvmVersion = parts[1]
 
@@ -55,7 +52,7 @@ if (semver.satisfies(rubyVersion, config.rubySatisfactory)) {
       console.log(yes)
     }
     process.stdout.write('--> Installing rvm \'' + config.rvmSatisfactory + '\' ... ')
-    fatalExe('curl -sSL https://get.rvm.io | bash -s ' + config.rvmDesired)
+    fatalExe('curl -sSL https://get.rvm.io | bash -s \'' + config.rvmDesired + '\'')
     console.log(yes)
   }
   fatalExe(config.rvmCmd + ' install \'' + config.rubyDesired + '\' && rvm use \'' + config.rubySatisfactory + '\' && ruby -v')
@@ -83,5 +80,5 @@ for (var name in config.gems) {
 }
 fs.writeFileSync(__dirname + '/Gemfile', buf, 'utf-8')
 
-fatalExe(config.rvmCmd + ' use \'' + config.rubySatisfactory + '\' && ' + bundlerPath + ' install --path ' + __dirname + '/deps/gems || ' + 'rvm use ' + config.rubySatisfactory + ' && ' + bundlerPath + ' update')
+fatalExe(config.rvmCmd + ' use \'' + config.rubySatisfactory + '\' && ' + bundlerPath + ' install --path \'' + __dirname + '/deps/gems\' || ' + config.rvmCmd + ' use \'' + config.rubySatisfactory + '\' && ' + bundlerPath + ' update')
 console.log(yes)
