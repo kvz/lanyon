@@ -55,7 +55,7 @@ if (semver.satisfies(rubyVersion, config.rubySatisfactory)) {
     fatalExe('curl -sSL https://get.rvm.io | bash -s \'' + config.rvmDesired + '\'')
     console.log(yes)
   }
-  fatalExe(config.rvmCmd + ' install \'' + config.rubyDesired + '\' && rvm use \'' + config.rubySatisfactory + '\' && ruby -v')
+  fatalExe(config.rvmCmd + ' install \'' + config.rubyDesired + '\' && rvm use --default \'' + config.rubySatisfactory + '\' && ruby -v')
 }
 
 process.stdout.write('==> Checking Bundler \'' + config.bundlerSatisfactory + '\' ... ')
@@ -64,11 +64,11 @@ if (semver.satisfies(bundlerVersion, config.bundlerSatisfactory)) {
 } else {
   console.log(no + bundlerVersion + ' (' + bundlerVersionFull + ')')
   shell.mkdir('-p', bundlerDir)
-  fatalExe(config.rvmCmd + ' use \'' + config.rubySatisfactory + '\' && ' + 'gem install bundler -v \'' + config.bundlerDesired + '\' -n ' + bundlerDir)
+  fatalExe('gem install bundler -v \'' + config.bundlerDesired + '\' -n ' + bundlerDir)
 }
 
 process.stdout.write('==> Configuring Bundler ... ')
-fatalExe(config.rvmCmd + ' use \'' + config.rubySatisfactory + '\' && ' + bundlerPath + ' config build.nokogiri --use-system-libraries')
+fatalExe(bundlerPath + ' config build.nokogiri --use-system-libraries')
 console.log(yes)
 
 process.stdout.write('==> Installing Gems ... ')
@@ -80,5 +80,5 @@ for (var name in config.gems) {
 }
 fs.writeFileSync(__dirname + '/Gemfile', buf, 'utf-8')
 
-fatalExe(config.rvmCmd + ' use \'' + config.rubySatisfactory + '\' && ' + bundlerPath + ' install --path \'' + __dirname + '/deps/gems\' || ' + config.rvmCmd + ' use \'' + config.rubySatisfactory + '\' && ' + bundlerPath + ' update')
+fatalExe(bundlerPath + ' install --path \'' + __dirname + '/deps/gems\' || ' + bundlerPath + ' update')
 console.log(yes)
