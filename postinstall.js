@@ -7,7 +7,7 @@ var yes = chalk.green('✓ ')
 var no = chalk.red('✗ ')
 
 function fatalExe (cmd) {
-  var opts = { 'silent': true }
+  var opts = { 'silent': false }
   var p = shell.exec(cmd, opts)
 
   if (p.code !== 0) {
