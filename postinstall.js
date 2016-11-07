@@ -66,7 +66,7 @@ if (semver.satisfies(rubyVersion, config.rubySatisfactory)) {
     fatalExe('curl -sSL https://get.rvm.io | bash -s \'' + config.rvmDesired + '\'')
     console.log(yes)
   }
-  fatalExe(config.rvmCmd + ' install \'' + config.rubyDesired + '\' && rvm use --default \'' + config.rubySatisfactory + '\' && ruby -v')
+  fatalExe(config.rvmCmd + ' install \'' + config.rubyDesired + '\' && rvm use --default \'' + config.rubyDesired + '\' && ruby -v')
 }
 
 process.stdout.write('==> Checking Bundler \'' + config.bundlerSatisfactory + '\' ... ')
