@@ -3,7 +3,7 @@ var projectDir = process.env.PROJECT_DIR || __dirname + '/../..'
 
 var cmd = [
   __dirname,
-  '/deps/bin/bundle exec jekyll build',
+  '/deps/bin/bundler exec jekyll build',
   ' --source ', projectDir,
   ' --config ', projectDir, '/_config.yml',
   ' --destination ', projectDir, '/_site'

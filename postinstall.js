@@ -47,6 +47,7 @@ if (semver.satisfies(nodeVersion, config.nodeSatisfactory)) {
   console.log(yes + nodeVersion + ' (' + nodeVersionFull + ')')
 } else {
   console.log(no + nodeVersion + ' (' + nodeVersionFull + ')')
+  shell.exit(1)
 }
 
 process.stdout.write('==> Checking Ruby \'' + config.rubySatisfactory + '\' ... ')
@@ -68,8 +69,8 @@ if (semver.satisfies(rubyVersion, config.rubySatisfactory)) {
     fatalExe('curl -sSL https://get.rvm.io | bash -s \'' + config.rvmDesired + '\'')
     console.log(yes)
   }
-  fatalExe('export PATH=\"$PATH:$HOME/.rvm/bin\" && source $HOME/.rvm/scripts/rvm && rvm install \'' + config.rubyDesired + '\'')
-  var rubyExe = 'export PATH=\"$PATH:$HOME/.rvm/bin\" && source $HOME/.rvm/scripts/rvm && rvm \'' + config.rubyDesired + '\' exec'
+  fatalExe('export PATH=\"$PATH:$HOME/.rvm/bin\" && . $HOME/.rvm/scripts/rvm && rvm install \'' + config.rubyDesired + '\'')
+  var rubyExe = 'export PATH=\"$PATH:$HOME/.rvm/bin\" && . $HOME/.rvm/scripts/rvm && rvm \'' + config.rubyDesired + '\' exec'
 }
 
 process.stdout.write('==> Checking Bundler \'' + config.bundlerSatisfactory + '\' ... ')
