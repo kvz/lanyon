@@ -1,34 +1,8 @@
 // https://github.com/petehunt/webpack-howto/blob/master/README.md#8-optimizing-common-code
-// module.exports = {
-//   entry: {
-//     app: './app.js'
-//   },
-//   output: {
-//     path: (process.env.PROJECT_DIR || '../..') + '/_site/assets/',
-//     filename: '[file].js',
-//     publicPath: '/assets/'
-//   },
-//   module: {
-//     loaders: [
-//       {
-//         test: /\.coffee$/,
-//         loader: 'coffee-loader'
-//       },
-//       {
-//         test: /\.js$/,
-//         loader: 'babel-loader',
-//         query: {
-//           presets: ['es2015', 'react']
-//         }
-//       }
-//     ]
-//   },
-//   resolve: {
-//     // you can now require('file') instead of require('file.coffee')
-//     extensions: ['', '.js', '.json', '.coffee']
-//   }
-// }
+// https://www.jonathan-petitcolas.com/2016/08/12/plugging-webpack-to-jekyll-powered-pages.html
+// https://webpack.github.io/docs/configuration.html#resolve-alias
 // https://github.com/HenrikJoreteg/hjs-webpack
+
 var path = require('path')
 var fs = require('fs')
 var parentDir = process.env.PROJECT_DIR || '../..'
