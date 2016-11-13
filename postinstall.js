@@ -39,12 +39,6 @@ var rvmVersionFull = shell.exec('rvm -v', { 'silent': true }).stdout.trim()
 var parts = rvmVersionFull.split(/[\s]+/)
 var rvmVersion = parts[1]
 
-var bundlerPath = path.join(__dirname, 'deps', 'bin', 'bundler')
-var bundlerVersionFull = shell.exec(bundlerPath + ' -v', { 'silent': true }).stdout.trim()
-var parts = bundlerVersionFull.split(/[\s]+/)
-var bundlerVersion = parts[2]
-var bundlerDir = path.dirname(bundlerPath)
-
 var rubyExe = 'ruby'
 
 process.stdout.write('==> Checking Node \'' + config.nodeSatisfactory + '\' ... ')
@@ -80,6 +74,12 @@ if (semver.satisfies(rubyVersion, config.rubySatisfactory)) {
     rubyExe = 'export PATH="$PATH:$HOME/.rvm/bin" && . $HOME/.rvm/scripts/rvm && rvm \'' + config.rubyDesired + '\' exec'
   }
 }
+
+var bundlerPath = path.join(__dirname, 'deps', 'bin', 'bundler')
+var bundlerVersionFull = shell.exec(rubyExe + ' ' + bundlerPath + ' -v', { 'silent': true }).stdout.trim()
+var parts = bundlerVersionFull.split(/[\s]+/)
+var bundlerVersion = parts[2]
+var bundlerDir = path.dirname(bundlerPath)
 
 process.stdout.write('==> Checking Bundler \'' + config.bundlerSatisfactory + '\' ... ')
 if (semver.satisfies(bundlerVersion, config.bundlerSatisfactory)) {
