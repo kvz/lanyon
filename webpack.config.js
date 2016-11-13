@@ -48,9 +48,25 @@ config.entry = {
 // delete config.module.loaders[0].exclude
 config.plugins[0].config.package = parentPackage
 
+config.module.loaders.push({ test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'url-loader?limit=10000&mimetype=application/font-woff' })
+config.module.loaders.push({ test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: 'file-loader' })
+
 config.resolve.alias = {
   'AjaxLoader.gif': './assets/bower/owl-carousel/assets/img/AjaxLoader.gif',
   'grabbing.png': './assets/bower/owl-carousel/owl-carousel/grabbing.png'
+}
+
+config.devServer.headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+  'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
+}
+
+config.devServer.proxy = {
+  '/assets/bower/font-awesome-sass': {
+    target: 'http://localhost:3001',
+    secure: false
+  }
 }
 
 config.resolveLoader = {
