@@ -10,8 +10,12 @@ echo "${__dir}"
 which npm
 
 npm link
+
 tdir=$(mktemp -d)
 pushd "${tdir}"
+  echo '{
+  "name": "my-website"
+}' > package.json
   npm link lanyon
   echo '' > _config.yml
   echo '---
