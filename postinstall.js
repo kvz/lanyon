@@ -98,4 +98,4 @@ fs.writeFileSync(__dirname + '/Gemfile', buf, 'utf-8')
 fatalExe(rubyExe + ' ' + bundlerPath + ' install --path \'' + __dirname + '/deps/gems\' || ' + rubyExe + ' ' + bundlerPath + ' update')
 console.log(yes)
 
-fs.writeFileSync(__dirname + '/deps/bin/ruby', rubyExe.trim() + ' "$@"', { 'encoding': 'utf-8', 'mode': 0o755 })
+fs.writeFileSync(path.join(__dirname, 'deps/bin/ruby'), rubyExe.trim() + ' "$@"', { 'encoding': 'utf-8', 'mode': '755' })
