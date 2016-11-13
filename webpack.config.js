@@ -5,10 +5,15 @@
 
 var path = require('path')
 var fs = require('fs')
+var shell = require('shelljs')
 var parentDir = process.env.PROJECT_DIR || '../..'
 var parentPackageFile = path.join(parentDir, '/package.json')
 var parentPackage = require(parentPackageFile)
 var getConfig = require('hjs-webpack')
+var buildDir = path.join(parentDir, 'assets', 'build')
+
+shell.mkdir('-p', buildDir)
+
 var config = getConfig({
   // entry point for the app
   // in: path.join(__dirname, 'app.js'),
@@ -18,7 +23,7 @@ var config = getConfig({
   // commonly named `www` or `public`. This
   // is where your fully static site should
   // end up for simple deployment.
-  out: path.join(parentDir, 'assets', 'build'),
+  out: buildDir,
 
   // This will destroy and re-create your
   // `out` folder before building so you always
