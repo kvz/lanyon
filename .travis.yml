@@ -9,6 +9,11 @@ node_js:
   - "0.12"
   - "4"
   - "6"
+
+before_install:
+  - if [[ "$USE_RBENV" == "osx" ]]; then brew update; fi
+  - if [[ "$USE_RBENV" == "osx" ]]; then brew install rbenv; fi
+
 matrix:
   matrix:
     allow_failures:
@@ -21,8 +26,9 @@ matrix:
       dist: trusty
       sudo: required
     - os: osx
+      osx_image: beta-xcode6.1
+    - os: osx
       osx_image: xcode7.2
     - os: osx
       osx_image: xcode8
-    - os: osx
-      osx_image: beta-xcode6.1
+      env: USE_RBENV=1
