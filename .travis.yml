@@ -5,6 +5,7 @@ cache:
   directories:
     - node_modules
     - deps
+    - /usr/local/Cellar/
 node_js:
   - "0.12"
   - "4"
