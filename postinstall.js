@@ -70,8 +70,8 @@ if (semver.satisfies(rubyVersion, config.rubySatisfactory)) {
       fatalExe('curl -sSL https://get.rvm.io | bash -s \'' + config.rvmDesired + '\'')
       console.log(yes)
     }
-    fatalExe('export PATH="$PATH:$HOME/.rvm/bin" && . $HOME/.rvm/scripts/rvm && rvm install \'' + config.rubyDesired + '\'')
-    rubyExe = 'export PATH="$PATH:$HOME/.rvm/bin" && . $HOME/.rvm/scripts/rvm && rvm \'' + config.rubyDesired + '\' exec'
+    fatalExe('export PATH="$HOME/.rvm/bin:$PATH" && . $HOME/.rvm/scripts/rvm && rvm install \'' + config.rubyDesired + '\'')
+    rubyExe = 'export PATH="$HOME/.rvm/bin:$PATH" && . $HOME/.rvm/scripts/rvm && rvm \'' + config.rubyDesired + '\' exec'
   }
 }
 
