@@ -25,6 +25,8 @@ var config = getConfig({
   // end up for simple deployment.
   out: buildDir,
 
+  isDev: true,
+
   // This will destroy and re-create your
   // `out` folder before building so you always
   // get a fresh folder. Usually you want this
@@ -56,18 +58,12 @@ config.resolve.alias = {
   'grabbing.png': './assets/bower/owl-carousel/owl-carousel/grabbing.png'
 }
 
-config.devServer.headers = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-  'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
-}
-
-config.devServer.proxy = {
-  '/assets/bower/font-awesome-sass': {
-    target: 'http://localhost:3001',
-    secure: false
-  }
-}
+// config.devServer.proxy = {
+//   '/assets/bower/font-awesome-sass': {
+//     target: 'http://localhost:3001',
+//     secure: false
+//   }
+// }
 
 config.resolveLoader = {
   root: [
@@ -87,7 +83,6 @@ config.devServer.port = 3000
 // console.log(config.module)
 var json = JSON.stringify(config, null, '  ')
 fs.writeFileSync('./fullthing.json', json, 'utf-8')
-console.log(json)
 
 fs.writeFileSync('./_config.dev.yml', 'assets_base_url: "http://localhost:' + config.devServer.port + '/"', 'utf-8')
 
