@@ -13,6 +13,12 @@ module.exports = {
   'port': mergedCfg.portContent,
   'proxy': 'http://localhost:' + mergedCfg.portAssets,
   'serveStatic': [ projectDir + '/_site' ],
+  'watchOptions': {
+    'ignoreInitial': true,
+    'ignored': [
+      '.git'
+    ]
+  },
   'files': [
     '.'
   ],
