@@ -11,7 +11,8 @@ which npm
 
 npm link
 
-tdir=$(mktemp -d)
+# Cross-platform mktemp: http://unix.stackexchange.com/questions/30091/fix-or-alternative-for-mktemp-in-os-x
+tdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'lanyon')
 pushd "${tdir}"
   echo '{
   "name": "my-website"
