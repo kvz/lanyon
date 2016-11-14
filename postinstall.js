@@ -71,6 +71,8 @@ var rubyExe = 'ruby'
 var gemExe = 'gem'
 var bundlerExe = 'bundler'
 
+shell.mkdir('-p', binDir)
+
 if (!satisfied('node')) {
   shell.exit(1)
 }
@@ -90,7 +92,6 @@ if (!satisfied('ruby')) {
 }
 
 if (!satisfied('bundler')) {
-  shell.mkdir('-p', binDir)
   fatalExe(rubyExe + ' ' + gemExe + ' install bundler -v \'' + mergedCfg.bundlerDesired + '\' -n ' + binDir)
 }
 
