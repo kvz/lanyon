@@ -95,7 +95,7 @@ if (!satisfied('bundler')) {
 }
 
 process.stdout.write('==> Configuring: Bundler ... ')
-fatalExe(rubyExe + ' ' + bundlerExe + ' mergedCfg build.nokogiri --use-system-libraries')
+fatalExe(rubyExe + ' ' + bundlerExe + ' config build.nokogiri --use-system-libraries')
 
 process.stdout.write('==> Installing: Gems ... ')
 var buf = 'source \'https://rubygems.org\'\n'
