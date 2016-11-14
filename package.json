@@ -9,12 +9,10 @@
     "build:content": "deps/bin/ruby deps/bin/bundler exec jekyll build ${ARGS} --source ${PROJECT_DIR:-../..} --destination ${PROJECT_DIR:-../..}/_site --config ${PROJECT_DIR:-../..}/_config.yml,_config.dev.yml",
     "build": "npm-run-all build:content build:assets",
     "help": "deps/bin/bundle exec jekyll build --help",
-    "hjsbuild": "webpack",
-    "hjsdeploy": "npm run build && surge -p public -d somedomain.com",
     "ownfix": "eslint . --fix",
     "ownlint": "eslint .",
     "postinstall": "node ./postinstall.js",
-    "serve:content": "cd ${PROJECT_DIR:-../..}/_site && browser-sync start --server --files --reload-delay 200 --reload-debounce 200 --port 3001 .",
+    "serve:content": "browser-sync start --config browsersync.config.js",
     "start": "npm-run-all build:content:incremental --parallel watch:content serve:content watch:assets",
     "test": "./test.sh",
     "watch:assets": "hjs-dev-server",
@@ -31,6 +29,8 @@
     "rbenvSatisfactory": ">=1",
     "rvmDesired": "1.27.0",
     "rvmSatisfactory": ">=1",
+    "portAssets": 3000,
+    "portContent": 4000,
     "gems": {
       "github-pages": "104",
       "jekyll-crosspost-to-medium": "0.1.14",
@@ -76,6 +76,7 @@
     "chalk": "1.1.3",
     "coffee-loader": "0.7.2",
     "css-loader": "0.25.0",
+    "depurar": "^0.3.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "fakefile": "0.0.8",
     "font-awesome-loader": "^1.0.0",
@@ -92,7 +93,7 @@
     "shelljs": "0.7.5",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
-    "webpack-dev-server": "1.16.2",
+    "webpack": "1.12.14",
     "webpack-visualizer-plugin": "0.1.5"
   }
 }
