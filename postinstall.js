@@ -64,6 +64,7 @@ function satisfied (app) {
 }
 
 var rubyExe = 'ruby'
+var gemExe = 'gem'
 var bundlerExe = 'bundler'
 
 if (!satisfied('node')) {
@@ -73,7 +74,8 @@ if (!satisfied('node')) {
 if (!satisfied('ruby')) {
   if (satisfied('rbenv')) {
     fatalExe('export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH" && eval "$(rbenv init -)" && rbenv install --skip-existing \'' + mergedCfg.rubyDesired + '\'')
-    rubyExe = 'export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH" && eval "$(rbenv init -)" && rbenv local \'' + mergedCfg.rubyDesired + '\' && ruby'
+    rubyExe = 'export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH" && eval "$(rbenv init -)" && rbenv shell \'' + mergedCfg.rubyDesired + '\' && ruby'
+    gemExe = '$HOME/.rbenv/versions/' + mergedCfg.rubyDesired + '/bin/gem'
   } else {
     if (!satisfied('rvm')) {
       fatalExe('curl -sSL https://get.rvm.io | bash -s \'' + mergedCfg.rvmDesired + '\'')
@@ -85,7 +87,7 @@ if (!satisfied('ruby')) {
 
 if (!satisfied('bundler')) {
   shell.mkdir('-p', binDir)
-  fatalExe(rubyExe + ' ' + 'gem install bundler -v \'' + mergedCfg.bundlerDesired + '\' -n ' + binDir)
+  fatalExe(rubyExe + ' ' + gemExe + ' install bundler -v \'' + mergedCfg.bundlerDesired + '\' -n ' + binDir)
 }
 
 process.stdout.write('==> Configuring: Bundler ... ')
