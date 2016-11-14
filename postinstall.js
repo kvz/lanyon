@@ -92,8 +92,7 @@ if (!satisfied('ruby')) {
 }
 
 if (!satisfied('bundler')) {
-  fatalExe(rubyExe + ' ' + gemExe + ' install bundler -v \'' + mergedCfg.bundlerDesired + '\' -n ' + binDir)
-  bundlerExe = path.join(binDir, 'bundler')
+  fatalExe(rubyExe + ' ' + gemExe + ' install bundler -v \'' + mergedCfg.bundlerDesired + '\'')
 }
 
 process.stdout.write('==> Configuring: Bundler ... ')
