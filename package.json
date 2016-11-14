@@ -82,6 +82,7 @@
     "font-awesome-loader": "^1.0.0",
     "hjs-webpack": "8.4.2",
     "jsx-loader": "0.13.2",
+    "lodash": "^4.17.0",
     "merge-descriptors": "1.0.1",
     "node-sass": "3.11.2",
     "nodemon": "1.11.0",
