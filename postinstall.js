@@ -10,7 +10,11 @@ var binDir = path.join(lanyonDir, 'deps', 'bin')
 var gemDir = path.join(lanyonDir, 'deps', 'gems')
 var projectDir = process.env.PROJECT_DIR || '../..'
 var projectPackageFile = path.join(projectDir, '/package.json')
-var projectPackage = require(projectPackageFile)
+try {
+  var projectPackage = require(projectPackageFile)
+} catch (e) {
+  projectPackage = {}
+}
 var lanyonPackage = require('./package.json')
 var mergedCfg = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon)
 var yes = chalk.green('✓ ')
