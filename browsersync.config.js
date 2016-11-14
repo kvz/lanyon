@@ -20,7 +20,7 @@ module.exports = {
     ]
   },
   'files': [
-    '.'
+    projectDir + '/_site'
   ],
   'reloadDelay': 200
 }
