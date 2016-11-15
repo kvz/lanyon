@@ -8,7 +8,7 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if type md5sum; then
   mdfive=md5sum
-else if type md5; then
+elif type md5; then
   mdfive=md5
 else
   echo "No md5 program found"
