@@ -12,8 +12,8 @@ node_js:
   - "6"
 
 before_install:
-  - if [[ "$USE_RBENV" == "osx" ]]; then brew update; fi
-  - if [[ "$USE_RBENV" == "osx" ]]; then brew install rbenv; fi
+  - if [[ "${PRE_INSTALL_RBENV}" == "1" ]]; then brew update; fi
+  - if [[ "${PRE_INSTALL_RBENV}" == "1" ]]; then brew install rbenv; fi
 
 matrix:
   matrix:
@@ -35,4 +35,4 @@ matrix:
       osx_image: xcode7.2
     - os: osx
       osx_image: xcode8
-      env: USE_RBENV=1 LANYON_DISABLE="rvm docker"
+      env: PRE_INSTALL_RBENV=1 LANYON_DISABLE="rvm docker"
