@@ -7,7 +7,6 @@ var fs = require('fs')
 var _ = require('lodash')
 var lanyonDir = __dirname
 var binDir = path.join(lanyonDir, 'vendor', 'bin')
-var gemDir = path.join(lanyonDir, 'vendor', 'gems')
 var projectDir = process.env.PROJECT_DIR || '../..'
 var projectPackageFile = path.join(projectDir, '/package.json')
 try {
@@ -137,7 +136,7 @@ if (satisfied('docker')) {
     buf += 'gem \'' + name + '\', \'' + version + '\'\n'
   }
   fs.writeFileSync(path.join(lanyonDir, 'Gemfile'), buf, 'utf-8')
-  fatalExe(rubyExe + ' ' + bundlerExe + ' install --path \'' + gemDir + '\'' + rubyExeSuffix + ' || ' + rubyExe + ' ' + bundlerExe + ' update' + rubyExeSuffix)
+  fatalExe(rubyExe + ' ' + bundlerExe + ' install --path \'vendor/bundler\'' + rubyExeSuffix + ' || ' + rubyExe + ' ' + bundlerExe + ' update' + rubyExeSuffix)
 
   jekyllExe = rubyExe + ' ' + bundlerExe + ' exec jekyll'
 }
