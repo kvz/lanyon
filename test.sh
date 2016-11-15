@@ -15,23 +15,24 @@ npm link
 tdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'lanyon')
 pushd "${tdir}"
   mkdir -p assets
-  cat <<- EOF > assets/app.js
-    console.log('hey');
+
+  cat << EOF > assets/app.js
+console.log('hey');
 EOF
 
-  cat <<- EOF > package.josn
-    {
-      "name": "my-website"
-    }
+  cat << EOF > package.json
+{
+  "name": "my-website"
+}
 EOF
 
-  cat <<- EOF > _config.yml
+  cat << EOF > _config.yml
 EOF
 
-  cat <<- EOF > index.md
-    ---
-    title: home
-    ---
+  cat << EOF > index.md
+---
+title: home
+---
 EOF
 
   npm link lanyon
