@@ -37,7 +37,11 @@ jspm_packages
 .node_repl_history
 
 .bundle/config
-deps/
+vendor/
 
 fullthing.json
 .ruby-version
+vendor/
+
+Gemfile.lock
+_site/

@@ -6,8 +6,8 @@ var debug = require('depurar')('lanyon')
 var fs = require('fs')
 var _ = require('lodash')
 var lanyonDir = __dirname
-var binDir = path.join(lanyonDir, 'deps', 'bin')
-var gemDir = path.join(lanyonDir, 'deps', 'gems')
+var binDir = path.join(lanyonDir, 'vendor', 'bin')
+var gemDir = path.join(lanyonDir, 'vendor', 'gems')
 var projectDir = process.env.PROJECT_DIR || '../..'
 var projectPackageFile = path.join(projectDir, '/package.json')
 try {
@@ -42,6 +42,12 @@ function fatalExe (cmd) {
 
 function satisfied (app) {
   process.stdout.write('==> Checking: \'' + app + '\' \'' + mergedCfg.prerequisites[app].range + '\' ... ')
+
+  if (optDisable.indexOf(app) !== -1) {
+    console.log(no + ' (disabled via LANYON_DISABLE)')
+    return false
+  }
+
   var cmd = app + ' -v'
 
   if (app === 'bundler') {
@@ -74,7 +80,9 @@ function satisfied (app) {
   return false
 }
 
+var optDisable = (process.env.LANYON_DISABLE || '').split(/\s+/)
 var rubyExe = 'ruby'
+var rubyExeSuffix = ''
 var gemExe = 'gem'
 var bundlerExe = 'bundler'
 var jekyllExe = 'jekyll'
@@ -87,29 +95,32 @@ if (!satisfied('node')) {
 
 if (satisfied('docker')) {
   // rubyExe = 'docker run -v $PWD:/srv/jekyll jekyll/jekyll ruby'
-  jekyllExe = 'docker run --interactive --tty --volume $PWD:/srv/jekyll --publish "' + mergedCfg.ports.content + ':4000" jekyll/jekyll:pages bundler install --path /srv/jekyll/_vendor/bundler; bundler update; bundler exec jekyll'
+  jekyllExe = 'docker run --interactive --tty --volume $PWD:/srv/jekyll --publish "' + mergedCfg.ports.content + ':4000" jekyll/jekyll:pages bundler install --path /srv/jekyll/vendor/bundler; bundler update; bundler exec jekyll'
   // jekyllExe = 'docker run --rm -it -p ' + mergedCfg.ports.content + ':4000 -v $PWD:/site madduci/docker-github-pages'
 } else {
   if (!satisfied('ruby')) {
-    if (satisfied('rbenv')) {
-      fatalExe('export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH" && eval "$(rbenv init -)" && rbenv install --skip-existing \'' + mergedCfg.prerequisites.ruby.preferred + '\'')
-      rubyExe = 'export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH" && eval "$(rbenv init -)" && rbenv shell \'' + mergedCfg.prerequisites.ruby.preferred + '\' && ruby'
+    // rbenv does not offer installing of rubies by default, it will also require the install plugin:
+    if (satisfied('rbenv') && shell.exec('rbenv install --help', { 'silent': true }).code === 0) {
+      fatalExe('export PATH=\'$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH\' && eval \'$(rbenv init -)\' && rbenv install --skip-existing \'' + mergedCfg.prerequisites.ruby.preferred + '\'')
+      rubyExe = 'export PATH=\'$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH\' && eval \'$(rbenv init -)\' && rbenv shell \'' + mergedCfg.prerequisites.ruby.preferred + '\' && ruby'
       gemExe = '$HOME/.rbenv/versions/' + mergedCfg.prerequisites.ruby.preferred + '/bin/gem'
     } else {
       if (!satisfied('rvm')) {
         fatalExe('curl -sSL https://get.rvm.io | bash -s \'' + mergedCfg.prerequisites.rvm.preferred + '\'')
       }
-      fatalExe('export PATH="$HOME/.rvm/bin:$PATH" && . $HOME/.rvm/scripts/rvm && rvm install \'' + mergedCfg.prerequisites.ruby.preferred + '\'')
-      rubyExe = 'export PATH="$HOME/.rvm/bin:$PATH" && . $HOME/.rvm/scripts/rvm && rvm \'' + mergedCfg.prerequisites.ruby.preferred + '\' exec'
+      // Install ruby
+      rubyExeSuffix = '"'
+      fatalExe('bash -c "export PATH=\'$HOME/.rvm/bin:$PATH\' && source $HOME/.rvm/scripts/rvm && rvm install \'' + mergedCfg.prerequisites.ruby.preferred + '\'' + rubyExeSuffix)
+      rubyExe = 'bash -c "export PATH=\'$HOME/.rvm/bin:$PATH\' && source $HOME/.rvm/scripts/rvm && rvm \'' + mergedCfg.prerequisites.ruby.preferred + '\' exec'
     }
   }
 
   if (!satisfied('bundler')) {
-    fatalExe(rubyExe + ' ' + gemExe + ' install bundler -v \'' + mergedCfg.prerequisites.bundler.preferred + '\'')
+    fatalExe(rubyExe + ' ' + gemExe + ' install bundler -v \'' + mergedCfg.prerequisites.bundler.preferred + '\'' + rubyExeSuffix)
   }
 
   process.stdout.write('==> Configuring: Bundler ... ')
-  fatalExe(rubyExe + ' ' + bundlerExe + ' config build.nokogiri --use-system-libraries')
+  fatalExe(rubyExe + ' ' + bundlerExe + ' config build.nokogiri --use-system-libraries' + rubyExeSuffix)
 
   process.stdout.write('==> Installing: Gems ... ')
   var buf = 'source \'https://rubygems.org\'\n'
@@ -118,15 +129,15 @@ if (satisfied('docker')) {
     buf += 'gem \'' + name + '\', \'' + version + '\'\n'
   }
   fs.writeFileSync(path.join(lanyonDir, 'Gemfile'), buf, 'utf-8')
-  fatalExe(rubyExe + ' ' + bundlerExe + ' install --path \'' + gemDir + '\' || ' + rubyExe + ' ' + bundlerExe + ' update')
+  fatalExe(rubyExe + ' ' + bundlerExe + ' install --path \'' + gemDir + '\'' + rubyExeSuffix + ' || ' + rubyExe + ' ' + bundlerExe + ' update' + rubyExeSuffix)
 
   jekyllExe = rubyExe + ' ' + bundlerExe + ' exec jekyll'
 }
 
 process.stdout.write('==> Installing: ruby shim ... ')
-fs.writeFileSync(path.join(binDir, 'ruby'), rubyExe.trim() + ' "$@"', { 'encoding': 'utf-8', 'mode': '755' })
+fs.writeFileSync(path.join(binDir, 'ruby'), rubyExe.trim() + ' "$@"' + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
 console.log(yes)
 
 process.stdout.write('==> Installing: jekyll shim ... ')
-fs.writeFileSync(path.join(binDir, 'jekyll'), jekyllExe.trim() + ' "$@"', { 'encoding': 'utf-8', 'mode': '755' })
+fs.writeFileSync(path.join(binDir, 'jekyll'), jekyllExe.trim() + ' "$@"' + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
 console.log(yes)

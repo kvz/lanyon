@@ -63,6 +63,20 @@ run like so:
 PROJECT_DIR=$(pwd) npm explore lanyon -- npm run build
 ```
 
+## Flow
+
+Lanyon tries to use the following components to acquire a Ruby 2+ install:
+
+- System ruby
+- Docker
+- Rbenv
+- RVM
+
+If all these fail, it will try to install RVM and then install Ruby 2+.
+
+You can disable any of these via e.g. `LANYON_DISABLE="rbenv docker"`.
+To disable using the system's available Ruby use `LANYON_DISABLE="ruby"`.
+
 ## Requirements
 
 - Node.js

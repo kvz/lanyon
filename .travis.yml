@@ -4,7 +4,7 @@ cache:
   apt: true
   directories:
     - node_modules
-    - deps
+    - vendor
     - /usr/local/Cellar/
 node_js:
   - "0.12"
@@ -28,10 +28,11 @@ matrix:
     - os: linux
       dist: trusty
       sudo: required
+      env: LANYON_DISABLE="ruby"
     - os: osx
       osx_image: beta-xcode6.1
     - os: osx
       osx_image: xcode7.2
     - os: osx
       osx_image: xcode8
-      env: USE_RBENV=1
+      env: USE_RBENV=1 LANYON_DISABLE="rvm docker"

@@ -6,9 +6,9 @@
   "scripts": {
     "build:assets": "webpack",
     "build:content:incremental": "env ARGS=--incremental npm run build:content",
-    "build:content": "./deps/bin/jekyll build ${ARGS} --source ${PROJECT_DIR:-../..} --destination ${PROJECT_DIR:-../..}/_site --config ${PROJECT_DIR:-../..}/_config.yml,_config.dev.yml",
+    "build:content": "./vendor/bin/jekyll build ${ARGS} --source ${PROJECT_DIR:-../..} --destination ${PROJECT_DIR:-../..}/_site --config ${PROJECT_DIR:-../..}/_config.yml,_config.dev.yml",
     "build": "npm-run-all build:content build:assets",
-    "help": "./deps/bin/bundler exec jekyll build --help",
+    "help": "./vendor/bin/bundler exec jekyll build --help",
     "ownfix": "eslint . --fix",
     "ownlint": "eslint .",
     "postinstall": "node ./postinstall.js",
