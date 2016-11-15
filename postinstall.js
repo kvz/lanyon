@@ -22,7 +22,7 @@ var no = chalk.red('✗ ')
 debug({mergedCfg: mergedCfg})
 
 function fatalExe (cmd) {
-  var opts = { 'silent': false }
+  var opts = { 'silent': true }
 
   process.stdout.write('--> Executing: ' + cmd + ' ... ')
 
