@@ -24,7 +24,6 @@ shell.mkdir('-p', buildDir)
 
 var config = getConfig({
   // entry point for the app
-  // in: path.join(lanyonDir, 'app.js'),
   in: path.join(projectDir, 'assets', 'app.js'),
 
   // Name or full path of output directory
@@ -43,17 +42,10 @@ var config = getConfig({
   clearBeforeBuild: '!(images|favicon.ico)'
 })
 
-config.entry = {
-  // Add entries for vendors
-  // vendors: ['jquery'],
-  // Reassign previous single entry to app entry
-  app: config.entry,
-  // ace: path.join(projectDir, 'assets', 'ace.js'),
-  'worker-json': path.join(projectDir, 'assets', 'worker-json.js'),
-  head: path.join(projectDir, 'assets', 'head.js'),
-  crm: path.join(projectDir, 'assets', 'crm.js'),
-  admin: path.join(projectDir, 'assets', 'admin.js')
-}
+config.entry = {}
+mergedCfg.entries.forEach(function (entry) {
+  config.entry[entry] = path.join(projectDir, 'assets', entry + '.js')
+})
 
 config.output.filename = '[name].js'
 config.output.cssFilename = '[name].css'

@@ -19,6 +19,7 @@
     "watch:content": "nodemon --on-change-only --verbose --watch ${PROJECT_DIR:-../..} --ignore assets --ignore node_modules --ignore _site --ext md,html,yml,json,sh --exec 'npm run build:content:incremental'"
   },
   "lanyon": {
+    "entries": [ "app" ],
     "prerequisites": {
       "bundler": {
         "preferred": "1.13.0",
