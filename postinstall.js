@@ -72,7 +72,7 @@ function satisfied (app) {
 var rubyExe = 'ruby'
 var gemExe = 'gem'
 var bundlerExe = 'bundler'
-var jekyllExe = 'jekyll'
+var jekyllExe = 'bundler exec jekyll'
 
 shell.mkdir('-p', binDir)
 
