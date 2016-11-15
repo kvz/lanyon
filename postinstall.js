@@ -94,9 +94,17 @@ if (!satisfied('node')) {
 }
 
 if (satisfied('docker')) {
-  // rubyExe = 'docker run -v $PWD:/srv/jekyll jekyll/jekyll ruby'
-  jekyllExe = 'docker run --interactive --tty --volume $PWD:/srv/jekyll --publish "' + mergedCfg.ports.content + ':4000" jekyll/jekyll:pages bundler install --path /srv/jekyll/vendor/bundler; bundler update; bundler exec jekyll'
-  // jekyllExe = 'docker run --rm -it -p ' + mergedCfg.ports.content + ':4000 -v $PWD:/site madduci/docker-github-pages'
+  jekyllExe = [
+    'docker run',
+    ' --interactive',
+    ' --tty',
+    ' --volume $PWD:/usr/src/app',
+    ' --publish "' + mergedCfg.ports.content + ':4000"',
+    ' starefossen/github-pages',
+    ' bundler install --path vendor/bundler;',
+    ' bundler update; ',
+    ' bundler exec jekyll'
+  ].join('')
 } else {
   if (!satisfied('ruby')) {
     // rbenv does not offer installing of rubies by default, it will also require the install plugin:

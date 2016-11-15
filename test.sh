@@ -6,9 +6,9 @@ set -o nounset
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-if type md5sum; then
+if type md5sum 2>/dev/null; then
   mdfive=md5sum
-elif type md5; then
+elif type md5 2>/dev/null; then
   mdfive=md5
 else
   echo "No md5 program found"
