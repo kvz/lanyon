@@ -11,73 +11,80 @@ But there's a problem. Ruby isn't the fasted kid on the block, and its asset bui
 
 When these problems are resolved, Lanyon hopes to deteriorate and die, just as in Robert Louis Stevenson's novella. Until that time, we aim to work around "Ruby's" ever-broken file-watching and asset-building by leveraging the Node.js ecosystem for that. 
 
+## Features
+
+Besides trying to install Ruby, bundler, and the appropriate gems locally, Lanyon offers 
+many features in a highly opinionated way. Lanyon was aimed primarily at solving Ruby headaches and delivering:
+
+- Jekyll content building
+
 By leveraging the Node.js ecosystem we might as well throw in a few extras such as:
 
-- markdown linting
-- spell checking
-- browsersync for automatic browser refreshes on-change
+- Webpack asset building (from `assets/app.js` -> `assets/build/app.js`)
+- Markdown linting
+- Spell checking
+- Browser-sync for automatic browser refreshes on-change
 
+## Flow
 
-## Prerequisistes
+Lanyon tries to utilize one of following components to acquire a working Ruby 2+ install:
 
-Node.js & npm
+1. (Just use the system's) `ruby`
+1. [`docker`](https://www.docker.com/)
+1. [`rbenv`](https://github.com/rbenv/rbenv) (with the [ruby-build](https://github.com/rbenv/ruby-build) plugin)
+1. [`rvm`](https://rvm.io/)
 
-## OSX Docker:
+If none of these are available, Lanyon will then try to install RVM 
+and then install Ruby 2+. RVM was chosen because rbenv's core
+cannot install Ruby without plugins, introducing even more moving parts.
+
+You can disable any of these via e.g. `LANYON_DISABLE="rbenv docker"`.
+To disable using the system's available Ruby use `LANYON_DISABLE="ruby"`, this is useful
+mainly for testing purposes as this will force an install of some kind.
+
+## Prerequisites
+
+- Node.js 0.12+ (& npm)
+- OSX / Linux (& Bash)
+
+### OSX Docker:
+
+Lanyon tries it's best to leave your current Ruby setup alone and do as much local as possible,
+but that's hard, and there always is a risk of breaking ruby installs with automation.
+
+The recommended way therefore to run Lanyon is have a recent version of Docker around:
+
+Uninstall old Docker residu:
 
 ```bash
 brew uninstall --force docker-machine boot2docker docker
 ```
 
-Follow **Docker for Mac** instructions on <https://docs.docker.com/docker-for-mac/>.
-Verify it worked:
+Follow **Docker for Mac** instructions on <https://docs.docker.com/docker-for-mac/> and verify it worked:
 
 ```bash
 docker --version && docker ps
 ```
 
-```bash
-# -v "$PWD":/usr/src/app \
-# -v $HOME/code/content:/srv/jekyll \
-docker run \
-  -v $PWD:/srv/jekyll \
-  -p "5000:4000" jekyll/jekyll \
-```
-
 ### Ubuntu Trusty
+
+To install the Node.js dependency on Ubuntu Trusty, either use a new release from nodesource:
 
 ```bash
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 sudo apt-get install -y nodejs
+```
 
-# or
+Or run an old node, straight from the main repo. Lanyon (still) supports 0.12.
 
+```bash
 sudo apt-get install nodejs-legacy npm
 ```
 
 ## Dev
 
-If you used `npm link`, lanyon won't be able to find your project's root by upwards traversing directories, so
-run like so:
+If you used `npm link` for quick dev iterations, Lanyon won't be able to find your project's root by upwards traversing directories, so run it like so:
 
 ```bash
 PROJECT_DIR=$(pwd) npm explore lanyon -- npm run build
 ```
-
-## Flow
-
-Lanyon tries to use the following components to acquire a Ruby 2+ install:
-
-- System ruby
-- Docker
-- Rbenv
-- RVM
-
-If all these fail, it will try to install RVM and then install Ruby 2+.
-
-You can disable any of these via e.g. `LANYON_DISABLE="rbenv docker"`.
-To disable using the system's available Ruby use `LANYON_DISABLE="ruby"`.
-
-## Requirements
-
-- Node.js
-- Ruby 2.0+
