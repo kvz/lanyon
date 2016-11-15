@@ -186,13 +186,13 @@ if (satisfied('docker')) {
   jekyllExe = rubyExe + ' ' + bundlerExe + ' exec jekyll'
 }
 
-if (!rubyExe.match(/^vendor/)) {
+if (rubyExe.indexOf('vendor/bin/ruby') === -1) {
   process.stdout.write('==> Installing: ruby shim ... ')
   fs.writeFileSync(path.join(binDir, 'ruby'), rubyExe.trim() + ' $@' + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
 
-if (!jekyllExe.match(/^vendor/)) {
+if (jekyllExe.indexOf('vendor/bin/jekyll') === -1) {
   process.stdout.write('==> Installing: jekyll shim ... ')
   fs.writeFileSync(path.join(binDir, 'jekyll'), jekyllExe.trim() + ' $@' + jekyllExeSuffix + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
