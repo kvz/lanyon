@@ -22,6 +22,27 @@ By leveraging the Node.js ecosystem we might as well throw in a few extras such 
 
 Node.js & npm
 
+## OSX Docker:
+
+```bash
+brew uninstall --force docker-machine boot2docker docker
+```
+
+Follow **Docker for Mac** instructions on <https://docs.docker.com/docker-for-mac/>.
+Verify it worked:
+
+```bash
+docker --version && docker ps
+```
+
+```bash
+# -v "$PWD":/usr/src/app \
+# -v $HOME/code/content:/srv/jekyll \
+docker run \
+  -v $PWD:/srv/jekyll \
+  -p "5000:4000" jekyll/jekyll \
+```
+
 ### Ubuntu Trusty
 
 ```bash

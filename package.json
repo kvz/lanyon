@@ -6,9 +6,9 @@
   "scripts": {
     "build:assets": "webpack",
     "build:content:incremental": "env ARGS=--incremental npm run build:content",
-    "build:content": "deps/bin/ruby deps/bin/bundler exec jekyll build ${ARGS} --source ${PROJECT_DIR:-../..} --destination ${PROJECT_DIR:-../..}/_site --config ${PROJECT_DIR:-../..}/_config.yml,_config.dev.yml",
+    "build:content": "./deps/bin/jekyll build ${ARGS} --source ${PROJECT_DIR:-../..} --destination ${PROJECT_DIR:-../..}/_site --config ${PROJECT_DIR:-../..}/_config.yml,_config.dev.yml",
     "build": "npm-run-all build:content build:assets",
-    "help": "deps/bin/bundle exec jekyll build --help",
+    "help": "./deps/bin/bundler exec jekyll build --help",
     "ownfix": "eslint . --fix",
     "ownlint": "eslint .",
     "postinstall": "node ./postinstall.js",
@@ -29,6 +29,8 @@
     "rbenvSatisfactory": ">=1",
     "rvmDesired": "1.27.0",
     "rvmSatisfactory": ">=1",
+    "dockerDesired": "1.12.3",
+    "dockerSatisfactory": ">=1.12",
     "portAssets": 3000,
     "portContent": 4000,
     "gems": {
