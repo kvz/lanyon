@@ -102,30 +102,31 @@ if (!satisfied('node')) {
 if (satisfied('docker')) {
   // ' --interactive',
   // ' --tty',
+
+  if (process.env.DOCKER_TOKEN) {
+    shell.exec('docker build -t kevinvz/lanyon .')
+    shell.exec('docker push kevinvz/lanyon')
+  }
+
   rubyExe = [
     'docker run',
-    ' --volume $PWD:/usr/src/app',
+    ' --rm',
+    ' --volume $PWD:/srv',
     ' --volume ' + path.resolve(projectDir + '/_site') + ':' + path.resolve(projectDir + '/_site'),
     ' --publish ' + mergedCfg.ports.content + ':4000',
-    ' starefossen/github-pages',
+    ' kevinvz/lanyon',
     ' ruby'
   ].join('')
 
-  bundlerExe = [
+  jekyllExe = [
     'docker run',
-    ' --volume $PWD:/usr/src/app',
+    ' --rm',
+    ' --volume $PWD:/srv',
     ' --volume ' + path.resolve(projectDir + '/_site') + ':' + path.resolve(projectDir + '/_site'),
     ' --publish ' + mergedCfg.ports.content + ':4000',
-    ' starefossen/github-pages',
-    ' bundler'
+    ' kevinvz/lanyon',
+    ' bundler exec jekyll'
   ].join('')
-
-  jekyllExe = [
-    bundlerExe,
-    ' exec jekyll'
-  ].join('')
-
-  fatalExe(bundlerExe + ' install --path vendor/bundler || ' + bundlerExe + ' update')
 } else {
   if (satisfied('ruby', 'vendor/bin/ruby -v', 'vendor')) {
     rubyExe = 'vendor/bin/ruby -v'
