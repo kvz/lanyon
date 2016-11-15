@@ -60,9 +60,14 @@ function satisfied (app) {
     appVersion = parts[2]
   }
 
-  if (semver.satisfies(appVersion, mergedCfg.prerequisites[app].range)) {
-    console.log(yes + appVersion + ' (' + appVersionFull + ')')
-    return true
+  try {
+    if (semver.satisfies(appVersion, mergedCfg.prerequisites[app].range)) {
+      console.log(yes + appVersion + ' (' + appVersionFull + ')')
+      return true
+    }
+  } catch (e) {
+    console.log(no + appVersion + ' (' + appVersionFull + ')' + e)
+    return false
   }
 
   console.log(no + appVersion + ' (' + appVersionFull + ')')
