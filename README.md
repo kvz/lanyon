@@ -33,6 +33,7 @@ Lanyon tries to utilize one of following components to acquire a working Ruby 2+
 1. [`docker`](https://www.docker.com/)
 1. [`rbenv`](https://github.com/rbenv/rbenv) (with the [ruby-build](https://github.com/rbenv/ruby-build) plugin)
 1. [`rvm`](https://rvm.io/)
+1. [`brew`](http://brew.sh/)
 
 You can disable any of these via e.g. `LANYON_DISABLE="rbenv docker"`.
 To disable using the system's available Ruby use `LANYON_DISABLE="system"`, this is useful
