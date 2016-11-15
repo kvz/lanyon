@@ -136,7 +136,7 @@ if (satisfied('docker')) {
       fatalExe('rbenv install --skip-existing \'' + rubyCfg.preferred + '\'')
       rubyExe = 'rbenv shell \'' + rubyCfg.preferred + '\' && ruby'
     } else if (satisfied('rvm')) {
-      fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'' + rubyExeSuffix)
+      fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'"')
       rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
       rubyExeSuffix = '"'
     } else if (satisfied('brew')) {
