@@ -82,7 +82,7 @@ if (!satisfied('node')) {
 
 if (satisfied('docker')) {
   // rubyExe = 'docker run -v $PWD:/srv/jekyll jekyll/jekyll ruby'
-  jekyllExe = 'docker run --interactive --tty --volume $PWD:/srv/jekyll --publish "' + mergedCfg.ports.content + ':4000" jekyll/jekyll bundler update; bundler config build.nokogiri --use-system-libraries; bundler install --path /srv/deps; bundler update; bundler exec jekyll'
+  jekyllExe = 'docker run --interactive --tty --volume $PWD:/srv/jekyll --publish "' + mergedCfg.ports.content + ':4000" jekyll/jekyll bundler update; bundler install --path /srv/jekyll/_vendor/bundler; bundler update; bundler exec jekyll'
   // jekyllExe = 'docker run --rm -it -p ' + mergedCfg.ports.content + ':4000 -v $PWD:/site madduci/docker-github-pages'
 } else {
   if (!satisfied('ruby')) {
