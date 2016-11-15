@@ -41,7 +41,7 @@ function fatalExe (cmd) {
 }
 
 function satisfied (app) {
-  process.stdout.write('==> Checking: \'' + app + '\' \'' + mergedCfg[app + 'Satisfactory'] + '\' ... ')
+  process.stdout.write('==> Checking: \'' + app + '\' \'' + mergedCfg.prerequisites[app].range + '\' ... ')
   var cmd = app + ' -v'
 
   if (app === 'bundler') {
@@ -60,7 +60,7 @@ function satisfied (app) {
     appVersion = parts[2]
   }
 
-  if (semver.satisfies(appVersion, mergedCfg[app + 'Satisfactory'])) {
+  if (semver.satisfies(appVersion, mergedCfg.prerequisites[app].range)) {
     console.log(yes + appVersion + ' (' + appVersionFull + ')')
     return true
   }
@@ -81,25 +81,26 @@ if (!satisfied('node')) {
 }
 
 if (satisfied('docker')) {
-  rubyExe = 'docker run -v $PWD:/srv/jekyll -p "' + mergedCfg.portContent + ':4000" jekyll/jekyll ruby'
-  jekyllExe = 'docker run -v $PWD:/srv/jekyll -p "' + mergedCfg.portContent + ':4000" jekyll/jekyll jekyll'
+  rubyExe = 'docker run -v $PWD:/srv/jekyll jekyll/jekyll ruby'
+  // jekyllExe = 'docker run -v $PWD:/srv/jekyll -p "' + mergedCfg.ports.content + ':4000" jekyll/jekyll jekyll'
+  jekyllExe = 'docker run --rm -it -p ' + mergedCfg.ports.content + ':4000 -v $PWD:/site madduci/docker-github-pages'
 } else {
   if (!satisfied('ruby')) {
     if (satisfied('rbenv')) {
-      fatalExe('export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH" && eval "$(rbenv init -)" && rbenv install --skip-existing \'' + mergedCfg.rubyDesired + '\'')
-      rubyExe = 'export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH" && eval "$(rbenv init -)" && rbenv shell \'' + mergedCfg.rubyDesired + '\' && ruby'
-      gemExe = '$HOME/.rbenv/versions/' + mergedCfg.rubyDesired + '/bin/gem'
+      fatalExe('export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH" && eval "$(rbenv init -)" && rbenv install --skip-existing \'' + mergedCfg.prerequisites.ruby.preferred + '\'')
+      rubyExe = 'export PATH="$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH" && eval "$(rbenv init -)" && rbenv shell \'' + mergedCfg.prerequisites.ruby.preferred + '\' && ruby'
+      gemExe = '$HOME/.rbenv/versions/' + mergedCfg.prerequisites.ruby.preferred + '/bin/gem'
     } else {
       if (!satisfied('rvm')) {
-        fatalExe('curl -sSL https://get.rvm.io | bash -s \'' + mergedCfg.rvmDesired + '\'')
+        fatalExe('curl -sSL https://get.rvm.io | bash -s \'' + mergedCfg.prerequisites.rvm.preferred + '\'')
       }
-      fatalExe('export PATH="$HOME/.rvm/bin:$PATH" && . $HOME/.rvm/scripts/rvm && rvm install \'' + mergedCfg.rubyDesired + '\'')
-      rubyExe = 'export PATH="$HOME/.rvm/bin:$PATH" && . $HOME/.rvm/scripts/rvm && rvm \'' + mergedCfg.rubyDesired + '\' exec'
+      fatalExe('export PATH="$HOME/.rvm/bin:$PATH" && . $HOME/.rvm/scripts/rvm && rvm install \'' + mergedCfg.prerequisites.ruby.preferred + '\'')
+      rubyExe = 'export PATH="$HOME/.rvm/bin:$PATH" && . $HOME/.rvm/scripts/rvm && rvm \'' + mergedCfg.prerequisites.ruby.preferred + '\' exec'
     }
   }
 
   if (!satisfied('bundler')) {
-    fatalExe(rubyExe + ' ' + gemExe + ' install bundler -v \'' + mergedCfg.bundlerDesired + '\'')
+    fatalExe(rubyExe + ' ' + gemExe + ' install bundler -v \'' + mergedCfg.prerequisites.bundler.preferred + '\'')
   }
 
   process.stdout.write('==> Configuring: Bundler ... ')

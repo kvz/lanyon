@@ -10,8 +10,8 @@ var mergedCfg = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon)
 debug({mergedCfg: mergedCfg})
 
 module.exports = {
-  'port': mergedCfg.portContent,
-  'proxy': 'http://localhost:' + mergedCfg.portAssets,
+  'port': mergedCfg.ports.content,
+  'proxy': 'http://localhost:' + mergedCfg.ports.assets,
   'serveStatic': [ projectDir + '/_site' ],
   'watchOptions': {
     'ignoreInitial': true,
