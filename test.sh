@@ -17,22 +17,22 @@ pushd "${tdir}"
   mkdir -p assets
   cat <<- EOF > assets/app.js
     console.log('hey');
-  EOF
+EOF
 
   cat <<- EOF > package.josn
     {
       "name": "my-website"
     }
-  EOF
+EOF
 
   cat <<- EOF > _config.yml
-  EOF
+EOF
 
   cat <<- EOF > index.md
     ---
     title: home
     ---
-  EOF
+EOF
 
   npm link lanyon
 
