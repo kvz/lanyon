@@ -77,7 +77,7 @@ function satisfied (app) {
 var rubyExe = 'ruby'
 var gemExe = 'gem'
 var bundlerExe = 'bundler'
-var jekyllExe = 'bundler exec jekyll'
+var jekyllExe = 'jekyll'
 
 shell.mkdir('-p', binDir)
 
@@ -119,6 +119,8 @@ if (satisfied('docker')) {
   }
   fs.writeFileSync(path.join(lanyonDir, 'Gemfile'), buf, 'utf-8')
   fatalExe(rubyExe + ' ' + bundlerExe + ' install --path \'' + gemDir + '\' || ' + rubyExe + ' ' + bundlerExe + ' update')
+
+  jekyllExe = rubyExe + ' ' + bundlerExe + ' exec jekyll'
 }
 
 process.stdout.write('==> Installing: ruby shim ... ')
