@@ -101,9 +101,9 @@ if (satisfied('docker')) {
     ' --volume ' + path.resolve(projectDir + '/_site') + ':' + path.resolve(projectDir + '/_site'),
     ' --publish ' + mergedCfg.ports.content + ':4000',
     ' starefossen/github-pages',
-    ' bash -c "bundler install --path vendor/bundler;',
+    ' bash -c \'bundler install --path vendor/bundler;',
     ' bundler update; ',
-    ' bundler exec jekyll"'
+    ' bundler exec jekyll\''
   ].join('')
 } else {
   if (!satisfied('ruby')) {
