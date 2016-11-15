@@ -6,6 +6,15 @@ set -o nounset
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+if type md5sum; then
+  mdfive=md5sum
+else if type md5; then
+  mdfive=md5
+else
+  echo "No md5 program found"
+  exit 1
+fi
+
 echo "${__dir}"
 which npm
 
@@ -39,6 +48,6 @@ EOF
 
   PROJECT_DIR=$(pwd) npm explore lanyon -- npm run build
   find .
-  (md5sum ./_site/index.html || md5 ./_site/index.html) 2> /dev/null | grep 68b329da9893e34099c7d8ad5cb9c940
+  ${mdfive} ./_site/index.html |tee |grep 68b329da9893e34099c7d8ad5cb9c940
 popd
 rm -rf "${tdir}"
