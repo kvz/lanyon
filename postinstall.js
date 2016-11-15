@@ -39,18 +39,24 @@ function fatalExe (cmd) {
   return p.stdout.trim()
 }
 
-function satisfied (app) {
+function satisfied (app, cmd, checkOn) {
   process.stdout.write('==> Checking: \'' + app + '\' \'' + mergedCfg.prerequisites[app].range + '\' ... ')
 
-  if (optDisable.indexOf(app) !== -1) {
+  if (checkOn === undefined) {
+    checkOn = app
+  }
+
+  if (optDisable.indexOf(checkOn) !== -1) {
     console.log(no + ' (disabled via LANYON_DISABLE)')
     return false
   }
 
-  var cmd = app + ' -v'
+  if (!cmd) {
+    cmd = app + ' -v'
 
-  if (app === 'bundler') {
-    cmd = rubyExe + ' ' + bundlerExe + ' -v'
+    if (app === 'bundler') {
+      cmd = rubyExe + ' ' + bundlerExe + ' -v'
+    }
   }
 
   var appVersionFull = shell.exec(cmd, { 'silent': true }).stdout.trim()
@@ -80,11 +86,12 @@ function satisfied (app) {
 }
 
 var optDisable = (process.env.LANYON_DISABLE || '').split(/\s+/)
-var rubyExe = 'ruby'
+var rubyExe = '$(ruby)'
 var rubyExeSuffix = ''
-var gemExe = 'gem'
-var bundlerExe = 'bundler'
-var jekyllExe = 'jekyll'
+var gemExe = '$(which gem)'
+var bundlerExe = '$(which bundler)'
+var jekyllExe = '$(which jekyll)'
+var jekyllExeSuffix = ''
 
 shell.mkdir('-p', binDir)
 
@@ -93,38 +100,75 @@ if (!satisfied('node')) {
 }
 
 if (satisfied('docker')) {
-  jekyllExe = [
+  // ' --interactive',
+  // ' --tty',
+  rubyExe = [
     'docker run',
-    ' --interactive',
-    ' --tty',
     ' --volume $PWD:/usr/src/app',
     ' --volume ' + path.resolve(projectDir + '/_site') + ':' + path.resolve(projectDir + '/_site'),
     ' --publish ' + mergedCfg.ports.content + ':4000',
     ' starefossen/github-pages',
-    ' bash -c \'bundler install --path vendor/bundler;',
-    ' bundler update; ',
-    ' bundler exec jekyll\''
+    ' ruby'
   ].join('')
+
+  bundlerExe = [
+    'docker run',
+    ' --volume $PWD:/usr/src/app',
+    ' --volume ' + path.resolve(projectDir + '/_site') + ':' + path.resolve(projectDir + '/_site'),
+    ' --publish ' + mergedCfg.ports.content + ':4000',
+    ' starefossen/github-pages',
+    ' bundler'
+  ].join('')
+
+  jekyllExe = [
+    bundlerExe,
+    ' exec jekyll'
+  ].join('')
+
+  fatalExe(bundlerExe + ' install --path vendor/bundler || ' + bundlerExe + ' update')
 } else {
-  if (!satisfied('ruby')) {
+  if (satisfied('ruby', 'vendor/bin/ruby -v', 'vendor')) {
+    rubyExe = 'vendor/bin/ruby -v'
+  } else if (!satisfied('ruby', undefined, 'system')) {
+    var rubyCfg = mergedCfg.prerequisites.ruby
     // rbenv does not offer installing of rubies by default, it will also require the install plugin:
     if (satisfied('rbenv') && shell.exec('rbenv install --help', { 'silent': true }).code === 0) {
-      fatalExe('export PATH=\'$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH\' && eval \'$(rbenv init -)\' && rbenv install --skip-existing \'' + mergedCfg.prerequisites.ruby.preferred + '\'')
-      rubyExe = 'export PATH=\'$HOME/.rbenv/bin:$HOME/.rbenv/shims:$PATH\' && eval \'$(rbenv init -)\' && rbenv shell \'' + mergedCfg.prerequisites.ruby.preferred + '\' && ruby'
-      gemExe = '$HOME/.rbenv/versions/' + mergedCfg.prerequisites.ruby.preferred + '/bin/gem'
-    } else {
-      if (!satisfied('rvm')) {
-        fatalExe('curl -sSL https://get.rvm.io | bash -s \'' + mergedCfg.prerequisites.rvm.preferred + '\'')
-      }
-      // Install ruby
+      fatalExe('rbenv install --skip-existing \'' + rubyCfg.preferred + '\'')
+      rubyExe = 'rbenv shell \'' + rubyCfg.preferred + '\' && ruby'
+    } else if (satisfied('rvm')) {
+      fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'' + rubyExeSuffix)
+      rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
       rubyExeSuffix = '"'
-      fatalExe('bash -c "export PATH=\'$HOME/.rvm/bin:$PATH\' && source $HOME/.rvm/scripts/rvm && rvm install \'' + mergedCfg.prerequisites.ruby.preferred + '\'' + rubyExeSuffix)
-      rubyExe = 'bash -c "export PATH=\'$HOME/.rvm/bin:$PATH\' && source $HOME/.rvm/scripts/rvm && rvm \'' + mergedCfg.prerequisites.ruby.preferred + '\' exec'
+    } else if (satisfied('brew')) {
+      fatalExe('brew install \'ruby' + rubyCfg._brew + '\'')
+
+      var env = [
+        'env',
+        'LDFLAGS=-L/usr/local/opt/' + rubyCfg._brew + '/lib',
+        'CPPFLAGS=-I/usr/local/opt/' + rubyCfg._brew + '/include',
+        'PKG_CONFIG_PATH=/usr/local/opt/' + rubyCfg._brew + '/lib/pkgconfig',
+        'PATH=' + '/usr/local/lib/ruby/gems/' + rubyCfg._brewGemDir + '/bin:$PATH',
+        'GEM_HOME=' + '/usr/local/lib/ruby/gems/' + rubyCfg._brewGemDir,
+        'GEM_PATH=' + '/usr/local/lib/ruby/gems/' + rubyCfg._brewGemDir
+      ]
+      rubyExe = env.join(' ') + ' /usr/local/opt/ruby' + rubyCfg._brew + '/bin/ruby'
+      gemExe = '/usr/local/opt/ruby' + rubyCfg._brew + '/bin/gem'
+    } else {
+      console.error('Ruby version not satisfied, and exhausted ruby version installer helpers (rvm, rbenv, brew)')
+      process.exit(1)
     }
   }
 
-  if (!satisfied('bundler')) {
-    fatalExe(rubyExe + ' ' + gemExe + ' install bundler -v \'' + mergedCfg.prerequisites.bundler.preferred + '\'' + rubyExeSuffix)
+  if (!satisfied('ruby', rubyExe + ' -v', 'verify')) {
+    console.error('Ruby should have been installed but still not satisfied')
+    process.exit(1)
+  }
+
+  if (satisfied('bundler', 'vendor/bin/bundler -v')) {
+    bundlerExe = 'vendor/bin/bundler'
+  } else if (!satisfied('bundler')) {
+    fatalExe(rubyExe + ' ' + gemExe + ' install bundler -n \'vendor/bin\' -v \'' + mergedCfg.prerequisites.bundler.preferred + '\'' + rubyExeSuffix)
+    bundlerExe = 'vendor/bin/bundler'
   }
 
   process.stdout.write('==> Configuring: Bundler ... ')
@@ -142,10 +186,14 @@ if (satisfied('docker')) {
   jekyllExe = rubyExe + ' ' + bundlerExe + ' exec jekyll'
 }
 
-process.stdout.write('==> Installing: ruby shim ... ')
-fs.writeFileSync(path.join(binDir, 'ruby'), rubyExe.trim() + ' "$@"' + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
-console.log(yes)
+if (!rubyExe.match(/^vendor/)) {
+  process.stdout.write('==> Installing: ruby shim ... ')
+  fs.writeFileSync(path.join(binDir, 'ruby'), rubyExe.trim() + ' $@' + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
+  console.log(yes)
+}
 
-process.stdout.write('==> Installing: jekyll shim ... ')
-fs.writeFileSync(path.join(binDir, 'jekyll'), jekyllExe.trim() + ' "$@"' + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
-console.log(yes)
+if (!jekyllExe.match(/^vendor/)) {
+  process.stdout.write('==> Installing: jekyll shim ... ')
+  fs.writeFileSync(path.join(binDir, 'jekyll'), jekyllExe.trim() + ' $@' + jekyllExeSuffix + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
+  console.log(yes)
+}

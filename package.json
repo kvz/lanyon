@@ -8,7 +8,7 @@
     "build:content:incremental": "env ARGS=--incremental npm run build:content",
     "build:content": "./vendor/bin/jekyll build ${ARGS} --source ${PROJECT_DIR:-../..} --destination ${PROJECT_DIR:-../..}/_site --config ${PROJECT_DIR:-../..}/_config.yml,_config.dev.yml",
     "build": "npm-run-all build:content build:assets",
-    "help": "./vendor/bin/bundler exec jekyll build --help",
+    "help": "./vendor/bin/jekyll build --help",
     "ownfix": "eslint . --fix",
     "ownlint": "eslint .",
     "postinstall": "node ./postinstall.js",
@@ -26,8 +26,14 @@
         "range": ">=1"
       },
       "ruby": {
-        "preferred": "2.1.1",
-        "range": ">=5"
+        "preferred": "2.1.10",
+        "_brew": "21",
+        "_brewGemDir": "2.1.0",
+        "range": ">=2"
+      },
+      "brew": {
+        "preferred": "1.1.0",
+        "range": ">=1"
       },
       "node": {
         "preferred": "4.6.1",

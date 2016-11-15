@@ -15,10 +15,18 @@ else
   exit 1
 fi
 
-echo "${__dir}"
-which npm
+if type yarn 2>/dev/null; then
+  enpeeem=yarn
+elif type npm 2>/dev/null; then
+  enpeeem=npm
+else
+  echo "No npm program found"
+  exit 1
+fi
 
-npm link
+echo "${__dir}"
+
+${enpeeem} link || true
 
 # Cross-platform mktemp: http://unix.stackexchange.com/questions/30091/fix-or-alternative-for-mktemp-in-os-x
 tdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'lanyon')
@@ -44,9 +52,9 @@ title: home
 ---
 EOF
 
-  npm link lanyon
+  ${enpeeem} link lanyon
 
-  PROJECT_DIR=$(pwd) npm explore lanyon -- npm run build
+  PROJECT_DIR=$(pwd) npm explore lanyon -- ${enpeeem} run build
   find .
   ${mdfive} ./_site/index.html |tee |grep 68b329da9893e34099c7d8ad5cb9c940
 popd

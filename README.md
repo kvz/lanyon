@@ -29,17 +29,13 @@ By leveraging the Node.js ecosystem we might as well throw in a few extras such 
 
 Lanyon tries to utilize one of following components to acquire a working Ruby 2+ install:
 
-1. (Just use the system's) `ruby`
+1. (Just use the `system`'s) Ruby
 1. [`docker`](https://www.docker.com/)
 1. [`rbenv`](https://github.com/rbenv/rbenv) (with the [ruby-build](https://github.com/rbenv/ruby-build) plugin)
 1. [`rvm`](https://rvm.io/)
 
-If none of these are available, Lanyon will then try to install RVM 
-and then install Ruby 2+. RVM was chosen because rbenv's core
-cannot install Ruby without plugins, introducing even more moving parts.
-
 You can disable any of these via e.g. `LANYON_DISABLE="rbenv docker"`.
-To disable using the system's available Ruby use `LANYON_DISABLE="ruby"`, this is useful
+To disable using the system's available Ruby use `LANYON_DISABLE="system"`, this is useful
 mainly for testing purposes as this will force an install of some kind.
 
 ## Prerequisites
