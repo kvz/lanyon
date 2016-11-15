@@ -4,7 +4,8 @@ cache:
   apt: true
   directories:
     - node_modules
-    - vendor
+    - vendor/gems
+    - vendor/bundler
     - /usr/local/Cellar/
 node_js:
   - "0.12"
