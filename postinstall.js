@@ -137,7 +137,7 @@ if (satisfied('docker')) {
       rubyExe = 'rbenv shell \'' + rubyCfg.preferred + '\' && ruby'
     } else if (satisfied('rvm')) {
       fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'"')
-      rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
+      rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec ruby'
       rubyExeSuffix = '"'
     } else if (satisfied('brew')) {
       fatalExe('brew install \'ruby' + rubyCfg._brew + '\'')
@@ -159,7 +159,7 @@ if (satisfied('docker')) {
     }
   }
 
-  if (!satisfied('ruby', rubyExe + ' -v', 'verify')) {
+  if (!satisfied('ruby', rubyExe + ' -v' + rubyExeSuffix, 'verify')) {
     console.error('Ruby should have been installed but still not satisfied')
     process.exit(1)
   }
