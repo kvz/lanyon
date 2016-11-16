@@ -7,7 +7,7 @@ var fs = require('fs')
 var _ = require('lodash')
 var lanyonDir = __dirname
 var binDir = path.join(lanyonDir, 'vendor', 'bin')
-var projectDir = process.env.PROJECT_DIR || '../..'
+var projectDir = process.env.LANYON_PROJECT || '../..'
 var projectPackageFile = path.join(projectDir, '/package.json')
 try {
   var projectPackage = require(projectPackageFile)
@@ -40,11 +40,14 @@ function fatalExe (cmd) {
 }
 
 function satisfied (app, cmd, checkOn) {
-  process.stdout.write('==> Checking: \'' + app + '\' \'' + mergedCfg.prerequisites[app].range + '\' ... ')
-
+  var tag = ''
   if (checkOn === undefined) {
     checkOn = app
+  } else {
+    tag = checkOn + '/'
   }
+
+  process.stdout.write('==> Checking: ' + tag + app + ' \'' + mergedCfg.prerequisites[app].range + '\' ... ')
 
   if (optDisable.indexOf(checkOn) !== -1) {
     console.log(no + ' (disabled via LANYON_DISABLE)')
@@ -148,7 +151,7 @@ if (satisfied('docker')) {
       rubyExe = 'rbenv shell \'' + rubyCfg.preferred + '\' && ruby'
     } else if (satisfied('rvm')) {
       fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'"')
-      rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
+      rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec ruby'
       rubyExeSuffix = '"'
     } else if (satisfied('brew')) {
       fatalExe('brew install \'ruby' + rubyCfg._brew + '\'')

@@ -6,7 +6,7 @@
   "scripts": {
     "build:assets": "webpack",
     "build:content:incremental": "env ARGS=--incremental npm run build:content",
-    "build:content": "./vendor/bin/jekyll build ${ARGS} --source ${PROJECT_DIR:-../..} --destination ${PROJECT_DIR:-../..}/_site --config ${PROJECT_DIR:-../..}/_config.yml,_config.dev.yml",
+    "build:content": "./vendor/bin/jekyll build ${ARGS} --source ${LANYON_PROJECT:-../..} --destination ${LANYON_PROJECT:-../..}/_site --config ${LANYON_PROJECT:-../..}/_config.yml,_config.dev.yml",
     "build": "npm-run-all build:content build:assets",
     "console": "docker run -i -t kevinvz/lanyon sh",
     "help": "./vendor/bin/jekyll build --help",
@@ -17,7 +17,7 @@
     "start": "npm-run-all build:content:incremental --parallel watch:content serve:content watch:assets",
     "test": "./test.sh",
     "watch:assets": "hjs-dev-server",
-    "watch:content": "nodemon --on-change-only --verbose --watch ${PROJECT_DIR:-../..} --ignore assets --ignore node_modules --ignore _site --ext md,html,yml,json,sh --exec 'npm run build:content:incremental'"
+    "watch:content": "nodemon --on-change-only --verbose --watch ${LANYON_PROJECT:-../..} --ignore assets --ignore node_modules --ignore _site --ext md,html,yml,json,sh --exec 'npm run build:content:incremental'"
   },
   "lanyon": {
     "entries": [ "app" ],

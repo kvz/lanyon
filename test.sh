@@ -55,7 +55,7 @@ EOF
 
   ${cmdNpm} link lanyon
 
-  export PROJECT_DIR=$(pwd)
+  export LANYON_PROJECT=$(pwd)
   npm explore lanyon -- ${cmdNpm} run build
   cat node_modules/lanyon/vendor/bin/jekyll
   find .
