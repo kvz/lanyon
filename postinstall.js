@@ -90,6 +90,7 @@ function satisfied (app, cmd, checkOn) {
 
 var optDisable = (process.env.LANYON_DISABLE || '').split(/\s+/)
 var rubyExe = '$(ruby)'
+var rubyVerify = '$(ruby) -v'
 var rubyExeSuffix = ''
 var gemExe = '$(which gem)'
 var bundlerExe = '$(which bundler)'
@@ -143,16 +144,19 @@ if (satisfied('docker')) {
 } else {
   if (satisfied('ruby', 'vendor/bin/ruby -v', 'vendor')) {
     rubyExe = 'vendor/bin/ruby -v'
+    rubyVerify = rubyExe + ' -v' + rubyExeSuffix
   } else if (!satisfied('ruby', undefined, 'system')) {
     var rubyCfg = mergedCfg.prerequisites.ruby
     // rbenv does not offer installing of rubies by default, it will also require the install plugin:
     if (satisfied('rbenv') && shell.exec('rbenv install --help', { 'silent': true }).code === 0) {
       fatalExe('rbenv install --skip-existing \'' + rubyCfg.preferred + '\'')
       rubyExe = 'rbenv shell \'' + rubyCfg.preferred + '\' && ruby'
+      rubyVerify = rubyExe + ' -v' + rubyExeSuffix
     } else if (satisfied('rvm')) {
       fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'"')
-      rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec ruby'
+      rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
       rubyExeSuffix = '"'
+      rubyVerify = rubyExe + ' ruby -v' + rubyExeSuffix
     } else if (satisfied('brew')) {
       fatalExe('brew install \'ruby' + rubyCfg._brew + '\'')
 
@@ -166,6 +170,7 @@ if (satisfied('docker')) {
         'GEM_PATH=' + '/usr/local/lib/ruby/gems/' + rubyCfg._brewGemDir
       ]
       rubyExe = env.join(' ') + ' /usr/local/opt/ruby' + rubyCfg._brew + '/bin/ruby'
+      rubyVerify = rubyExe + ' -v' + rubyExeSuffix
       gemExe = '/usr/local/opt/ruby' + rubyCfg._brew + '/bin/gem'
     } else {
       console.error('Ruby version not satisfied, and exhausted ruby version installer helpers (rvm, rbenv, brew)')
@@ -173,7 +178,7 @@ if (satisfied('docker')) {
     }
   }
 
-  if (!satisfied('ruby', rubyExe + ' -v' + rubyExeSuffix, 'verify')) {
+  if (!satisfied('ruby', rubyVerify, 'verify')) {
     console.error('Ruby should have been installed but still not satisfied')
     process.exit(1)
   }
