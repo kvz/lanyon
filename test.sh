@@ -55,7 +55,8 @@ EOF
   ${cmdNpm} link lanyon
 
   set -x
-  PROJECT_DIR=$(pwd) npm explore lanyon -- ${cmdNpm} run build
+  export PROJECT_DIR=$(pwd)
+  npm explore lanyon -- ${cmdNpm} run build
   cat node_modules/lanyon/vendor/bin/jekyll
   find .
   ${cmdMd5} ./_site/index.html |tee |grep 68b329da9893e34099c7d8ad5cb9c940
