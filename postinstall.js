@@ -111,10 +111,11 @@ console.log(yes)
 if (satisfied('docker')) {
   // ' --interactive',
   // ' --tty',
+  var ver = lanyonPackage.version
 
   if (process.env.DOCKER_BUILD === '1') {
-    shell.exec('docker build -t kevinvz/lanyon .')
-    shell.exec('docker push kevinvz/lanyon')
+    shell.exec('docker build -t kevinvz/lanyon:' + ver + ' .')
+    shell.exec('docker push kevinvz/lanyon:' + ver + '')
   }
 
   rubyExe = [
@@ -123,7 +124,7 @@ if (satisfied('docker')) {
     ' --workdir /lanyon',
     ' --volume ' + lanyonDir + ':' + '/lanyon',
     ' --volume ' + path.resolve(projectDir) + ':' + path.resolve(projectDir),
-    ' kevinvz/lanyon',
+    ' kevinvz/lanyon:' + ver + '',
     ' ruby'
   ].join('')
 
@@ -133,7 +134,7 @@ if (satisfied('docker')) {
     ' --workdir /lanyon',
     ' --volume ' + lanyonDir + ':' + '/lanyon',
     ' --volume ' + path.resolve(projectDir) + ':' + path.resolve(projectDir),
-    ' kevinvz/lanyon',
+    ' kevinvz/lanyon:' + ver + '',
     ' bundler exec jekyll'
   ].join('')
 } else {
