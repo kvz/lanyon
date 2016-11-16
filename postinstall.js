@@ -90,7 +90,6 @@ function satisfied (app, cmd, checkOn) {
 
 var optDisable = (process.env.LANYON_DISABLE || '').split(/\s+/)
 var rubyExe = '$(ruby)'
-var rubyVerify = '$(ruby) -v'
 var rubyExeSuffix = ''
 var gemExe = '$(which gem)'
 var bundlerExe = '$(which bundler)'
@@ -144,19 +143,16 @@ if (satisfied('docker')) {
 } else {
   if (satisfied('ruby', 'vendor/bin/ruby -v', 'vendor')) {
     rubyExe = 'vendor/bin/ruby -v'
-    rubyVerify = rubyExe + ' -v' + rubyExeSuffix
   } else if (!satisfied('ruby', undefined, 'system')) {
     var rubyCfg = mergedCfg.prerequisites.ruby
     // rbenv does not offer installing of rubies by default, it will also require the install plugin:
     if (satisfied('rbenv') && shell.exec('rbenv install --help', { 'silent': true }).code === 0) {
       fatalExe('rbenv install --skip-existing \'' + rubyCfg.preferred + '\'')
       rubyExe = 'rbenv shell \'' + rubyCfg.preferred + '\' && ruby'
-      rubyVerify = rubyExe + ' -v' + rubyExeSuffix
     } else if (satisfied('rvm')) {
-      fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'"')
-      rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
+      fatalExe('env PASS_ARGS=$@ bash -c "rvm install \'' + rubyCfg.preferred + '\'"')
+      rubyExe = 'env PASS_ARGS=$@ bash -c "rvm \'' + rubyCfg.preferred + '\' exec ruby'
       rubyExeSuffix = '"'
-      rubyVerify = rubyExe + ' ruby -v' + rubyExeSuffix
     } else if (satisfied('brew')) {
       fatalExe('brew install \'ruby' + rubyCfg._brew + '\'')
 
@@ -170,7 +166,6 @@ if (satisfied('docker')) {
         'GEM_PATH=' + '/usr/local/lib/ruby/gems/' + rubyCfg._brewGemDir
       ]
       rubyExe = env.join(' ') + ' /usr/local/opt/ruby' + rubyCfg._brew + '/bin/ruby'
-      rubyVerify = rubyExe + ' -v' + rubyExeSuffix
       gemExe = '/usr/local/opt/ruby' + rubyCfg._brew + '/bin/gem'
     } else {
       console.error('Ruby version not satisfied, and exhausted ruby version installer helpers (rvm, rbenv, brew)')
@@ -178,7 +173,7 @@ if (satisfied('docker')) {
     }
   }
 
-  if (!satisfied('ruby', rubyVerify, 'verify')) {
+  if (!satisfied('ruby', rubyExe + ' -v' + rubyExeSuffix, 'verify')) {
     console.error('Ruby should have been installed but still not satisfied')
     process.exit(1)
   }
@@ -201,12 +196,12 @@ if (satisfied('docker')) {
 
 if (rubyExe.indexOf('vendor/bin/ruby') === -1) {
   process.stdout.write('==> Installing: ruby shim ... ')
-  fs.writeFileSync(path.join(binDir, 'ruby'), rubyExe.trim() + ' $@' + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
+  fs.writeFileSync(path.join(binDir, 'ruby'), rubyExe.trim() + ' ${PASS_ARGS:-${@}}' + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
 
 if (jekyllExe.indexOf('vendor/bin/jekyll') === -1) {
   process.stdout.write('==> Installing: jekyll shim ... ')
-  fs.writeFileSync(path.join(binDir, 'jekyll'), jekyllExe.trim() + ' $@' + jekyllExeSuffix + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
+  fs.writeFileSync(path.join(binDir, 'jekyll'), jekyllExe.trim() + ' ${PASS_ARGS:-${@}}' + jekyllExeSuffix + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
