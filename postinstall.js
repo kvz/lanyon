@@ -148,7 +148,7 @@ if (satisfied('docker')) {
       rubyExe = 'rbenv shell \'' + rubyCfg.preferred + '\' && ruby'
     } else if (satisfied('rvm')) {
       fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'"')
-      rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec ruby'
+      rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
       rubyExeSuffix = '"'
     } else if (satisfied('brew')) {
       fatalExe('brew install \'ruby' + rubyCfg._brew + '\'')
