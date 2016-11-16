@@ -8,6 +8,7 @@
     "build:content:incremental": "env ARGS=--incremental npm run build:content",
     "build:content": "./vendor/bin/jekyll build ${ARGS} --source ${PROJECT_DIR:-../..} --destination ${PROJECT_DIR:-../..}/_site --config ${PROJECT_DIR:-../..}/_config.yml,_config.dev.yml",
     "build": "npm-run-all build:content build:assets",
+    "console": "docker run -i -t kevinvz/lanyon sh",
     "help": "./vendor/bin/jekyll build --help",
     "ownfix": "eslint . --fix",
     "ownlint": "eslint .",

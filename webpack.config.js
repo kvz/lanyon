@@ -91,6 +91,4 @@ var json = JSON.stringify(config, null, '  ')
 fs.writeFileSync('./fullthing.json', json, 'utf-8')
 debug(config)
 
-fs.writeFileSync('./_config.dev.yml', 'assets_base_url: "http://localhost:' + mergedCfg.ports.assets + '/"', 'utf-8')
-
 module.exports = config

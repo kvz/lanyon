@@ -99,11 +99,20 @@ if (!satisfied('node')) {
   shell.exit(1)
 }
 
+process.stdout.write('==> Writing: Gemfile ... ')
+var buf = 'source \'https://rubygems.org\'\n'
+for (var name in mergedCfg.gems) {
+  var version = mergedCfg.gems[name]
+  buf += 'gem \'' + name + '\', \'' + version + '\'\n'
+}
+fs.writeFileSync(path.join(lanyonDir, 'Gemfile'), buf, 'utf-8')
+console.log(yes)
+
 if (satisfied('docker')) {
   // ' --interactive',
   // ' --tty',
 
-  if (process.env.DOCKER_TOKEN) {
+  if (process.env.DOCKER_BUILD === '1') {
     shell.exec('docker build -t kevinvz/lanyon .')
     shell.exec('docker push kevinvz/lanyon')
   }
@@ -111,9 +120,9 @@ if (satisfied('docker')) {
   rubyExe = [
     'docker run',
     ' --rm',
-    ' --volume $PWD:/srv',
-    ' --volume ' + path.resolve(projectDir + '/_site') + ':' + path.resolve(projectDir + '/_site'),
-    ' --publish ' + mergedCfg.ports.content + ':4000',
+    ' --workdir /lanyon',
+    ' --volume ' + lanyonDir + ':' + '/lanyon',
+    ' --volume ' + path.resolve(projectDir) + ':' + path.resolve(projectDir),
     ' kevinvz/lanyon',
     ' ruby'
   ].join('')
@@ -121,9 +130,9 @@ if (satisfied('docker')) {
   jekyllExe = [
     'docker run',
     ' --rm',
-    ' --volume $PWD:/srv',
-    ' --volume ' + path.resolve(projectDir + '/_site') + ':' + path.resolve(projectDir + '/_site'),
-    ' --publish ' + mergedCfg.ports.content + ':4000',
+    ' --workdir /lanyon',
+    ' --volume ' + lanyonDir + ':' + '/lanyon',
+    ' --volume ' + path.resolve(projectDir) + ':' + path.resolve(projectDir),
     ' kevinvz/lanyon',
     ' bundler exec jekyll'
   ].join('')
@@ -175,16 +184,10 @@ if (satisfied('docker')) {
   process.stdout.write('==> Configuring: Bundler ... ')
   fatalExe(rubyExe + ' ' + bundlerExe + ' config build.nokogiri --use-system-libraries' + rubyExeSuffix)
 
-  process.stdout.write('==> Installing: Gems ... ')
-  var buf = 'source \'https://rubygems.org\'\n'
-  for (var name in mergedCfg.gems) {
-    var version = mergedCfg.gems[name]
-    buf += 'gem \'' + name + '\', \'' + version + '\'\n'
-  }
-  fs.writeFileSync(path.join(lanyonDir, 'Gemfile'), buf, 'utf-8')
-  fatalExe(rubyExe + ' ' + bundlerExe + ' install --path \'vendor/bundler\'' + rubyExeSuffix + ' || ' + rubyExe + ' ' + bundlerExe + ' update' + rubyExeSuffix)
-
   jekyllExe = rubyExe + ' ' + bundlerExe + ' exec jekyll'
+
+  process.stdout.write('==> Installing: Gems ... ')
+  fatalExe(rubyExe + ' ' + bundlerExe + ' install --path \'vendor/bundler\'' + rubyExeSuffix + ' || ' + rubyExe + ' ' + bundlerExe + ' update' + rubyExeSuffix)
 }
 
 if (rubyExe.indexOf('vendor/bin/ruby') === -1) {
