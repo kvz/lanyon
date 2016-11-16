@@ -2,7 +2,7 @@
 set -o pipefail
 set -o errexit
 set -o nounset
-set -o xtrace
+# set -o xtrace
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -24,12 +24,12 @@ else
   exit 1
 fi
 
-echo "${__dir}"
-
-${cmdNpm} link || true
 
 # Cross-platform mktemp: http://unix.stackexchange.com/questions/30091/fix-or-alternative-for-mktemp-in-os-x
 tdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'lanyon')
+${cmdNpm} link || true
+export LANYON_PROJECT=${__dir}
+
 pushd "${tdir}"
   mkdir -p assets
 
@@ -54,10 +54,9 @@ title: home
 EOF
 
   ${cmdNpm} link lanyon
+  cat node_modules/lanyon/vendor/bin/{jekyll,bundler,ruby}
 
-  export LANYON_PROJECT=$(pwd)
   npm explore lanyon -- ${cmdNpm} run build
-  cat node_modules/lanyon/vendor/bin/jekyll
   find .
   ${cmdMd5} ./_site/index.html |tee |grep 68b329da9893e34099c7d8ad5cb9c940
 popd
