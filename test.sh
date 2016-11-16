@@ -2,7 +2,7 @@
 set -o pipefail
 set -o errexit
 set -o nounset
-# set -o xtrace
+set -o xtrace
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -44,6 +44,7 @@ EOF
 EOF
 
   cat << EOF > _config.yml
+assets_base_url: "/"
 EOF
 
   cat << EOF > index.md
@@ -54,12 +55,10 @@ EOF
 
   ${cmdNpm} link lanyon
 
-  set -x
   export PROJECT_DIR=$(pwd)
   npm explore lanyon -- ${cmdNpm} run build
   cat node_modules/lanyon/vendor/bin/jekyll
   find .
   ${cmdMd5} ./_site/index.html |tee |grep 68b329da9893e34099c7d8ad5cb9c940
-  set +x
 popd
 rm -rf "${tdir}"
