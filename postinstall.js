@@ -139,14 +139,15 @@ if (satisfied('docker')) {
 } else {
   if (satisfied('ruby', 'vendor/bin/ruby -v', 'ruby-shim')) {
     rubyExe = 'vendor/bin/ruby'
-    rubyVerify = rubyExe + ' -v'
+    rubyVerify = rubyExe + ' -v' + rubyExeSuffix
   } else if (!satisfied('ruby', undefined, 'system')) {
     var rubyCfg = mergedCfg.prerequisites.ruby
     // rbenv does not offer installing of rubies by default, it will also require the install plugin:
     if (satisfied('rbenv') && shell.exec('rbenv install --help', { 'silent': true }).code === 0) {
-      fatalExe('rbenv install --skip-existing \'' + rubyCfg.preferred + '\'')
-      rubyExe = 'rbenv shell \'' + rubyCfg.preferred + '\' && ruby'
-      rubyVerify = rubyExe + ' -v'
+      fatalExe('bash -c "rbenv install --skip-existing \'' + rubyCfg.preferred + '\'"')
+      rubyExe = 'bash -c "eval $(rbenv init -) && rbenv shell \'' + rubyCfg.preferred + '\' && '
+      rubyExeSuffix = '"'
+      rubyVerify = rubyExe + 'ruby -v' + rubyExeSuffix
     } else if (satisfied('rvm')) {
       fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'"')
       rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
