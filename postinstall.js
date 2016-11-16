@@ -181,18 +181,18 @@ if (satisfied('docker')) {
 
 if (rubyExe.indexOf('vendor/bin/ruby') === -1) {
   process.stdout.write('==> Installing: ruby shim ... ')
-  fs.writeFileSync(path.join(binDir, 'ruby'), rubyExe.trim() + ' $*' + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
+  fs.writeFileSync(path.join(binDir, 'ruby'), rubyExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
 
 if (bundlerExe.indexOf('vendor/bin/bundler') === -1) {
   process.stdout.write('==> Installing: bundler shim ... ')
-  fs.writeFileSync(path.join(binDir, 'bundler'), bundlerExe.trim() + ' $*' + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
+  fs.writeFileSync(path.join(binDir, 'bundler'), bundlerExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
 
 if (jekyllExe.indexOf('vendor/bin/jekyll') === -1) {
   process.stdout.write('==> Installing: jekyll shim ... ')
-  fs.writeFileSync(path.join(binDir, 'jekyll'), jekyllExe.trim() + ' $*' + rubyExeSuffix, { 'encoding': 'utf-8', 'mode': '755' })
+  fs.writeFileSync(path.join(binDir, 'jekyll'), jekyllExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
