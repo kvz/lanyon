@@ -28,13 +28,7 @@
       },
       "ruby": {
         "preferred": "2.1.10",
-        "_brew": "21",
-        "_brewGemDir": "2.1.0",
         "range": ">=2"
-      },
-      "brew": {
-        "preferred": "1.1.0",
-        "range": ">=1"
       },
       "node": {
         "preferred": "4.6.1",
