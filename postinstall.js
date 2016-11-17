@@ -49,8 +49,8 @@ function satisfied (app, cmd, checkOn) {
 
   process.stdout.write('==> Checking: ' + tag + app + ' \'' + mergedCfg.prerequisites[app].range + '\' ... ')
 
-  if (optDisable.indexOf(checkOn) !== -1) {
-    console.log(no + ' (disabled via LANYON_DISABLE)')
+  if (optSkip.indexOf(checkOn) !== -1) {
+    console.log(no + ' (disabled via LANYON_SKIP)')
     return false
   }
 
@@ -84,7 +84,20 @@ function satisfied (app, cmd, checkOn) {
   return false
 }
 
-var optDisable = (process.env.LANYON_DISABLE || '').split(/\s+/)
+var optOnly = (process.env.LANYON_ONLY || '')
+var optSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
+var allApps = [ 'system', 'docker', 'rbenv', 'rvm', 'ruby-shim' ]
+if (optOnly) {
+  optSkip = []
+  allApps.forEach(function (app) {
+    if (app !== optOnly) {
+      optSkip.push(app)
+    }
+  })
+}
+// debug({optSkip: optSkip, optOnly: optOnly})
+// process.exit(0)
+
 var rubyExe = 'ruby'
 var rubyVerify = 'ruby -v'
 var rubyExeSuffix = ''
@@ -147,7 +160,10 @@ if (satisfied('docker')) {
   if (satisfied('ruby', 'vendor/bin/ruby -v', 'ruby-shim')) {
     rubyExe = 'vendor/bin/ruby'
     rubyVerify = rubyExe + ' -v' + rubyExeSuffix
-  } else if (!satisfied('ruby', undefined, 'system')) {
+  } else if (satisfied('ruby', undefined, 'system')) {
+    gemExe = '$(which gem)'
+    bundlerExe = '$(which bundler)'
+  } else {
     var rubyCfg = mergedCfg.prerequisites.ruby
     // rbenv does not offer installing of rubies by default, it will also require the install plugin:
     if (satisfied('rbenv') && shell.exec('rbenv install --help', { 'silent': true }).code === 0) {
