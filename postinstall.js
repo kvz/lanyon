@@ -87,6 +87,10 @@ function satisfied (app, cmd, checkOn) {
 var optOnly = (process.env.LANYON_ONLY || '')
 var optSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
 var allApps = [ 'system', 'docker', 'rbenv', 'rvm', 'ruby-shim' ]
+if (optOnly === 'auto-all') {
+  optOnly = ''
+}
+
 if (optOnly) {
   optSkip = []
   allApps.forEach(function (app) {
