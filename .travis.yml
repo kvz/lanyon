@@ -43,17 +43,25 @@ matrix:
       sudo: required
       env: LANYON_ONLY="system" OSDIST="trusty"
       node_js:
-        - "0.4"
+        - "4"
     - os: linux
       dist: trusty
       sudo: required
       env: LANYON_ONLY="docker" OSDIST="trusty"
+      node_js:
+        - "6"
     - os: osx
       osx_image: beta-xcode6.1
       env: LANYON_ONLY="rvm" OSDIST="beta-xcode6.1"
+      node_js:
+        - "0.12"
     - os: osx
       osx_image: xcode7.2
       env: LANYON_ONLY="rbenv" OSDIST="xcode7.2"
+      node_js:
+        - "4"
     - os: osx
       osx_image: xcode8
       env: LANYON_ONLY="system" OSDIST="xcode8"
+      node_js:
+        - "7"
