@@ -121,16 +121,23 @@ if (satisfied('docker')) {
     'docker run',
     ' --rm',
     ' --workdir /lanyon',
+    ' --user $(id -u)',
     ' --volume ' + lanyonDir + ':' + '/lanyon',
     ' --volume ' + path.resolve(projectDir) + ':' + path.resolve(projectDir),
     ' kevinvz/lanyon:' + ver + '',
     ' ruby'
   ].join('')
 
+ //  groupadd -f -g $GROUP_ID $DOCKER_GROUP '&&' \
+ // useradd -u $USER_ID -g $DOCKER_GROUP $DOCKER_USER '&&' \
+ // chown $DOCKER_USER:$DOCKER_GROUP $WORK_DIR '&&' \
+ // sudo -u $DOCKER_USER HOME=$HOME_DIR $COMMAND
+
   jekyllExe = [
     'docker run',
     ' --rm',
     ' --workdir /lanyon',
+    ' --user $(id -u)',
     ' --volume ' + lanyonDir + ':' + '/lanyon',
     ' --volume ' + path.resolve(projectDir) + ':' + path.resolve(projectDir),
     ' kevinvz/lanyon:' + ver + '',
