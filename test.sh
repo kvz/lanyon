@@ -61,10 +61,15 @@ title: home
 EOF
 
   ${cmdNpm} link lanyon
-  cat node_modules/lanyon/vendor/bin/{jekyll,bundler,ruby}
+
+  for shim in "jekyll" "bundler" "ruby"; do
+    echo "--> ${shim} contents:"
+    cat node_modules/lanyon/vendor/bin/${shim}
+  done
 
   ${cmdNpmExplore} explore lanyon -- ${cmdNpm} run build
   find .
   ${cmdMd5} ./_site/index.html |tee |grep 68b329da9893e34099c7d8ad5cb9c940
 popd
+
 rm -rf "${projectDir}"
