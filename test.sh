@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 # set -o xtrace
 
-__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+lanyonDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 if type md5sum 2>/dev/null; then
   cmdMd5=md5sum
@@ -15,22 +15,29 @@ else
   exit 1
 fi
 
+cmdNpm="npm"
+cmdNpmExplore="npm"
+
 if type yarn 2>/dev/null; then
   cmdNpm=yarn
-elif type npm 2>/dev/null; then
-  cmdNpm=npm
-else
+  # no cmdNpmExplore as Yarn does not (yet?) support `npm explore`
+fi
+
+if ! type ${cmdNpm}; then
   echo "No npm program found"
   exit 1
 fi
 
 
 # Cross-platform mktemp: http://unix.stackexchange.com/questions/30091/fix-or-alternative-for-mktemp-in-os-x
-tdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'lanyon')
-export LANYON_PROJECT=${__dir}
-${cmdNpm} link || true
+projectDir=$(mktemp -d 2>/dev/null || mktemp -d -t 'lanyon')
+export LANYON_PROJECT=${projectDir}
 
-pushd "${tdir}"
+pushd "${lanyonDir}"
+  ${cmdNpm} link || true
+popd
+
+pushd "${projectDir}"
   mkdir -p assets
 
   cat << EOF > assets/app.js
@@ -56,8 +63,8 @@ EOF
   ${cmdNpm} link lanyon
   cat node_modules/lanyon/vendor/bin/{jekyll,bundler,ruby}
 
-  npm explore lanyon -- ${cmdNpm} run build
+  ${cmdNpmExplore} explore lanyon -- ${cmdNpm} run build
   find .
   ${cmdMd5} ./_site/index.html |tee |grep 68b329da9893e34099c7d8ad5cb9c940
 popd
-rm -rf "${tdir}"
+rm -rf "${projectDir}"
