@@ -4,6 +4,7 @@ var chalk = require('chalk')
 var path = require('path')
 var debug = require('depurar')('lanyon')
 var fs = require('fs')
+var os = require('os')
 var _ = require('lodash')
 var lanyonDir = __dirname
 var binDir = path.join(lanyonDir, 'vendor', 'bin')
@@ -198,7 +199,11 @@ if (satisfied('docker')) {
   }
 
   process.stdout.write('==> Configuring: Bundler ... ')
-  fatalExe(bundlerExe + ' config build.nokogiri --use-system-libraries' + rubyExeSuffix)
+  if (os.platform() === 'darwin' && shell.exec('brew -v', { 'silent': true }).code === 0) {
+    fatalExe(bundlerExe + ' config build.nokogiri --use-system-libraries --with-xml2-include=$(brew --prefix libxml2)/include/libxml2' + rubyExeSuffix)
+  } else {
+    fatalExe(bundlerExe + ' config build.nokogiri --use-system-libraries' + rubyExeSuffix)
+  }
 
   jekyllExe = bundlerExe + ' exec jekyll'
 
