@@ -14,13 +14,16 @@ install:
   - true
 
 before_install:
-  - if [[ "${LANYON_ONLY}" == "rbenv" ]]; then brew update; fi
-  - if [[ "${LANYON_ONLY}" == "rbenv" ]]; then brew install rbenv; fi
+  - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
+  - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install rbenv; fi
+
+# OSDIST is ignored, but added to easily identify builds in travis's build index, which displaus
+# env vars in a table, but not os/dists
 
 os: linux
 dist: precise
 sudo: false
-env: LANYON_ONLY="auto-all"
+env: LANYON_ONLY="auto-all" OSDIST="precise"
 node_js:
   - "6"
 
@@ -32,23 +35,25 @@ matrix:
     - os: linux
       dist: precise
       sudo: false
-      env: LANYON_ONLY="rbenv"
+      env: LANYON_ONLY="rbenv" OSDIST="precise"
       node_js:
         - "0.12"
     - os: linux
       dist: trusty
       sudo: required
-      env: LANYON_ONLY="system"
+      env: LANYON_ONLY="system" OSDIST="trusty"
+      node_js:
+        - "0.4"
     - os: linux
       dist: trusty
       sudo: required
-      env: LANYON_ONLY="docker"
+      env: LANYON_ONLY="docker" OSDIST="trusty"
     - os: osx
       osx_image: beta-xcode6.1
-      env: LANYON_ONLY="rvm"
+      env: LANYON_ONLY="rvm" OSDIST="beta-xcode6.1"
     - os: osx
       osx_image: xcode7.2
-      env: LANYON_ONLY="rbenv"
+      env: LANYON_ONLY="rbenv" OSDIST="xcode7.2"
     - os: osx
       osx_image: xcode8
-      env: LANYON_ONLY="system"
+      env: LANYON_ONLY="system" OSDIST="xcode8"
