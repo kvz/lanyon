@@ -16,6 +16,10 @@ install:
 before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install rbenv; fi
+  - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "linux" ]; then curl -sSL https://raw.github.com/fesplugas/rbenv-installer/22cc96aa45d06faca5958b1aa1688596198407a3/bin/rbenv-installer | bash; fi
+  - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export RBENV_ROOT="${HOME}/.rbenv"; fi
+  - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export PATH="${RBENV_ROOT}/bin:${PATH}"; fi
+  - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "linux" ]; then eval "$(rbenv init -)"; fi
 
 # OSDIST is ignored, but added to easily identify builds in travis's build index, which displaus
 # env vars in a table, but not os/dists
