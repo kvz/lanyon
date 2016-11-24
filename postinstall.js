@@ -1,25 +1,16 @@
-var shell = require('shelljs')
 var semver = require('semver')
 var chalk = require('chalk')
 var path = require('path')
+var shell = require('shelljs')
 var debug = require('depurar')('lanyon')
-var fs = require('fs')
 var os = require('os')
-var _ = require('lodash')
-var lanyonDir = __dirname
-var binDir = path.join(lanyonDir, 'vendor', 'bin')
-var projectDir = process.env.LANYON_PROJECT || '../..'
-var projectPackageFile = path.join(projectDir, '/package.json')
-try {
-  var projectPackage = require(projectPackageFile)
-} catch (e) {
-  projectPackage = {}
-}
-var lanyonPackage = require('./package.json')
-var mergedCfg = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon)
+var fs = require('fs')
+
+var runtime = require('./config').runtime
 var yes = chalk.green('✓ ')
 var no = chalk.red('✗ ')
-debug({mergedCfg: mergedCfg})
+
+debug({runtime: runtime})
 
 function fatalExe (cmd) {
   var opts = { 'silent': true }
@@ -48,7 +39,7 @@ function satisfied (app, cmd, checkOn) {
     tag = checkOn + '/'
   }
 
-  process.stdout.write('==> Checking: ' + tag + app + ' \'' + mergedCfg.prerequisites[app].range + '\' ... ')
+  process.stdout.write('==> Checking: ' + tag + app + ' \'' + runtime.prerequisites[app].range + '\' ... ')
 
   if (optSkip.indexOf(checkOn) !== -1) {
     console.log(no + ' (disabled via LANYON_SKIP)')
@@ -72,7 +63,7 @@ function satisfied (app, cmd, checkOn) {
   }
 
   try {
-    if (semver.satisfies(appVersion, mergedCfg.prerequisites[app].range)) {
+    if (semver.satisfies(appVersion, runtime.prerequisites[app].range)) {
       console.log(yes + appVersion + ' (' + appVersionFull + ')')
       return true
     }
@@ -110,7 +101,7 @@ var gemExe = 'gem'
 var bundlerExe = 'bundler'
 var jekyllExe = 'jekyll'
 
-shell.mkdir('-p', binDir)
+shell.mkdir('-p', runtime.binDir)
 
 if (!satisfied('node')) {
   shell.exit(1)
@@ -118,17 +109,17 @@ if (!satisfied('node')) {
 
 process.stdout.write('==> Writing: Gemfile ... ')
 var buf = 'source \'https://rubygems.org\'\n'
-for (var name in mergedCfg.gems) {
-  var version = mergedCfg.gems[name]
+for (var name in runtime.gems) {
+  var version = runtime.gems[name]
   buf += 'gem \'' + name + '\', \'' + version + '\'\n'
 }
-fs.writeFileSync(path.join(lanyonDir, 'Gemfile'), buf, 'utf-8')
+fs.writeFileSync(path.join(runtime.lanyonDir, 'Gemfile'), buf, 'utf-8')
 console.log(yes)
 
 if (satisfied('docker')) {
   // ' --interactive',
   // ' --tty',
-  var ver = lanyonPackage.version
+  var ver = require(runtime.lanyonPackageFile).version
 
   if (process.env.DOCKER_BUILD === '1') {
     shell.exec('docker build -t kevinvz/lanyon:' + ver + ' .')
@@ -140,8 +131,8 @@ if (satisfied('docker')) {
     ' --rm',
     ' --workdir /lanyon',
     ' --user $(id -u)',
-    ' --volume ' + lanyonDir + ':' + '/lanyon',
-    ' --volume ' + path.resolve(projectDir) + ':' + path.resolve(projectDir),
+    ' --volume ' + runtime.lanyonDir + ':' + '/lanyon',
+    ' --volume ' + path.resolve(runtime.projectDir) + ':' + path.resolve(runtime.projectDir),
     ' kevinvz/lanyon:' + ver + '',
     ' ruby'
   ].join('')
@@ -156,8 +147,8 @@ if (satisfied('docker')) {
     ' --rm',
     ' --workdir /lanyon',
     ' --user $(id -u)',
-    ' --volume ' + lanyonDir + ':' + '/lanyon',
-    ' --volume ' + path.resolve(projectDir) + ':' + path.resolve(projectDir),
+    ' --volume ' + runtime.lanyonDir + ':' + '/lanyon',
+    ' --volume ' + path.resolve(runtime.projectDir) + ':' + path.resolve(runtime.projectDir),
     ' kevinvz/lanyon:' + ver + '',
     ' bundler exec jekyll'
   ].join('')
@@ -169,7 +160,7 @@ if (satisfied('docker')) {
     gemExe = '$(which gem)'
     bundlerExe = '$(which bundler)'
   } else {
-    var rubyCfg = mergedCfg.prerequisites.ruby
+    var rubyCfg = runtime.prerequisites.ruby
     // rbenv does not offer installing of rubies by default, it will also require the install plugin:
     if (satisfied('rbenv') && shell.exec('rbenv install --help', { 'silent': true }).code === 0) {
       fatalExe('bash -c "rbenv install --skip-existing \'' + rubyCfg.preferred + '\'"')
@@ -194,7 +185,7 @@ if (satisfied('docker')) {
 
   bundlerExe = rubyExe + ' ' + bundlerExe
   if (!satisfied('bundler', bundlerExe + ' -v' + rubyExeSuffix)) {
-    fatalExe(rubyExe + ' ' + gemExe + ' install bundler -n vendor/bin/ -v \'' + mergedCfg.prerequisites.bundler.preferred + '\'' + rubyExeSuffix)
+    fatalExe(rubyExe + ' ' + gemExe + ' install bundler -n vendor/bin/ -v \'' + runtime.prerequisites.bundler.preferred + '\'' + rubyExeSuffix)
     bundlerExe = 'vendor/bin/bundler'
   }
 
@@ -213,18 +204,18 @@ if (satisfied('docker')) {
 
 if (rubyExe.indexOf('vendor/bin/ruby') === -1) {
   process.stdout.write('==> Installing: ruby shim ... ')
-  fs.writeFileSync(path.join(binDir, 'ruby'), rubyExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
+  fs.writeFileSync(path.join(runtime.binDir, 'ruby'), rubyExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
 
 if (bundlerExe.indexOf('vendor/bin/bundler') === -1) {
   process.stdout.write('==> Installing: bundler shim ... ')
-  fs.writeFileSync(path.join(binDir, 'bundler'), bundlerExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
+  fs.writeFileSync(path.join(runtime.binDir, 'bundler'), bundlerExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
 
 if (jekyllExe.indexOf('vendor/bin/jekyll') === -1) {
   process.stdout.write('==> Installing: jekyll shim ... ')
-  fs.writeFileSync(path.join(binDir, 'jekyll'), jekyllExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
+  fs.writeFileSync(path.join(runtime.binDir, 'jekyll'), jekyllExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }

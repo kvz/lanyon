@@ -16,11 +16,13 @@
     "serve:content": "browser-sync start --config browsersync.config.js",
     "start": "npm-run-all build:content:incremental --parallel watch:content serve:content watch:assets",
     "test": "./test.sh",
-    "watch:assets": "hjs-dev-server",
-    "watch:content": "nodemon --on-change-only --verbose --watch ${LANYON_PROJECT:-../..} --ignore assets --ignore node_modules --ignore _site --ext md,html,yml,json,sh --exec 'npm run build:content:incremental'"
+    "watch:assets": "webpack-dev-server --inline --hot --progress --colors",
+    "watch:content": "nodemon --on-change-only --verbose --watch ${LANYON_PROJECT:-../..} --ignore assets --ignore vendor --ignore node_modules --ignore _site --ext md,html,yml,json,sh --exec 'npm run build:content:incremental'"
   },
   "lanyon": {
-    "entries": [ "app" ],
+    "entries": [
+      "app"
+    ],
     "prerequisites": {
       "bundler": {
         "preferred": "1.13.0",
@@ -73,6 +75,14 @@
     "url": "https://github.com/kvz/lanyon/issues"
   },
   "homepage": "https://github.com/kvz/lanyon#readme",
+  "babel": {
+    "presets": [
+      "es2015-loose"
+    ],
+    "plugins": [
+      "react-hot-loader/webpack"
+    ]
+  },
   "eslintConfig": {
     "extends": "standard",
     "env": {
@@ -88,33 +98,41 @@
   "dependencies": {
     "autoprefixer": "6.5.2",
     "babel-core": "6.18.2",
-    "babel-loader": "6.2.7",
+    "babel-loader": "6.2.8",
     "babel-preset-es2015": "6.18.0",
     "babel-preset-react": "6.16.0",
     "babel-preset-stage-0": "6.16.0",
-    "browser-sync": "^2.17.5",
+    "browser-sync": "2.17.5",
     "chalk": "1.1.3",
     "coffee-loader": "0.7.2",
+    "coffee-script": "^1.11.1",
     "css-loader": "0.25.0",
-    "depurar": "^0.3.0",
-    "extract-text-webpack-plugin": "^1.0.1",
+    "depurar": "0.3.0",
+    "extract-text-webpack-plugin": "1.0.1",
     "fakefile": "0.0.8",
-    "font-awesome-loader": "^1.0.0",
-    "hjs-webpack": "8.4.2",
+    "file-loader": "^0.9.0",
+    "font-awesome": "^4.7.0",
+    "font-awesome-loader": "1.0.0",
+    "http-server": "0.9.0",
     "jsx-loader": "0.13.2",
-    "lodash": "^4.17.0",
-    "merge-descriptors": "1.0.1",
+    "lodash": "4.17.0",
+    "node-libs-browser": "2.0.0",
     "node-sass": "3.11.2",
     "nodemon": "1.11.0",
     "npm-run-all": "3.1.1",
     "postcss-loader": "1.1.0",
+    "react": "15.4.1",
+    "react-dom": "15.4.1",
+    "react-hot-loader": "3.0.0-beta.6",
     "resolve-url-loader": "1.6.0",
+    "rimraf": "^2.5.4",
     "sass-loader": "4.0.2",
     "semver": "5.3.0",
     "shelljs": "0.7.5",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
-    "webpack": "1.12.14",
+    "webpack": "1.13.3",
+    "webpack-dev-server": "1.16.2",
     "webpack-visualizer-plugin": "0.1.5"
   }
 }
