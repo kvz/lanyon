@@ -7,6 +7,8 @@
 // https://github.com/webpack/webpack-dev-server/issues/97#issuecomment-70388180
 // https://webpack.github.io/docs/hot-module-replacement.html
 // https://github.com/css-modules/webpack-demo/issues/8#issuecomment-133922019
+// https://github.com/gowravshekar/font-awesome-webpack
+
 var _ = require('lodash')
 var debug = require('depurar')('lanyon')
 var fs = require('fs')
@@ -58,6 +60,7 @@ function getEntries () {
       // sources[entry].unshift('webpack-dev-server/client?http://localhost:' + runtime.ports.content)
       // sources[entry].unshift('webpack/hot/only-dev-server')
       sources[entry].unshift('webpack-hot-middleware/client')
+      // sources[entry].unshift('font-awesome-webpack!./path/to/font-awesome.config.js')
       // sources[entry].unshift('webpack/hot/dev-server')
     }
   })
@@ -75,9 +78,28 @@ var cfg = {
       cssFilename: '[name].css'
     },
     devtool: 'eval-cheap-source-map',
+    // devtool: 'source-map',
     module: {
       loaders: [
-        { test: /\.(woff|svg|ttf|eot)([?]?.*)$/, loader: 'file-loader?name=[name].[ext]' },
+        {
+          test: /\.css$/,
+          loader: 'style!css?sourceMap'
+        }, {
+          test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+          loader: "url?limit=10000&mimetype=application/font-woff"
+        }, {
+          test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+          loader: "url?limit=10000&mimetype=application/font-woff"
+        }, {
+          test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+          loader: "url?limit=10000&mimetype=application/octet-stream"
+        }, {
+          test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+          loader: "file"
+        }, {
+          test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+          loader: "url?limit=10000&mimetype=image/svg+xml"
+        },
         {
           test: /\.js$/,
           loaders: [ 'jsx', 'babel' ],
