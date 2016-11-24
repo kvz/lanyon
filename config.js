@@ -6,6 +6,7 @@
 // http://stackoverflow.com/a/28989476/151666
 // https://github.com/webpack/webpack-dev-server/issues/97#issuecomment-70388180
 // https://webpack.github.io/docs/hot-module-replacement.html
+// https://github.com/css-modules/webpack-demo/issues/8#issuecomment-133922019
 var _ = require('lodash')
 var debug = require('depurar')('lanyon')
 var fs = require('fs')
@@ -22,6 +23,7 @@ var runtime = {}
 
 runtime.lanyonDir = __dirname
 runtime.binDir = path.join(runtime.lanyonDir, 'vendor', 'bin')
+runtime.recordsPath = path.join(runtime.lanyonDir, 'records.json')
 runtime.lanyonEnv = process.env.LANYON_ENV || 'development'
 runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 var lanyonPackage = require(runtime.lanyonPackageFile)
@@ -51,6 +53,7 @@ function getEntries () {
   var sources = {}
   runtime.entries.forEach(function (entry) {
     sources[entry] = [ path.join(runtime.assetsSourceDir, entry + '.js') ]
+
     if (runtime.lanyonEnv === 'development') {
       // sources[entry].unshift('webpack-dev-server/client?http://localhost:' + runtime.ports.content)
       // sources[entry].unshift('webpack/hot/only-dev-server')
@@ -81,9 +84,14 @@ var cfg = {
           exclude: /(node_modules|bower_components|vendor)/
         }, {
           test: /\.scss$/,
-          loader: ExtractTextPlugin.extract('css!sass'),
-          exclude: /(node_modules|bower_components|vendor)/
+          exclude: /(node_modules|bower_components|vendor)/,
+          loader: 'style!css?sourceMap!sass?sourceMap&sourceComments'
         },
+        // { @todo for production
+        //   test: /\.scss$/,
+        //   loader: ExtractTextPlugin.extract('css!sass'),
+        //   exclude: /(node_modules|bower_components|vendor)/
+        // },
         {
           test: /\.(png|gif|jpe?g)$/,
           loader: 'url-loader?limit=8096',
@@ -101,9 +109,9 @@ var cfg = {
       ]
     },
     plugins: [
-      new ExtractTextPlugin(runtime.assetsBuildDir + '/[name].css', {
-        allChunks: true
-      }),
+      // new ExtractTextPlugin(runtime.assetsBuildDir + '/[name].css', {
+      //   allChunks: true
+      // }),
       new webpack.HotModuleReplacementPlugin(),
       new BowerWebpackPlugin(),
       new webpack.ProvidePlugin({
@@ -117,6 +125,7 @@ var cfg = {
         path.join(runtime.projectDir, 'node_modules')
       ]
     },
+    recordsPath: runtime.recordsPath,
     resolve: {
       root: [
         path.resolve(runtime.assetsSourceDir),
