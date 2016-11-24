@@ -19,6 +19,7 @@
     "watch:content": "nodemon --on-change-only --verbose --watch ${LANYON_PROJECT:-../..} --ignore assets --ignore vendor --ignore node_modules --ignore _site --ext md,html,yml,json,sh --exec 'npm run build:content:incremental'"
   },
   "lanyon": {
+    "hot": true,
     "entries": [
       "app"
     ],
@@ -74,14 +75,6 @@
     "url": "https://github.com/kvz/lanyon/issues"
   },
   "homepage": "https://github.com/kvz/lanyon#readme",
-  "babel": {
-    "presets": [
-      "es2015-loose"
-    ],
-    "plugins": [
-      "react-hot-loader/webpack"
-    ]
-  },
   "eslintConfig": {
     "extends": "standard",
     "env": {
