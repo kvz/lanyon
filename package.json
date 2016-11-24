@@ -16,7 +16,7 @@
     "serve:content": "browser-sync start --config browsersync.config.js",
     "start": "npm-run-all build:content:incremental --parallel watch:content serve:content watch:assets",
     "test": "./test.sh",
-    "watch:assets": "webpack-dev-server --inline --hot --progress --colors --debug --devtool sourcemap --output-pathinfo",
+    "watch:assets": "webpack-dev-server",
     "watch:content": "nodemon --on-change-only --verbose --watch ${LANYON_PROJECT:-../..} --ignore assets --ignore vendor --ignore node_modules --ignore _site --ext md,html,yml,json,sh --exec 'npm run build:content:incremental'"
   },
   "lanyon": {

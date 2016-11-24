@@ -35,8 +35,8 @@ runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
 runtime.publicPath = '/assets/build/'
 fs.writeFileSync('./_config.dev.yml', '', 'utf-8')
 if (runtime.lanyonEnv === 'development') {
-  runtime.publicPath = 'http://localhost:' + runtime.ports.assets + '/'
-  fs.writeFileSync('./_config.dev.yml', 'assets_base_url: "http://localhost:' + runtime.ports.assets + '/"', 'utf-8')
+  // runtime.publicPath = 'http://localhost:' + runtime.ports.assets + '/'
+  // fs.writeFileSync('./_config.dev.yml', 'assets_base_url: "http://localhost:' + runtime.ports.assets + '/"', 'utf-8')
 }
 
 shell.mkdir('-p', runtime.assetsBuildDir)
@@ -61,39 +61,38 @@ var fullconfig = {
     entry: getEntries(),
     output: {
       publicPath: runtime.publicPath,
-      filename: runtime.assetsBuildDir + '/[name].js',
-      cssFilename: runtime.assetsBuildDir + '/[name].css'
+      path: runtime.assetsBuildDir,
+      filename: '[name].js',
+      cssFilename: '[name].css'
     },
-    'devtool': 'cheap-module-eval-source-map',
+    'devtool': 'eval-cheap-source-map',
     'devServer': {
-      'noInfo': true,
-      'quiet': false,
-      'lazy': false,
-      'publicPath': runtime.publicPath,
-      'historyApiFallback': true,
+      'contentBase': runtime.projectDir,
+      'hostname': 'localhost',
+      'debug': true,
+      'colors': true,
       'hot': true,
-      'contentBase': runtime.assetsBuildDir,
-      'port': runtime.ports.assets,
       'https': false,
-      'hostname': 'localhost'
+      'inline': true,
+      'port': runtime.ports.assets,
+      'clientLogLevel': 'info',
+      'publicPath': runtime.publicPath
     },
     module: {
       loaders: [
         {
           test: /\.js$/,
-          loaders: [
-            'jsx', 'babel'
-          ],
-          exclude: /(node_modules|bower_components|vendor)/
+          loaders: [ 'jsx', 'babel' ],
+          exclude: /(node_modules|bower_components|bower|vendor)/
         }, {
           test: /\.scss$/,
           loader: ExtractTextPlugin.extract('css!sass'),
-          exclude: /(node_modules|bower_components|vendor)/
+          exclude: /(node_modules|bower_components|bower|vendor)/
         },
         {
-          test: /\.(png|jpg|gif|jpeg)$/,
-          loader: 'file-loader',
-          exclude: /(node_modules|bower_components|vendor)/
+          test: /\.(png|gif|jpe?g)$/,
+          loader: 'url-loader?limit=8096',
+          exclude: /(node_modules|bower_components|bower|vendor)/
         }
       ]
     },
@@ -110,11 +109,6 @@ var fullconfig = {
     },
     resolve: {
       root: path.resolve(runtime.assetsSourceDir)
-      // alias: {
-      //   'AjaxLoader.gif$': path.resolve(runtime.assetsSourceDir, 'bower/owl-carousel/assets/img/AjaxLoader.gif'),
-      //   'grabbing.png$': path.resolve(runtime.assetsSourceDir, 'bower/owl-carousel/owl-carousel/grabbing.png')
-      // },
-      // extensions: ['', '.gif', '.png']
     },
     uglify: {
       compress: {
@@ -126,7 +120,6 @@ var fullconfig = {
       sourceMap: false
     }
   },
-  runtime: runtime,
   browsersync: {
     'port': runtime.ports.content,
     'proxy': 'http://localhost:' + runtime.ports.assets,
@@ -134,14 +127,16 @@ var fullconfig = {
     'watchOptions': {
       'ignoreInitial': true,
       'ignored': [
-        '.git'
+        '.git',
+        'assets/build'
       ]
     },
     'files': [
       runtime.contentBuildDir
     ],
     'reloadDelay': 200
-  }
+  },
+  runtime: runtime
 }
 
 // console.log(config.module)
