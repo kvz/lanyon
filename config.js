@@ -14,6 +14,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var webpack = require('webpack')
 var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
+var BowerWebpackPlugin = require('bower-webpack-plugin')
 
 var runtime = {}
 
@@ -66,27 +67,32 @@ var cfg = {
       filename: '[name].js',
       cssFilename: '[name].css'
     },
-    'devtool': 'eval-cheap-source-map',
+    devtool: 'eval-cheap-source-map',
     module: {
       loaders: [
+        { test: /\.(woff|svg|ttf|eot)([?]?.*)$/, loader: 'file-loader?name=[name].[ext]' },
         {
           test: /\.js$/,
           loaders: [ 'jsx', 'babel' ],
-          exclude: /(node_modules|bower_components|bower|vendor)/
+          exclude: /(node_modules|bower_components|vendor)/
         }, {
           test: /\.scss$/,
           loader: ExtractTextPlugin.extract('css!sass'),
-          exclude: /(node_modules|bower_components|bower|vendor)/
+          exclude: /(node_modules|bower_components|vendor)/
         },
         {
           test: /\.(png|gif|jpe?g)$/,
           loader: 'url-loader?limit=8096',
-          exclude: /(node_modules|bower_components|bower|vendor)/
+          exclude: /(node_modules|bower_components|vendor)/
         },
         {
           // https://github.com/webpack/webpack/issues/512
-          test: /[\\/](bower_components|bower)[\\/]modernizr[\\/]modernizr\.js$/,
+          test: /[\\/](bower_components)[\\/]modernizr[\\/]modernizr\.js$/,
           loader: 'imports?this=>window!exports?window.Modernizr'
+        },
+        {
+          test: /[\\/](bower_components)[\\/]svgeezy[\\/]svgeezy\.js$/,
+          loader: 'imports?this=>window!exports?window.svgeezy'
         }
       ]
     },
@@ -94,6 +100,7 @@ var cfg = {
       new ExtractTextPlugin(runtime.assetsBuildDir + '/[name].css', {
         allChunks: true
       }),
+      new BowerWebpackPlugin(),
       new webpack.ProvidePlugin({
         $: 'jquery',
         jQuery: 'jquery'
@@ -106,7 +113,15 @@ var cfg = {
       ]
     },
     resolve: {
-      root: path.resolve(runtime.assetsSourceDir)
+      root: [
+        path.resolve(runtime.assetsSourceDir),
+        path.resolve(runtime.assetsSourceDir) + '/bower_components',
+        path.resolve(runtime.assetsSourceDir) + '/../node_modules'
+      ]
+      // alias: {
+      //   jquery: path.resolve(runtime.assetsSourceDir) + '/bower_components/jquery/dist/jquery',
+      //   svgeezy: path.resolve(runtime.assetsSourceDir) + '/bower_components/svgeezy/svgeezy'
+      // }
     },
     uglify: {
       compress: {
@@ -129,24 +144,14 @@ if (!/postinstall\.js$/.test(process.argv[1])) {
 
   cfg.browsersync = {
     server: {
-      'port': runtime.ports.content,
+      port: runtime.ports.content,
       baseDir: runtime.contentBuildDir,
 
       middleware: [
         webpackDevMiddleware(bundler, {
           publicPath: runtime.publicPath,
-          // 'devServer': {
-          //   'contentBase': runtime.projectDir,
-          //   'hostname': 'localhost',
-          //   'debug': true,
-          //   'colors': true,
-          'hot': true,
-          //   'https': false,
-          'inline': true,
-          //   'port': runtime.ports.assets,
-          //   'clientLogLevel': 'info',
-          //   'publicPath': runtime.publicPath
-          // },
+          hot: true,
+          inline: true,
           stats: { colors: true }
         }),
 
