@@ -79,16 +79,21 @@ var fullconfig = {
     },
     module: {
       loaders: [
-        { test: /\.(png|jpg|gif|jpeg)$/, loader: 'url-loader?limit=8192' },
         {
           test: /\.js$/,
           loaders: [
             'jsx', 'babel'
           ],
-          exclude: /node_modules/
+          exclude: /(node_modules|bower_components|vendor)/
         }, {
           test: /\.scss$/,
-          loader: ExtractTextPlugin.extract('css!sass')
+          loader: ExtractTextPlugin.extract('css!sass'),
+          exclude: /(node_modules|bower_components|vendor)/
+        },
+        {
+          test: /\.(png|jpg|gif|jpeg)$/,
+          loader: 'file-loader',
+          exclude: /(node_modules|bower_components|vendor)/
         }
       ]
     },
