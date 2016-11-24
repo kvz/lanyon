@@ -13,10 +13,9 @@
     "ownfix": "eslint . --fix",
     "ownlint": "eslint .",
     "postinstall": "node ./postinstall.js",
-    "serve:content": "browser-sync start --config browsersync.config.js",
-    "start": "npm-run-all build:content:incremental --parallel watch:content serve:content watch:assets",
+    "serve": "browser-sync start --config browsersync.config.js",
+    "start": "npm-run-all build:content:incremental --parallel watch:content serve",
     "test": "./test.sh",
-    "watch:assets": "webpack-dev-server",
     "watch:content": "nodemon --on-change-only --verbose --watch ${LANYON_PROJECT:-../..} --ignore assets --ignore vendor --ignore node_modules --ignore _site --ext md,html,yml,json,sh --exec 'npm run build:content:incremental'"
   },
   "lanyon": {
@@ -108,12 +107,14 @@
     "coffee-script": "^1.11.1",
     "css-loader": "0.26.0",
     "depurar": "0.3.0",
+    "exports-loader": "^0.6.3",
     "extract-text-webpack-plugin": "1.0.1",
     "fakefile": "0.0.8",
     "file-loader": "^0.9.0",
     "font-awesome": "^4.7.0",
     "font-awesome-loader": "1.0.1",
     "http-server": "0.9.0",
+    "imports-loader": "^0.6.5",
     "jsx-loader": "0.13.2",
     "lodash": "4.17.2",
     "node-libs-browser": "2.0.0",
@@ -132,7 +133,9 @@
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
     "webpack": "1.13.3",
+    "webpack-dev-middleware": "^1.8.4",
     "webpack-dev-server": "1.16.2",
+    "webpack-hot-middleware": "^2.13.2",
     "webpack-visualizer-plugin": "0.1.5"
   }
 }

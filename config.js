@@ -2,6 +2,8 @@
 // https://www.jonathan-petitcolas.com/2016/08/12/plugging-webpack-to-jekyll-powered-pages.html
 // https://webpack.github.io/docs/configuration.html#resolve-alias
 // https://github.com/HenrikJoreteg/hjs-webpack
+// http://webpack.github.io/docs/webpack-dev-middleware.html
+// http://stackoverflow.com/a/28989476/151666
 var _ = require('lodash')
 var debug = require('depurar')('lanyon')
 var fs = require('fs')
@@ -9,6 +11,9 @@ var path = require('path')
 var rimraf = require('rimraf')
 var shell = require('shelljs')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var webpack = require('webpack')
+var webpackDevMiddleware = require('webpack-dev-middleware')
+var webpackHotMiddleware = require('webpack-hot-middleware')
 
 var runtime = {}
 
@@ -39,10 +44,6 @@ if (runtime.lanyonEnv === 'development') {
   // fs.writeFileSync('./_config.dev.yml', 'assets_base_url: "http://localhost:' + runtime.ports.assets + '/"', 'utf-8')
 }
 
-shell.mkdir('-p', runtime.assetsBuildDir)
-rimraf.sync(runtime.assetsBuildDir + '/' + '!(images|favicon.ico)')
-debug(runtime)
-
 function getEntries () {
   var sources = {}
   runtime.entries.forEach(function (entry) {
@@ -56,7 +57,7 @@ function getEntries () {
   return sources
 }
 
-var fullconfig = {
+var cfg = {
   webpack: {
     entry: getEntries(),
     output: {
@@ -66,18 +67,6 @@ var fullconfig = {
       cssFilename: '[name].css'
     },
     'devtool': 'eval-cheap-source-map',
-    'devServer': {
-      'contentBase': runtime.projectDir,
-      'hostname': 'localhost',
-      'debug': true,
-      'colors': true,
-      'hot': true,
-      'https': false,
-      'inline': true,
-      'port': runtime.ports.assets,
-      'clientLogLevel': 'info',
-      'publicPath': runtime.publicPath
-    },
     module: {
       loaders: [
         {
@@ -93,12 +82,21 @@ var fullconfig = {
           test: /\.(png|gif|jpe?g)$/,
           loader: 'url-loader?limit=8096',
           exclude: /(node_modules|bower_components|bower|vendor)/
+        },
+        {
+          // https://github.com/webpack/webpack/issues/512
+          test: /[\\/](bower_components|bower)[\\/]modernizr[\\/]modernizr\.js$/,
+          loader: 'imports?this=>window!exports?window.Modernizr'
         }
       ]
     },
     plugins: [
       new ExtractTextPlugin(runtime.assetsBuildDir + '/[name].css', {
         allChunks: true
+      }),
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery'
       })
     ],
     resolveLoader: {
@@ -119,11 +117,43 @@ var fullconfig = {
       },
       sourceMap: false
     }
-  },
-  browsersync: {
-    'port': runtime.ports.content,
-    'proxy': 'http://localhost:' + runtime.ports.assets,
-    'serveStatic': [ runtime.contentBuildDir ],
+  }
+}
+
+if (!/postinstall\.js$/.test(process.argv[1])) {
+  shell.mkdir('-p', runtime.assetsBuildDir)
+  // rimraf.sync(runtime.assetsBuildDir + '/' + '!(images|favicon.ico)')
+  debug(runtime)
+
+  var bundler = webpack(cfg.webpack)
+
+  cfg.browsersync = {
+    server: {
+      'port': runtime.ports.content,
+      baseDir: runtime.contentBuildDir,
+
+      middleware: [
+        webpackDevMiddleware(bundler, {
+          publicPath: runtime.publicPath,
+          // 'devServer': {
+          //   'contentBase': runtime.projectDir,
+          //   'hostname': 'localhost',
+          //   'debug': true,
+          //   'colors': true,
+          'hot': true,
+          //   'https': false,
+          'inline': true,
+          //   'port': runtime.ports.assets,
+          //   'clientLogLevel': 'info',
+          //   'publicPath': runtime.publicPath
+          // },
+          stats: { colors: true }
+        }),
+
+        // bundler should be the same as above
+        webpackHotMiddleware(bundler)
+      ]
+    },
     'watchOptions': {
       'ignoreInitial': true,
       'ignored': [
@@ -131,17 +161,22 @@ var fullconfig = {
         'assets/build'
       ]
     },
-    'files': [
-      runtime.contentBuildDir
-    ],
-    'reloadDelay': 200
-  },
-  runtime: runtime
+    'reloadDelay': 200,
+
+    // no need to watch '*.js' here, webpack will take care of it for us,
+    // including full page reloads if HMR won't work
+    files: [
+      '**.css',
+      '**.html'
+    ]
+  }
 }
 
-// console.log(config.module)
-var json = JSON.stringify(fullconfig, null, '  ')
-fs.writeFileSync('./fullthing.json', json, 'utf-8')
-debug(fullconfig)
+cfg.runtime = runtime
 
-module.exports = fullconfig
+// console.log(config.module)
+var json = JSON.stringify(cfg, null, '  ')
+fs.writeFileSync('./fullthing.json', json, 'utf-8')
+debug(cfg)
+
+module.exports = cfg
