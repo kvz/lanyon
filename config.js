@@ -4,6 +4,8 @@
 // https://github.com/HenrikJoreteg/hjs-webpack
 // http://webpack.github.io/docs/webpack-dev-middleware.html
 // http://stackoverflow.com/a/28989476/151666
+// https://github.com/webpack/webpack-dev-server/issues/97#issuecomment-70388180
+// https://webpack.github.io/docs/hot-module-replacement.html
 var _ = require('lodash')
 var debug = require('depurar')('lanyon')
 var fs = require('fs')
@@ -50,8 +52,10 @@ function getEntries () {
   runtime.entries.forEach(function (entry) {
     sources[entry] = [ path.join(runtime.assetsSourceDir, entry + '.js') ]
     if (runtime.lanyonEnv === 'development') {
-      // source[entry].push('webpack-dev-server/client?http://localhost:8080')
-      sources[entry].push('webpack/hot/only-dev-server')
+      // sources[entry].unshift('webpack-dev-server/client?http://localhost:' + runtime.ports.content)
+      // sources[entry].unshift('webpack/hot/only-dev-server')
+      sources[entry].unshift('webpack-hot-middleware/client')
+      // sources[entry].unshift('webpack/hot/dev-server')
     }
   })
 
@@ -100,6 +104,7 @@ var cfg = {
       new ExtractTextPlugin(runtime.assetsBuildDir + '/[name].css', {
         allChunks: true
       }),
+      new webpack.HotModuleReplacementPlugin(),
       new BowerWebpackPlugin(),
       new webpack.ProvidePlugin({
         $: 'jquery',
