@@ -10,7 +10,7 @@
     "fix": "eslint . --fix",
     "lint": "eslint .",
     "install": "node cli.js postinstall",
-    "test": "test.sh"
+    "test": "./test.sh"
   },
   "lanyon": {
     "entries": [
