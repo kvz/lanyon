@@ -1,1 +1,1 @@
-module.exports = require('.').browsersync
+module.exports = require('./index').browsersync

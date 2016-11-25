@@ -6,7 +6,7 @@ var debug = require('depurar')('lanyon')
 var os = require('os')
 var fs = require('fs')
 
-var runtime = require('.').runtime
+var runtime = require('./index').runtime
 var yes = chalk.green('✓ ')
 var no = chalk.red('✗ ')
 
