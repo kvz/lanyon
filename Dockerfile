@@ -1,4 +1,4 @@
-FROM ruby:2.1.10-alpine
+FROM ruby:2.3.3-alpine
 
 RUN mkdir -p /jekyll
 WORKDIR /jekyll

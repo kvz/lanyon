@@ -15,7 +15,7 @@ install:
 
 script:
   # OSX rvm build needs more than 10m no-output-travis-time
-  - travis_wait 50 npm run test
+  - travis_wait 30 npm run test
 
 before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
