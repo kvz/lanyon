@@ -2,24 +2,24 @@
 process.env.DEBUG = process.env.LANYON_DEBUG
 var spawn = require('child_process').spawn
 var fs = require('fs')
+var path = require('path')
 var shell = require('shelljs')
 var cfg = require('.')
 var runtime = cfg.runtime
 var nodemon = cfg.nodemon
 var debug = require('depurar')('lanyon')
-var rimraf = require('rimraf')
 
 var scripts = {
-  'build:assets': 'webpack',
+  'build:assets': 'webpack --config [lanyonDir]/webpack.config.js',
   'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[lanyonDir]/_config.dev.yml',
   'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[lanyonDir]/_config.dev.yml',
-  'build': 'parallelshell "[lanyon] build:content" "[lanyon] build:assets"',
+  'build': '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
   'console': 'docker run -i -t kevinvz/lanyon sh',
   'help': 'jekyll build --help',
   'postinstall': 'node [lanyonDir]/postinstall.js',
   'serve': 'browser-sync start --config [lanyonDir]/browsersync.config.js',
-  'start': '[lanyon] build:content:incremental && parallelshell "[lanyon] rebuild:content" "[lanyon] serve"',
-  'rebuild:content': 'nodemon --config [lanyonDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"'
+  'start': '[lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
+  'build:content:watch': 'nodemon --config [lanyonDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"'
 }
 
 var cmdName = process.argv[2]
@@ -29,19 +29,17 @@ if (!cmd) {
   console.error('"' + cmdName + '" is not a valid Lanyon command. Pick from: ' + Object.keys(scripts).join(', ') + '.')
 }
 
-function isDev () {
-  return runtime.lanyonEnv === 'development'
-}
-
 fs.writeFileSync(runtime.lanyonDir + '/nodemon.config.json', JSON.stringify(nodemon, null, '  '), 'utf-8')
-fs.writeFileSync(runtime.lanyonDir + 'fullthing.json', JSON.stringify(cfg, null, '  '), 'utf-8')
+fs.writeFileSync(runtime.lanyonDir + '/fullthing.json', JSON.stringify(cfg, null, '  '), 'utf-8')
 debug(cfg)
 
 if (cmdName.match(/^build/)) {
-  shell.mkdir('-p', runtime.assetsBuildDir)
-
-  if (!isDev()) {
-    rimraf.sync(runtime.assetsBuildDir + '/' + '!(images|favicon.ico)')
+  if (!shell.test('-d', runtime.assetsBuildDir)) {
+    shell.mkdir('-p', runtime.assetsBuildDir)
+  }
+  if (!shell.test('-d', runtime.cacheDir)) {
+    shell.mkdir('-p', runtime.cacheDir)
+    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.basename(runtime.cacheDir))
   }
 }
 
@@ -55,11 +53,11 @@ cmd = cmd.replace(/\[lanyon]/g, 'node ' + __filename)
 cmd = cmd.replace(/\[lanyonDir]/g, runtime.lanyonDir)
 cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
 cmd = cmd.replace(/\[projectDir]/g, runtime.projectDir)
-cmd = cmd.replace(/^browser-sync /, runtime.lanyonDir + '/node_modules/.bin/browser-sync ')
-cmd = cmd.replace(/^webpack /, runtime.lanyonDir + '/node_modules/.bin/webpack ')
-cmd = cmd.replace(/^nodemon /, runtime.lanyonDir + '/node_modules/.bin/nodemon ')
-cmd = cmd.replace(/^npm-run-all /, runtime.lanyonDir + '/node_modules/.bin/npm-run-all ')
-cmd = cmd.replace(/^jekyll /, runtime.lanyonDir + '/vendor/bin/jekyll ')
+cmd = cmd.replace(/^browser-sync(\s|$)/, runtime.lanyonDir + '/node_modules/.bin/browser-sync$1')
+cmd = cmd.replace(/^webpack(\s|$)/, runtime.lanyonDir + '/node_modules/.bin/webpack$1')
+cmd = cmd.replace(/^nodemon(\s|$)/, runtime.lanyonDir + '/node_modules/.bin/nodemon$1')
+cmd = cmd.replace(/^npm-run-all(\s|$)/, runtime.lanyonDir + '/node_modules/.bin/npm-run-all$1')
+cmd = cmd.replace(/^jekyll(\s|$)/, runtime.lanyonDir + '/vendor/bin/jekyll$1')
 
 console.log(cmd)
 var child = spawn('sh', ['-c', cmd], {

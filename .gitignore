@@ -47,3 +47,5 @@ Gemfile.lock
 _site/
 
 nodemon.config.json
+
+records.json

@@ -29,6 +29,7 @@ runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 var lanyonPackage = require(runtime.lanyonPackageFile)
 
 runtime.projectDir = process.env.LANYON_PROJECT || process.cwd()
+runtime.cacheDir = path.join(runtime.projectDir, '.lanyon')
 runtime.projectPackageFile = path.join(runtime.projectDir, 'package.json')
 try {
   var projectPackage = require(runtime.projectPackageFile)
@@ -145,7 +146,7 @@ var cfg = {
       if (isDev()) {
         plugins.push(new webpack.HotModuleReplacementPlugin())
       } else {
-        plugins.push(new ExtractTextPlugin(runtime.assetsBuildDir + '/[name].css', {
+        plugins.push(new ExtractTextPlugin('[name].css', {
           allChunks: true
         }))
       }
