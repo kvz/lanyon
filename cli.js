@@ -65,7 +65,7 @@ var child = spawn('sh', ['-c', cmd], {
   'cwd': __dirname
 })
 
-child.on('exit', (code) => {
+child.on('exit', function (code) {
   if (code !== 0) {
     console.error(`Child exited with code ${code}`)
     process.exit(1)
