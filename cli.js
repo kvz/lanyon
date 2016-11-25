@@ -67,8 +67,8 @@ var child = spawn('sh', ['-c', cmd], {
 
 child.on('exit', function (code) {
   if (code !== 0) {
-    console.error(`Child exited with code ${code}`)
+    console.error('Child exited with code ' + code)
     process.exit(1)
   }
-  console.log(`Done. `)
+  console.log('Done. ')
 })
