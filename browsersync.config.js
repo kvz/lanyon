@@ -1,1 +1,1 @@
-module.exports = require('./config').browsersync
+module.exports = require('.').browsersync

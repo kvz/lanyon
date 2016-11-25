@@ -3,20 +3,13 @@
   "version": "0.0.1",
   "description": "dr. Jekyll has turned into mr. Hyde. Lanyon to the rescue!",
   "main": "index.js",
+  "bin": {
+    "lanyon": "cli.js"
+  },
   "scripts": {
-    "build:assets": "webpack",
-    "build:content:incremental": "env ARGS=--incremental npm run build:content",
-    "build:content": "./vendor/bin/jekyll build ${ARGS} --source ${LANYON_PROJECT:-../..} --destination ${LANYON_PROJECT:-../..}/_site --config ${LANYON_PROJECT:-../..}/_config.yml,_config.dev.yml",
-    "build": "npm-run-all build:content build:assets",
-    "console": "docker run -i -t kevinvz/lanyon sh",
-    "help": "./vendor/bin/jekyll build --help",
-    "ownfix": "eslint . --fix",
-    "ownlint": "eslint .",
-    "postinstall": "node ./postinstall.js",
-    "serve": "browser-sync start --config browsersync.config.js",
-    "start": "npm-run-all build:content:incremental --parallel watch:content serve",
-    "test": "./test.sh",
-    "watch:content": "nodemon --on-change-only --verbose --watch ${LANYON_PROJECT:-../..} --ignore assets --ignore vendor --ignore node_modules --ignore _site --ext md,html,yml,json,sh --exec 'npm run build:content:incremental'"
+    "fix": "eslint . --fix",
+    "lint": "eslint .",
+    "test": "test.sh"
   },
   "lanyon": {
     "entries": [
@@ -114,6 +107,7 @@
     "node-sass": "3.13.0",
     "nodemon": "1.11.0",
     "npm-run-all": "3.1.1",
+    "parallelshell": "^2.0.0",
     "postcss-loader": "1.1.1",
     "react": "15.4.1",
     "react-dom": "15.4.1",
