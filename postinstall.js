@@ -137,11 +137,6 @@ if (satisfied('docker')) {
     ' ruby'
   ].join('')
 
- //  groupadd -f -g $GROUP_ID $DOCKER_GROUP '&&' \
- // useradd -u $USER_ID -g $DOCKER_GROUP $DOCKER_USER '&&' \
- // chown $DOCKER_USER:$DOCKER_GROUP $WORK_DIR '&&' \
- // sudo -u $DOCKER_USER HOME=$HOME_DIR $COMMAND
-
   jekyllExe = [
     'docker run',
     ' --rm',
@@ -162,7 +157,7 @@ if (satisfied('docker')) {
   } else {
     var rubyCfg = runtime.prerequisites.ruby
     // rbenv does not offer installing of rubies by default, it will also require the install plugin:
-    if (satisfied('rbenv') && shell.exec('rbenv install --help', { 'silent': true }).code === 0) {
+    if (satisfied('rbenv') && shell.exec('rbenv install --help', { 'silent': false }).code === 0) {
       fatalExe('bash -c "rbenv install --skip-existing \'' + rubyCfg.preferred + '\'"')
       rubyExe = 'bash -c "eval $(rbenv init -) && rbenv shell \'' + rubyCfg.preferred + '\' &&'
       rubyExeSuffix = '"'
