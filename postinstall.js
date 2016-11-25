@@ -186,7 +186,7 @@ if (satisfied('docker')) {
 
   process.stdout.write('==> Configuring: Bundler ... ')
   if (os.platform() === 'darwin' && shell.exec('brew -v', { 'silent': true }).code === 0) {
-    fatalExe(bundlerExe + ' config build.nokogiri --use-system-libraries --with-xml2-include=$(brew --prefix libxml2)/include/libxml2' + rubyExeSuffix)
+    fatalExe('brew install libxml2; ' + bundlerExe + ' config build.nokogiri --use-system-libraries --with-xml2-include=$(brew --prefix libxml2)/include/libxml2' + rubyExeSuffix)
   } else {
     fatalExe(bundlerExe + ' config build.nokogiri --use-system-libraries' + rubyExeSuffix)
   }
