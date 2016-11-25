@@ -182,6 +182,7 @@ if (satisfied('docker')) {
   if (!satisfied('bundler', bundlerExe + ' -v' + rubyExeSuffix)) {
     fatalExe(rubyExe + ' ' + gemExe + ' install bundler -n vendor/bin/ -v \'' + runtime.prerequisites.bundler.preferred + '\'' + rubyExeSuffix)
     bundlerExe = 'vendor/bin/bundler'
+    rubyExeSuffix = ''
   }
 
   process.stdout.write('==> Configuring: Bundler ... ')
