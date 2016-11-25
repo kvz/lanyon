@@ -51,7 +51,7 @@ function satisfied (app, cmd, checkOn) {
   }
 
   var appVersionFull = shell.exec(cmd, { 'silent': false }).stdout.trim()
-  var parts = appVersionFull.split(/[,p\s]+/)
+  var parts = appVersionFull.split(/[,p\s-]+/)
   var appVersion = parts[1]
 
   if (app === 'node') {
