@@ -16,6 +16,7 @@ install:
 before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install rbenv; fi
+  - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew link rbenv; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "system" ]; then brew update; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "system" ]; then brew install libxml2; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ] && [ "${TRAVIS_OS_NAME}" == "linux" ]; then curl -sSL https://raw.github.com/fesplugas/rbenv-installer/22cc96aa45d06faca5958b1aa1688596198407a3/bin/rbenv-installer | bash; fi
