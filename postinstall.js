@@ -129,10 +129,10 @@ if (satisfied('docker')) {
   rubyExe = [
     'docker run',
     ' --rm',
-    ' --workdir /lanyon',
+    ' --workdir ' + runtime.lanyonDir,
     ' --user $(id -u)',
-    ' --volume ' + runtime.lanyonDir + ':' + '/lanyon',
-    ' --volume ' + path.resolve(runtime.projectDir) + ':' + path.resolve(runtime.projectDir),
+    ' --volume ' + runtime.lanyonDir + ':' + runtime.lanyonDir,
+    ' --volume ' + runtime.projectDir + ':' + runtime.projectDir,
     ' kevinvz/lanyon:' + ver + '',
     ' ruby'
   ].join('')
@@ -145,10 +145,10 @@ if (satisfied('docker')) {
   jekyllExe = [
     'docker run',
     ' --rm',
-    ' --workdir /lanyon',
+    ' --workdir ' + runtime.lanyonDir,
     ' --user $(id -u)',
-    ' --volume ' + runtime.lanyonDir + ':' + '/lanyon',
-    ' --volume ' + path.resolve(runtime.projectDir) + ':' + path.resolve(runtime.projectDir),
+    ' --volume ' + runtime.lanyonDir + ':' + runtime.lanyonDir,
+    ' --volume ' + runtime.projectDir + ':' + runtime.projectDir,
     ' kevinvz/lanyon:' + ver + '',
     ' bundler exec jekyll'
   ].join('')

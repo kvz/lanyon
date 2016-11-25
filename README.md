@@ -76,11 +76,3 @@ Or run an old node, straight from the main repo. Lanyon (still) supports 0.12.
 ```bash
 sudo apt-get install nodejs-legacy npm
 ```
-
-## Dev
-
-If you used `npm link` for quick dev iterations, Lanyon won't be able to find your project's root by upwards traversing directories, so run it like so:
-
-```bash
-LANYON_PROJECT=$(pwd) npm explore lanyon -- npm run build
-```

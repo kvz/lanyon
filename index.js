@@ -12,6 +12,8 @@
 var _ = require('lodash')
 var debug = require('depurar')('lanyon')
 var path = require('path')
+var fs = require('fs')
+var shell = require('shelljs')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var webpack = require('webpack')
 var webpackDevMiddleware = require('webpack-dev-middleware')
@@ -24,11 +26,14 @@ runtime.lanyonDir = __dirname
 runtime.binDir = path.join(runtime.lanyonDir, 'vendor', 'bin')
 runtime.recordsPath = path.join(runtime.lanyonDir, 'records.json')
 runtime.lanyonEnv = process.env.LANYON_ENV || 'development'
-runtime.lanyonDebugStr = process.env.LANYON_DEBUG || ''
 runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 var lanyonPackage = require(runtime.lanyonPackageFile)
 
 runtime.projectDir = process.env.LANYON_PROJECT || process.cwd()
+// This is needed for docker, otherwise the cwd of /tmp/lanyon-1480075903N gets resolved to /private/tmp/lanyon-1480075903N later on
+// and then the volumes can't be mapped. Readlink won't work on nested symlinks
+runtime.projectDir = shell.exec('cd "' + runtime.projectDir + '" && echo $(pwd)').stdout.trim()
+
 runtime.cacheDir = path.join(runtime.projectDir, '.lanyon')
 runtime.projectPackageFile = path.join(runtime.projectDir, 'package.json')
 try {

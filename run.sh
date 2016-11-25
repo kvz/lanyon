@@ -3,7 +3,7 @@ set -eu
 # env DEBUG=lanyon:*,tlc:* LANYON_ONLY="system" LANYON_PROJECT=$HOME/code/content npm run watch:assets
 
 killall node ruby jekyll || true
-env LANYON_DEBUG=lanyon,tlc:* LANYON_ONLY="system" LANYON_PROJECT=$HOME/code/content node cli.js start
+env DEBUG=lanyon,tlc:* LANYON_ONLY="system" LANYON_PROJECT=$HOME/code/content node cli.js start
 
 # env DEBUG=lanyon,tlc:* LANYON_ONLY="system" LANYON_PROJECT=$HOME/code/content npm run serve
 # env DEBUG=lanyon,tlc:* LANYON_ONLY="system" LANYON_PROJECT=$HOME/code/content npm run start

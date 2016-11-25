@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-process.env.DEBUG = process.env.LANYON_DEBUG
 var spawn = require('child_process').spawn
 var fs = require('fs')
 var path = require('path')
@@ -44,7 +43,6 @@ if (cmdName.match(/^build/)) {
 }
 
 var env = process.env
-env.DEBUG = runtime.lanyonDebugStr
 env.NODE_ENV = runtime.lanyonEnv
 env.JEKYLL_ENV = runtime.lanyonEnv
 env.LANYON_PROJECT = runtime.projectDir // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set

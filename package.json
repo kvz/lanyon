@@ -9,6 +9,7 @@
   "scripts": {
     "fix": "eslint . --fix",
     "lint": "eslint .",
+    "install": "node cli.js postinstall",
     "test": "test.sh"
   },
   "lanyon": {
