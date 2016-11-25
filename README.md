@@ -11,6 +11,8 @@ But there's a problem. Ruby isn't the fasted kid on the block, and its asset bui
 
 When these problems are resolved, Lanyon hopes to deteriorate and die, just as in Robert Louis Stevenson's novella. Until that time, we aim to work around "Ruby's" ever-broken file-watching and asset-building by leveraging the Node.js ecosystem for that. 
 
+![screen shot 2016-11-25 at 19 52 51](https://cloud.githubusercontent.com/assets/26752/20633602/eca2abe0-b348-11e6-8e77-285f8de73f3c.png)
+
 ## Features
 
 Besides trying to install Ruby, bundler, and the appropriate gems locally, Lanyon offers 
