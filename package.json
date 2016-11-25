@@ -10,6 +10,10 @@
     "fix": "eslint . --fix",
     "lint": "eslint .",
     "install": "node cli.js postinstall",
+    "release:major": "env SEMANTIC=major npm run release",
+    "release:minor": "env SEMANTIC=minor npm run release",
+    "release:patch": "env SEMANTIC=patch npm run release",
+    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && git push && git push --tags && npm publish",
     "test": "./test.sh"
   },
   "lanyon": {
