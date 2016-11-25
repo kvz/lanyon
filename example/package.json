@@ -1,0 +1,22 @@
+{
+  "name": "lanyon-example",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kvz/lanyon.git"
+  },
+  "lanyon": {
+    "entries": [
+      "app"
+    ]
+  },
+  "scripts": {
+    "build": "lanyon build",
+    "build:production": "LANYON_ENV=production lanyon build",
+    "serve": "lanyon serve",
+    "serve:production": "LANYON_ENV=production lanyon serve",
+    "start": "lanyon start"
+  },
+  "dependencies": {
+    "lanyon": "0.0.2"
+  }
+}
