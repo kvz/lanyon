@@ -100,6 +100,8 @@ var rubyExeSuffix = ''
 var gemExe = 'gem'
 var bundlerExe = 'bundler'
 var jekyllExe = 'jekyll'
+var envPrefix = ''
+var passEnv = {}
 
 shell.mkdir('-p', runtime.binDir)
 
@@ -181,9 +183,32 @@ if (satisfied('docker')) {
 
   bundlerExe = rubyExe + ' ' + bundlerExe
   if (!satisfied('bundler', bundlerExe + ' -v' + rubyExeSuffix)) {
-    fatalExe(rubyExe + ' ' + gemExe + ' install bundler --bindir vendor/bin/ -v \'' + runtime.prerequisites.bundler.preferred + '\'' + rubyExeSuffix)
+    var bunderInstaller = [
+      rubyExe + ' ' + gemExe + ' install',
+      ' --bindir vendor/bin',
+      ' --install-dir vendor/gem_home',
+      ' --no-rdoc',
+      ' --no-ri',
+      ' bundler',
+      ' -v \'' + runtime.prerequisites.bundler.preferred + '\'',
+      rubyExeSuffix
+    ].join('')
+    fatalExe(bunderInstaller)
     bundlerExe = 'vendor/bin/bundler'
     rubyExeSuffix = ''
+    passEnv.GEM_HOME = 'vendor/gem_home'
+    passEnv.GEM_PATH = 'vendor/gem_home'
+
+    if (Object.keys(passEnv).length > 0) {
+      var vals = []
+      for (var key in passEnv) {
+        var val = passEnv[key]
+        vals.push(key + '=' + val)
+      }
+      var envPrefix = 'env ' + vals.join(' ') + ' '
+    }
+
+    bundlerExe = envPrefix + bundlerExe
   }
 
   process.stdout.write('==> Configuring: Bundler ... ')
@@ -196,23 +221,26 @@ if (satisfied('docker')) {
   jekyllExe = bundlerExe + ' exec jekyll'
 
   process.stdout.write('==> Installing: Gems ... ')
-  fatalExe(bundlerExe + ' install --path \'vendor/bundler\'' + rubyExeSuffix + ' || ' + bundlerExe + ' update' + rubyExeSuffix)
+  fatalExe(bundlerExe + ' install --binstubs=\'vendor/bin\' --path \'vendor/bundler\'' + rubyExeSuffix + ' || ' + bundlerExe + ' update' + rubyExeSuffix)
 }
 
-if (rubyExe.indexOf('vendor/bin/ruby') === -1) {
+if (rubyExe.indexOf('vendor/bin/ruby') !== 0) {
   process.stdout.write('==> Installing: ruby shim ... ')
-  fs.writeFileSync(path.join(runtime.binDir, 'ruby'), rubyExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
+  var rubyShim = envPrefix + rubyExe.trim() + ' $*' + rubyExeSuffix + '\n'
+  fs.writeFileSync(path.join(runtime.binDir, 'ruby'), rubyShim, { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
 
-if (bundlerExe.indexOf('vendor/bin/bundler') === -1) {
+if (bundlerExe.indexOf('vendor/bin/bundler') !== 0) {
   process.stdout.write('==> Installing: bundler shim ... ')
-  fs.writeFileSync(path.join(runtime.binDir, 'bundler'), bundlerExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
+  var bundlerShim = bundlerExe.trim() + ' $*' + rubyExeSuffix + '\n'
+  fs.writeFileSync(path.join(runtime.binDir, 'bundler'), bundlerShim, { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
 
-if (jekyllExe.indexOf('vendor/bin/jekyll') === -1) {
+if (jekyllExe.indexOf('vendor/bin/jekyll') !== 0) {
   process.stdout.write('==> Installing: jekyll shim ... ')
-  fs.writeFileSync(path.join(runtime.binDir, 'jekyll'), jekyllExe.trim() + ' $*' + rubyExeSuffix + '\n', { 'encoding': 'utf-8', 'mode': '755' })
+  var jekyllShim = jekyllExe.trim() + ' $*' + rubyExeSuffix + '\n'
+  fs.writeFileSync(path.join(runtime.binDir, 'jekyll'), jekyllShim, { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }

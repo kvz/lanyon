@@ -1,6 +1,6 @@
 {
   "name": "lanyon",
-  "version": "0.0.7",
+  "version": "0.0.6",
   "description": "dr. Jekyll has turned into mr. Hyde. Lanyon to the rescue!",
   "main": "index.js",
   "bin": {
@@ -57,7 +57,6 @@
     "gems": {
       "github-pages": "104",
       "jekyll-crosspost-to-medium": "0.1.14",
-      "coffee-script-source": "1.10.0",
       "stringex": "2.6.0"
     }
   },
