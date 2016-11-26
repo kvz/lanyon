@@ -1,30 +1,54 @@
 [![Build Status](https://travis-ci.org/kvz/lanyon.svg?branch=master)](https://travis-ci.org/kvz/lanyon)
 
-In my opinion, Jekyll is the best static site generator, the ecosystem is vast and mature, things that are straightforward in Jekyll require odd workarounds in Hexo or Hugo. GitHub support isn't the worst to have either, and we can trust what we invest in Jekyll today, will be relevant for the next two years. The other generators beat Jekyll handsdown however, when it comes to file watching, asset building, speed, browser integration, ease of install. Lanyon aims to compensate for all of Jekyll's shortcomings by:
+Lanyon is a static site generator. It is a wrapper around Jekyll, Webpack, BrowserSync, Nodemon, in an attempt to give you the best of all worlds :earth_asia: :earth_americas: :earth_africa: (Instant asset building & refreshing, fast & reliable file watching). In addition, it has many tricks up its sleeves to get a working Ruby environment on your system, so that getting started with Lanyon should be as simple as `npm install lanyon`.
 
-- Using browsersync with Webpack middleware featuring HMR, for instant (page-reload-free) assets refreshing. This also gives us up to date SASS
-- Take a sledge hammer :hammer: approach at getting a suitable Ruby to work on your system, traversing system, docker, rbenv, rvm, brew, taking the first thing that can get us a working Ruby 2 install, installing all other dependencies locally
-- Using Nodemon for md/html file-watching
+## State
 
-Lanyon is geared towards devleoper convenience and as a bonus offers/willoffer:
+Lanyon is currently pre-alpha. We're still doing many changes and as per SemVer are allowing ourselves to make breaking ones in `<1`. We do not recommend using it for anything serious yet.
+
+## Background
+
+Jekyll is great for documentation and static websites sites, the ecosystem is vast and mature, things that are straightforward in Jekyll require odd workarounds in Hexo or Hugo. GitHub backing isn't the worst to have either, and we can assume that what we invest in Jekyll today, will still be relevant for a few more years. 
+
+Admittedly the other generators are very appealing and humiliate Jekyll when it comes to file watching, asset building, speed, browser integration, ease of install. Here is a highly opinionated overview:
+
+
+| Quality                                                       |        Hugo        |        Hexo        |       Jekyll       |                  Lanyon                   |
+|:--------------------------------------------------------------|:------------------:|:------------------:|:------------------:|:-----------------------------------------:|
+| Good for many documents                                       | :white_check_mark: |                    | :white_check_mark: |            :white_check_mark:             |
+| Great Templating                                              |                    |                    | :white_check_mark: |            :white_check_mark:             |
+| Vast & mature ecosystem                                       |                    |                    | :white_check_mark: | :white_check_mark: (the Jekyll component) |
+| Easy to get help                                              | :white_check_mark: |                    | :white_check_mark: | :white_check_mark: (the Jekyll component) |
+| Backed by GitHub                                              |                    |                    | :white_check_mark: | :white_check_mark: (the Jekyll component) |
+| Easy to install                                               | :white_check_mark: | :white_check_mark: |                    |            :white_check_mark:             |
+| Swift and Robust filewatching and content reloading           |                    |                    |                    |            :white_check_mark:             |
+| Hot module reloading / Immediate in-browser asset refreshment |                    |                    |                    |            :white_check_mark:             |
+
+So what we set out to do with Lanyon, is get the best of all worlds. We're doing so by:
+
+- Using browsersync with Webpack middleware featuring Hot module reloading
+- Taking a sledge hammer :hammer: approach at getting a suitable Ruby to work on your system, traversing, docker, rbenv, rvm, brew, taking the first thing that can get us a working Ruby 2 install, installing all other dependencies locally
+- Using Nodemon for md/html file-watching, kicking incremental Jekyll builds
+
+Lanyon is geared towards developer convenience and as a bonus offers:
 
 - Deploys to GitHub Pages (from Travis or your workstation, we are not compatible with as-is `gh-pages` branch-filling and have no desire to support that)
 - Markdown linting
 - Spell checking
 
-Lanyon is/willbe used by [Transloadit](https://transloadit.com) for static sites, and is geared towards their use-case. Trying to get so many moving parts to behave comes with challenges and a ton of configuration options. This project won't support all the things that its underlying components support, and prefers convention over configuration.
+Lanyon is used by [Transloadit](https://transloadit.com) for static sites, and is geared towards their use-case. Trying to get so many moving parts to behave comes with challenges and a ton of configuration options. This project won't support all the things that its underlying components support, and prefers convention over configuration.
 
-We'll focus on:
+We'll be assuming:
 
-- SASS
-- ES6
+- Sass
+- ES6 (and maybe React)
 - Assets in `./assets/`, with transpiled assets in `./assets/build`
-- Assuming `app.js` is the primary entry point
-- Developers who already have a working Node.js setup and are comfortable with that, and don't mind a `package.json` in their project
+- `app.js` is the primary entry point
+- Our users already have a working Node.js setup and don't mind a `package.json` in their project
 
 If you're thinking about submitting PRs for other features/flexibility, get in touch first please as we might not be on board.
 
-If you however, are onboard with what we're setting out to do, here's how you get started with Lanyon:
+If however, you are onboard with what we're setting out to do, here's how you get started with Lanyon:
 
 ## Install
 
@@ -38,6 +62,11 @@ The recommended way to use Lanyon is to add it to your project's npm run scripts
 
 ```javascript
 ...
+  "lanyon": {
+    "entries": [
+      "app"
+    ]
+  },
   "scripts": {
     "build": "lanyon build",
     "build:production": "LANYON_ENV=production lanyon build",
@@ -48,13 +77,11 @@ The recommended way to use Lanyon is to add it to your project's npm run scripts
 ...
 ```
 
-Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the `example` folder in the Lanyon repository.
+Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository.
 
 ## About Ruby
 
-It's definitely a paintpoint, so far 10/10 devs that we've tried to get Jekyll working locally had _some_ problem with their Ruby install and its dependencies. Lanyon tries its best at resolving this. We're testing for many different Operating System versions, as well as versions of Node, and Ruby version managers, to see if we can still automatically get Ruby to work on them:
-
-![screen shot 2016-11-25 at 19 52 51](https://cloud.githubusercontent.com/assets/26752/20633602/eca2abe0-b348-11e6-8e77-285f8de73f3c.png)
+It's definitely a paint-point making us jealous of Hugo (and even Hexo). So far 10/10 devs that we asked to make Jekyll working locally had _some_ problem with their Ruby install and its dependencies. The number of nokogiri or permission errors, version conflicts, etc, we've had to deal with, are just, sad. Lanyon tries its best at resolving this. We're testing for many different Operating Systems and versions, as well as different versions of Node, and Ruby version managers, to see if we can still automatically get Ruby to work on them:
 
 ![screen shot 2016-11-25 at 21 17 39](https://cloud.githubusercontent.com/assets/26752/20634771/9e163fb2-b354-11e6-914c-ac8e54ab68e1.png)
 
@@ -67,6 +94,8 @@ Lanyon tries to utilize one of following components to acquire a working Ruby 2+
 1. [`rbenv`](https://github.com/rbenv/rbenv) (with the [ruby-build](https://github.com/rbenv/ruby-build) plugin)
 1. [`rvm`](https://rvm.io/)
 
+As soon as we have a working Ruby install, we install Bundler & gems locally in your project directory, and Lanyon can start building.
+
 You can disable any of these via e.g. `LANYON_SKIP="rbenv docker"`.
 
 To force a particular type, you can also use `LANYON_ONLY=docker`. This is how we isolate methods of installment on Travis for testing as well.
@@ -78,20 +107,22 @@ To force a particular type, you can also use `LANYON_ONLY=docker`. This is how w
 
 ### macOS
 
-Lanyon tries its best to leave your current Ruby setup alone and do as much local as possible,
-but that's hard, and there always is a risk of breaking ruby installs with automation.
+Lanyon tries its best to contain the work it does and leave your current Ruby setup alone.
+The best way to do this today is with containers, and if your system
+supports `docker`, that's what Lanyon will use if your system doesn't natively support 
+the required Ruby versions.
 
-The recommended way therefore to run Lanyon is have a recent version of Docker first:
+Since this is a very low-risk approach, it's the recommended way to run Lanyon, and
+we therefore also recommend to install a recent version of Docker first:
 
-On Mac:
-
-Uninstall old Docker residu:
+In case you had previous Docker, experiments please uninstall those:
 
 ```bash
 brew uninstall --force docker-machine boot2docker docker
 ```
 
-Follow **Docker for Mac** instructions on <https://docs.docker.com/docker-for-mac/> and verify it worked:
+Then, follow **Docker for Mac** instructions on <https://docs.docker.com/docker-for-mac/> 
+(it's just installing a `.dmg`) and verify it worked:
 
 ```bash
 docker --version && docker ps
@@ -99,15 +130,26 @@ docker --version && docker ps
 
 ### Ubuntu Trusty
 
-To install the Node.js dependency on Ubuntu Trusty, either use a new release from nodesource:
+Lanyon wants to work everywhere where there's Node, but on older Ubuntu versions, that can 
+still be a bit of a hassle. Here are two different ways of installing Node.js on Ubuntu Trusty:
+
+
+#### Node 6
+
+To install the Node.js dependency on Ubuntu Trusty, either use a new release from NodeSource:
 
 ```bash
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 sudo apt-get install -y nodejs
+node -v
 ```
 
-Or run an old node, straight from the main repo. Lanyon (still) supports 0.12.
+#### Node 0.12
+
+**Or**, run an old Node.js version, straight from the main repo. Lanyon (still) supports 0.12,
+so you might prefer it over adding a 3rd party repository:
 
 ```bash
 sudo apt-get install nodejs-legacy npm
+node -v
 ```
