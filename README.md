@@ -13,18 +13,18 @@ Jekyll is great for documentation and static websites sites, the ecosystem is va
 Admittedly the other generators are very appealing and humiliate Jekyll when it comes to file watching, asset building, speed, browser integration, ease of install. Here is a highly opinionated overview:
 
 
-| Quality                                                             |        Hugo        |        Hexo        |       Jekyll       |                     Lanyon                     | Webpack/BrowserSync/Nodemon |
-|:--------------------------------------------------------------------|:------------------:|:------------------:|:------------------:|:----------------------------------------------:|:---------------------------:|
-| Easy to DRY up many documents                                       | :white_check_mark: |                    | :white_check_mark: |  :arrow_left: :arrow_left: :white_check_mark:  |                             |
-| Great templating engine                                             |                    |                    | :white_check_mark: |  :arrow_left: :arrow_left: :white_check_mark:  |                             |
-| Vast & mature ecosystem                                             |                    |                    | :white_check_mark: |  :arrow_left: :arrow_left: :white_check_mark:  |                             |
-| Easy to get help                                                    | :white_check_mark: |                    | :white_check_mark: |  :arrow_left: :arrow_left: :white_check_mark:  |                             |
-| Backed by GitHub                                                    |                    |                    | :white_check_mark: |  :arrow_left: :arrow_left: :white_check_mark:  |                             |
-| Easy to install                                                     | :white_check_mark: | :white_check_mark: |                    |               :white_check_mark:               |                             |
-| Webbrowser integration                                              |                    |                    |                    | :white_check_mark: :arrow_right: :arrow_right: |     :white_check_mark:      |
-| Fast and integrated asset building                                  |                    | :white_check_mark: |                    | :white_check_mark: :arrow_right: :arrow_right: |     :white_check_mark:      |
-| Swift and robust filewatching and content reloading                 |                    |                    |                    | :white_check_mark: :arrow_right: :arrow_right: |     :white_check_mark:      |
-| HMR (Hot module reloading) / immediate in-browser asset refreshment |                    |                    |                    | :white_check_mark: :arrow_right: :arrow_right: |     :white_check_mark:      |
+| Quality                                                             |        Hugo        |        Hexo        |       Jekyll       |                    Lanyon                    | Webpack/BrowserSync/Nodemon |
+|:--------------------------------------------------------------------|:------------------:|:------------------:|:------------------:|:--------------------------------------------:|:---------------------------:|
+| Easy to DRY up many documents                                       | :white_check_mark: |                    | :white_check_mark: |  :arrow_left::arrow_left::white_check_mark:  |                             |
+| Great templating engine                                             |                    |                    | :white_check_mark: |  :arrow_left::arrow_left::white_check_mark:  |                             |
+| Vast & mature ecosystem                                             |                    |                    | :white_check_mark: |  :arrow_left::arrow_left::white_check_mark:  |                             |
+| Easy to get help                                                    | :white_check_mark: |                    | :white_check_mark: |  :arrow_left::arrow_left::white_check_mark:  |                             |
+| Backed by GitHub                                                    |                    |                    | :white_check_mark: |  :arrow_left::arrow_left::white_check_mark:  |                             |
+| Easy to install                                                     | :white_check_mark: | :white_check_mark: |                    |              :white_check_mark:              |                             |
+| Webbrowser integration                                              |                    |                    |                    | :white_check_mark::arrow_right::arrow_right: |     :white_check_mark:      |
+| Fast and integrated asset building                                  |                    | :white_check_mark: |                    | :white_check_mark::arrow_right::arrow_right: |     :white_check_mark:      |
+| Swift and robust filewatching and content reloading                 |                    |                    |                    | :white_check_mark::arrow_right::arrow_right: |     :white_check_mark:      |
+| HMR (Hot module reloading) / immediate in-browser asset refreshment |                    |                    |                    | :white_check_mark::arrow_right::arrow_right: |     :white_check_mark:      |
 
 So what we set out to do with Lanyon, is get the best of all worlds. We're doing so by:
 
