@@ -122,6 +122,7 @@ if (satisfied('docker')) {
   var ver = require(runtime.lanyonPackageFile).version
 
   if (process.env.DOCKER_BUILD === '1') {
+    shell.rm('-f', 'Gemfile.lock')
     shell.exec('docker build -t kevinvz/lanyon:' + ver + ' .')
     shell.exec('docker push kevinvz/lanyon:' + ver + '')
   }
