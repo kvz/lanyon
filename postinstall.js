@@ -102,6 +102,7 @@ var bundlerExe = 'bundler'
 var jekyllExe = 'jekyll'
 var envPrefix = ''
 var passEnv = {}
+var rubyFrom = ''
 
 shell.mkdir('-p', runtime.binDir)
 
@@ -119,6 +120,7 @@ fs.writeFileSync(path.join(runtime.lanyonDir, 'Gemfile'), buf, 'utf-8')
 console.log(yes)
 
 if (satisfied('docker')) {
+  rubyFrom = 'docker'
   // ' --interactive',
   // ' --tty',
   var ver = require(runtime.lanyonPackageFile).version
@@ -152,20 +154,24 @@ if (satisfied('docker')) {
   ].join('')
 } else {
   if (satisfied('ruby', 'vendor/bin/ruby -v', 'ruby-shim')) {
+    rubyFrom = 'shim'
     rubyExe = 'vendor/bin/ruby'
     rubyVerify = rubyExe + ' -v' + rubyExeSuffix
   } else if (satisfied('ruby', undefined, 'system')) {
+    rubyFrom = 'system'
     gemExe = '$(which gem)'
     bundlerExe = '$(which bundler)'
   } else {
     var rubyCfg = runtime.prerequisites.ruby
     // rbenv does not offer installing of rubies by default, it will also require the install plugin:
     if (satisfied('rbenv') && shell.exec('rbenv install --help', { 'silent': false }).code === 0) {
+      rubyFrom = 'rbenv'
       fatalExe('bash -c "rbenv install --skip-existing \'' + rubyCfg.preferred + '\'"')
       rubyExe = 'bash -c "eval $(rbenv init -) && rbenv shell \'' + rubyCfg.preferred + '\' &&'
       rubyExeSuffix = '"'
       rubyVerify = rubyExe + 'ruby -v' + rubyExeSuffix
     } else if (satisfied('rvm')) {
+      rubyFrom = 'rvm'
       fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'"')
       rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
       rubyExeSuffix = '"'
@@ -183,32 +189,38 @@ if (satisfied('docker')) {
 
   bundlerExe = rubyExe + ' ' + bundlerExe
   if (!satisfied('bundler', bundlerExe + ' -v' + rubyExeSuffix)) {
-    var bunderInstaller = [
-      rubyExe + ' ' + gemExe + ' install',
-      ' --bindir vendor/bin',
-      ' --install-dir vendor/gem_home',
-      ' --no-rdoc',
-      ' --no-ri',
-      ' bundler',
-      ' -v \'' + runtime.prerequisites.bundler.preferred + '\'',
-      rubyExeSuffix
-    ].join('')
-    fatalExe(bunderInstaller)
+    var bunderInstaller = []
+
+    bunderInstaller.push(rubyExe + ' ' + gemExe + ' install')
+    if (rubyFrom === 'system') {
+      bunderInstaller.push(' --bindir vendor/bin')
+      bunderInstaller.push(' --install-dir vendor/gem_home')
+    }
+    bunderInstaller.push(' --no-rdoc')
+    bunderInstaller.push(' --no-ri')
+    bunderInstaller.push(' bundler')
+    bunderInstaller.push(' -v \'' + runtime.prerequisites.bundler.preferred + '\'')
+    bunderInstaller.push(rubyExeSuffix)
+
+    fatalExe(bunderInstaller.join(''))
     bundlerExe = 'vendor/bin/bundler'
     rubyExeSuffix = ''
-    passEnv.GEM_HOME = 'vendor/gem_home'
-    passEnv.GEM_PATH = 'vendor/gem_home'
 
-    if (Object.keys(passEnv).length > 0) {
-      var vals = []
-      for (var key in passEnv) {
-        var val = passEnv[key]
-        vals.push(key + '=' + val)
+    if (rubyFrom === 'system') {
+      passEnv.GEM_HOME = 'vendor/gem_home'
+      passEnv.GEM_PATH = 'vendor/gem_home'
+
+      if (Object.keys(passEnv).length > 0) {
+        var vals = []
+        for (var key in passEnv) {
+          var val = passEnv[key]
+          vals.push(key + '=' + val)
+        }
+        envPrefix = 'env ' + vals.join(' ') + ' '
       }
-      var envPrefix = 'env ' + vals.join(' ') + ' '
-    }
 
-    bundlerExe = envPrefix + bundlerExe
+      bundlerExe = envPrefix + bundlerExe
+    }
   }
 
   process.stdout.write('==> Configuring: Bundler ... ')
