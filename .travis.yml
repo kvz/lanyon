@@ -20,8 +20,10 @@ script:
 before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install ruby-build rbenv; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew link ruby-build rbenv; fi
+  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install ruby-build; fi
+  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew link ruby-build; fi
+  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install rbenv; fi
+  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew link rbenv; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then __rvm_unload; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then curl -sSL https://raw.github.com/fesplugas/rbenv-installer/22cc96aa45d06faca5958b1aa1688596198407a3/bin/rbenv-installer | bash; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export RBENV_ROOT="${HOME}/.rbenv"; fi
