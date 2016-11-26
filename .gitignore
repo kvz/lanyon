@@ -49,3 +49,6 @@ _site/
 nodemon.config.json
 
 records.json
+.lanyon
+
+Gemfile

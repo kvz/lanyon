@@ -1,8 +1,8 @@
 {
   "presets": [
-    "es2015-loose"
+    "es2015"
   ],
   "plugins": [
-    "react-hot-loader/webpack"
+    "react-hot-loader/babel"
   ]
 }

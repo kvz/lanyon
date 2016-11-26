@@ -56,6 +56,7 @@
     "gems": {
       "github-pages": "104",
       "jekyll-crosspost-to-medium": "0.1.14",
+      "coffee-script-source": "1.10.0",
       "stringex": "2.6.0"
     }
   },

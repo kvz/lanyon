@@ -180,7 +180,7 @@ if (satisfied('docker')) {
 
   bundlerExe = rubyExe + ' ' + bundlerExe
   if (!satisfied('bundler', bundlerExe + ' -v' + rubyExeSuffix)) {
-    fatalExe(rubyExe + ' ' + gemExe + ' install bundler -n vendor/bin/ -v \'' + runtime.prerequisites.bundler.preferred + '\'' + rubyExeSuffix)
+    fatalExe(rubyExe + ' ' + gemExe + ' install bundler --bindir vendor/bin/ -v \'' + runtime.prerequisites.bundler.preferred + '\'' + rubyExeSuffix)
     bundlerExe = 'vendor/bin/bundler'
     rubyExeSuffix = ''
   }
