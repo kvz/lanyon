@@ -54,3 +54,5 @@ records.json
 Gemfile
 
 example/.jekyll-metadata
+
+example/assets/build/

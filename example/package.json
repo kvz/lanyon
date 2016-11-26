@@ -17,6 +17,7 @@
     "start": "lanyon start"
   },
   "dependencies": {
+    "fakefile": "^0.0.8",
     "lanyon": "0.0.7"
   }
 }

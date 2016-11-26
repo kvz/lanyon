@@ -1201,24 +1201,9 @@ chalk@1.1.3, chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
     strip-ansi "^3.0.0"
     supports-color "^2.0.0"
 
-chokidar@1.6.0:
+chokidar@1.6.0, chokidar@^1.0.0, chokidar@^1.4.3:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.6.0.tgz#90c32ad4802901d7713de532dc284e96a63ad058"
-  dependencies:
-    anymatch "^1.3.0"
-    async-each "^1.0.0"
-    glob-parent "^2.0.0"
-    inherits "^2.0.1"
-    is-binary-path "^1.0.0"
-    is-glob "^2.0.0"
-    path-is-absolute "^1.0.0"
-    readdirp "^2.0.0"
-  optionalDependencies:
-    fsevents "^1.0.0"
-
-chokidar@^1.0.0, chokidar@^1.4.3:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.6.1.tgz#2f4447ab5e96e50fb3d789fd90d4c72e0e4c70c2"
   dependencies:
     anymatch "^1.3.0"
     async-each "^1.0.0"
@@ -2128,7 +2113,7 @@ extsprintf@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.0.2.tgz#e1080e0658e300b06294990cc70e1502235fd550"
 
-fakefile@0.0.8:
+fakefile@0.0.8, fakefile@^0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/fakefile/-/fakefile-0.0.8.tgz#96836c4220d093c6aa60e5faee0c2465e7f9ce8b"
   dependencies:
@@ -2579,16 +2564,9 @@ http-proxy-middleware@~0.17.1:
     lodash "^4.16.2"
     micromatch "^2.3.11"
 
-http-proxy@1.15.1:
+http-proxy@1.15.1, http-proxy@^1.15.1, http-proxy@^1.8.1:
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/http-proxy/-/http-proxy-1.15.1.tgz#91a6088172e79bc0e821d5eb04ce702f32446393"
-  dependencies:
-    eventemitter3 "1.x.x"
-    requires-port "1.x.x"
-
-http-proxy@^1.15.1, http-proxy@^1.8.1:
-  version "1.15.2"
-  resolved "https://registry.yarnpkg.com/http-proxy/-/http-proxy-1.15.2.tgz#642fdcaffe52d3448d2bda3b0079e9409064da31"
   dependencies:
     eventemitter3 "1.x.x"
     requires-port "1.x.x"
@@ -3007,9 +2985,9 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
-lanyon@0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/lanyon/-/lanyon-0.0.6.tgz#d9e3efe4f8c495386b59deb3225b293770c1a075"
+lanyon@0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/lanyon/-/lanyon-0.0.7.tgz#e4f1e9b072d0475df0e3ded9267b9af5500af14d"
   dependencies:
     autoprefixer "6.5.3"
     babel-core "6.18.2"

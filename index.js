@@ -214,7 +214,7 @@ cfg.browsersync = {
     }())
   },
   'watchOptions': {
-    'ignoreInitial': true,
+    // 'ignoreInitial': true,
     'ignored': [
       '.git',
       'assets/build'
@@ -225,8 +225,10 @@ cfg.browsersync = {
   // no need to watch '*.js' here, webpack will take care of it for us,
   // including full page reloads if HMR won't work
   files: [
-    '**.css',
-    '**.html'
+    '**/*.css',
+    '**/*.html',
+    '*.css',
+    '*.html'
   ]
 }
 
