@@ -207,10 +207,11 @@ if (satisfied('docker')) {
     bunderInstaller.push(rubyExeSuffix)
 
     fatalExe(bunderInstaller.join(''))
-    bundlerExe = 'vendor/bin/bundler'
-    rubyExeSuffix = ''
+
+    // rubyExeSuffix = ''
 
     if (rubyFrom === 'system') {
+      bundlerExe = 'vendor/bin/bundler'
       passEnv.GEM_HOME = 'vendor/gem_home'
       passEnv.GEM_PATH = 'vendor/gem_home'
 
