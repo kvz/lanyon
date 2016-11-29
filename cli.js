@@ -40,6 +40,11 @@ if (cmdName.match(/^build/)) {
     shell.mkdir('-p', runtime.cacheDir)
     shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.basename(runtime.cacheDir))
   }
+
+  if (runtime.prebuild) {
+    console.log('--> Running prebuild: ' + runtime.prebuild)
+    shell.exec('cd ' + runtime.projectDir + ' && ' + runtime.prebuild)
+  }
 }
 
 var env = process.env
@@ -62,7 +67,7 @@ console.log(cmd)
 var child = spawn('sh', ['-c', cmd], {
   'stdio': 'inherit',
   'env': env,
-  'cwd': __dirname
+  'cwd': runtime.lanyonDir
 })
 
 child.on('exit', function (code) {

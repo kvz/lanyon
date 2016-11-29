@@ -242,7 +242,16 @@ cfg.nodemon = {
     'node_modules/*',
     '_site/*'
   ],
-  ext: 'md,html,yml,json,sh'
+  ext: [
+    'htm',
+    'html',
+    'jpg',
+    'json',
+    'md',
+    'png',
+    'sh',
+    'yml'
+  ].join(',')
 }
 
 cfg.runtime = runtime

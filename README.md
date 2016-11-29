@@ -1,6 +1,9 @@
 [![Build Status](https://travis-ci.org/kvz/lanyon.svg?branch=master)](https://travis-ci.org/kvz/lanyon)
 
-Lanyon is a static site generator. It is a wrapper around Jekyll, Webpack, BrowserSync, Nodemon, in an attempt to give you the best of all worlds :earth_asia: :earth_americas: :earth_africa: (Instant asset building & refreshing, fast & reliable file watching). In addition, it has many tricks up its sleeves to get a working Ruby environment on your system, so that getting started with Lanyon should be as simple as `npm install lanyon`.
+Lanyon is a static site generator. It is a wrapper around Jekyll, Webpack, BrowserSync, Nodemon, in an attempt to give you the best of all worlds :earth_asia: :earth_americas: :earth_africa: (Instant asset building & refreshing, fast & reliable file watching). 
+Spitting in the face of unix philosophy, it tries to do many things, such as spell checking, and setting up a working Ruby environment.
+
+This is all to get the highest level of convenience around building static websites. Getting started should be as simple as `npm install lanyon`.
 
 ## State
 
@@ -13,18 +16,18 @@ Jekyll is great for documentation and static websites sites, the ecosystem is va
 Admittedly the other generators are very appealing and humiliate Jekyll when it comes to file watching, asset building, speed, browser integration, ease of install. Here is a highly opinionated overview:
 
 
-| Quality                                                             |        Hugo        |        Hexo        |       Jekyll       |                    Lanyon                    | Webpack/BrowserSync/Nodemon |
-|:--------------------------------------------------------------------|:------------------:|:------------------:|:------------------:|:--------------------------------------------:|:---------------------------:|
-| Easy to maintain many documents                                     | :white_check_mark: |                    | :white_check_mark: |  :arrow_left::white_check_mark::arrow_left:  |                             |
-| Great templating engine                                             |                    |                    | :white_check_mark: |  :arrow_left::white_check_mark::arrow_left:  |                             |
-| Vast & mature ecosystem                                             |                    |                    | :white_check_mark: | :arrow_left::white_check_mark::arrow_right:  |     :white_check_mark:      |
-| Easy to get help                                                    | :white_check_mark: |                    | :white_check_mark: | :arrow_left::white_check_mark::arrow_right:  |     :white_check_mark:      |
-| Backed by GitHub                                                    |                    |                    | :white_check_mark: |  :arrow_left::white_check_mark::arrow_left:  |                             |
-| Easy to install                                                     | :white_check_mark: | :white_check_mark: |                    | :arrow_right::white_check_mark::arrow_right: |     :white_check_mark:      |
-| Browser integration for content reloads                             |                    |                    |                    | :arrow_right::white_check_mark::arrow_right: |     :white_check_mark:      |
-| Fast asset building                                                 |                    | :white_check_mark: |                    | :arrow_right::white_check_mark::arrow_right: |     :white_check_mark:      |
-| Fast and robust filewatching                                        |                    |                    |                    | :arrow_right::white_check_mark::arrow_right: |     :white_check_mark:      |
-| HMR (Hot module reloading) / immediate in-browser asset refreshment |                    |                    |                    | :arrow_right::white_check_mark::arrow_right: |     :white_check_mark:      |
+| Quality                                                             |        Hugo        |        Hexo        |             Jekyll              |       Lanyon       |  Webpack/BrowserSync/Nodemon   |
+|:--------------------------------------------------------------------|:------------------:|:------------------:|:-------------------------------:|:------------------:|:------------------------------:|
+| Easy to maintain many documents                                     | :white_check_mark: |                    | :white_check_mark::arrow_right: | :white_check_mark: |                                |
+| Great templating engine                                             |                    |                    | :white_check_mark::arrow_right: | :white_check_mark: |                                |
+| Vast & mature ecosystem                                             |                    |                    | :white_check_mark::arrow_right: | :white_check_mark: | :arrow_left::white_check_mark: |
+| Easy to get help                                                    | :white_check_mark: |                    | :white_check_mark::arrow_right: | :white_check_mark: | :arrow_left::white_check_mark: |
+| Backed by GitHub                                                    |                    |                    | :white_check_mark::arrow_right: | :white_check_mark: |                                |
+| Easy to install                                                     | :white_check_mark: | :white_check_mark: |                                 | :white_check_mark: | :arrow_left::white_check_mark: |
+| Browser integration for content reloads                             |                    |                    |                                 | :white_check_mark: | :arrow_left::white_check_mark: |
+| Fast asset building                                                 |                    | :white_check_mark: |                                 | :white_check_mark: | :arrow_left::white_check_mark: |
+| Fast and robust filewatching                                        |                    |                    |                                 | :white_check_mark: | :arrow_left::white_check_mark: |
+| HMR (Hot module reloading) / immediate in-browser asset refreshment |                    |                    |                                 | :white_check_mark: | :arrow_left::white_check_mark: |
 
 So what we set out to do with Lanyon, is get the best of all worlds. We're doing so by:
 
@@ -77,6 +80,22 @@ The recommended way to use Lanyon is to add it to your project's npm run scripts
     "start": "lanyon start"
   },
 ...
+```
+
+Have an `assets/app.js` in which you require both javascripts and stylesheets:
+
+```javascript
+require('js/main.js')
+require('sass/main.scss')
+```
+
+in your layout, include the build (same location works both for production artifact files, as well as magic Hot Module Reloading):
+
+```html
+<!-- head -->
+<link rel="stylesheet" href="{{site.baseurl}}/assets/build/app.css">
+<!-- footer -->
+<script src="{{ site.baseurl }}/assets/build/app.js"></script>
 ```
 
 Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository.
