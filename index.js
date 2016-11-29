@@ -193,7 +193,6 @@ cfg.browsersync = {
   server: {
     port: runtime.ports.content,
     baseDir: runtime.contentBuildDir,
-
     middleware: (function middlewares () {
       var middlewares = []
 
@@ -213,23 +212,18 @@ cfg.browsersync = {
       return middlewares
     }())
   },
-  'watchOptions': {
-    // 'ignoreInitial': true,
-    'ignored': [
+  watchOptions: {
+    ignoreInitial: true,
+    ignored: [
+      // no need to watch '*.js' here, webpack will take care of it for us,
+      // including full page reloads if HMR won't work
+      '*.js',
       '.git',
-      'assets/build'
+      'assets/build',
+      '.lanyon'
     ]
   },
-  'reloadDelay': 200,
-
-  // no need to watch '*.js' here, webpack will take care of it for us,
-  // including full page reloads if HMR won't work
-  files: [
-    '**/*.css',
-    '**/*.html',
-    '*.css',
-    '*.html'
-  ]
+  files: runtime.contentBuildDir
 }
 
 cfg.nodemon = {

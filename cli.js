@@ -66,9 +66,6 @@ cmd = cmd.replace(/(\s|^)npm-run-all(\s|$)/, '$1' + runtime.lanyonDir + '/node_m
 cmd = cmd.replace(/(\s|^)parallelshell(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/parallelshell$2')
 cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, '$1' + runtime.cacheDir + '/vendor/bin/jekyll$2')
 
-console.log('--> lanyonDir: ' + runtime.lanyonDir)
-console.log('--> projectDir: ' + runtime.projectDir)
-console.log('--> cacheDir: ' + runtime.cacheDir)
 console.log('--> Running cmd: ' + cmd)
 var child = spawn('sh', ['-c', cmd], {
   'stdio': 'inherit',
