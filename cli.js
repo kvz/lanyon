@@ -1,4 +1,26 @@
 #!/usr/bin/env node
+// Switch to a local lanyon install if available
+var localLanyonPackage
+try {
+  localLanyonPackage = require('./node_modules/lanyon/package.json')
+} catch (e) {
+  localLanyonPackage = {}
+} finally {
+  if (localLanyonPackage.version) {
+    console.log('--> Switching to local lanyon install v' + localLanyonPackage.version)
+    var args = process.argv
+    var cmd = args.shift()
+    for (var i in args) {
+      if (args[i] === __filename) {
+        args[i] = './node_modules/lanyon/cli.js'
+      }
+    }
+    var spawnSync = require('child_process').spawnSync
+    spawnSync(cmd, args, { stdio: 'inherit' })
+    process.exit(0)
+  }
+}
+
 var spawn = require('child_process').spawn
 var fs = require('fs')
 var path = require('path')

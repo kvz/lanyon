@@ -10,6 +10,7 @@
 
 # v0.0.9
 
+- [x] Switch to a local lanyon install if available
 - [x] Simplify/fix Browserify file watching
 - [x] Do docker connect via shim
 - [x] Store everything in `cacheDir` (projectDir/.lanyon) instead of in node_modules dir
