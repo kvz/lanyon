@@ -28,9 +28,6 @@ runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 var lanyonPackage = require(runtime.lanyonPackageFile)
 
 runtime.projectDir = process.env.LANYON_PROJECT || process.cwd()
-// This is needed for docker, otherwise the cwd of /tmp/lanyon-1480075903N gets resolved to /private/tmp/lanyon-1480075903N later on
-// and then the volumes can't be mapped. Readlink won't work on nested symlinks
-runtime.projectDir = shell.exec('cd "' + runtime.projectDir + '" && echo $(pwd)').stdout.trim()
 runtime.projectPackageFile = path.join(runtime.projectDir, 'package.json')
 runtime.cacheDir = path.join(runtime.projectDir, '.lanyon')
 runtime.binDir = path.join(runtime.cacheDir, 'vendor', 'bin')
@@ -96,6 +93,9 @@ var cfg = {
             loader: 'url?limit=10000&mimetype=application/octet-stream'
           }, {
             test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+            loader: 'file'
+          }, {
+            test: /\.cur(\?v=\d+\.\d+\.\d+)?$/,
             loader: 'file'
           }, {
             test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,

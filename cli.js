@@ -10,8 +10,8 @@ var debug = require('depurar')('lanyon')
 
 var scripts = {
   'build:assets': 'webpack --config [cacheDir]/webpack.config.js',
-  'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[cacheDir]/_config.dev.yml',
-  'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[cacheDir]/_config.dev.yml',
+  'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml',
+  'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml',
   'build': '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
   'console': 'docker run -i -t kevinvz/lanyon sh',
   'help': 'jekyll build --help',
@@ -28,9 +28,9 @@ if (!cmd) {
   console.error('"' + cmdName + '" is not a valid Lanyon command. Pick from: ' + Object.keys(scripts).join(', ') + '.')
 }
 
+fs.writeFileSync(runtime.cacheDir + '/jekyll.config.yml', '', 'utf-8') // <-- nothing yet but a good place to weak Jekyll in the future
 fs.writeFileSync(runtime.cacheDir + '/nodemon.config.json', JSON.stringify(nodemon, null, '  '), 'utf-8')
-fs.writeFileSync(runtime.cacheDir + '/fullthing.json', JSON.stringify(cfg, null, '  '), 'utf-8')
-debug(cfg)
+fs.writeFileSync(runtime.cacheDir + '/full-config-dump.json', JSON.stringify(cfg, null, '  '), 'utf-8')
 
 if (cmdName.match(/^build/)) {
   if (!shell.test('-d', runtime.assetsBuildDir)) {
@@ -56,14 +56,18 @@ cmd = cmd.replace(/\[lanyon]/g, 'node ' + __filename)
 cmd = cmd.replace(/\[lanyonDir]/g, runtime.lanyonDir)
 cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
 cmd = cmd.replace(/\[projectDir]/g, runtime.projectDir)
+cmd = cmd.replace(/\[cacheDir]/g, runtime.cacheDir)
 cmd = cmd.replace(/(\s|^)browser-sync(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/browser-sync$2')
 cmd = cmd.replace(/(\s|^)webpack(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/webpack$2')
 cmd = cmd.replace(/(\s|^)nodemon(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/nodemon$2')
 cmd = cmd.replace(/(\s|^)npm-run-all(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/npm-run-all$2')
 cmd = cmd.replace(/(\s|^)parallelshell(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/parallelshell$2')
-cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, '$1' + runtime.lanyonDir + '/vendor/bin/jekyll$2')
+cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, '$1' + runtime.cacheDir + '/vendor/bin/jekyll$2')
 
-console.log(cmd)
+console.log('--> lanyonDir: ' + runtime.lanyonDir)
+console.log('--> projectDir: ' + runtime.projectDir)
+console.log('--> cacheDir: ' + runtime.cacheDir)
+console.log('--> Running cmd: ' + cmd)
 var child = spawn('sh', ['-c', cmd], {
   'stdio': 'inherit',
   'env': env,

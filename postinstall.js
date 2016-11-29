@@ -2,7 +2,6 @@ var semver = require('semver')
 var chalk = require('chalk')
 var path = require('path')
 var shell = require('shelljs')
-var spawnSync = require('child_process').spawnSync
 var debug = require('depurar')('lanyon')
 var os = require('os')
 var fs = require('fs')
@@ -10,8 +9,6 @@ var fs = require('fs')
 var runtime = require('./index').runtime
 var yes = chalk.green('✓ ')
 var no = chalk.red('✗ ')
-
-debug({runtime: runtime})
 
 function fatalExe (cmd) {
   var opts = { 'silent': true }
@@ -40,7 +37,7 @@ function satisfied (app, cmd, checkOn) {
     tag = checkOn + '/'
   }
 
-  process.stdout.write('==> Checking: ' + tag + app + ' \'' + runtime.prerequisites[app].range + '\' ... ')
+  process.stdout.write('--> Checking: ' + tag + app + ' \'' + runtime.prerequisites[app].range + '\' ... ')
 
   if (optSkip.indexOf(checkOn) !== -1) {
     console.log(no + ' (disabled via LANYON_SKIP)')
@@ -101,8 +98,11 @@ var rubyExeSuffix = ''
 var rubyWriteShim = true
 var bundlerWriteShim = true
 var jekyllWriteShim = true
+var dashWriteShim = true
 var gemExe = 'gem'
 var bundlerExe = 'bundler'
+var dashExeSuffix = ''
+var dashExe = 'sh'
 var jekyllExe = 'jekyll'
 var envPrefix = ''
 var passEnv = {}
@@ -114,7 +114,7 @@ if (!satisfied('node')) {
   shell.exit(1)
 }
 
-process.stdout.write('==> Writing: Gemfile ... ')
+process.stdout.write('--> Writing: Gemfile ... ')
 var buf = 'source \'https://rubygems.org\'\n'
 for (var name in runtime.gems) {
   var version = runtime.gems[name]
@@ -135,23 +135,17 @@ if (satisfied('docker')) {
     shell.exec('docker push kevinvz/lanyon:' + ver + '')
   }
 
-  if (process.env.DOCKER_CONNECT === '1') {
-    spawnSync('sh', ['-c', [
-      'docker run',
-      ' -it',
-      ' --rm',
-      ' --workdir ' + runtime.cacheDir,
-      ' --user $(id -u)',
-      ' --volume ' + runtime.cacheDir + ':' + runtime.cacheDir,
-      ' --volume ' + runtime.projectDir + ':' + runtime.projectDir,
-      ' kevinvz/lanyon:' + ver + '',
-      ' sh'
-    ].join('')], {
-      'stdio': 'inherit',
-      'cwd': runtime.cacheDir
-    })
-    process.exit(0)
-  }
+  dashExe = [
+    'docker run',
+    ' -it',
+    ' --rm',
+    ' --workdir ' + runtime.cacheDir,
+    ' --user $(id -u)',
+    ' --volume ' + runtime.cacheDir + ':' + runtime.cacheDir,
+    ' --volume ' + runtime.projectDir + ':' + runtime.projectDir,
+    ' kevinvz/lanyon:' + ver + '',
+    ' sh'
+  ].join('')
 
   rubyExe = [
     'docker run',
@@ -247,7 +241,7 @@ if (satisfied('docker')) {
     }
   }
 
-  process.stdout.write('==> Configuring: Bundler ... ')
+  process.stdout.write('--> Configuring: Bundler ... ')
   if (os.platform() === 'darwin' && shell.exec('brew -v', { 'silent': true }).code === 0) {
     fatalExe('brew install libxml2; ' + bundlerExe + ' config build.nokogiri --use-system-libraries --with-xml2-include=$(brew --prefix libxml2)/include/libxml2' + rubyExeSuffix)
   } else {
@@ -256,27 +250,40 @@ if (satisfied('docker')) {
 
   jekyllExe = bundlerExe + ' exec jekyll'
 
-  process.stdout.write('==> Installing: Gems ... ')
+  process.stdout.write('--> Installing: Gems ... ')
   fatalExe(bundlerExe + ' install --binstubs=\'vendor/bin\' --path \'vendor/bundler\'' + rubyExeSuffix + ' || ' + bundlerExe + ' update' + rubyExeSuffix)
 }
 
+
+if (dashWriteShim) {
+  var dashShim = envPrefix + dashExe.trim() + ' $*' + dashExeSuffix + '\n'
+  var dashShimPath = path.join(runtime.binDir, 'dash')
+  process.stdout.write('--> Installing: dash shim to: ' + dashShimPath + ' ... ')
+  fs.writeFileSync(dashShimPath, dashShim, { 'encoding': 'utf-8', 'mode': '755' })
+  console.log(yes)
+}
+
 if (rubyWriteShim) {
-  process.stdout.write('==> Installing: ruby shim ... ')
   var rubyShim = envPrefix + rubyExe.trim() + ' $*' + rubyExeSuffix + '\n'
-  fs.writeFileSync(path.join(runtime.binDir, 'ruby'), rubyShim, { 'encoding': 'utf-8', 'mode': '755' })
+  var rubyShimPath = path.join(runtime.binDir, 'ruby')
+  process.stdout.write('--> Installing: ruby shim to: ' + rubyShimPath + ' ... ')
+  fs.writeFileSync(rubyShimPath, rubyShim, { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
 
 if (bundlerWriteShim) {
-  process.stdout.write('==> Installing: bundler shim ... ')
   var bundlerShim = bundlerExe.trim() + ' $*' + rubyExeSuffix + '\n'
-  fs.writeFileSync(path.join(runtime.binDir, 'bundler'), bundlerShim, { 'encoding': 'utf-8', 'mode': '755' })
+  var bundlerShimPath = path.join(runtime.binDir, 'bundler')
+  process.stdout.write('--> Installing: bundler shim to: ' + bundlerShimPath + ' ... ')
+  fs.writeFileSync(bundlerShimPath, bundlerShim, { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
 
 if (jekyllWriteShim) {
-  process.stdout.write('==> Installing: jekyll shim ... ')
   var jekyllShim = jekyllExe.trim() + ' $*' + rubyExeSuffix + '\n'
-  fs.writeFileSync(path.join(runtime.binDir, 'jekyll'), jekyllShim, { 'encoding': 'utf-8', 'mode': '755' })
+  var jekyllShimPath = path.join(runtime.binDir, 'jekyll')
+  debug(jekyllShim)
+  process.stdout.write('--> Installing: jekyll shim to: ' + jekyllShimPath + ' ... ')
+  fs.writeFileSync(jekyllShimPath, jekyllShim, { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 }
