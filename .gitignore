@@ -36,23 +36,7 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
-.bundle/config
-vendor/
-
-fullthing.json
-.ruby-version
-vendor/
-
-Gemfile.lock
-_site/
-
-nodemon.config.json
-
-records.json
-.lanyon
-
-Gemfile
-
-example/.jekyll-metadata
-
+example/_site/
 example/assets/build/
+example/.lanyon/
+example/.jekyll-metadata
