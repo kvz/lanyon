@@ -114,15 +114,6 @@ if (!satisfied('node')) {
   shell.exit(1)
 }
 
-process.stdout.write('--> Writing: Gemfile ... ')
-var buf = 'source \'https://rubygems.org\'\n'
-for (var name in runtime.gems) {
-  var version = runtime.gems[name]
-  buf += 'gem \'' + name + '\', \'' + version + '\'\n'
-}
-fs.writeFileSync(path.join(runtime.cacheDir, 'Gemfile'), buf, 'utf-8')
-console.log(yes)
-
 if (satisfied('docker')) {
   rubyFrom = 'docker'
   // ' --interactive',
@@ -130,9 +121,9 @@ if (satisfied('docker')) {
   var ver = require(runtime.lanyonPackageFile).version
 
   if (process.env.DOCKER_BUILD === '1') {
-    shell.rm('-f', 'Gemfile.lock')
-    shell.exec('docker build -t kevinvz/lanyon:' + ver + ' .')
-    shell.exec('docker push kevinvz/lanyon:' + ver + '')
+    fs.writeFileSync(path.join(runtime.lanyonDir, 'Gemfile'), fs.readFileSync(path.join(runtime.cacheDir, 'Gemfile'), 'utf-8'), 'utf-8')
+    shell.exec('cd ' + runtime.lanyonDir + ' && docker build -t kevinvz/lanyon:' + ver + ' .')
+    shell.exec('cd ' + runtime.lanyonDir + ' && docker push kevinvz/lanyon:' + ver + '')
   }
 
   dashExe = [

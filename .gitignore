@@ -40,3 +40,5 @@ example/_site/
 example/assets/build/
 example/.lanyon/
 example/.jekyll-metadata
+
+Gemfile

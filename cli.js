@@ -55,6 +55,12 @@ fs.writeFileSync(runtime.cacheDir + '/nodemon.config.json', JSON.stringify(nodem
 fs.writeFileSync(runtime.cacheDir + '/full-config-dump.json', JSON.stringify(cfg, null, '  '), 'utf-8')
 fs.writeFileSync(runtime.cacheDir + '/browsersync.config.js', 'module.exports = require("' + runtime.lanyonDir + '/index.js").browsersync', 'utf-8')
 fs.writeFileSync(runtime.cacheDir + '/webpack.config.js', 'module.exports = require("' + runtime.lanyonDir + '/index.js").webpack', 'utf-8')
+var buf = 'source \'https://rubygems.org\'\n'
+for (var name in runtime.gems) {
+  var version = runtime.gems[name]
+  buf += 'gem \'' + name + '\', \'' + version + '\'\n'
+}
+fs.writeFileSync(path.join(runtime.cacheDir, 'Gemfile'), buf, 'utf-8')
 
 if (cmdName.match(/^build/)) {
   if (!shell.test('-d', runtime.assetsBuildDir)) {
