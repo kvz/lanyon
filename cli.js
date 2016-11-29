@@ -16,7 +16,7 @@ var scripts = {
   'console': 'docker run -i -t kevinvz/lanyon sh',
   'help': 'jekyll build --help',
   'postinstall': 'node [lanyonDir]/postinstall.js',
-  'serve': 'browser-sync start --config [lanyonDir]/browsersync.config.js',
+  'serve': 'browser-sync start --config [cacheDir]/browsersync.config.js',
   'start': '[lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
   'build:content:watch': 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"'
 }
