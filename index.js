@@ -223,6 +223,7 @@ cfg.browsersync = {
       '.lanyon'
     ]
   },
+  reloadDelay: 200,
   files: runtime.contentBuildDir
 }
 
