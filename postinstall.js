@@ -254,7 +254,6 @@ if (satisfied('docker')) {
   fatalExe(bundlerExe + ' install --binstubs=\'vendor/bin\' --path \'vendor/bundler\'' + rubyExeSuffix + ' || ' + bundlerExe + ' update' + rubyExeSuffix)
 }
 
-
 if (dashWriteShim) {
   var dashShim = envPrefix + dashExe.trim() + ' $*' + dashExeSuffix + '\n'
   var dashShimPath = path.join(runtime.binDir, 'dash')

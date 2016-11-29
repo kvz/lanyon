@@ -31,6 +31,8 @@ if (!cmd) {
 fs.writeFileSync(runtime.cacheDir + '/jekyll.config.yml', '', 'utf-8') // <-- nothing yet but a good place to weak Jekyll in the future
 fs.writeFileSync(runtime.cacheDir + '/nodemon.config.json', JSON.stringify(nodemon, null, '  '), 'utf-8')
 fs.writeFileSync(runtime.cacheDir + '/full-config-dump.json', JSON.stringify(cfg, null, '  '), 'utf-8')
+fs.writeFileSync(runtime.cacheDir + '/browsersync.config.js', 'module.exports = require("' + runtime.lanyonDir + '/index.js").browsersync', 'utf-8')
+fs.writeFileSync(runtime.cacheDir + '/webpack.config.js', 'module.exports = require("' + runtime.lanyonDir + '/index.js").webpack', 'utf-8')
 
 if (cmdName.match(/^build/)) {
   if (!shell.test('-d', runtime.assetsBuildDir)) {
