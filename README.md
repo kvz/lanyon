@@ -123,8 +123,9 @@ To force a particular type, you can also use `LANYON_ONLY=docker`. This is how w
 
 ## Prerequisites
 
-- Node.js 0.12+ (& npm)
 - OSX / Linux (& Bash)
+- Node.js 0.12+ (& npm)
+- Docker or Rvm or Rbenv or Brew
 
 ### macOS
 
@@ -151,9 +152,8 @@ docker --version && docker ps
 
 ### Ubuntu Trusty
 
-Lanyon wants to work everywhere where there's Node, but on older Ubuntu versions, that can 
+Lanyon requires Node.js to be present on your system (although we may consider shipping all of Lanyon inside a Docker container in a future version - currently it's just the Ruby stuff). On older Ubuntu versions, that can 
 still be a bit of a hassle. Here are two different ways of installing Node.js on Ubuntu Trusty:
-
 
 #### Node 6
 
@@ -165,10 +165,9 @@ sudo apt-get install -y nodejs
 node -v
 ```
 
-#### Node 0.12
+#### Or: Node 0.12
 
-**Or**, run an old Node.js version, straight from the main repo. Lanyon (still) supports 0.12,
-so you might prefer it over adding a 3rd party repository:
+Lanyon (still) supports 0.12, so you might prefer a legacy Node.js version so you don't have to add a 3rd party repository:
 
 ```bash
 sudo apt-get install nodejs-legacy npm
