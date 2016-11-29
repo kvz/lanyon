@@ -37,10 +37,11 @@ fs.writeFileSync(runtime.cacheDir + '/webpack.config.js', 'module.exports = requ
 if (cmdName.match(/^build/)) {
   if (!shell.test('-d', runtime.assetsBuildDir)) {
     shell.mkdir('-p', runtime.assetsBuildDir)
+    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.relative(runtime.projectDir, runtime.assetsBuildDir))
   }
   if (!shell.test('-d', runtime.cacheDir)) {
     shell.mkdir('-p', runtime.cacheDir)
-    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.basename(runtime.cacheDir))
+    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.relative(runtime.projectDir, runtime.cacheDir))
   }
 
   if (runtime.prebuild) {
