@@ -119,7 +119,7 @@ for (var name in runtime.gems) {
   var version = runtime.gems[name]
   buf += 'gem \'' + name + '\', \'' + version + '\'\n'
 }
-fs.writeFileSync(path.join(runtime.lanyonDir, 'Gemfile'), buf, 'utf-8')
+fs.writeFileSync(path.join(runtime.cacheDir, 'Gemfile'), buf, 'utf-8')
 console.log(yes)
 
 if (satisfied('docker')) {
@@ -137,9 +137,9 @@ if (satisfied('docker')) {
   rubyExe = [
     'docker run',
     ' --rm',
-    ' --workdir ' + runtime.lanyonDir,
+    ' --workdir ' + runtime.cacheDir,
     ' --user $(id -u)',
-    ' --volume ' + runtime.lanyonDir + ':' + runtime.lanyonDir,
+    ' --volume ' + runtime.cacheDir + ':' + runtime.cacheDir,
     ' --volume ' + runtime.projectDir + ':' + runtime.projectDir,
     ' kevinvz/lanyon:' + ver + '',
     ' ruby'
@@ -148,9 +148,9 @@ if (satisfied('docker')) {
   jekyllExe = [
     'docker run',
     ' --rm',
-    ' --workdir ' + runtime.lanyonDir,
+    ' --workdir ' + runtime.cacheDir,
     ' --user $(id -u)',
-    ' --volume ' + runtime.lanyonDir + ':' + runtime.lanyonDir,
+    ' --volume ' + runtime.cacheDir + ':' + runtime.cacheDir,
     ' --volume ' + runtime.projectDir + ':' + runtime.projectDir,
     ' kevinvz/lanyon:' + ver + '',
     ' bundler exec jekyll'

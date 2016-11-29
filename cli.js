@@ -9,16 +9,16 @@ var nodemon = cfg.nodemon
 var debug = require('depurar')('lanyon')
 
 var scripts = {
-  'build:assets': 'webpack --config [lanyonDir]/webpack.config.js',
-  'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[lanyonDir]/_config.dev.yml',
-  'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[lanyonDir]/_config.dev.yml',
+  'build:assets': 'webpack --config [cacheDir]/webpack.config.js',
+  'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[cacheDir]/_config.dev.yml',
+  'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[cacheDir]/_config.dev.yml',
   'build': '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
   'console': 'docker run -i -t kevinvz/lanyon sh',
   'help': 'jekyll build --help',
   'postinstall': 'node [lanyonDir]/postinstall.js',
   'serve': 'browser-sync start --config [lanyonDir]/browsersync.config.js',
   'start': '[lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
-  'build:content:watch': 'nodemon --config [lanyonDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"'
+  'build:content:watch': 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"'
 }
 
 var cmdName = process.argv[2]
@@ -28,8 +28,8 @@ if (!cmd) {
   console.error('"' + cmdName + '" is not a valid Lanyon command. Pick from: ' + Object.keys(scripts).join(', ') + '.')
 }
 
-fs.writeFileSync(runtime.lanyonDir + '/nodemon.config.json', JSON.stringify(nodemon, null, '  '), 'utf-8')
-fs.writeFileSync(runtime.lanyonDir + '/fullthing.json', JSON.stringify(cfg, null, '  '), 'utf-8')
+fs.writeFileSync(runtime.cacheDir + '/nodemon.config.json', JSON.stringify(nodemon, null, '  '), 'utf-8')
+fs.writeFileSync(runtime.cacheDir + '/fullthing.json', JSON.stringify(cfg, null, '  '), 'utf-8')
 debug(cfg)
 
 if (cmdName.match(/^build/)) {
@@ -67,7 +67,7 @@ console.log(cmd)
 var child = spawn('sh', ['-c', cmd], {
   'stdio': 'inherit',
   'env': env,
-  'cwd': runtime.lanyonDir
+  'cwd': runtime.cacheDir
 })
 
 child.on('exit', function (code) {

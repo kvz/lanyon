@@ -2,14 +2,17 @@
 
 # Unplanned
 
-- [ ] Store everything in projectDir/.lanyon instead of in node_modules dir
 - [ ] Use noerrors in dev
 - [ ] jRuby support https://spin.atomicobject.com/2013/04/24/bundler-jruby-complete/
 - [ ] Use orderoccurance in dev
 - [ ] Consider shipping all of Lanyon inside a Docker container
 - [ ] Store everything in projectDir/.lanyon instead of in node_modules dir
 
-# v0.0.8 (unreleased)
+# v0.0.9
+
+- [x] Store everything in `cacheDir` (projectDir/.lanyon) instead of in node_modules dir
+
+# v0.0.8
 
 - [x] Support for prebuild hook
 

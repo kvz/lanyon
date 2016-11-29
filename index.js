@@ -23,8 +23,8 @@ var BowerWebpackPlugin = require('bower-webpack-plugin')
 var runtime = {}
 
 runtime.lanyonDir = __dirname
-runtime.binDir = path.join(runtime.lanyonDir, 'vendor', 'bin')
-runtime.recordsPath = path.join(runtime.lanyonDir, 'records.json')
+runtime.binDir = path.join(runtime.cacheDir, 'vendor', 'bin')
+runtime.recordsPath = path.join(runtime.cacheDir, 'records.json')
 runtime.lanyonEnv = process.env.LANYON_ENV || 'development'
 runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 var lanyonPackage = require(runtime.lanyonPackageFile)
