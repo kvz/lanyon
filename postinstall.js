@@ -2,6 +2,7 @@ var semver = require('semver')
 var chalk = require('chalk')
 var path = require('path')
 var shell = require('shelljs')
+var spawnSync = require('child_process').spawnSync
 var debug = require('depurar')('lanyon')
 var os = require('os')
 var fs = require('fs')
@@ -132,6 +133,24 @@ if (satisfied('docker')) {
     shell.rm('-f', 'Gemfile.lock')
     shell.exec('docker build -t kevinvz/lanyon:' + ver + ' .')
     shell.exec('docker push kevinvz/lanyon:' + ver + '')
+  }
+
+  if (process.env.DOCKER_CONNECT === '1') {
+    spawnSync('sh', ['-c', [
+      'docker run',
+      ' -it',
+      ' --rm',
+      ' --workdir ' + runtime.cacheDir,
+      ' --user $(id -u)',
+      ' --volume ' + runtime.cacheDir + ':' + runtime.cacheDir,
+      ' --volume ' + runtime.projectDir + ':' + runtime.projectDir,
+      ' kevinvz/lanyon:' + ver + '',
+      ' sh'
+    ].join('')], {
+      'stdio': 'inherit',
+      'cwd': runtime.cacheDir
+    })
+    process.exit(0)
   }
 
   rubyExe = [
