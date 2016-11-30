@@ -2,9 +2,9 @@
 var utils = require('./utils')
 utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'cli.js')
 var spawnSync = require('child_process').spawnSync
-var _ = require('underscore')
-var cfg = require('./config')
-var runtime = cfg.runtime
+var _ = require('lodash')
+var config = require('./config')
+var runtime = config.runtime
 // var debug = require('depurar')('lanyon')
 
 var scripts = {
@@ -22,6 +22,8 @@ var scripts = {
 var cmdName = process.argv[2]
 var cmd = scripts[cmdName]
 
+console.log('--> cacheDir is "' + runtime.cacheDir + '". ')
+
 if (cmdName.match(/^build|postinstall/)) {
   utils.initProject(runtime)
 }
@@ -36,7 +38,7 @@ if (cmdName.match(/^build/) && runtime.prebuild) {
   console.log('--> prebuild done. ')
 }
 
-utils.writeConfig(cfg)
+utils.writeConfig(config)
 
 if (_.isFunction(cmd)) {
   cmd(runtime, function (err) {

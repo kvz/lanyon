@@ -78,7 +78,7 @@ The recommended way to use Lanyon is to add it to your project's npm run scripts
     "build": "lanyon build",
     "serve:production": "LANYON_ENV=production lanyon serve",
     "serve": "lanyon serve",
-    "start:production": "lanyon build:production && lanyon serve:production",
+    "start:production": "npm run build:production && npm run serve:production",
     "start": "lanyon start"
   },
 ...

@@ -11,6 +11,7 @@
 
 var _ = require('lodash')
 var path = require('path')
+var fs = require('fs')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var webpack = require('webpack')
 var webpackDevMiddleware = require('webpack-dev-middleware')
@@ -25,12 +26,16 @@ runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 var lanyonPackage = require(runtime.lanyonPackageFile)
 runtime.lanyonVersion = lanyonPackage.version
 
+runtime.publicPath = '/assets/build/'
+
+runtime.rubyProvidersOnly = (process.env.LANYON_ONLY || '')
+runtime.rubyProvidersSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
+
+runtime.isDev = runtime.lanyonEnv === 'development'
+runtime.isHotLoading = runtime.isDev && ['serve', 'start'].indexOf(process.argv[2]) !== -1
+
 runtime.projectDir = process.env.LANYON_PROJECT || process.cwd()
 runtime.projectPackageFile = path.join(runtime.projectDir, 'package.json')
-runtime.cacheDir = path.join(runtime.projectDir, '.lanyon')
-runtime.binDir = path.join(runtime.cacheDir, 'vendor', 'bin')
-runtime.recordsPath = path.join(runtime.cacheDir, 'records.json')
-
 try {
   var projectPackage = require(runtime.projectPackageFile)
 } catch (e) {
@@ -40,17 +45,13 @@ try {
 runtime.gems = _.defaults(_.get(projectPackage, 'lanyon.gems') || {}, _.get(lanyonPackage, 'lanyon.gems'))
 runtime = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
 
+runtime.projectDir = fs.realpathSync(runtime.projectDir)
+runtime.cacheDir = path.join(runtime.projectDir, '.lanyon')
+runtime.binDir = path.join(runtime.cacheDir, 'vendor', 'bin')
+runtime.recordsPath = path.join(runtime.cacheDir, 'records.json')
 runtime.assetsSourceDir = path.join(runtime.projectDir, 'assets')
 runtime.assetsBuildDir = path.join(runtime.assetsSourceDir, 'build')
 runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
-
-runtime.publicPath = '/assets/build/'
-
-runtime.rubyProvidersOnly = (process.env.LANYON_ONLY || '')
-runtime.rubyProvidersSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
-
-runtime.isDev = runtime.lanyonEnv === 'development'
-runtime.isHotLoading = runtime.isDev && ['serve', 'start'].indexOf(process.argv[2]) !== -1
 
 // Set prerequisite defaults
 for (var name in runtime.prerequisites) {
@@ -258,6 +259,7 @@ cfg.nodemon = {
   verbose: false,
   watch: runtime.projectDir,
   ignore: [
+    '.lanyon/*',
     'assets/*',
     'vendor/**',
     'node_modules/*',
