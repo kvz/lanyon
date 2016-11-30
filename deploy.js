@@ -22,6 +22,6 @@ module.exports = function (runtime, cb) {
   utils.passthru(runtime, 'git add --all .', { cwd: runtime.contentBuildDir })
   utils.passthru(runtime, 'git commit -nm "Update website by $USER" || true', { cwd: runtime.contentBuildDir })
   utils.passthru(runtime, 'git remote add origin ' + runtime.ghPagesEnv.GHPAGES_URL + ' 2> /dev/null || true', { cwd: runtime.contentBuildDir })
-  utils.passthru(runtime, 'git push origin gh-pages:refs/heads/gh-pages || git push origin gh-pages:refs/heads/gh-pages --force > /dev/null', { cwd: runtime.contentBuildDir })
+  utils.passthru(runtime, 'git push origin gh-pages:refs/heads/gh-pages 2> /dev/null || git push origin gh-pages:refs/heads/gh-pages --force > /dev/null', { cwd: runtime.contentBuildDir })
   cb(null)
 }
