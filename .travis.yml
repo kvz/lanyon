@@ -1,5 +1,3 @@
-language: node_js
-
 cache:
   apt: true
   directories:
@@ -32,49 +30,37 @@ before_install:
 
 # OSDIST is ignored, but added to easily identify builds in travis's build index, which displaus
 # env vars in a table, but not os/dists
-
-os: linux
-dist: precise
-sudo: false
-env: LANYON_ONLY="auto-all" OSDIST="precise"
-node_js:
-  - "6"
-
 matrix:
-  # allow_failures:
-  #   - os: osx
-  #     osx_image: xcode7.2
   include:
     - os: linux
       dist: precise
       sudo: false
+      env: LANYON_ONLY="auto-all" OSDIST="precise"
+      node_js: "6"
+    - os: linux
+      dist: precise
+      sudo: false
       env: LANYON_ONLY="rbenv" OSDIST="precise"
-      node_js:
-        - "0.12"
+      node_js: "0.12"
     - os: linux
       dist: trusty
       sudo: required
       env: LANYON_ONLY="system" OSDIST="trusty"
-      node_js:
-        - "4"
+      node_js: "4"
     - os: linux
       dist: trusty
       sudo: required
       env: LANYON_ONLY="docker" OSDIST="trusty"
-      node_js:
-        - "6"
+      node_js: "6"
     - os: osx
       osx_image: beta-xcode6.1
       env: LANYON_ONLY="rvm" OSDIST="beta-xcode6.1"
-      node_js:
-        - "0.12"
+      node_js: "0.12"
     - os: osx
       osx_image: xcode7.2
       env: LANYON_ONLY="rbenv" OSDIST="xcode7.2"
-      node_js:
-        - "4"
+      node_js: "4"
     - os: osx
       osx_image: xcode8
       env: LANYON_ONLY="system" OSDIST="xcode8"
-      node_js:
-        - "7"
+      node_js: "7"
