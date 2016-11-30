@@ -7,6 +7,12 @@
 - [ ] Use orderoccurance in dev
 - [ ] Consider shipping all of Lanyon inside a Docker container
 
+# v0.0.14
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.13...v0.0.14)
+
+- [x] Fix broken shim quoting
+
 # v0.0.13
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.12...v0.0.13)
