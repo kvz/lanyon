@@ -106,6 +106,33 @@ in your layout, include the build (same location works both for production artif
 
 Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository.
 
+## Deploy
+
+Enable building this project on Travis CI. Add a `.travis.yml` similar to this one:
+
+```yaml
+language: generic
+sudo: false
+script: true # <-- @todo we can test here
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: .lanyon/vendor/bin/deploy # <-- this calls 'npm run build:production && npm run deploy'. Travis does not allow commands, only files here..
+  on:
+    branch: master
+    condition: $TRAVIS_OS_NAME = linux
+```
+
+Add an `env.sh` with the following contents:
+
+```bash
+export GHPAGES_URL="https://<your github token>@github.com/<your github org>/<your github repo>.git"
+export GHPAGES_BOTNAME="<your github token username>"
+export GHPAGES_BOTEMAIL="<your github token email>"
+```
+
+Type `git ignore env.sh`. You can now type `source env.sh` and use `npm run encrypt` to save these secrets on Travis CI.
+
 ## About Ruby
 
 It's definitely a paint-point making us jealous of Hugo (and even Hexo). So far 10/10 devs that we asked to make Jekyll working locally had _some_ problem with their Ruby install and its dependencies. The number of nokogiri or permission errors, version conflicts, etc, we've had to deal with, are just, sad. Lanyon tries its best at resolving this. We're testing for many different Operating Systems and versions, as well as different versions of Node, and Ruby version managers, to see if we can still automatically get Ruby to work on them:
