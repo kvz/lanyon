@@ -7,7 +7,7 @@ var yaml = require('js-yaml')
 var shell = require('shelljs')
 var no = chalk.red('✗ ')
 var yes = chalk.green('✓ ')
-var spawnSync = require('child_process').spawnSync
+var spawnSync = require('spawn-sync')
 
 module.exports.preferLocalPackage = function (args, filename, appDir, name, entry, version) {
   var localModulePackage
