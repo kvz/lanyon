@@ -120,15 +120,13 @@ EOF
   echo "--> Building site for 'development' in '${projectDir}'"
   npm run build
   echo "--> Showing tree for 'development' in '${projectDir}'"
-  find .
-  head ./_site/assets/build/app.js
-  head ./_site/index.html
+  # There is no app.js in development
+  head "./_site/index.html"
 
   echo "--> Building site for 'production' in '${projectDir}'"
   rm -rf ./_site
   npm run build:production
   echo "--> Showing tree for 'production' in '${projectDir}'"
-  find .
   head "./_site/assets/build/app.js"
   head "./_site/index.html"
   # mdfive "./_site/assets/build/app.js" "68b329da9893e34099c7d8ad5cb9c940" "production"
