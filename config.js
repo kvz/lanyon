@@ -26,6 +26,7 @@ runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 var lanyonPackage = require(runtime.lanyonPackageFile)
 runtime.lanyonVersion = lanyonPackage.version
 
+runtime.trace = process.env.LANYON_TRACE === '1'
 runtime.publicPath = '/assets/build/'
 
 runtime.rubyProvidersOnly = (process.env.LANYON_ONLY || '')
@@ -267,6 +268,13 @@ cfg.browsersync = {
   },
   reloadDelay: 200,
   files: runtime.contentBuildDir
+}
+
+cfg.jekyll = {
+  exclude: [
+    'node_modules',
+    '.lanyon'
+  ]
 }
 
 cfg.nodemon = {

@@ -19,9 +19,17 @@ module.exports = function (runtime, cb) {
   }
 
   // Detmine optimal rubyProvider and adjust shim configuration
-  if (utils.satisfied(runtime, 'docker')) {
+  if (utils.satisfied(runtime, 'ruby', 'vendor/bin/ruby -v', 'ruby-shim')) {
+    rubyProvider = 'shim'
+    runtime.prerequisites.ruby.exe = 'vendor/bin/ruby'
+    runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + ' -v' + runtime.prerequisites.ruby.exeSuffix
+    runtime.prerequisites.ruby.writeShim = false
+  } else if (utils.satisfied(runtime, 'ruby', undefined, 'system')) {
+    rubyProvider = 'system'
+    runtime.prerequisites.gem.exe = '$(which gem)'
+    runtime.prerequisites.bundler.exe = '$(which bundler)'
+  } else if (utils.satisfied(runtime, 'docker')) {
     rubyProvider = 'docker'
-
     if (process.env.DOCKER_BUILD === '1') {
       shell.exec('docker build -t kevinvz/lanyon:' + runtime.lanyonVersion + ' .')
       shell.exec('docker push kevinvz/lanyon:' + runtime.lanyonVersion + '')
@@ -29,43 +37,31 @@ module.exports = function (runtime, cb) {
     runtime.prerequisites.sh.exe = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
     runtime.prerequisites.ruby.exe = utils.dockerCmd(runtime, 'ruby')
     runtime.prerequisites.jekyll.exe = utils.dockerCmd(runtime, 'bundler exec jekyll')
+  } else if (utils.satisfied(runtime, 'rbenv') && shell.exec('rbenv install --help', { 'silent': false }).code === 0) {
+    // rbenv does not offer installing of rubies by default, it will also require the install plugin --^
+    rubyProvider = 'rbenv'
+    utils.fatalExe('bash -c "rbenv install --skip-existing \'' + runtime.prerequisites.ruby.preferred + '\'"')
+    runtime.prerequisites.ruby.exe = 'bash -c "eval $(rbenv init -) && rbenv shell \'' + runtime.prerequisites.ruby.preferred + '\' &&'
+    runtime.prerequisites.ruby.exeSuffix = '"'
+    runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + 'ruby -v' + runtime.prerequisites.ruby.exeSuffix
+  } else if (utils.satisfied(runtime, 'rvm')) {
+    rubyProvider = 'rvm'
+    utils.fatalExe('bash -c "rvm install \'' + runtime.prerequisites.ruby.preferred + '\'"')
+    runtime.prerequisites.ruby.exe = 'bash -c "rvm \'' + runtime.prerequisites.ruby.preferred + '\' exec'
+    runtime.prerequisites.ruby.exeSuffix = '"'
+    runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + ' ruby -v' + runtime.prerequisites.ruby.exeSuffix
   } else {
-    if (utils.satisfied(runtime, 'ruby', 'vendor/bin/ruby -v', 'ruby-shim')) {
-      rubyProvider = 'shim'
-      runtime.prerequisites.ruby.exe = 'vendor/bin/ruby'
-      runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + ' -v' + runtime.prerequisites.ruby.exeSuffix
-      runtime.prerequisites.ruby.writeShim = false
-    } else if (utils.satisfied(runtime, 'ruby', undefined, 'system')) {
-      rubyProvider = 'system'
-      runtime.prerequisites.gem.exe = '$(which gem)'
-      runtime.prerequisites.bundler.exe = '$(which bundler)'
-    } else {
-      var rubyCfg = runtime.prerequisites.ruby
-      // rbenv does not offer installing of rubies by default, it will also require the install plugin:
-      if (utils.satisfied(runtime, 'rbenv') && shell.exec('rbenv install --help', { 'silent': false }).code === 0) {
-        rubyProvider = 'rbenv'
-        utils.fatalExe('bash -c "rbenv install --skip-existing \'' + rubyCfg.preferred + '\'"')
-        runtime.prerequisites.ruby.exe = 'bash -c "eval $(rbenv init -) && rbenv shell \'' + rubyCfg.preferred + '\' &&'
-        runtime.prerequisites.ruby.exeSuffix = '"'
-        runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + 'ruby -v' + runtime.prerequisites.ruby.exeSuffix
-      } else if (utils.satisfied(runtime, 'rvm')) {
-        rubyProvider = 'rvm'
-        utils.fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'"')
-        runtime.prerequisites.ruby.exe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
-        runtime.prerequisites.ruby.exeSuffix = '"'
-        runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + ' ruby -v' + runtime.prerequisites.ruby.exeSuffix
-      } else {
-        console.error('Ruby version not satisfied, and exhausted ruby version installer helpers (rvm, rbenv, brew)')
-        process.exit(1)
-      }
-    }
+    console.error('Ruby version not satisfied, and exhausted ruby version installer helpers (rvm, rbenv, brew)')
+    process.exit(1)
+  }
 
-    // Verify Ruby
-    if (!utils.satisfied(runtime, 'ruby', runtime.prerequisites.ruby.versionCheck, 'verify')) {
-      console.error('Ruby should have been installed but still not satisfied')
-      process.exit(1)
-    }
+  // Verify Ruby
+  if (!utils.satisfied(runtime, 'ruby', runtime.prerequisites.ruby.versionCheck, 'verify')) {
+    console.error('Ruby should have been installed but still not satisfied')
+    process.exit(1)
+  }
 
+  if (rubyProvider !== 'docker') {
     // Install Bundler
     runtime.prerequisites.bundler.exe = runtime.prerequisites.ruby.exe + ' ' + runtime.prerequisites.bundler.exe
     if (!utils.satisfied(runtime, 'bundler', runtime.prerequisites.bundler.exe + ' -v' + runtime.prerequisites.ruby.exeSuffix)) {

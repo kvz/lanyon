@@ -3,25 +3,27 @@ var chalk = require('chalk')
 var fs = require('fs')
 var _ = require('lodash')
 var path = require('path')
+var yaml = require('js-yaml')
 var shell = require('shelljs')
 var no = chalk.red('✗ ')
 var yes = chalk.green('✓ ')
 var spawnSync = require('child_process').spawnSync
 
-module.exports.preferLocalPackage = function (args, filename, appDir, name, entry) {
-  var localPackage
+module.exports.preferLocalPackage = function (args, filename, appDir, name, entry, version) {
+  var localModulePackage
   var absoluteEntry
   try {
-    localPackage = require(appDir + '/node_modules/' + name + '/package.json')
+    localModulePackage = require(appDir + '/node_modules/' + name + '/package.json')
     absoluteEntry = fs.realpathSync(appDir + '/node_modules/' + name + '/' + entry)
   } catch (e) {
-    localPackage = {}
+    localModulePackage = {}
+    absoluteEntry = false
   } finally {
-    if (localPackage.version && absoluteEntry) {
+    if (localModulePackage.version && absoluteEntry) {
       if (filename === absoluteEntry) {
-        console.log('--> Likely on symlinked ' + name + ' install v' + localPackage.version)
+        console.log('--> Booting symlinked ' + name + ' v' + localModulePackage.version)
       } else {
-        console.log('--> Switching to local ' + name + ' install v' + localPackage.version)
+        console.log('--> Booting local ' + name + ' v' + localModulePackage.version)
         var exe = args.shift()
         for (var i in args) {
           // Replace the current entry, e.g. /usr/local/frey/cli.js with the local package
@@ -32,6 +34,8 @@ module.exports.preferLocalPackage = function (args, filename, appDir, name, entr
         spawnSync(exe, args, { stdio: 'inherit' })
         process.exit(0)
       }
+    } else {
+      console.log('--> Booting local ' + name + ' v' + version)
     }
   }
 }
@@ -69,7 +73,7 @@ module.exports.initProject = function (runtime) {
 }
 
 module.exports.writeConfig = function (cfg) {
-  fs.writeFileSync(cfg.runtime.cacheDir + '/jekyll.config.yml', '', 'utf-8') // <-- nothing yet but a good place to weak Jekyll in the future
+  fs.writeFileSync(cfg.runtime.cacheDir + '/jekyll.config.yml', yaml.safeDump(cfg.jekyll), 'utf-8')
   fs.writeFileSync(cfg.runtime.cacheDir + '/nodemon.config.json', JSON.stringify(cfg.nodemon, null, '  '), 'utf-8')
   fs.writeFileSync(cfg.runtime.cacheDir + '/full-config-dump.json', JSON.stringify(cfg, null, '  '), 'utf-8')
   fs.writeFileSync(cfg.runtime.cacheDir + '/browsersync.config.js', 'module.exports = require("' + cfg.runtime.lanyonDir + '/config.js").browsersync', 'utf-8')

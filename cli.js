@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var utils = require('./utils')
-utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'cli.js')
+utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'cli.js', require('./package.json').version)
 var spawnSync = require('child_process').spawnSync
 var _ = require('lodash')
 var config = require('./config')
@@ -9,8 +9,8 @@ var runtime = config.runtime
 
 var scripts = {
   'build:assets': 'webpack --config [cacheDir]/webpack.config.js',
-  'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml',
-  'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml',
+  'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml',
+  'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml',
   'build': '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
   'help': 'jekyll build --help',
   'postinstall': require('./postinstall'),
@@ -19,10 +19,18 @@ var scripts = {
   'build:content:watch': 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"'
 }
 
+console.log('--> cacheDir is "' + runtime.cacheDir + '". ')
+
+if (runtime.lanyonEnv !== 'development') {
+  scripts['build:assets'] += ' --production'
+}
+if (runtime.trace) {
+  scripts['build:content:incremental'] += ' --trace'
+  scripts['build:content'] += ' --trace'
+}
+
 var cmdName = process.argv[2]
 var cmd = scripts[cmdName]
-
-console.log('--> cacheDir is "' + runtime.cacheDir + '". ')
 
 if (cmdName.match(/^build|postinstall/)) {
   utils.initProject(runtime)

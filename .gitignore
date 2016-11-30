@@ -42,3 +42,5 @@ example/.lanyon/
 example/.jekyll-metadata
 
 Gemfile
+.lanyon
+.lanyon/vendor/bin
