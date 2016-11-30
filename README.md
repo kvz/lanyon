@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.org/kvz/lanyon.svg?branch=master)](https://travis-ci.org/kvz/lanyon)
 
 Lanyon is a static site generator. It is a wrapper around Jekyll, Webpack, BrowserSync, Nodemon, in an attempt to give you the best of all worlds :earth_asia: :earth_americas: :earth_africa: (Instant asset building & refreshing, fast & reliable file watching). 
-Spitting in the face of unix philosophy, it tries to do many things, such as spell checking, and setting up a working Ruby environment.
+Spitting in the face of unix philosophy, it tries to do many things, such as spell checking, and setting up a working Ruby environment. OTH, One might argue it's applying unix philosophy by making underlying tools do one thing only :thinking:
 
-This is all to get the highest level of convenience around building static websites. Getting started should be as simple as `npm install lanyon`.
+Whichever the case, Lanyon is set out to achieve the highest level of convenience around building static websites. Getting started should be as simple as `npm install lanyon` and `lanyon start`.
 
 ## State
 
@@ -50,10 +50,11 @@ We'll be assuming:
 - Assets in `./assets/`, with transpiled assets in `./assets/build`
 - `app.js` is the primary entry point
 - Our users already have a working Node.js setup and don't mind a `package.json` in their project
+- Any environment other than `development` means `production`. This is to simplify, and if you have additional stages like 'test', you'll likely want to test as close to production as possible anyway.
 
 If you're thinking about submitting PRs for other features/flexibility, get in touch first please as we might not be on board.
 
-If however, you are onboard with what we're setting out to do, here's how you get started with Lanyon:
+If however, there happens to be an overlap with your use case and you can live with our constraints, here's how you get started with Lanyon:
 
 ## Install
 
@@ -73,10 +74,11 @@ The recommended way to use Lanyon is to add it to your project's npm run scripts
     ]
   },
   "scripts": {
-    "build": "lanyon build",
     "build:production": "LANYON_ENV=production lanyon build",
-    "preview:production": "lanyon build:production && LANYON_ENV=production lanyon serve",
+    "build": "lanyon build",
+    "serve:production": "LANYON_ENV=production lanyon serve",
     "serve": "lanyon serve",
+    "start:production": "lanyon build:production && lanyon serve:production",
     "start": "lanyon start"
   },
 ...

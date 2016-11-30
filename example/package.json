@@ -10,10 +10,11 @@
     ]
   },
   "scripts": {
-    "build": "lanyon build",
     "build:production": "LANYON_ENV=production lanyon build",
-    "serve": "lanyon serve",
+    "build": "lanyon build",
     "serve:production": "LANYON_ENV=production lanyon serve",
+    "serve": "lanyon serve",
+    "start:production": "lanyon build:production && lanyon serve:production",
     "start": "lanyon start"
   },
   "dependencies": {
