@@ -18,8 +18,8 @@ set -o xtrace
 echo "--> Deploying to GitHub pages.."
 
 if [ "${TRAVIS:-}" = "true" ]; then
-  git config --global user.name 'lekevbot'
-  git config --global user.email 'bot@kvz.io'
+  git config --global user.name "${GHPAGES_BOTNAME}"
+  git config --global user.email "${GHPAGES_BOTEMAIL}"
 fi
 
 if type yarn; then
