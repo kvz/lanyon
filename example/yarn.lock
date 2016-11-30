@@ -1258,7 +1258,7 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-coffee-loader@0.7.2:
+coffee-loader@^0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/coffee-loader/-/coffee-loader-0.7.2.tgz#4d3699af8a806312db3207385a842f497c1bd6fd"
   dependencies:
@@ -1907,7 +1907,7 @@ envify@^3.0.0:
     jstransform "^11.0.3"
     through "~2.3.4"
 
-errno@^0.1.3:
+errno@^0.1.1, errno@^0.1.3:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/errno/-/errno-0.1.4.tgz#b896e23a9e5e8ba33871fc996abd3635fc9a1c7d"
   dependencies:
@@ -2113,7 +2113,7 @@ extsprintf@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.0.2.tgz#e1080e0658e300b06294990cc70e1502235fd550"
 
-fakefile@0.0.8, fakefile@^0.0.8:
+fakefile@0.0.8:
   version "0.0.8"
   resolved "https://registry.yarnpkg.com/fakefile/-/fakefile-0.0.8.tgz#96836c4220d093c6aa60e5faee0c2465e7f9ce8b"
   dependencies:
@@ -2624,6 +2624,10 @@ ignore-by-default@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/ignore-by-default/-/ignore-by-default-1.0.1.tgz#48ca6d72f6c6a3af00a9ad4ae6876be3889e2b09"
 
+image-size@~0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.5.0.tgz#be7aed1c37b5ac3d9ba1d66a24b4c47ff8397651"
+
 immutable@3.8.1, immutable@^3.7.6:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
@@ -2888,7 +2892,7 @@ js-tokens@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-2.0.0.tgz#79903f5563ee778cc1162e6dcf1a0027c97f9cb5"
 
-js-yaml@^3.4.3:
+js-yaml@^3.4.3, js-yaml@^3.7.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.7.0.tgz#5c967ddd837a9bfdca5f2de84253abe8a1c03b80"
   dependencies:
@@ -2985,9 +2989,9 @@ klaw@^1.0.0:
   optionalDependencies:
     graceful-fs "^4.1.9"
 
-lanyon@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/lanyon/-/lanyon-0.0.7.tgz#e4f1e9b072d0475df0e3ded9267b9af5500af14d"
+lanyon@0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/lanyon/-/lanyon-0.0.15.tgz#fe9afe8d875377bcdf2a3b7b0efada96a0cedd86"
   dependencies:
     autoprefixer "6.5.3"
     babel-core "6.18.2"
@@ -2998,7 +3002,7 @@ lanyon@0.0.7:
     bower-webpack-plugin "^0.1.9"
     browser-sync "2.18.2"
     chalk "1.1.3"
-    coffee-loader "0.7.2"
+    coffee-loader "^0.7.2"
     coffee-script "^1.11.1"
     css-loader "0.26.0"
     depurar "0.3.0"
@@ -3010,7 +3014,10 @@ lanyon@0.0.7:
     font-awesome-loader "1.0.1"
     http-server "0.9.0"
     imports-loader "^0.6.5"
+    js-yaml "^3.7.0"
     jsx-loader "0.13.2"
+    less "2.7.1"
+    less-loader "2.2.3"
     lodash "4.17.2"
     node-libs-browser "2.0.0"
     node-sass "3.13.0"
@@ -3049,6 +3056,24 @@ lcid@^1.0.0:
   resolved "https://registry.yarnpkg.com/lcid/-/lcid-1.0.0.tgz#308accafa0bc483a3867b4b6f2b9506251d1b835"
   dependencies:
     invert-kv "^1.0.0"
+
+less-loader@2.2.3:
+  version "2.2.3"
+  resolved "https://registry.yarnpkg.com/less-loader/-/less-loader-2.2.3.tgz#b6d8f8139c8493df09d992a93a00734b08f84528"
+  dependencies:
+    loader-utils "^0.2.5"
+
+less@2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/less/-/less-2.7.1.tgz#6cbfea22b3b830304e9a5fb371d54fa480c9d7cf"
+  optionalDependencies:
+    errno "^0.1.1"
+    graceful-fs "^4.1.2"
+    image-size "~0.5.0"
+    mime "^1.2.11"
+    mkdirp "^0.5.0"
+    promise "^7.1.1"
+    source-map "^0.5.3"
 
 limiter@^1.0.5:
   version "1.1.0"
