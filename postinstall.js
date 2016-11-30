@@ -10,131 +10,70 @@ var yes = chalk.green('✓ ')
 // var no = chalk.red('✗ ')
 
 module.exports = function (runtime, cb) {
-  var allApps = [ 'system', 'docker', 'rbenv', 'rvm', 'ruby-shim' ]
-  if (runtime.enginesOnly === 'auto-all') {
-    runtime.enginesOnly = ''
-  }
-
-  if (runtime.enginesOnly) {
-    runtime.enginesSkip = []
-    allApps.forEach(function (app) {
-      if (app !== runtime.enginesOnly) {
-        runtime.enginesSkip.push(app)
-      }
-    })
-  }
-  // debug({runtime.enginesSkip: runtime.enginesSkip, runtime.enginesOnly: runtime.enginesOnly})
-  // process.exit(0)
-
-  var rubyExe = 'ruby'
-  var rubyVerify = 'ruby -v'
-  var rubyExeSuffix = ''
-  var rubyWriteShim = true
-  var bundlerWriteShim = true
-  var jekyllWriteShim = true
-  var dashWriteShim = true
-  var gemExe = 'gem'
-  var bundlerExe = 'bundler'
-  var dashExeSuffix = ''
-  var dashExe = 'sh'
-  var jekyllExe = 'jekyll'
   var envPrefix = ''
   var passEnv = {}
-  var rubyFrom = ''
+  var rubyProvider = ''
 
-  shell.mkdir('-p', runtime.binDir)
-
-  if (!utils.satisfied('node')) {
+  if (!utils.satisfied(runtime, 'node')) {
     shell.exit(1)
   }
 
-  if (utils.satisfied('docker')) {
-    rubyFrom = 'docker'
+  if (utils.satisfied(runtime, 'docker')) {
+    rubyProvider = 'docker'
     // ' --interactive',
     // ' --tty',
     var ver = require(runtime.lanyonPackageFile).version
 
     if (process.env.DOCKER_BUILD === '1') {
-      fs.writeFileSync(path.join(runtime.lanyonDir, 'Gemfile'), fs.readFileSync(path.join(runtime.cacheDir, 'Gemfile'), 'utf-8'), 'utf-8')
-      shell.exec('cd ' + runtime.lanyonDir + ' && docker build -t kevinvz/lanyon:' + ver + ' .')
-      shell.exec('cd ' + runtime.lanyonDir + ' && docker push kevinvz/lanyon:' + ver + '')
+      shell.exec('docker build -t kevinvz/lanyon:' + ver + ' .')
+      shell.exec('docker push kevinvz/lanyon:' + ver + '')
     }
 
-    dashExe = [
-      'docker run',
-      ' -it',
-      ' --rm',
-      ' --workdir ' + runtime.cacheDir,
-      ' --user $(id -u)',
-      ' --volume ' + runtime.cacheDir + ':' + runtime.cacheDir,
-      ' --volume ' + runtime.projectDir + ':' + runtime.projectDir,
-      ' kevinvz/lanyon:' + ver + '',
-      ' sh'
-    ].join('')
-
-    rubyExe = [
-      'docker run',
-      ' --rm',
-      ' --workdir ' + runtime.cacheDir,
-      ' --user $(id -u)',
-      ' --volume ' + runtime.cacheDir + ':' + runtime.cacheDir,
-      ' --volume ' + runtime.projectDir + ':' + runtime.projectDir,
-      ' kevinvz/lanyon:' + ver + '',
-      ' ruby'
-    ].join('')
-
-    jekyllExe = [
-      'docker run',
-      ' --rm',
-      ' --workdir ' + runtime.cacheDir,
-      ' --user $(id -u)',
-      ' --volume ' + runtime.cacheDir + ':' + runtime.cacheDir,
-      ' --volume ' + runtime.projectDir + ':' + runtime.projectDir,
-      ' kevinvz/lanyon:' + ver + '',
-      ' bundler exec jekyll'
-    ].join('')
+    runtime.prerequisites.sh.exe = utils.dockerCmd(runtime, '', 'sh')
+    runtime.prerequisites.ruby.exe = utils.dockerCmd(runtime, '', 'ruby')
+    runtime.prerequisites.jekyll.exe = utils.dockerCmd(runtime, '', 'bundler exec jekyll')
   } else {
-    if (utils.satisfied('ruby', 'vendor/bin/ruby -v', 'ruby-shim')) {
-      rubyFrom = 'shim'
-      rubyExe = 'vendor/bin/ruby'
-      rubyVerify = rubyExe + ' -v' + rubyExeSuffix
-      rubyWriteShim = false
-    } else if (utils.satisfied('ruby', undefined, 'system')) {
-      rubyFrom = 'system'
-      gemExe = '$(which gem)'
-      bundlerExe = '$(which bundler)'
+    if (utils.satisfied(runtime, 'ruby', 'vendor/bin/ruby -v', 'ruby-shim')) {
+      rubyProvider = 'shim'
+      runtime.prerequisites.ruby.exe = 'vendor/bin/ruby'
+      runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + ' -v' + runtime.prerequisites.ruby.exeSuffix
+      runtime.prerequisites.ruby.writeShim = false
+    } else if (utils.satisfied(runtime, 'ruby', undefined, 'system')) {
+      rubyProvider = 'system'
+      runtime.prerequisites.gem.exe = '$(which gem)'
+      runtime.prerequisites.bundler.exe = '$(which bundler)'
     } else {
       var rubyCfg = runtime.prerequisites.ruby
       // rbenv does not offer installing of rubies by default, it will also require the install plugin:
-      if (utils.satisfied('rbenv') && shell.exec('rbenv install --help', { 'silent': false }).code === 0) {
-        rubyFrom = 'rbenv'
+      if (utils.satisfied(runtime, 'rbenv') && shell.exec('rbenv install --help', { 'silent': false }).code === 0) {
+        rubyProvider = 'rbenv'
         utils.fatalExe('bash -c "rbenv install --skip-existing \'' + rubyCfg.preferred + '\'"')
-        rubyExe = 'bash -c "eval $(rbenv init -) && rbenv shell \'' + rubyCfg.preferred + '\' &&'
-        rubyExeSuffix = '"'
-        rubyVerify = rubyExe + 'ruby -v' + rubyExeSuffix
-      } else if (utils.satisfied('rvm')) {
-        rubyFrom = 'rvm'
+        runtime.prerequisites.ruby.exe = 'bash -c "eval $(rbenv init -) && rbenv shell \'' + rubyCfg.preferred + '\' &&'
+        runtime.prerequisites.ruby.exeSuffix = '"'
+        runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + 'ruby -v' + runtime.prerequisites.ruby.exeSuffix
+      } else if (utils.satisfied(runtime, 'rvm')) {
+        rubyProvider = 'rvm'
         utils.fatalExe('bash -c "rvm install \'' + rubyCfg.preferred + '\'"')
-        rubyExe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
-        rubyExeSuffix = '"'
-        rubyVerify = rubyExe + ' ruby -v' + rubyExeSuffix
+        runtime.prerequisites.ruby.exe = 'bash -c "rvm \'' + rubyCfg.preferred + '\' exec'
+        runtime.prerequisites.ruby.exeSuffix = '"'
+        runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + ' ruby -v' + runtime.prerequisites.ruby.exeSuffix
       } else {
         console.error('Ruby version not satisfied, and exhausted ruby version installer helpers (rvm, rbenv, brew)')
         process.exit(1)
       }
     }
 
-    if (!utils.satisfied('ruby', rubyVerify, 'verify')) {
+    if (!utils.satisfied(runtime, 'ruby', runtime.prerequisites.ruby.versionCheck, 'verify')) {
       console.error('Ruby should have been installed but still not satisfied')
       process.exit(1)
     }
 
-    bundlerExe = rubyExe + ' ' + bundlerExe
-    if (!utils.satisfied('bundler', bundlerExe + ' -v' + rubyExeSuffix)) {
+    runtime.prerequisites.bundler.exe = runtime.prerequisites.ruby.exe + ' ' + runtime.prerequisites.bundler.exe
+    if (!utils.satisfied(runtime, 'bundler', runtime.prerequisites.bundler.exe + ' -v' + runtime.prerequisites.ruby.exeSuffix)) {
       var bunderInstaller = []
 
-      bunderInstaller.push(rubyExe + ' ' + gemExe + ' install')
-      if (rubyFrom === 'system') {
+      bunderInstaller.push(runtime.prerequisites.ruby.exe + ' ' + runtime.prerequisites.gem.exe + ' install')
+      if (rubyProvider === 'system') {
         bunderInstaller.push(' --bindir vendor/bin')
         bunderInstaller.push(' --install-dir vendor/gem_home')
       }
@@ -142,14 +81,12 @@ module.exports = function (runtime, cb) {
       bunderInstaller.push(' --no-ri')
       bunderInstaller.push(' bundler')
       bunderInstaller.push(' -v \'' + runtime.prerequisites.bundler.preferred + '\'')
-      bunderInstaller.push(rubyExeSuffix)
+      bunderInstaller.push(runtime.prerequisites.ruby.exeSuffix)
 
       utils.fatalExe(bunderInstaller.join(''))
 
-      // rubyExeSuffix = ''
-
-      if (rubyFrom === 'system') {
-        bundlerExe = 'vendor/bin/bundler'
+      if (rubyProvider === 'system') {
+        runtime.prerequisites.bundler.exe = 'vendor/bin/bundler'
         passEnv.GEM_HOME = 'vendor/gem_home'
         passEnv.GEM_PATH = 'vendor/gem_home'
 
@@ -162,49 +99,53 @@ module.exports = function (runtime, cb) {
           envPrefix = 'env ' + vals.join(' ') + ' '
         }
 
-        bundlerExe = envPrefix + bundlerExe
+        runtime.prerequisites.bundler.exe = envPrefix + runtime.prerequisites.bundler.exe
       }
     }
 
     process.stdout.write('--> Configuring: Bundler ... ')
     if (os.platform() === 'darwin' && shell.exec('brew -v', { 'silent': true }).code === 0) {
-      utils.fatalExe('brew install libxml2; ' + bundlerExe + ' config build.nokogiri --use-system-libraries --with-xml2-include=$(brew --prefix libxml2)/include/libxml2' + rubyExeSuffix)
+      utils.fatalExe('brew install libxml2; ' + runtime.prerequisites.bundler.exe + ' config build.nokogiri --use-system-libraries --with-xml2-include=$(brew --prefix libxml2)/include/libxml2' + runtime.prerequisites.ruby.exeSuffix)
     } else {
-      utils.fatalExe(bundlerExe + ' config build.nokogiri --use-system-libraries' + rubyExeSuffix)
+      utils.fatalExe(runtime.prerequisites.bundler.exe + ' config build.nokogiri --use-system-libraries' + runtime.prerequisites.ruby.exeSuffix)
     }
 
-    jekyllExe = bundlerExe + ' exec jekyll'
+    runtime.prerequisites.jekyll.exe = runtime.prerequisites.bundler.exe + ' exec jekyll'
 
     process.stdout.write('--> Installing: Gems ... ')
-    utils.fatalExe(bundlerExe + ' install --binstubs=\'vendor/bin\' --path \'vendor/bundler\'' + rubyExeSuffix + ' || ' + bundlerExe + ' update' + rubyExeSuffix)
+    utils.fatalExe(runtime.prerequisites.bundler.exe + ' install --binstubs=\'vendor/bin\' --path \'vendor/bundler\'' + runtime.prerequisites.ruby.exeSuffix + ' || ' + runtime.prerequisites.bundler.exe + ' update' + runtime.prerequisites.ruby.exeSuffix)
   }
 
-  if (dashWriteShim) {
-    var dashShim = envPrefix + dashExe.trim() + ' $*' + dashExeSuffix + '\n'
-    var dashShimPath = path.join(runtime.binDir, 'dash')
-    process.stdout.write('--> Installing: dash shim to: ' + dashShimPath + ' ... ')
+  runtime.prerequisites.forEach(function (prerequisite) {
+
+  })
+
+  if (runtime.prerequisites.sh.writeShim) {
+    var dashShim = envPrefix + runtime.prerequisites.sh.exe.trim() + ' $*' + runtime.prerequisites.sh.exeSuffix + '\n'
+    var dashShimPath = path.join(runtime.binDir, 'sh')
+    process.stdout.write('--> Installing: sh shim to: ' + dashShimPath + ' ... ')
     fs.writeFileSync(dashShimPath, dashShim, { 'encoding': 'utf-8', 'mode': '755' })
     console.log(yes)
   }
 
-  if (rubyWriteShim) {
-    var rubyShim = envPrefix + rubyExe.trim() + ' $*' + rubyExeSuffix + '\n'
+  if (runtime.prerequisites.ruby.writeShim) {
+    var rubyShim = envPrefix + runtime.prerequisites.ruby.exe.trim() + ' $*' + runtime.prerequisites.ruby.exeSuffix + '\n'
     var rubyShimPath = path.join(runtime.binDir, 'ruby')
     process.stdout.write('--> Installing: ruby shim to: ' + rubyShimPath + ' ... ')
     fs.writeFileSync(rubyShimPath, rubyShim, { 'encoding': 'utf-8', 'mode': '755' })
     console.log(yes)
   }
 
-  if (bundlerWriteShim) {
-    var bundlerShim = bundlerExe.trim() + ' $*' + rubyExeSuffix + '\n'
+  if (runtime.prerequisites.bundler.writeShim) {
+    var bundlerShim = runtime.prerequisites.bundler.exe.trim() + ' $*' + runtime.prerequisites.ruby.exeSuffix + '\n'
     var bundlerShimPath = path.join(runtime.binDir, 'bundler')
     process.stdout.write('--> Installing: bundler shim to: ' + bundlerShimPath + ' ... ')
     fs.writeFileSync(bundlerShimPath, bundlerShim, { 'encoding': 'utf-8', 'mode': '755' })
     console.log(yes)
   }
 
-  if (jekyllWriteShim) {
-    var jekyllShim = jekyllExe.trim() + ' $*' + rubyExeSuffix + '\n'
+  if (runtime.prerequisites.jekyll.writeShim) {
+    var jekyllShim = runtime.prerequisites.jekyll.exe.trim() + ' $*' + runtime.prerequisites.ruby.exeSuffix + '\n'
     var jekyllShimPath = path.join(runtime.binDir, 'jekyll')
     debug(jekyllShim)
     process.stdout.write('--> Installing: jekyll shim to: ' + jekyllShimPath + ' ... ')

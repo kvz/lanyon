@@ -10,10 +10,7 @@
 // https://github.com/gowravshekar/font-awesome-webpack
 
 var _ = require('lodash')
-var debug = require('depurar')('lanyon')
 var path = require('path')
-var fs = require('fs')
-var shell = require('shelljs')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var webpack = require('webpack')
 var webpackDevMiddleware = require('webpack-dev-middleware')
@@ -26,6 +23,7 @@ runtime.lanyonDir = __dirname
 runtime.lanyonEnv = process.env.LANYON_ENV || 'development'
 runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 var lanyonPackage = require(runtime.lanyonPackageFile)
+runtime.lanyonVersion = lanyonPackage.version
 
 runtime.projectDir = process.env.LANYON_PROJECT || process.cwd()
 runtime.projectPackageFile = path.join(runtime.projectDir, 'package.json')
@@ -39,6 +37,7 @@ try {
   projectPackage = {}
 }
 
+runtime.gems = _.defaults(_.get(projectPackage, 'lanyon.gems') || {}, _.get(lanyonPackage, 'lanyon.gems'))
 runtime = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
 
 runtime.assetsSourceDir = path.join(runtime.projectDir, 'assets')
@@ -47,11 +46,39 @@ runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
 
 runtime.publicPath = '/assets/build/'
 
-runtime.enginesOnly = (process.env.LANYON_ONLY || '')
-runtime.enginesSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
+runtime.rubyProvidersOnly = (process.env.LANYON_ONLY || '')
+runtime.rubyProvidersSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
 
 runtime.isDev = runtime.lanyonEnv === 'development'
 runtime.isHotLoading = runtime.isDev && ['serve', 'start'].indexOf(process.argv[2]) !== -1
+
+// Set prerequisite defaults
+for (var name in runtime.prerequisites) {
+  if (!runtime.prerequisites[name].exeSuffix) {
+    runtime.prerequisites[name].exeSuffix = ''
+  }
+  if (!runtime.prerequisites[name].exe) {
+    runtime.prerequisites[name].exe = name
+  }
+  if (!runtime.prerequisites[name].versionCheck) {
+    runtime.prerequisites[name].versionCheck = runtime.prerequisites[name].exe + ' -v'
+  }
+}
+
+// Determine rubyProvider sources to traverse
+var allApps = [ 'system', 'docker', 'rbenv', 'rvm', 'ruby-shim' ]
+if (runtime.rubyProvidersOnly === 'auto-all') {
+  runtime.rubyProvidersOnly = ''
+}
+
+if (runtime.rubyProvidersOnly) {
+  runtime.rubyProvidersSkip = []
+  allApps.forEach(function (app) {
+    if (app !== runtime.rubyProvidersOnly) {
+      runtime.rubyProvidersSkip.push(app)
+    }
+  })
+}
 
 var cfg = {
   webpack: {

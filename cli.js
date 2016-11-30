@@ -21,14 +21,11 @@ try {
   }
 }
 
-var spawn = require('child_process').spawn
-var fs = require('fs')
+var spawnSync = require('child_process').spawnSync
 var _ = require('underscore')
-var path = require('path')
-var shell = require('shelljs')
 var cfg = require('./config')
+var utils = require('./utils')
 var runtime = cfg.runtime
-var nodemon = cfg.nodemon
 // var debug = require('depurar')('lanyon')
 
 var scripts = {
@@ -46,38 +43,20 @@ var scripts = {
 var cmdName = process.argv[2]
 var cmd = scripts[cmdName]
 
-fs.writeFileSync(runtime.cacheDir + '/jekyll.config.yml', '', 'utf-8') // <-- nothing yet but a good place to weak Jekyll in the future
-fs.writeFileSync(runtime.cacheDir + '/nodemon.config.json', JSON.stringify(nodemon, null, '  '), 'utf-8')
-fs.writeFileSync(runtime.cacheDir + '/full-config-dump.json', JSON.stringify(cfg, null, '  '), 'utf-8')
-fs.writeFileSync(runtime.cacheDir + '/browsersync.config.js', 'module.exports = require("' + runtime.lanyonDir + '/config.js").browsersync', 'utf-8')
-fs.writeFileSync(runtime.cacheDir + '/webpack.config.js', 'module.exports = require("' + runtime.lanyonDir + '/config.js").webpack', 'utf-8')
-var buf = 'source \'https://rubygems.org\'\n'
-for (var name in runtime.gems) {
-  var version = runtime.gems[name]
-  buf += 'gem \'' + name + '\', \'' + version + '\'\n'
-}
-fs.writeFileSync(path.join(runtime.cacheDir, 'Gemfile'), buf, 'utf-8')
-
+utils.writeConfig(cfg)
 if (cmdName.match(/^build/)) {
-  if (!shell.test('-d', runtime.assetsBuildDir)) {
-    shell.mkdir('-p', runtime.assetsBuildDir)
-    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.relative(runtime.projectDir, runtime.assetsBuildDir))
-  }
-  if (!shell.test('-d', runtime.cacheDir)) {
-    shell.mkdir('-p', runtime.cacheDir)
-    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.relative(runtime.projectDir, runtime.cacheDir))
-  }
+  utils.initProject(runtime)
 
   if (runtime.prebuild) {
     console.log('--> Running prebuild: ' + runtime.prebuild)
-    shell.exec('cd ' + runtime.projectDir + ' && ' + runtime.prebuild)
+    spawnSync('sh', ['-c', 'cd ' + runtime.projectDir + ' && ' + runtime.prebuild], {
+      'stdio': 'inherit',
+      'env': env,
+      'cwd': runtime.cacheDir // <-- @todo: leading to: Error: ENOENT: no such file or directory, open '/Users/kvz/code/frey-website/node_modules/lanyon/.lanyon/jekyll.config.yml'
+    })
+    console.log('--> prebuild done. ')
   }
 }
-
-var env = process.env
-env.NODE_ENV = runtime.lanyonEnv
-env.JEKYLL_ENV = runtime.lanyonEnv
-env.LANYON_PROJECT = runtime.projectDir // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
 
 if (_.isFunction(cmd)) {
   cmd(runtime, function (err) {
@@ -85,10 +64,10 @@ if (_.isFunction(cmd)) {
       console.error(cmdName + ' function exited with error ' + err)
       process.exit(1)
     }
-    console.log(cmdName + 'done. ')
+    console.log('--> ' + cmdName + 'done. ')
   })
 } else if (_.isString(cmd)) {
-  cmd = cmd.replace(/\[lanyon]/g, 'node ' + __filename)
+  cmd = cmd.replace(/\[lanyon]/g, 'node ' + __filename) // eslint-disable-line no-path-concat
   cmd = cmd.replace(/\[lanyonDir]/g, runtime.lanyonDir)
   cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
   cmd = cmd.replace(/\[projectDir]/g, runtime.projectDir)
@@ -100,20 +79,18 @@ if (_.isFunction(cmd)) {
   cmd = cmd.replace(/(\s|^)parallelshell(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/parallelshell$2')
   cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, '$1' + runtime.cacheDir + '/vendor/bin/jekyll$2')
 
+  var env = process.env
+  env.NODE_ENV = runtime.lanyonEnv
+  env.JEKYLL_ENV = runtime.lanyonEnv
+  env.LANYON_PROJECT = runtime.projectDir // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
+
   console.log('--> Running cmd: ' + cmd)
-  var child = spawn('sh', ['-c', cmd], {
+  spawnSync('sh', ['-c', cmd], {
     'stdio': 'inherit',
     'env': env,
     'cwd': runtime.cacheDir // <-- @todo: leading to: Error: ENOENT: no such file or directory, open '/Users/kvz/code/frey-website/node_modules/lanyon/.lanyon/jekyll.config.yml'
   })
-
-  child.on('exit', function (code) {
-    if (code !== 0) {
-      console.error(cmdName + ' child process exited with code ' + code)
-      process.exit(1)
-    }
-    console.log(cmdName + 'done. ')
-  })
+  console.log('--> ' + cmdName + 'done. ')
 } else {
-  console.error('"' + cmdName + '" is not a valid Lanyon command. Pick from: ' + Object.keys(scripts).join(', ') + '.')
+  console.error('--> "' + cmdName + '" is not a valid Lanyon command. Pick from: ' + Object.keys(scripts).join(', ') + '.')
 }

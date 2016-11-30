@@ -1,2 +1,3 @@
 node_modules/
-vendor/
+example/assets/build/
+example/_site/

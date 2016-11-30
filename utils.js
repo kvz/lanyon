@@ -1,8 +1,54 @@
 var semver = require('semver')
 var chalk = require('chalk')
+var fs = require('fs')
+var path = require('path')
 var shell = require('shelljs')
 var no = chalk.red('✗ ')
 var yes = chalk.green('✓ ')
+
+module.exports.dockerCmd = function (runtime, flags, cmd) {
+  return [
+    'docker run',
+    ' ' + flags,
+    ' --rm',
+    ' --workdir ' + runtime.cacheDir,
+    ' --user $(id -u)',
+    ' --volume ' + runtime.cacheDir + ':' + runtime.cacheDir,
+    ' --volume ' + runtime.projectDir + ':' + runtime.projectDir,
+    ' kevinvz/lanyon:' + runtime.lanyonVersion + '',
+    ' ' + cmd
+  ].join('')
+}
+
+module.exports.initProject = function (runtime) {
+  if (!shell.test('-d', runtime.assetsBuildDir)) {
+    shell.mkdir('-p', runtime.assetsBuildDir)
+    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.relative(runtime.projectDir, runtime.assetsBuildDir))
+  }
+  if (!shell.test('-d', runtime.cacheDir)) {
+    shell.mkdir('-p', runtime.cacheDir)
+    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.relative(runtime.projectDir, runtime.cacheDir))
+  }
+  if (!shell.test('-d', runtime.binDir)) {
+    shell.mkdir('-p', runtime.binDir)
+    shell.exec('cd ' + path.dirname(runtime.binDir) + ' && git ignore ' + path.relative(runtime.projectDir, runtime.binDir))
+  }
+}
+
+module.exports.writeConfig = function (cfg) {
+  fs.writeFileSync(cfg.runtime.cacheDir + '/jekyll.config.yml', '', 'utf-8') // <-- nothing yet but a good place to weak Jekyll in the future
+  fs.writeFileSync(cfg.runtime.cacheDir + '/nodemon.config.json', JSON.stringify(cfg.nodemon, null, '  '), 'utf-8')
+  fs.writeFileSync(cfg.runtime.cacheDir + '/full-config-dump.json', JSON.stringify(cfg, null, '  '), 'utf-8')
+  fs.writeFileSync(cfg.runtime.cacheDir + '/browsersync.config.js', 'module.exports = require("' + cfg.runtime.lanyonDir + '/config.js").browsersync', 'utf-8')
+  fs.writeFileSync(cfg.runtime.cacheDir + '/webpack.config.js', 'module.exports = require("' + cfg.runtime.lanyonDir + '/config.js").webpack', 'utf-8')
+  shell.cp(path.join(cfg.runtime.lanyonDir, 'Dockerfile', path.join(cfg.runtime.cacheDir, 'Dockerfile')))
+  var buf = 'source \'https://rubygems.org\'\n'
+  for (var name in cfg.runtime.gems) {
+    var version = cfg.runtime.gems[name]
+    buf += 'gem \'' + name + '\', \'' + version + '\'\n'
+  }
+  fs.writeFileSync(path.join(cfg.runtime.cacheDir, 'Gemfile'), buf, 'utf-8')
+}
 
 module.exports.fatalExe = function (cmd) {
   var opts = { 'silent': true }
@@ -23,7 +69,7 @@ module.exports.fatalExe = function (cmd) {
   return p.stdout.trim()
 }
 
-module.exports.satisfied = function (app, cmd, checkOn) {
+module.exports.satisfied = function (runtime, app, cmd, checkOn) {
   var tag = ''
   if (checkOn === undefined) {
     checkOn = app
@@ -33,7 +79,7 @@ module.exports.satisfied = function (app, cmd, checkOn) {
 
   process.stdout.write('--> Checking: ' + tag + app + ' \'' + runtime.prerequisites[app].range + '\' ... ')
 
-  if (optSkip.indexOf(checkOn) !== -1) {
+  if (runtime.rubyProvidersSkip.indexOf(checkOn) !== -1) {
     console.log(no + ' (disabled via LANYON_SKIP)')
     return false
   }

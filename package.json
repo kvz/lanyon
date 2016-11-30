@@ -24,17 +24,18 @@
       "app"
     ],
     "prerequisites": {
-      "bundler": {
-        "preferred": "1.13.0",
-        "range": ">=1"
-      },
-      "ruby": {
-        "preferred": "2.3.3",
-        "range": ">=2"
+      "sh": {
+        "preferred": "0.5.7",
+        "range": ">=0.0.1",
+        "writeShim": true
       },
       "node": {
         "preferred": "4.6.1",
         "range": ">=0.10"
+      },
+      "docker": {
+        "preferred": "1.12.3",
+        "range": ">=1.12"
       },
       "rbenv": {
         "preferred": "1.0.0",
@@ -44,9 +45,24 @@
         "preferred": "1.27.0",
         "range": ">=1"
       },
-      "docker": {
-        "preferred": "1.12.3",
-        "range": ">=1.12"
+      "ruby": {
+        "preferred": "2.3.3",
+        "range": ">=2",
+        "writeShim": true
+      },
+      "gem": {
+        "preferred": "2.0.14.1",
+        "range": ">=2"
+      },
+      "bundler": {
+        "preferred": "1.13.0",
+        "range": ">=1",
+        "writeShim": true
+      },
+      "jekyll": {
+        "preferred": "3.3.0",
+        "range": ">=3",
+        "writeShim": true
       }
     },
     "ports": {
