@@ -28,14 +28,21 @@ if (cmdName.match(/^build|postinstall/)) {
   utils.initProject(runtime)
 }
 
-if (cmdName.match(/^build/) && runtime.prebuild) {
-  console.log('--> Running prebuild: ' + runtime.prebuild)
-  spawnSync('sh', ['-c', 'cd ' + runtime.projectDir + ' && ' + runtime.prebuild], {
-    'stdio': 'inherit',
-    'env': env,
-    'cwd': runtime.cacheDir // <-- @todo: leading to: Error: ENOENT: no such file or directory, open '/Users/kvz/code/frey-website/node_modules/lanyon/.lanyon/jekyll.config.yml'
+if (cmdName.match(/^build/)) {
+  ['prebuild', 'prebuild:production', 'prebuild:development'].forEach(function (hook) {
+    if (runtime[hook]) {
+      var needEnv = hook.split(':')[1]
+      if (!needEnv || runtime.lanyonEnv === needEnv) {
+        console.log('--> Running ' + hook + ': ' + runtime[hook])
+        spawnSync('sh', ['-c', 'cd ' + runtime.projectDir + ' && ' + runtime[hook]], {
+          'stdio': 'inherit',
+          'env': env,
+          'cwd': runtime.cacheDir // <-- @todo: leading to: Error: ENOENT: no such file or directory, open '/Users/kvz/code/frey-website/node_modules/lanyon/.lanyon/jekyll.config.yml'
+        })
+        console.log('--> ' + hook + ' done. ')
+      }
+    }
   })
-  console.log('--> prebuild done. ')
 }
 
 utils.writeConfig(config)

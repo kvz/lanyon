@@ -6,11 +6,21 @@
 - [ ] jRuby support https://spin.atomicobject.com/2013/04/24/bundler-jruby-complete/
 - [ ] Use orderoccurance in dev
 - [ ] Consider shipping all of Lanyon inside a Docker container
+- [ ] Utilize Webpack `--production` flag
+
+# v0.0.11
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.10...v0.0.11)
+
+- [x] Add support for `production`-or-`development`-only hooks
+- [x] Add coffeescript support
+- [x] Add less support
 
 # v0.0.10
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.9...v0.0.10)
 
+- [x] Add support for configurable projectDir (so you can have a `./website` or `./docs` in your project)
 - [x] Refactoring
 
 # v0.0.9

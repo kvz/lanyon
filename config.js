@@ -134,6 +134,11 @@ var cfg = {
             exclude: /(node_modules|bower_components|vendor)/
           },
           {
+            test: /\.coffee$$/,
+            loader: 'coffee-loader',
+            exclude: /(node_modules|bower_components|vendor)/
+          },
+          {
             test: /\.(png|gif|jpe?g)$/,
             loader: 'url-loader?limit=8096',
             exclude: /(node_modules|bower_components|vendor)/
@@ -155,10 +160,20 @@ var cfg = {
             loader: 'style!css?sourceMap!sass?sourceMap&sourceComments',
             exclude: /(node_modules|bower_components|vendor)/
           })
+          loaders.push({
+            test: /\.less$/,
+            loader: 'style-loader!css-loader!less-loader',
+            exclude: /(node_modules|bower_components|vendor)/
+          })
         } else {
           loaders.push({
             test: /\.scss$/,
             loader: ExtractTextPlugin.extract('css!sass'),
+            exclude: /(node_modules|bower_components|vendor)/
+          })
+          loaders.push({
+            test: /\.less/,
+            loader: ExtractTextPlugin.extract('css-loader?sourceMap!less-loader?sourceMap'),
             exclude: /(node_modules|bower_components|vendor)/
           })
         }
