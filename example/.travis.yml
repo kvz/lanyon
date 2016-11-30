@@ -7,7 +7,7 @@ script: true # <-- @todo we can test here
 deploy:
   skip_cleanup: true
   provider: script
-  script: .lanyon/vendor/bin/deploy # <-- this calls 'npm run build:production && npm run deploy'. Travis does not allow commands, only files here..
+  script: .lanyon/bin/deploy # <-- this calls 'npm run build:production && npm run deploy'. Travis does not allow commands, only files here..
   on:
     branch: master
     condition: $TRAVIS_OS_NAME = linux

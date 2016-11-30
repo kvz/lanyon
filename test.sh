@@ -114,7 +114,7 @@ EOF
 
   for shim in "jekyll" "bundler" "ruby"; do
     echo "--> Showing shim ${shim} contents:"
-    cat .lanyon/vendor/bin/${shim}
+    cat .lanyon/bin/${shim}
   done
 
   echo "--> Building site for 'development' in '${projectDir}'"

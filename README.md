@@ -117,7 +117,7 @@ script: true # <-- @todo we can test here
 deploy:
   skip_cleanup: true
   provider: script
-  script: .lanyon/vendor/bin/deploy # <-- this calls 'npm run build:production && npm run deploy'. Travis does not allow commands, only files here..
+  script: .lanyon/bin/deploy # <-- this calls 'npm run build:production && npm run deploy'. Travis does not allow commands, only files here..
   on:
     branch: master
     condition: $TRAVIS_OS_NAME = linux
@@ -132,6 +132,8 @@ export GHPAGES_BOTEMAIL="<your github token email>"
 ```
 
 Type `git ignore env.sh`. You can now type `source env.sh` and use `npm run encrypt` to save these secrets on Travis CI.
+
+The GitHub token can be acquired by (creating a dedicated GitHub bot user and giving it access to your repo, logging in as it and) going to [Personal access tokens](https://github.com/settings/tokens). Click Generate new token, name it `Github pages deploy`, click `repo`, and hit Generate.
 
 ## About Ruby
 

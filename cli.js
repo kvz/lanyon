@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 var utils = require('./utils')
 utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'cli.js', require('./package.json').version)
-var spawnSync = require('child_process').spawnSync
 var _ = require('lodash')
 var config = require('./config')
 var runtime = config.runtime
@@ -44,11 +43,7 @@ if (cmdName.match(/^build/)) {
       var needEnv = hook.split(':')[1]
       if (!needEnv || runtime.lanyonEnv === needEnv) {
         console.log('--> Running ' + hook + ': ' + runtime[hook])
-        spawnSync('sh', ['-c', 'cd ' + runtime.projectDir + ' && ' + runtime[hook]], {
-          'stdio': 'inherit',
-          'env': env,
-          'cwd': runtime.cacheDir // <-- @todo: leading to: Error: ENOENT: no such file or directory, open '/Users/kvz/code/frey-website/node_modules/lanyon/.lanyon/jekyll.config.yml'
-        })
+        utils.passthru(runtime, 'cd ' + runtime.projectDir + ' && ' + runtime[hook], { 'env': env })
         console.log('--> ' + hook + ' done. ')
       }
     }
@@ -84,11 +79,7 @@ if (_.isFunction(cmd)) {
   env.LANYON_PROJECT = runtime.projectDir // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
 
   console.log('--> Running cmd: ' + cmd)
-  spawnSync('sh', ['-c', cmd], {
-    'stdio': 'inherit',
-    'env': env,
-    'cwd': runtime.cacheDir // <-- @todo: leading to: Error: ENOENT: no such file or directory, open '/Users/kvz/code/frey-website/node_modules/lanyon/.lanyon/jekyll.config.yml'
-  })
+  utils.passthru(runtime, cmd, {'env': env})
   console.log('--> ' + cmdName + ' done. ')
 } else {
   console.error('--> "' + cmdName + '" is not a valid Lanyon command. Pick from: ' + Object.keys(scripts).join(', ') + '.')

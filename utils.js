@@ -97,7 +97,11 @@ module.exports.passthru = function (runtime, cmd, opts) {
     'cwd': runtime.cacheDir
   })
 
-  spawnSync('sh', ['-c', cmd], opts)
+  var p = spawnSync('sh', ['-c', cmd], opts)
+  if (p.error || p.status !== 0) {
+    console.error('Error while executing "' + cmd + '". ')
+    process.exit(1)
+  }
 }
 
 module.exports.fatalExe = function (cmd) {

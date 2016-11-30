@@ -6,7 +6,7 @@ set -o nounset
 
 version=$(node -e 'console.log(require("./package.json").version)')
 
-for dir in ~/code/transloadify ~/code/tus.io ~/code/frey-website ~/code/bash3boilerplate; do
+for dir in ~/code/lanyon/example ~/code/transloadify ~/code/tus.io ~/code/frey-website ~/code/bash3boilerplate; do
   pushd ${dir}
     npm unlink lanyon || true
     yarn add lanyon@${version}

@@ -279,6 +279,10 @@ cfg.browsersync = {
 cfg.jekyll = {
   exclude: [
     'node_modules',
+    'env.sh',
+    'env.*.sh',
+    '.env.sh',
+    '.env.*.sh',
     '.lanyon'
   ]
 }
@@ -289,6 +293,10 @@ cfg.nodemon = {
   watch: runtime.projectDir,
   ignore: [
     '.lanyon/*',
+    'env.sh',
+    'env.*.sh',
+    '.env.sh',
+    '.env.*.sh',
     'assets/*',
     'vendor/**',
     'node_modules/*',
