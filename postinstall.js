@@ -150,7 +150,10 @@ module.exports = function (runtime, cb) {
   for (var name in runtime.prerequisites) {
     var p = runtime.prerequisites[name]
     if (p.writeShim) {
-      var shim = envPrefix + p.exe.trim() + ' $*' + p.exeSuffix + '\n'
+      var shim = envPrefix + p.exe.trim() + ' $*' + runtime.prerequisites.ruby.exeSuffix + '\n'
+      if (name === 'dash') {
+        shim = envPrefix + p.exe.trim() + ' $*' + runtime.prerequisites.dash.exeSuffix + '\n'
+      }
       var shimPath = path.join(runtime.binDir, name)
       process.stdout.write('--> Installing: ' + name + ' shim to: ' + shimPath + ' ... ')
       fs.writeFileSync(shimPath, shim, { 'encoding': 'utf-8', 'mode': '755' })
