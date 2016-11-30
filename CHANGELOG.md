@@ -9,11 +9,16 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
+# v0.0.16
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.15...v0.0.16)
+
+- [x] Use spawn-sync for older nodes
+
 # v0.0.15
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.14...v0.0.15)
 
-- [x] Use spawn-sync for older nodes
 - [x] Pathfinding fixes, added `gitRoot`
 - [x] Rename `vendor/bin` to `bin`
 - [x] Refactoring of deploy & encrypt
