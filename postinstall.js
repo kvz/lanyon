@@ -18,6 +18,7 @@ module.exports = function (runtime, cb) {
     shell.exit(1)
   }
 
+  // Detmine optimal rubyProvider and adjust shim configuration
   if (utils.satisfied(runtime, 'docker')) {
     rubyProvider = 'docker'
 
@@ -59,15 +60,19 @@ module.exports = function (runtime, cb) {
       }
     }
 
+    // Verify Ruby
     if (!utils.satisfied(runtime, 'ruby', runtime.prerequisites.ruby.versionCheck, 'verify')) {
       console.error('Ruby should have been installed but still not satisfied')
       process.exit(1)
     }
 
+    // Install Bundler
     runtime.prerequisites.bundler.exe = runtime.prerequisites.ruby.exe + ' ' + runtime.prerequisites.bundler.exe
     if (!utils.satisfied(runtime, 'bundler', runtime.prerequisites.bundler.exe + ' -v' + runtime.prerequisites.ruby.exeSuffix)) {
       var bunderInstaller = []
 
+      bunderInstaller.push('cd')
+      bunderInstaller.push(runtime.cacheDir)
       bunderInstaller.push(runtime.prerequisites.ruby.exe + ' ' + runtime.prerequisites.gem.exe + ' install')
       if (rubyProvider === 'system') {
         bunderInstaller.push('--bindir vendor/bin')
@@ -98,17 +103,24 @@ module.exports = function (runtime, cb) {
       }
     }
 
+    // Configure Bundler (nokogiri)
     process.stdout.write('--> Configuring: Bundler ... ')
     if (os.platform() === 'darwin' && shell.exec('brew -v', { 'silent': true }).code === 0) {
       utils.fatalExe([
+        'cd',
+        runtime.cacheDir,
+        '(',
         'brew install libxml2;',
         runtime.prerequisites.bundler.exe,
         'config build.nokogiri',
         '--use-system-libraries',
-        '--with-xml2-include=$(brew --prefix libxml2)/include/libxml2' + runtime.prerequisites.ruby.exeSuffix
+        '--with-xml2-include=$(brew --prefix libxml2)/include/libxml2' + runtime.prerequisites.ruby.exeSuffix,
+        ')'
       ])
     } else {
       utils.fatalExe([
+        'cd',
+        runtime.cacheDir,
         runtime.prerequisites.bundler.exe,
         'config build.nokogiri',
         '--use-system-libraries' + runtime.prerequisites.ruby.exeSuffix
@@ -117,18 +129,24 @@ module.exports = function (runtime, cb) {
 
     runtime.prerequisites.jekyll.exe = runtime.prerequisites.bundler.exe + ' exec jekyll'
 
+    // Install Gems from Gemfile bundle
     process.stdout.write('--> Installing: Gems ... ')
     utils.fatalExe([
+      'cd',
+      runtime.cacheDir,
+      '(',
       runtime.prerequisites.bundler.exe,
       'install',
       '--binstubs=\'vendor/bin\'',
       '--path \'vendor/bundler\'' + runtime.prerequisites.ruby.exeSuffix,
       '||',
       runtime.prerequisites.bundler.exe,
-      'update' + runtime.prerequisites.ruby.exeSuffix
+      'update' + runtime.prerequisites.ruby.exeSuffix,
+      ')'
     ])
   }
 
+  // Write shims
   for (var name in runtime.prerequisites) {
     var p = runtime.prerequisites[name]
     if (p.writeShim) {
