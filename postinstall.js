@@ -73,6 +73,7 @@ module.exports = function (runtime, cb) {
 
       bunderInstaller.push('cd')
       bunderInstaller.push(runtime.cacheDir)
+      bunderInstaller.push('&&')
       bunderInstaller.push(runtime.prerequisites.ruby.exe + ' ' + runtime.prerequisites.gem.exe + ' install')
       if (rubyProvider === 'system') {
         bunderInstaller.push('--bindir vendor/bin')
@@ -109,6 +110,7 @@ module.exports = function (runtime, cb) {
       utils.fatalExe([
         'cd',
         runtime.cacheDir,
+        '&&',
         '(',
         'brew install libxml2;',
         runtime.prerequisites.bundler.exe,
@@ -121,6 +123,7 @@ module.exports = function (runtime, cb) {
       utils.fatalExe([
         'cd',
         runtime.cacheDir,
+        '&&',
         runtime.prerequisites.bundler.exe,
         'config build.nokogiri',
         '--use-system-libraries' + runtime.prerequisites.ruby.exeSuffix
@@ -134,6 +137,7 @@ module.exports = function (runtime, cb) {
     utils.fatalExe([
       'cd',
       runtime.cacheDir,
+      '&&',
       '(',
       runtime.prerequisites.bundler.exe,
       'install',
