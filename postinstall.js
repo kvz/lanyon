@@ -2,9 +2,9 @@ var chalk = require('chalk')
 var path = require('path')
 var utils = require('./utils')
 var shell = require('shelljs')
-var debug = require('depurar')('lanyon')
 var os = require('os')
 var fs = require('fs')
+// var debug = require('depurar')('lanyon')
 
 var yes = chalk.green('✓ ')
 // var no = chalk.red('✗ ')
@@ -20,18 +20,14 @@ module.exports = function (runtime, cb) {
 
   if (utils.satisfied(runtime, 'docker')) {
     rubyProvider = 'docker'
-    // ' --interactive',
-    // ' --tty',
-    var ver = require(runtime.lanyonPackageFile).version
 
     if (process.env.DOCKER_BUILD === '1') {
-      shell.exec('docker build -t kevinvz/lanyon:' + ver + ' .')
-      shell.exec('docker push kevinvz/lanyon:' + ver + '')
+      shell.exec('docker build -t kevinvz/lanyon:' + runtime.lanyonVersion + ' .')
+      shell.exec('docker push kevinvz/lanyon:' + runtime.lanyonVersion + '')
     }
-
-    runtime.prerequisites.sh.exe = utils.dockerCmd(runtime, '', 'sh')
-    runtime.prerequisites.ruby.exe = utils.dockerCmd(runtime, '', 'ruby')
-    runtime.prerequisites.jekyll.exe = utils.dockerCmd(runtime, '', 'bundler exec jekyll')
+    runtime.prerequisites.sh.exe = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
+    runtime.prerequisites.ruby.exe = utils.dockerCmd(runtime, 'ruby')
+    runtime.prerequisites.jekyll.exe = utils.dockerCmd(runtime, 'bundler exec jekyll')
   } else {
     if (utils.satisfied(runtime, 'ruby', 'vendor/bin/ruby -v', 'ruby-shim')) {
       rubyProvider = 'shim'
@@ -74,16 +70,15 @@ module.exports = function (runtime, cb) {
 
       bunderInstaller.push(runtime.prerequisites.ruby.exe + ' ' + runtime.prerequisites.gem.exe + ' install')
       if (rubyProvider === 'system') {
-        bunderInstaller.push(' --bindir vendor/bin')
-        bunderInstaller.push(' --install-dir vendor/gem_home')
+        bunderInstaller.push('--bindir vendor/bin')
+        bunderInstaller.push('--install-dir vendor/gem_home')
       }
-      bunderInstaller.push(' --no-rdoc')
-      bunderInstaller.push(' --no-ri')
-      bunderInstaller.push(' bundler')
-      bunderInstaller.push(' -v \'' + runtime.prerequisites.bundler.preferred + '\'')
-      bunderInstaller.push(runtime.prerequisites.ruby.exeSuffix)
+      bunderInstaller.push('--no-rdoc')
+      bunderInstaller.push('--no-ri')
+      bunderInstaller.push('bundler')
+      bunderInstaller.push('-v \'' + runtime.prerequisites.bundler.preferred + '\'' + runtime.prerequisites.ruby.exeSuffix)
 
-      utils.fatalExe(bunderInstaller.join(''))
+      utils.fatalExe(bunderInstaller)
 
       if (rubyProvider === 'system') {
         runtime.prerequisites.bundler.exe = 'vendor/bin/bundler'
@@ -105,52 +100,44 @@ module.exports = function (runtime, cb) {
 
     process.stdout.write('--> Configuring: Bundler ... ')
     if (os.platform() === 'darwin' && shell.exec('brew -v', { 'silent': true }).code === 0) {
-      utils.fatalExe('brew install libxml2; ' + runtime.prerequisites.bundler.exe + ' config build.nokogiri --use-system-libraries --with-xml2-include=$(brew --prefix libxml2)/include/libxml2' + runtime.prerequisites.ruby.exeSuffix)
+      utils.fatalExe([
+        'brew install libxml2;',
+        runtime.prerequisites.bundler.exe,
+        'config build.nokogiri',
+        '--use-system-libraries',
+        '--with-xml2-include=$(brew --prefix libxml2)/include/libxml2' + runtime.prerequisites.ruby.exeSuffix
+      ])
     } else {
-      utils.fatalExe(runtime.prerequisites.bundler.exe + ' config build.nokogiri --use-system-libraries' + runtime.prerequisites.ruby.exeSuffix)
+      utils.fatalExe([
+        runtime.prerequisites.bundler.exe,
+        'config build.nokogiri',
+        '--use-system-libraries' + runtime.prerequisites.ruby.exeSuffix
+      ])
     }
 
     runtime.prerequisites.jekyll.exe = runtime.prerequisites.bundler.exe + ' exec jekyll'
 
     process.stdout.write('--> Installing: Gems ... ')
-    utils.fatalExe(runtime.prerequisites.bundler.exe + ' install --binstubs=\'vendor/bin\' --path \'vendor/bundler\'' + runtime.prerequisites.ruby.exeSuffix + ' || ' + runtime.prerequisites.bundler.exe + ' update' + runtime.prerequisites.ruby.exeSuffix)
+    utils.fatalExe([
+      runtime.prerequisites.bundler.exe,
+      'install',
+      '--binstubs=\'vendor/bin\'',
+      '--path \'vendor/bundler\'' + runtime.prerequisites.ruby.exeSuffix,
+      '||',
+      runtime.prerequisites.bundler.exe,
+      'update' + runtime.prerequisites.ruby.exeSuffix
+    ])
   }
 
-  runtime.prerequisites.forEach(function (prerequisite) {
-
-  })
-
-  if (runtime.prerequisites.sh.writeShim) {
-    var dashShim = envPrefix + runtime.prerequisites.sh.exe.trim() + ' $*' + runtime.prerequisites.sh.exeSuffix + '\n'
-    var dashShimPath = path.join(runtime.binDir, 'sh')
-    process.stdout.write('--> Installing: sh shim to: ' + dashShimPath + ' ... ')
-    fs.writeFileSync(dashShimPath, dashShim, { 'encoding': 'utf-8', 'mode': '755' })
-    console.log(yes)
-  }
-
-  if (runtime.prerequisites.ruby.writeShim) {
-    var rubyShim = envPrefix + runtime.prerequisites.ruby.exe.trim() + ' $*' + runtime.prerequisites.ruby.exeSuffix + '\n'
-    var rubyShimPath = path.join(runtime.binDir, 'ruby')
-    process.stdout.write('--> Installing: ruby shim to: ' + rubyShimPath + ' ... ')
-    fs.writeFileSync(rubyShimPath, rubyShim, { 'encoding': 'utf-8', 'mode': '755' })
-    console.log(yes)
-  }
-
-  if (runtime.prerequisites.bundler.writeShim) {
-    var bundlerShim = runtime.prerequisites.bundler.exe.trim() + ' $*' + runtime.prerequisites.ruby.exeSuffix + '\n'
-    var bundlerShimPath = path.join(runtime.binDir, 'bundler')
-    process.stdout.write('--> Installing: bundler shim to: ' + bundlerShimPath + ' ... ')
-    fs.writeFileSync(bundlerShimPath, bundlerShim, { 'encoding': 'utf-8', 'mode': '755' })
-    console.log(yes)
-  }
-
-  if (runtime.prerequisites.jekyll.writeShim) {
-    var jekyllShim = runtime.prerequisites.jekyll.exe.trim() + ' $*' + runtime.prerequisites.ruby.exeSuffix + '\n'
-    var jekyllShimPath = path.join(runtime.binDir, 'jekyll')
-    debug(jekyllShim)
-    process.stdout.write('--> Installing: jekyll shim to: ' + jekyllShimPath + ' ... ')
-    fs.writeFileSync(jekyllShimPath, jekyllShim, { 'encoding': 'utf-8', 'mode': '755' })
-    console.log(yes)
+  for (var name in runtime.prerequisites) {
+    var p = runtime.prerequisites[name]
+    if (p.writeShim) {
+      var shim = envPrefix + p.exe.trim() + ' $*' + p.exeSuffix + '\n'
+      var shimPath = path.join(runtime.binDir, name)
+      process.stdout.write('--> Installing: ' + name + ' shim to: ' + shimPath + ' ... ')
+      fs.writeFileSync(shimPath, shim, { 'encoding': 'utf-8', 'mode': '755' })
+      console.log(yes)
+    }
   }
 
   cb(null)

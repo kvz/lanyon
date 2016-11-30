@@ -54,11 +54,6 @@ mkdir -p "${projectDir}"
 projectDir="$(cd "${projectDir}" && pwd)" # we need to resolve this for docker. Readlink won't work on nested symlinks
 export LANYON_PROJECT=${projectDir}
 
-echo "--> Exporting lanyon link"
-pushd "${lanyonDir}"
-  npm link
-popd
-
 pushd "${projectDir}"
   echo "--> Setting up sample project"
   git init
@@ -110,12 +105,16 @@ title: Homepage
 Hello, world!
 EOF
 
+  echo "--> Exporting lanyon link"
+  pushd "${lanyonDir}"
+    npm link
+  popd
   echo "--> Importing lanyon link (like an npm install, but with local sources)"
   npm link lanyon
 
   for shim in "jekyll" "bundler" "ruby"; do
     echo "--> Showing shim ${shim} contents:"
-    cat node_modules/lanyon/vendor/bin/${shim}
+    cat .lanyon/vendor/bin/${shim}
   done
 
   echo "--> Building site for 'development' in '${projectDir}'"

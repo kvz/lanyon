@@ -1,30 +1,9 @@
 #!/usr/bin/env node
-// Switch to a local lanyon install if available
-var localLanyonPackage
-try {
-  localLanyonPackage = require('./node_modules/lanyon/package.json')
-} catch (e) {
-  localLanyonPackage = {}
-} finally {
-  if (localLanyonPackage.version) {
-    console.log('--> Switching to local lanyon install v' + localLanyonPackage.version)
-    var args = process.argv
-    var exe = args.shift()
-    for (var i in args) {
-      if (args[i] === __filename) {
-        args[i] = './node_modules/lanyon/cli.js'
-      }
-    }
-    var spawnSync = require('child_process').spawnSync
-    spawnSync(exe, args, { stdio: 'inherit' })
-    process.exit(0)
-  }
-}
-
+var utils = require('./utils')
+utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'cli.js')
 var spawnSync = require('child_process').spawnSync
 var _ = require('underscore')
 var cfg = require('./config')
-var utils = require('./utils')
 var runtime = cfg.runtime
 // var debug = require('depurar')('lanyon')
 
@@ -43,20 +22,21 @@ var scripts = {
 var cmdName = process.argv[2]
 var cmd = scripts[cmdName]
 
-utils.writeConfig(cfg)
-if (cmdName.match(/^build/)) {
+if (cmdName.match(/^build|postinstall/)) {
   utils.initProject(runtime)
-
-  if (runtime.prebuild) {
-    console.log('--> Running prebuild: ' + runtime.prebuild)
-    spawnSync('sh', ['-c', 'cd ' + runtime.projectDir + ' && ' + runtime.prebuild], {
-      'stdio': 'inherit',
-      'env': env,
-      'cwd': runtime.cacheDir // <-- @todo: leading to: Error: ENOENT: no such file or directory, open '/Users/kvz/code/frey-website/node_modules/lanyon/.lanyon/jekyll.config.yml'
-    })
-    console.log('--> prebuild done. ')
-  }
 }
+
+if (cmdName.match(/^build/) && runtime.prebuild) {
+  console.log('--> Running prebuild: ' + runtime.prebuild)
+  spawnSync('sh', ['-c', 'cd ' + runtime.projectDir + ' && ' + runtime.prebuild], {
+    'stdio': 'inherit',
+    'env': env,
+    'cwd': runtime.cacheDir // <-- @todo: leading to: Error: ENOENT: no such file or directory, open '/Users/kvz/code/frey-website/node_modules/lanyon/.lanyon/jekyll.config.yml'
+  })
+  console.log('--> prebuild done. ')
+}
+
+utils.writeConfig(cfg)
 
 if (_.isFunction(cmd)) {
   cmd(runtime, function (err) {
@@ -64,7 +44,7 @@ if (_.isFunction(cmd)) {
       console.error(cmdName + ' function exited with error ' + err)
       process.exit(1)
     }
-    console.log('--> ' + cmdName + 'done. ')
+    console.log('--> ' + cmdName + ' done. ')
   })
 } else if (_.isString(cmd)) {
   cmd = cmd.replace(/\[lanyon]/g, 'node ' + __filename) // eslint-disable-line no-path-concat
@@ -90,7 +70,7 @@ if (_.isFunction(cmd)) {
     'env': env,
     'cwd': runtime.cacheDir // <-- @todo: leading to: Error: ENOENT: no such file or directory, open '/Users/kvz/code/frey-website/node_modules/lanyon/.lanyon/jekyll.config.yml'
   })
-  console.log('--> ' + cmdName + 'done. ')
+  console.log('--> ' + cmdName + ' done. ')
 } else {
   console.error('--> "' + cmdName + '" is not a valid Lanyon command. Pick from: ' + Object.keys(scripts).join(', ') + '.')
 }
