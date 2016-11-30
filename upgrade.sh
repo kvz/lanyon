@@ -6,10 +6,11 @@ set -o nounset
 
 version=$(node -e 'console.log(require("./package.json").version)')
 
-for dir in ~/code/tus.io ~/code/frey-website ~/code/bash3boilerplate; do
+for dir in ~/code/transloadify ~/code/tus.io ~/code/frey-website ~/code/bash3boilerplate; do
   pushd ${dir}
-  yarn add lanyon@${version}
-  git commit -m "Upgrade Lanyon to v${version}" package.json yarn.lock
-  git pull && git push
+    npm unlink lanyon || true
+    yarn add lanyon@${version}
+    git commit -m "Upgrade Lanyon to v${version}" package.json yarn.lock
+    git pull && git push
   popd
 done
