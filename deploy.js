@@ -1,5 +1,6 @@
 var utils = require('./utils')
 var shell = require('shelljs')
+var fs = require('fs')
 
 module.exports = function (runtime, cb) {
   if (runtime.onTravis) {
@@ -23,11 +24,11 @@ module.exports = function (runtime, cb) {
   if (shell.test('-f', runtime.contentBuildDir + '/env.sh')) {
     return cb(new Error('I refuse to deploy if while ' + runtime.contentBuildDir + '/env.sh exists - secure your build first!'))
   }
-  if (!shell.test('-d', runtime.contentBuildDir + '.git')) {
+  if (!shell.test('-d', runtime.contentBuildDir + '/.git')) {
     utils.passthru(runtime, 'git init', { cwd: runtime.contentBuildDir })
   }
 
-  utils.passthru(runtime, 'echo "This branch is just a deploy target. Do not edit. You changes will be lost." |tee README.md', { cwd: runtime.contentBuildDir })
+  fs.writeFileSync(runtime.contentBuildDir + '/README.md', 'This branch is just a deploy target. Do not edit. You changes will be lost.', 'utf-8')
   utils.passthru(runtime, 'git checkout -B gh-pages', { cwd: runtime.contentBuildDir })
   utils.passthru(runtime, 'git add --all .', { cwd: runtime.contentBuildDir })
   utils.passthru(runtime, 'git commit -nm "Update website by $USER" || true', { cwd: runtime.contentBuildDir })
