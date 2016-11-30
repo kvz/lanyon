@@ -14,7 +14,7 @@
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
     "release:patch": "env SEMANTIC=patch npm run release",
-    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && git commit example/package.json -m 'Update version' && npm run container:build && git push && git push --tags && npm publish",
+    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm run container:build && git push && git push --tags && npm publish",
     "test": "./test.sh"
   },
   "lanyon": {
