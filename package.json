@@ -12,11 +12,10 @@
     "install": "node cli.js postinstall",
     "container:build": "env DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node cli.js postinstall",
     "version:current": "node -e 'console.log(require(\"./package.json\").version)'",
-    "version:replace": "replace '\\d+\\.\\d+\\.\\d+' \"$(npm run --silent version:current)\" example/package.json",
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
     "release:patch": "env SEMANTIC=patch npm run release",
-    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm run version:replace && git commit example/package.json -m 'Update version' && npm run container:build && git push && git push --tags && npm publish",
+    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && git commit example/package.json -m 'Update version' && npm run container:build && git push && git push --tags && npm publish",
     "test": "./test.sh"
   },
   "lanyon": {
