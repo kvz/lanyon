@@ -60,15 +60,15 @@ module.exports.dockerCmd = function (runtime, cmd, flags) {
 module.exports.initProject = function (runtime) {
   if (!shell.test('-d', runtime.assetsBuildDir)) {
     shell.mkdir('-p', runtime.assetsBuildDir)
-    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.relative(runtime.projectDir, runtime.assetsBuildDir))
+    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.relative(runtime.gitRoot, runtime.assetsBuildDir))
   }
   if (!shell.test('-d', runtime.cacheDir)) {
     shell.mkdir('-p', runtime.cacheDir)
-    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.relative(runtime.projectDir, runtime.cacheDir))
+    shell.exec('cd ' + path.dirname(runtime.cacheDir) + ' && git ignore ' + path.relative(runtime.gitRoot, runtime.cacheDir))
   }
   if (!shell.test('-d', runtime.binDir)) {
     shell.mkdir('-p', runtime.binDir)
-    shell.exec('cd ' + path.dirname(runtime.binDir) + ' && git ignore ' + path.relative(runtime.projectDir, runtime.binDir))
+    shell.exec('cd ' + path.dirname(runtime.binDir) + ' && git ignore ' + path.relative(runtime.gitRoot, runtime.binDir))
   }
 }
 

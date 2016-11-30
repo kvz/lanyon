@@ -42,6 +42,7 @@ runtime.isDev = runtime.lanyonEnv === 'development'
 runtime.isHotLoading = runtime.isDev && ['serve', 'start'].indexOf(process.argv[2]) !== -1
 
 runtime.projectDir = process.env.LANYON_PROJECT || process.cwd()
+runtime.gitRoot = process.cwd()
 runtime.projectPackageFile = path.join(runtime.projectDir, 'package.json')
 try {
   var projectPackage = require(runtime.projectPackageFile)
