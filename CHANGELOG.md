@@ -8,7 +8,7 @@
 - [ ] Consider shipping all of Lanyon inside a Docker container
 - [ ] Utilize Webpack `--production` flag
 
-# v0.0.12
+# v0.0.13
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.12...v0.0.13)
 
