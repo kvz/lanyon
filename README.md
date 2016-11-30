@@ -51,6 +51,7 @@ We'll be assuming:
 - Node modules in `./node_modules/`, Bower components in `./assets/bower_components` (if any)
 - `app.js` is the primary entry point
 - Our users already have a working Node.js setup and don't mind a `package.json` in their project
+- GitHub pages for deploys (with Travis CI as a builder)
 - Any environment other than `development` means `production`. This is to simplify, and if you have additional stages like 'test', you'll likely want to test as close to production as possible anyway.
 
 If you're thinking about submitting PRs for other features/flexibility, get in touch first please as we might not be on board.

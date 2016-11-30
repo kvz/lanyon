@@ -14,6 +14,8 @@ var scripts = {
   'build': '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
   'help': 'jekyll build --help',
   'postinstall': require('./postinstall'),
+  'deploy': require('./deploy'),
+  'encrypt': require('./encrypt'),
   'serve': 'browser-sync start --config [cacheDir]/browsersync.config.js',
   'start': '[lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
   'build:content:watch': 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"'

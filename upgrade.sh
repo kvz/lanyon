@@ -10,7 +10,8 @@ for dir in ~/code/transloadify ~/code/tus.io ~/code/frey-website ~/code/bash3boi
   pushd ${dir}
     npm unlink lanyon || true
     yarn add lanyon@${version}
-    git commit -m "Upgrade Lanyon to v${version}" package.json yarn.lock
+    git add package.json yarn.lock
+    git commit -m "Upgrade Lanyon to v${version}" || true
     git pull && git push
   popd
 done

@@ -87,6 +87,19 @@ module.exports.writeConfig = function (cfg) {
   fs.writeFileSync(path.join(cfg.runtime.cacheDir, 'Gemfile'), buf, 'utf-8')
 }
 
+module.exports.passthru = function (runtime, cmd, opts) {
+  if (_.isArray(cmd)) {
+    cmd = cmd.join(' ')
+  }
+
+  opts = _.defaults(opts, {
+    'stdio': 'inherit', // ignore
+    'cwd': runtime.cacheDir
+  })
+
+  spawnSync('sh', ['-c', cmd], opts)
+}
+
 module.exports.fatalExe = function (cmd) {
   if (_.isArray(cmd)) {
     cmd = cmd.join(' ')

@@ -11,6 +11,8 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.13...v0.0.14)
 
+- [x] Offer `lanyon deploy` for deploying onto GitHub Pages
+- [x] Offer `lanyon encrypt` for encrypting GitHub Pages deploy secrets onto Travis CI
 - [x] Fix broken shim quoting
 
 # v0.0.13

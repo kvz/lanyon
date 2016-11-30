@@ -32,6 +32,12 @@ runtime.publicPath = '/assets/build/'
 runtime.rubyProvidersOnly = (process.env.LANYON_ONLY || '')
 runtime.rubyProvidersSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
 
+runtime.onTravis = process.env.TRAVIS === 'true'
+runtime.ghPagesEnv = {
+  GHPAGES_URL: process.env.GHPAGES_URL,
+  GHPAGES_BOTNAME: process.env.GHPAGES_BOTNAME,
+  GHPAGES_BOTEMAIL: process.env.GHPAGES_BOTEMAIL
+}
 runtime.isDev = runtime.lanyonEnv === 'development'
 runtime.isHotLoading = runtime.isDev && ['serve', 'start'].indexOf(process.argv[2]) !== -1
 
