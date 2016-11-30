@@ -3,7 +3,7 @@
 Lanyon is a static site generator. It is a wrapper around Jekyll, Webpack, BrowserSync, Nodemon, in an attempt to give you the best of all worlds :earth_asia: :earth_americas: :earth_africa: (Instant asset building & refreshing, fast & reliable file watching). 
 Spitting in the face of unix philosophy, it tries to do many things, such as spell checking, and setting up a working Ruby environment. OTH, One might argue it's applying unix philosophy by making underlying tools do one thing only :thinking:
 
-Whichever the case, Lanyon is set out to achieve the highest level of convenience around building static websites. Getting started should be as simple as `npm install lanyon` and `lanyon start`.
+Whichever the case, Lanyon is certainly okay with embracing/sacrificing whichever philosophy so long as it amounts to THE highest level of convenience around building static websites. Getting started should be as simple as `npm install lanyon` and `lanyon start`.
 
 ## State
 
