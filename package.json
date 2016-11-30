@@ -2,7 +2,7 @@
   "name": "lanyon",
   "version": "0.0.9",
   "description": "dr. Jekyll has turned into mr. Hyde. Lanyon to the rescue!",
-  "main": "index.js",
+  "main": "config.js",
   "bin": {
     "lanyon": "cli.js"
   },

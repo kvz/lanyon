@@ -47,12 +47,11 @@ runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
 
 runtime.publicPath = '/assets/build/'
 
-function isDev () {
-  return runtime.lanyonEnv === 'development'
-}
-function isHotLoading () {
-  return (isDev() && ['serve', 'start'].indexOf(process.argv[2]) !== -1)
-}
+runtime.enginesOnly = (process.env.LANYON_ONLY || '')
+runtime.enginesSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
+
+runtime.isDev = runtime.lanyonEnv === 'development'
+runtime.isHotLoading = runtime.isDev && ['serve', 'start'].indexOf(process.argv[2]) !== -1
 
 var cfg = {
   webpack: {
@@ -61,7 +60,7 @@ var cfg = {
       runtime.entries.forEach(function (entry) {
         entries[entry] = [ path.join(runtime.assetsSourceDir, entry + '.js') ]
 
-        if (entry === 'app' && isDev()) {
+        if (entry === 'app' && runtime.isDev) {
           entries[entry].unshift('webpack-hot-middleware/client')
         }
       })
@@ -122,7 +121,7 @@ var cfg = {
           }
         ]
 
-        if (isDev()) {
+        if (runtime.isDev) {
           loaders.push({
             test: /\.scss$/,
             loader: 'style!css?sourceMap!sass?sourceMap&sourceComments',
@@ -148,7 +147,7 @@ var cfg = {
         })
       ]
 
-      if (isDev()) {
+      if (runtime.isDev) {
         plugins.push(new webpack.HotModuleReplacementPlugin())
       } else {
         plugins.push(new ExtractTextPlugin('[name].css', {
@@ -185,7 +184,7 @@ var cfg = {
   }
 }
 
-if (isHotLoading()) {
+if (runtime.isHotLoading) {
   var bundler = webpack(cfg.webpack)
 }
 
@@ -196,7 +195,7 @@ cfg.browsersync = {
     middleware: (function middlewares () {
       var middlewares = []
 
-      if (isHotLoading()) {
+      if (runtime.isHotLoading) {
         middlewares.push(webpackDevMiddleware(bundler, {
           publicPath: runtime.publicPath,
           hot: true,
