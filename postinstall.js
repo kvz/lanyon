@@ -19,9 +19,9 @@ module.exports = function (runtime, cb) {
   }
 
   // Detmine optimal rubyProvider and adjust shim configuration
-  if (utils.satisfied(runtime, 'ruby', 'vendor/bin/ruby -v', 'ruby-shim')) {
+  if (utils.satisfied(runtime, 'ruby', '' + runtime.bindir + '/ruby -v', 'ruby-shim')) {
     rubyProvider = 'shim'
-    runtime.prerequisites.ruby.exe = 'vendor/bin/ruby'
+    runtime.prerequisites.ruby.exe = '' + runtime.bindir + '/ruby'
     runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + ' -v' + runtime.prerequisites.ruby.exeSuffix
     runtime.prerequisites.ruby.writeShim = false
   } else if (utils.satisfied(runtime, 'ruby', undefined, 'system')) {
@@ -72,7 +72,7 @@ module.exports = function (runtime, cb) {
       bunderInstaller.push('&&')
       bunderInstaller.push(runtime.prerequisites.ruby.exe + ' ' + runtime.prerequisites.gem.exe + ' install')
       if (rubyProvider === 'system') {
-        bunderInstaller.push('--bindir vendor/bin')
+        bunderInstaller.push('--bindir ' + runtime.bindir + '')
         bunderInstaller.push('--install-dir vendor/gem_home')
       }
       bunderInstaller.push('--no-rdoc')
@@ -83,7 +83,7 @@ module.exports = function (runtime, cb) {
       utils.fatalExe(bunderInstaller)
 
       if (rubyProvider === 'system') {
-        runtime.prerequisites.bundler.exe = 'vendor/bin/bundler'
+        runtime.prerequisites.bundler.exe = '' + runtime.bindir + '/bundler'
         passEnv.GEM_HOME = 'vendor/gem_home'
         passEnv.GEM_PATH = 'vendor/gem_home'
 
@@ -137,7 +137,7 @@ module.exports = function (runtime, cb) {
       '(',
       runtime.prerequisites.bundler.exe,
       'install',
-      '--binstubs=\'vendor/bin\'',
+      '--binstubs=\'' + runtime.bindir + '\'',
       '--path \'vendor/bundler\'' + runtime.prerequisites.ruby.exeSuffix,
       '||',
       runtime.prerequisites.bundler.exe,

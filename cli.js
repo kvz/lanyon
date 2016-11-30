@@ -74,7 +74,7 @@ if (_.isFunction(cmd)) {
   cmd = cmd.replace(/(\s|^)nodemon(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/nodemon$2')
   cmd = cmd.replace(/(\s|^)npm-run-all(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/npm-run-all$2')
   cmd = cmd.replace(/(\s|^)parallelshell(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/parallelshell$2')
-  cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, '$1' + runtime.cacheDir + '/vendor/bin/jekyll$2')
+  cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, '$1' + runtime.binDir + '/jekyll$2')
 
   var env = process.env
   env.NODE_ENV = runtime.lanyonEnv

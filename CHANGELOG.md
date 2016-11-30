@@ -10,8 +10,15 @@
 
 # v0.0.12
 
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.12...v0.0.13)
+
+- [x] Avoid double installs by fixing binDir references for shims
+
+# v0.0.12
+
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.11...v0.0.12)
 
+- [x] Add Jekyll config writer (so we can ignore `node_modules` and `.lanyon`)
 - [x] By default prefer system ruby over docker, for performance reasons
 
 # v0.0.11
