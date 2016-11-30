@@ -6,7 +6,6 @@
 - [ ] jRuby support https://spin.atomicobject.com/2013/04/24/bundler-jruby-complete/
 - [ ] Use orderoccurance in dev
 - [ ] Consider shipping all of Lanyon inside a Docker container
-- [ ] Utilize Webpack `--production` flag
 
 # v0.0.13
 
@@ -18,6 +17,7 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.11...v0.0.12)
 
+- [x] Utilize Webpack `--production` flag
 - [x] Add Jekyll config writer (so we can ignore `node_modules` and `.lanyon`)
 - [x] By default prefer system ruby over docker, for performance reasons
 
