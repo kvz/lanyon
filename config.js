@@ -54,7 +54,7 @@ runtime = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
 
 runtime.projectDir = fs.realpathSync(runtime.projectDir)
 runtime.cacheDir = path.join(runtime.projectDir, '.lanyon')
-runtime.binDir = path.join(runtime.cacheDir, 'vendor', 'bin')
+runtime.binDir = path.join(runtime.cacheDir, 'bin')
 runtime.recordsPath = path.join(runtime.cacheDir, 'records.json')
 runtime.assetsSourceDir = path.join(runtime.projectDir, 'assets')
 runtime.assetsBuildDir = path.join(runtime.assetsSourceDir, 'build')
