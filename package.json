@@ -11,7 +11,6 @@
     "lint": "eslint .",
     "install": "node cli.js postinstall",
     "container:build": "env DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node cli.js postinstall",
-    "version:current": "node -e 'console.log(require(\"./package.json\").version)'",
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
     "release:patch": "env SEMANTIC=patch npm run release",
@@ -100,7 +99,7 @@
     "eslint": "3.10.2",
     "eslint-config-standard": "6.2.1",
     "eslint-plugin-promise": "3.4.0",
-    "eslint-plugin-standard": "2.0.1",
+    "eslint-plugin-standard": "2.0.1"
   },
   "dependencies": {
     "autoprefixer": "6.5.3",
