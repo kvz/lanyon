@@ -158,6 +158,8 @@ To force a particular type, you can also use `LANYON_ONLY=docker`. This is how w
 
 ## Prerequisites
 
+Lanyon should -just work- but here are some tips on when it doesn't
+
 - OSX / Linux (& Bash)
 - Node.js 0.12+ (& npm)
 - Docker or Rvm or Rbenv or Brew
@@ -208,3 +210,7 @@ Lanyon (still) supports 0.12, so you might prefer a legacy Node.js version so yo
 sudo apt-get install nodejs-legacy npm
 node -v
 ```
+
+## License
+
+Copyright (c) 2016 Kevin van Zonneveld. Licenses under [MIT](LICENSE).
