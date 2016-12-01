@@ -9,6 +9,12 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
+# v0.0.29
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.28...v0.0.29)
+
+- [x] Do `realpathSync` relative from `gitRoot`
+
 # v0.0.28
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.27...v0.0.28)
