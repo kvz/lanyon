@@ -15,7 +15,7 @@ module.exports = function (runtime, cb) {
   var rubyProvider = ''
 
   if (runtime.lanyonReset) {
-    console('--> Removing existing shims')
+    console.log('--> Removing existing shims')
     shell.rm('-f', runtime.binDir + '/*')
   }
 
