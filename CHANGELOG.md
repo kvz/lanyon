@@ -9,7 +9,13 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
-# v0.0.18
+# v0.0.20
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.19...v0.0.20)
+
+- [x] Prefix deps with node
+
+# v0.0.19
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.18...v0.0.19)
 
