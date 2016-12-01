@@ -76,16 +76,24 @@ if (_.isFunction(cmd)) {
     'parallelshell': '/node_modules/parallelshell/index.js'
   }
   for (var name in npmBins) {
-    if (shell.test('-f', runtime.lanyonDir + npmBins[name])) {
-      npmBins[name] = runtime.lanyonDir + npmBins[name]
-    } else if (shell.test('-f', runtime.gitRoot + npmBins[name])) {
-      npmBins[name] = runtime.gitRoot + npmBins[name]
-    } else if (shell.test('-f', runtime.projectDir + npmBins[name])) {
-      npmBins[name] = runtime.projectDir + npmBins[name]
-    } else {
-      throw new Error('Cannot find dependency ' + name + ' in ' + runtime.lanyonDir + npmBins[name] + ' or ' + runtime.gitRoot + npmBins[name])
-    }
+    var tests = [
+      runtime.lanyonDir + npmBins[name],
+      runtime.gitRoot + npmBins[name],
+      runtime.projectDir + npmBins[name],
+      runtime.projectDir + '/..' + npmBins[name]
+    ]
 
+    var found = false
+    tests.forEach(function (test) {
+      if (shell.test('-f', test)) {
+        npmBins[name] = test
+        found = true
+      }
+    })
+
+    if (!found) {
+      throw new Error('Cannot find dependency "' + name + '" in "' + tests.join('", "') + '"')
+    }
     var pat = new RegExp('(\\s|^)' + name + '(\\s|$)')
     cmd = cmd.replace(pat, '$1' + 'node ' + npmBins[name] + '$2')
   }

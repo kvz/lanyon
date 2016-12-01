@@ -9,6 +9,12 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
+# v0.0.25
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.24...v0.0.25)
+
+- [x] Also traverse upwards from projectDir to find `node_modules`
+
 # v0.0.24
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.23...v0.0.24)
