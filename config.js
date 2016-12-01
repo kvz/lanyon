@@ -45,7 +45,7 @@ runtime.isHotLoading = runtime.isDev && ['serve', 'start'].indexOf(process.argv[
 
 runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cwd() // <-- symlinked npm will mess up process.cwd() and point to ~/code/lanyon
 
-runtime.npmRoot = utils.upwardDirContaining('package.json', path.dirname(runtime.projectDir), 'lanyon')
+runtime.npmRoot = utils.upwardDirContaining('package.json', runtime.projectDir, 'lanyon')
 if (!runtime.npmRoot) {
   throw new Error('Unable to determine non-lanyon npmRoot')
 }
