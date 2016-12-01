@@ -9,6 +9,12 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
+# v0.0.32
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.31...v0.0.32)
+
+- [x] Allow relative projectDir
+
 # v0.0.31
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.30...v0.0.31)

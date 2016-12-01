@@ -61,7 +61,12 @@ try {
 runtime.gems = _.defaults(_.get(projectPackage, 'lanyon.gems') || {}, _.get(lanyonPackage, 'lanyon.gems'))
 runtime = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
 
-runtime.projectDir = fs.realpathSync(runtime.projectDir)
+try {
+  runtime.projectDir = fs.realpathSync(runtime.projectDir)
+} catch (e) {
+  runtime.projectDir = fs.realpathSync(runtime.gitRoot + '/' + runtime.projectDir)
+}
+
 runtime.cacheDir = path.join(runtime.projectDir, '.lanyon')
 runtime.binDir = path.join(runtime.cacheDir, 'bin')
 runtime.recordsPath = path.join(runtime.cacheDir, 'records.json')
