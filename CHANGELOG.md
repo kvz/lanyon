@@ -9,6 +9,12 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
+# v0.0.17
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.16...v0.0.17)
+
+- [x] Don't rely on `.bin` symlinks as they don't appear to survive Travis CI cache
+
 # v0.0.16
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.15...v0.0.16)

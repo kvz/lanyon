@@ -66,11 +66,11 @@ if (_.isFunction(cmd)) {
   cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
   cmd = cmd.replace(/\[projectDir]/g, runtime.projectDir)
   cmd = cmd.replace(/\[cacheDir]/g, runtime.cacheDir)
-  cmd = cmd.replace(/(\s|^)browser-sync(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/browser-sync$2')
-  cmd = cmd.replace(/(\s|^)webpack(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/webpack$2')
-  cmd = cmd.replace(/(\s|^)nodemon(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/nodemon$2')
-  cmd = cmd.replace(/(\s|^)npm-run-all(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/npm-run-all$2')
-  cmd = cmd.replace(/(\s|^)parallelshell(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/.bin/parallelshell$2')
+  cmd = cmd.replace(/(\s|^)browser-sync(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/browser-sync/bin/browser-sync.js$2')
+  cmd = cmd.replace(/(\s|^)webpack(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/webpack/bin/webpack.js$2')
+  cmd = cmd.replace(/(\s|^)nodemon(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/nodemon/bin/nodemon.js$2')
+  cmd = cmd.replace(/(\s|^)npm-run-all(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/npm-run-all/bin/npm-run-all/index.js$2')
+  cmd = cmd.replace(/(\s|^)parallelshell(\s|$)/, '$1' + runtime.lanyonDir + '/node_modules/parallelshell/index.js$2')
   cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, '$1' + runtime.binDir + '/jekyll$2')
 
   var env = process.env
