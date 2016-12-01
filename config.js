@@ -48,45 +48,6 @@ runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cw
 runtime.npmRoot = utils.upwardDirContaining('package.json', path.dirname(runtime.projectDir))
 runtime.gitRoot = utils.upwardDirContaining('.git', runtime.npmRoot)
 
-var traverse = process.cwd()
-var parts = traverse.split('/')
-var paths = []
-while (parts.length) {
-  var newParts = parts
-  var ppath = newParts.join('/')
-  if (ppath) {
-    paths.push(ppath)
-  }
-  parts.pop()
-}
-console.log(paths)
-process.exit(0)
-// var curPkgName = 'lanyon'
-
-// for (var i = 0; i < 9; i++) {
-//   console.log(i)
-//   var found = pkgUp.sync(traverse)
-//   if (!found) {
-//     break
-//   }
-//   runtime.npmRoot = path.dirname(found)
-//   curPkgName = path.basename(runtime.npmRoot)
-//   if (curPkgName !== 'lanyon') {
-//     break
-//   }
-//   traverse = path.dirname(traverse)
-// }
-// console.log({npmRoot: runtime.npmRoot})
-
-runtime.gitRoot = path.dirname(findUp.sync('.git', { cwd: runtime.npmRoot }))
-// runtime.npmRoot = path.dirname(findUp.sync('package.json', { cwd: runtime.projectDir }))
-// // if (runtime.npmRoot === __dirname) {
-// //   var attemptHigherNpmRoot = findUp.sync('package.json', { cwd: path.dirname(runtime.projectDir) })
-// //   if (attemptHigherNpmRoot) {
-// //     runtime.npmRoot = path.dirname(attemptHigherNpmRoot)
-// //   }
-// // }
-
 runtime.projectPackageFile = path.join(runtime.npmRoot, 'package.json')
 try {
   var projectPackage = require(runtime.projectPackageFile)
