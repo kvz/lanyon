@@ -22,6 +22,6 @@
   },
   "dependencies": {
     "fakefile": "0.0.8",
-    "lanyon": "0.0.24"
+    "lanyon": "0.0.25"
   }
 }
