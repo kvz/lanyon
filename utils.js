@@ -57,7 +57,7 @@ module.exports.dockerCmd = function (runtime, cmd, flags) {
   ].join('')
 }
 
-module.exports.upwardDirContaining = function (find, cwd) {
+module.exports.upwardDirContaining = function (find, cwd, not) {
   if (!cwd) {
     cwd = process.env.PWD || process.cwd()
   }
@@ -66,7 +66,9 @@ module.exports.upwardDirContaining = function (find, cwd) {
     var newParts = parts
     var ppath = newParts.join('/') + '/' + find
     if (shell.test('-f', ppath) || shell.test('-d', ppath)) {
-      return path.dirname(ppath)
+      if (not === undefined || not !== path.basename(path.dirname(ppath))) {
+        return path.dirname(ppath)
+      }
     }
     parts.pop()
   }
