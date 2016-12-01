@@ -79,9 +79,9 @@ if (_.isFunction(cmd)) {
     if (shell.test('-f', runtime.lanyonDir + npmBins[name])) {
       npmBins[name] = runtime.lanyonDir + npmBins[name]
     } else if (shell.test('-f', runtime.projectDir + npmBins[name])) {
-      npmBins[name] = runtime.projectDir + npmBins[name]
+      npmBins[name] = runtime.gitRoot + npmBins[name]
     } else {
-      throw new Error('Cannot find dependency ' + name + ' in ' + runtime.lanyonDir + npmBins[name] + ' or ' + runtime.projectDir + npmBins[name])
+      throw new Error('Cannot find dependency ' + name + ' in ' + runtime.lanyonDir + npmBins[name] + ' or ' + runtime.gitRoot + npmBins[name])
     }
 
     var pat = new RegExp('(\\s|^)' + name + '(\\s|$)')

@@ -9,6 +9,12 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
+# v0.0.23
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.22...v0.0.23)
+
+- [x] Use `gitRoot` instead of `projectDir` for flat module finding, so it works when your project is in a subdir (like `website` or `docs`)
+
 # v0.0.22
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.21...v0.0.22)
