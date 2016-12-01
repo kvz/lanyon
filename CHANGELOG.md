@@ -9,6 +9,12 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
+# v0.0.26
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.25...v0.0.26)
+
+- [x] Also support `web:deploy` npm script name
+
 # v0.0.25
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.24...v0.0.25)
