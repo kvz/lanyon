@@ -120,6 +120,7 @@
     "extract-text-webpack-plugin": "1.0.1",
     "fakefile": "0.0.8",
     "file-loader": "^0.9.0",
+    "find-up": "^2.0.0",
     "font-awesome": "^4.7.0",
     "font-awesome-loader": "1.0.1",
     "http-server": "0.9.0",

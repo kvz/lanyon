@@ -12,6 +12,7 @@
 var _ = require('lodash')
 var path = require('path')
 var fs = require('fs')
+var findUp = require('find-up')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var webpack = require('webpack')
 var webpackDevMiddleware = require('webpack-dev-middleware')
@@ -43,8 +44,11 @@ runtime.isDev = runtime.lanyonEnv === 'development'
 runtime.isHotLoading = runtime.isDev && ['serve', 'start'].indexOf(process.argv[2]) !== -1
 
 runtime.projectDir = process.env.LANYON_PROJECT || process.cwd()
-runtime.gitRoot = process.cwd()
-runtime.projectPackageFile = path.join(runtime.projectDir, 'package.json')
+
+runtime.gitRoot = path.dirname(findUp.sync('.git', { cwd: runtime.projectDir }))
+runtime.npmRoot = path.dirname(findUp.sync('package.json', { cwd: runtime.projectDir }))
+
+runtime.projectPackageFile = path.join(runtime.npmRoot, 'package.json')
 try {
   var projectPackage = require(runtime.projectPackageFile)
 } catch (e) {

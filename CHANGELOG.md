@@ -13,6 +13,7 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.25...v0.0.26)
 
+- [x] Use `find-up` for finding `gitRoot` and `npmRoot`, which might not be `projectDir`
 - [x] Also support `web:deploy` npm script name
 
 # v0.0.25
