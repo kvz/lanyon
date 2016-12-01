@@ -57,6 +57,22 @@ module.exports.dockerCmd = function (runtime, cmd, flags) {
   ].join('')
 }
 
+module.exports.upwardDirContaining = function (find, cwd) {
+  if (!cwd) {
+    cwd = process.env.PWD || process.cwd()
+  }
+  var parts = cwd.split('/')
+  while (parts.length) {
+    var newParts = parts
+    var ppath = newParts.join('/') + '/' + find
+    if (shell.test('-f', ppath) || shell.test('-d', ppath)) {
+      return path.dirname(ppath)
+    }
+    parts.pop()
+  }
+  return false
+}
+
 module.exports.initProject = function (runtime) {
   if (!shell.test('-d', runtime.assetsBuildDir)) {
     shell.mkdir('-p', runtime.assetsBuildDir)

@@ -22,6 +22,8 @@ var scripts = {
 }
 
 console.log('--> cacheDir is "' + runtime.cacheDir + '". ')
+console.log('--> gitRoot is "' + runtime.gitRoot + '". ')
+console.log('--> npmRoot is "' + runtime.npmRoot + '". ')
 
 if (runtime.lanyonEnv !== 'development') {
   scripts['build:assets'] += ' --production'
