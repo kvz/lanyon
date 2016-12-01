@@ -1,6 +1,5 @@
 node_js: 6
 sudo: false
-install: npm install
 script: true # <-- @todo we can test here
 cache:
   apt: true
