@@ -9,6 +9,12 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
+# v0.0.21
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.20...v0.0.21)
+
+- [x] Deploy now supports `web:build:production`
+
 # v0.0.20
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.19...v0.0.20)
