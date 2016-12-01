@@ -14,6 +14,11 @@ module.exports = function (runtime, cb) {
   var passEnv = {}
   var rubyProvider = ''
 
+  if (runtime.lanyonReset) {
+    console('--> Removing existing shims')
+    shell.rm('-f', runtime.binDir + '/*')
+  }
+
   if (!utils.satisfied(runtime, 'node')) {
     shell.exit(1)
   }
