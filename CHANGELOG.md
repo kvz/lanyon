@@ -11,6 +11,12 @@
 
 # v0.0.18
 
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.18...v0.0.19)
+
+- [x] Fix bug leading to block postinstall resets
+
+# v0.0.18
+
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.17...v0.0.18)
 
 - [x] Make installs idempotent
