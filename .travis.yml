@@ -26,17 +26,16 @@ before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export PATH="${RBENV_ROOT}/bin:${PATH}"; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then eval "$(rbenv init -)"; fi
 
-os: linux
-dist: precise
-sudo: false
-env: LANYON_ONLY="auto-all" OSDIST="precise"
-node_js: "6"
-lang: node_js
-
-# OSDIST is ignored, but added to easily identify builds in travis's build index, which displaus
+# OSDIST is ignored, but added to easily identify builds in Travis CI's build index, which displays
 # env vars in a table, but not os/dists
 matrix:
   include:
+    - os: linux
+      dist: precise
+      sudo: false
+      env: LANYON_ONLY="auto-all" OSDIST="precise"
+      node_js: "6"
+      lang: node_js
     - os: linux
       dist: precise
       sudo: false
