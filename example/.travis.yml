@@ -4,6 +4,7 @@ install: npm install
 script: true # <-- @todo we can test here
 cache:
   apt: true
+  yarn: true
   directories:
   - node_modules
   - .lanyon

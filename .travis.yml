@@ -1,5 +1,6 @@
 cache:
   apt: true
+  yarn: true
   directories:
     - node_modules
     - vendor/gems
