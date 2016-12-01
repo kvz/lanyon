@@ -163,7 +163,7 @@ module.exports.satisfied = function (runtime, app, cmd, checkOn) {
       return true
     }
   } catch (e) {
-    console.log(no + appVersion + ' (' + appVersionFull + ')' + e)
+    console.log(no + cmd + ' returned: "' + appVersionFull + '". ' + e)
     return false
   }
 

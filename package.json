@@ -50,7 +50,8 @@
       },
       "gem": {
         "preferred": "2.0.14.1",
-        "range": ">=2"
+        "range": ">=2",
+        "writeShim": true
       },
       "bundler": {
         "preferred": "1.13.0",

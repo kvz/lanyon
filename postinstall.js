@@ -25,14 +25,28 @@ module.exports = function (runtime, cb) {
 
   // Detmine optimal rubyProvider and adjust shim configuration
   if (utils.satisfied(runtime, 'ruby', '' + runtime.binDir + '/ruby -v', 'ruby-shim')) {
-    rubyProvider = 'shim'
-    runtime.prerequisites.ruby.exe = '' + runtime.binDir + '/ruby'
-    runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + ' -v' + runtime.prerequisites.ruby.exeSuffix
+    var buff = fs.readFileSync(runtime.binDir + '/ruby', 'utf-8').trim()
+    if (buff.indexOf('docker') !== -1) {
+      rubyProvider = 'docker'
+    } else if (buff.indexOf('rvm') !== -1) {
+      rubyProvider = 'rvm'
+    } else if (buff.indexOf('rbenv') !== -1) {
+      rubyProvider = 'rbenv'
+    } else {
+      rubyProvider = 'system'
+    }
+    console.log('--> Found a working shim - determined to be a "' + rubyProvider + '" rubyProvider')
+    runtime.prerequisites.ruby.exe = fs.readFileSync(runtime.binDir + '/ruby', 'utf-8').trim().replace(' $*', '')
     runtime.prerequisites.ruby.writeShim = false
+    runtime.prerequisites.ruby.versionCheck = runtime.prerequisites.ruby.exe + ' -v' + runtime.prerequisites.ruby.exeSuffix
+    runtime.prerequisites.gem.exe = fs.readFileSync(runtime.binDir + '/gem', 'utf-8').trim().replace(' $*', '')
+    runtime.prerequisites.gem.writeShim = false
+    runtime.prerequisites.bundler.exe = runtime.binDir + '/bundler' // <-- not a lanyon shim, it's a real gem bin
+    runtime.prerequisites.bundler.writeShim = false
   } else if (utils.satisfied(runtime, 'ruby', undefined, 'system')) {
     rubyProvider = 'system'
-    runtime.prerequisites.gem.exe = '$(which gem)'
-    runtime.prerequisites.bundler.exe = '$(which bundler)'
+    runtime.prerequisites.gem.exe = shell.which('gem').stdout
+    runtime.prerequisites.bundler.exe = shell.which('bundler').stdout
   } else if (utils.satisfied(runtime, 'docker')) {
     rubyProvider = 'docker'
     if (process.env.DOCKER_BUILD === '1') {

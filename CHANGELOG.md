@@ -13,6 +13,8 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.17...v0.0.18)
 
+- [x] Make installs idempotent
+- [x] Detect rubyProvider of existing shims
 - [x] Introduce a `LANYON_RESET`, that removes all shims
 
 # v0.0.17
