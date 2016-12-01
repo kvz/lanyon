@@ -78,8 +78,10 @@ if (_.isFunction(cmd)) {
   for (var name in npmBins) {
     if (shell.test('-f', runtime.lanyonDir + npmBins[name])) {
       npmBins[name] = runtime.lanyonDir + npmBins[name]
-    } else if (shell.test('-f', runtime.projectDir + npmBins[name])) {
+    } else if (shell.test('-f', runtime.gitRoot + npmBins[name])) {
       npmBins[name] = runtime.gitRoot + npmBins[name]
+    } else if (shell.test('-f', runtime.projectDir + npmBins[name])) {
+      npmBins[name] = runtime.projectDir + npmBins[name]
     } else {
       throw new Error('Cannot find dependency ' + name + ' in ' + runtime.lanyonDir + npmBins[name] + ' or ' + runtime.gitRoot + npmBins[name])
     }
