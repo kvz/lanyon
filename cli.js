@@ -3,6 +3,7 @@ var utils = require('./utils')
 utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'cli.js', require('./package.json').version)
 var _ = require('lodash')
 var config = require('./config')
+var shell = require('shelljs')
 var runtime = config.runtime
 // var debug = require('depurar')('lanyon')
 
@@ -66,11 +67,27 @@ if (_.isFunction(cmd)) {
   cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
   cmd = cmd.replace(/\[projectDir]/g, runtime.projectDir)
   cmd = cmd.replace(/\[cacheDir]/g, runtime.cacheDir)
-  cmd = cmd.replace(/(\s|^)browser-sync(\s|$)/, '$1' + 'node ' + runtime.lanyonDir + '/node_modules/browser-sync/bin/browser-sync.js$2')
-  cmd = cmd.replace(/(\s|^)webpack(\s|$)/, '$1' + 'node ' + runtime.lanyonDir + '/node_modules/webpack/bin/webpack.js$2')
-  cmd = cmd.replace(/(\s|^)nodemon(\s|$)/, '$1' + 'node ' + runtime.lanyonDir + '/node_modules/nodemon/bin/nodemon.js$2')
-  cmd = cmd.replace(/(\s|^)npm-run-all(\s|$)/, '$1' + 'node ' + runtime.lanyonDir + '/node_modules/npm-run-all/bin/npm-run-all/index.js$2')
-  cmd = cmd.replace(/(\s|^)parallelshell(\s|$)/, '$1' + 'node ' + runtime.lanyonDir + '/node_modules/parallelshell/index.js$2')
+
+  var npmBins = {
+    'browser-sync': '/node_modules/browser-sync/bin/browser-sync.js',
+    'webpack': '/node_modules/webpack/bin/webpack.js',
+    'nodemon': '/node_modules/nodemon/bin/nodemon.js',
+    'npm-run-all': '/node_modules/npm-run-all/bin/npm-run-all/index.js',
+    'parallelshell': '/node_modules/parallelshell/index.js'
+  }
+  for (var name in npmBins) {
+    if (shell.test('-f', runtime.lanyonDir + npmBins[name])) {
+      npmBins[name] = runtime.lanyonDir + npmBins[name]
+    } else if (shell.test('-f', runtime.projectDir + npmBins[name])) {
+      npmBins[name] = runtime.projectDir + npmBins[name]
+    } else {
+      throw new Error('Cannot find dependency ' + name + ' in ' + runtime.lanyonDir + npmBins[name] + ' or ' + runtime.projectDir + npmBins[name])
+    }
+
+    var pat = new RegExp('(\\s|^)' + name + '(\\s|$)')
+    cmd = cmd.replace(pat, '$1' + 'node ' + npmBins[name] + '$2')
+  }
+
   cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, '$1' + runtime.binDir + '/jekyll$2')
 
   var env = process.env

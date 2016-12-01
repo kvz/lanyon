@@ -9,6 +9,12 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
+# v0.0.22
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.21...v0.0.22)
+
+- [x] Support for flat module structure where modules live in `projectDir`
+
 # v0.0.21
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.20...v0.0.21)
