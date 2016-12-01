@@ -5,7 +5,6 @@ cache:
   apt: true
   yarn: true
   directories:
-  - node_modules
   - .lanyon
 before_cache:
   - rm -f ./node_modules/.bin/which # <-- workaround for https://github.com/travis-ci/travis-ci/issues/5092

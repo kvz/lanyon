@@ -2,9 +2,6 @@ cache:
   apt: true
   yarn: true
   directories:
-    - node_modules
-    - vendor/gems
-    - vendor/bundler
     - /usr/local/Cellar/
 
 # Since we're npm install-ing ourserves via npm link in a clean /tmp/xxx directory,
