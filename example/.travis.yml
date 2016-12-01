@@ -7,6 +7,7 @@ cache:
   directories:
   - node_modules
   - .lanyon
+before_deploy: node_modules/.bin/lanyon postinstall # <-- unless you already run lanyon postinstall some other way (e.g. via npm scripts/install)
 deploy:
   skip_cleanup: true
   provider: script
