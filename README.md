@@ -72,8 +72,13 @@ The recommended way to use Lanyon is to add it to your project's npm run scripts
 ...
   "lanyon": {
     "entries": [
+      // As single 'app' entry is the default. List all entries here if you have more
       "app"
-    ]
+    ],
+    "gems": {
+      // If you require custom gems
+      "liquid_pluralize": "1.0.2"
+    }
   },
   "scripts": {
     "build:production": "LANYON_ENV=production lanyon build",
