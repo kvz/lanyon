@@ -93,11 +93,13 @@ The recommended way to use Lanyon is to add it to your project's npm run scripts
 ...
 ```
 
+If you make changes to your gems later on, run `node node_modules/.bin/lanyon postinstall` to re-trigger a build.
+
 Have an `assets/app.js` in which you require both javascripts and stylesheets:
 
 ```javascript
-require('js/main.js')
-require('sass/main.scss')
+require('js/main.js')      // <-- or wherever you kept your javascripts
+require('sass/main.scss')  // <-- or wherever you kept your stylesheets
 ```
 
 in your layout, include the build (same location works both for production artifact files, as well as magic Hot Module Reloading):
