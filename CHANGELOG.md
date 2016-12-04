@@ -9,6 +9,12 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
+# v0.0.33
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.32...v0.0.33)
+
+- [x] Add plain css files to extract text plugin /thx @Acconut
+
 # v0.0.32
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.31...v0.0.32)

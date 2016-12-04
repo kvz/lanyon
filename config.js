@@ -193,6 +193,11 @@ var cfg = {
             exclude: /(node_modules|bower_components|vendor)/
           })
           loaders.push({
+            test: /\.css/,
+            loader: ExtractTextPlugin.extract('css-loader?sourceMap'),
+            exclude: /(node_modules|bower_components|vendor)/
+          })
+          loaders.push({
             test: /\.less/,
             loader: ExtractTextPlugin.extract('css-loader?sourceMap!less-loader?sourceMap'),
             exclude: /(node_modules|bower_components|vendor)/
