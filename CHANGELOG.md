@@ -9,7 +9,13 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims
 
-# v0.0.33
+# v0.0.34
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.33...v0.0.34)
+
+- [x] Fix bad Git ignores
+
+# v0.0.33 (bad build)
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.32...v0.0.33)
 
