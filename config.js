@@ -119,7 +119,7 @@ var cfg = {
     node: {
       fs: 'empty'
     },
-    target: 'node',
+    target: 'web',
     output: {
       publicPath: runtime.publicPath,
       path: runtime.assetsBuildDir,
