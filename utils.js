@@ -96,6 +96,7 @@ module.exports.writeConfig = function (cfg) {
   fs.writeFileSync(cfg.runtime.cacheDir + '/full-config-dump.json', JSON.stringify(cfg, null, '  '), 'utf-8')
   fs.writeFileSync(cfg.runtime.cacheDir + '/browsersync.config.js', 'module.exports = require("' + cfg.runtime.lanyonDir + '/config.js").browsersync', 'utf-8')
   fs.writeFileSync(cfg.runtime.cacheDir + '/webpack.config.js', 'module.exports = require("' + cfg.runtime.lanyonDir + '/config.js").webpack', 'utf-8')
+  fs.writeFileSync(cfg.runtime.recordsPath, JSON.stringify({}, null, '  '), 'utf-8')
   shell.cp(path.join(cfg.runtime.lanyonDir, 'Dockerfile'), path.join(cfg.runtime.cacheDir, 'Dockerfile'))
   var buf = 'source \'https://rubygems.org\'\n'
   for (var name in cfg.runtime.gems) {
