@@ -215,6 +215,7 @@ var cfg = {
       var plugins = [
         new BowerWebpackPlugin(),
         new webpack.ProvidePlugin({
+          _: 'lodash',
           $: 'jquery',
           jQuery: 'jquery'
         })
