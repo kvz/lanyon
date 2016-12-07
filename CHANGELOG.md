@@ -15,6 +15,7 @@
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.33...v0.0.34)
 
 - [x] Allow asset loaders to load from `bower_components`
+- [x] Allow bower installed bootstrap-sass to use `window` and `jQuery`
 - [x] Offer a lodash `_` plugin
 - [x] Reset (a possibly corrupted) `records.json`
 - [x] Fix: `Module not found: Error: Cannot resolve module 'fs'` by adding  `node: { fs: 'empty' }, target: 'node'` to webpack config

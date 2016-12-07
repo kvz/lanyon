@@ -174,6 +174,11 @@ var cfg = {
             loader: 'imports?this=>window!exports?window.Modernizr'
           },
           {
+            // https://www.techchorus.net/blog/using-sass-version-of-bootstrap-with-webpack/
+            test: /[\\/](bower_components)[\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]/,
+            loader: 'imports?jQuery=jquery,$=jquery,this=>window'
+          },
+          {
             test: /[\\/](bower_components)[\\/]svgeezy[\\/]svgeezy\.js$/,
             loader: 'imports?this=>window!exports?window.svgeezy'
           }
