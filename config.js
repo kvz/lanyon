@@ -166,7 +166,7 @@ var cfg = {
           {
             test: /\.(png|gif|jpe?g)$/,
             loader: 'url-loader?limit=8096',
-            exclude: /(node_modules|bower_components|vendor)/
+            exclude: /(node_modules|vendor)/
           },
           {
             // https://github.com/webpack/webpack/issues/512
