@@ -133,7 +133,7 @@ var cfg = {
         var loaders = [
           {
             test: /\.css$/,
-            loader: 'style!css?sourceMap'
+            loader: 'style!css?sourceMap!resolve-url'
           }, {
             test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
             loader: 'url?limit=10000&mimetype=application/font-woff'
@@ -160,12 +160,12 @@ var cfg = {
           },
           {
             test: /\.coffee$$/,
-            loader: 'coffee-loader',
+            loader: 'coffee',
             exclude: /(node_modules|bower_components|vendor)/
           },
           {
             test: /\.(png|gif|jpe?g)$/,
-            loader: 'url-loader?limit=8096',
+            loader: 'url?limit=8096',
             exclude: /(node_modules|vendor)/
           },
           {
@@ -187,28 +187,28 @@ var cfg = {
         if (runtime.isDev) {
           loaders.push({
             test: /\.scss$/,
-            loader: 'style!css?sourceMap!sass?sourceMap&sourceComments',
+            loader: 'style!css!resolve-url?root=' + runtime.projectDir + '!sass?sourceMap&sourceComments',
             exclude: /(node_modules|bower_components|vendor)/
           })
           loaders.push({
             test: /\.less$/,
-            loader: 'style-loader!css-loader!less-loader',
+            loader: 'style!css!resolve-url?root=' + runtime.projectDir + '!less?sourceMap&sourceComments',
             exclude: /(node_modules|bower_components|vendor)/
           })
         } else {
           loaders.push({
             test: /\.scss$/,
-            loader: ExtractTextPlugin.extract('css!sass'),
+            loader: ExtractTextPlugin.extract('css!resolve-url?root=' + runtime.projectDir + '!sass?sourceMap'),
             exclude: /(node_modules|bower_components|vendor)/
           })
           loaders.push({
             test: /\.less$/,
-            loader: ExtractTextPlugin.extract('css-loader?sourceMap!less-loader?sourceMap'),
+            loader: ExtractTextPlugin.extract('css?sourceMap!resolve-url?root=' + runtime.projectDir + '!less?sourceMap'),
             exclude: /(node_modules|bower_components|vendor)/
           })
           // loaders.push({
           //   test: /\.css$/,
-          //   loader: ExtractTextPlugin.extract('style-loader!css-loader?sourceMap'),
+          //   loader: ExtractTextPlugin.extract('style!css?sourceMap'),
           //   exclude: /(node_modules|bower_components|vendor)/
           // })
         }

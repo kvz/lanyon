@@ -9,11 +9,13 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Add image optimizer from `assets/images` -> `assets/build/images`
+- [ ] Even on webpack production build failures Lanyon reports: `--> build:assets done.`. That needs to be fatal instead.
 
 # v0.0.34
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.33...v0.0.34)
 
+- [x] Add resolve-url-loader so e.g. mediaplayer & select2 can find their relative assets such as `./select2.png` or `./controls.png`
 - [x] Allow asset loaders to load from `bower_components`
 - [x] Allow bower installed bootstrap-sass to use `window` and `jQuery`
 - [x] Offer a lodash `_` plugin
