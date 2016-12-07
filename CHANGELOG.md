@@ -13,6 +13,7 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.33...v0.0.34)
 
+- [x] Fix: `Module not found: Error: Cannot resolve module 'fs'` by adding  `node: { fs: 'empty' }, target: 'node'` to webpack config
 - [x] Fix bad Git ignores
 - [x] Revert plain css files to extract text plugin
 

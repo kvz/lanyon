@@ -116,6 +116,10 @@ var cfg = {
 
       return entries
     }()),
+    node: {
+      fs: 'empty'
+    },
+    target: 'node',
     output: {
       publicPath: runtime.publicPath,
       path: runtime.assetsBuildDir,
@@ -308,7 +312,7 @@ cfg.jekyll = {
 
 cfg.nodemon = {
   onChangeOnly: true,
-  verbose: false,
+  verbose: true,
   watch: runtime.projectDir,
   ignore: [
     '.lanyon/*',
