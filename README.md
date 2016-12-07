@@ -113,6 +113,13 @@ in your layout, include the build (same location works both for production artif
 
 Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository.
 
+## Troubleshooting
+
+### No html file changes are spotted
+
+Make sure you don't have an old `nodemon` version as a dependency. Npm flat dependencies could will favor local installs and ignore Lanyon's version. Either remove Nodemon from your project or make sure it is at least at a version that recognizes the `--config` flag (e.g. `1.11.0`).
+
+
 ## Deploy
 
 Enable building this project on Travis CI. Add a `.travis.yml` similar to this one:

@@ -2,12 +2,13 @@
 
 # Unplanned
 
-- [ ] Use noerrors in dev
 - [ ] jRuby support https://spin.atomicobject.com/2013/04/24/bundler-jruby-complete/
-- [ ] Use orderoccurance in dev
+- [ ] Use webpack noerrors plugin in dev
+- [ ] Use webpack orderoccurance plugin in dev
 - [ ] Consider shipping all of Lanyon inside a Docker container
 - [ ] Utilize `passthru` more (vs `spawnSync`)
-- [ ] Add `travis` to Gemfile, and run it from our local shims
+- [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
+- [ ] Add image optimizer from `assets/images` -> `assets/build/images`
 
 # v0.0.34
 
