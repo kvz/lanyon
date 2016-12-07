@@ -46,7 +46,11 @@ if (cmdName.match(/^build/)) {
       var needEnv = hook.split(':')[1]
       if (!needEnv || runtime.lanyonEnv === needEnv) {
         console.log('--> Running ' + hook + ': ' + runtime[hook])
-        utils.passthru(runtime, runtime[hook], { env: env, cwd: runtime.projectDir })
+        var squashed = runtime[hook]
+        if (_.isArray(runtime[hook])) {
+          squashed = runtime[hook].join(' && ')
+        }
+        utils.passthru(runtime, squashed, { env: env, cwd: runtime.projectDir })
         console.log('--> ' + hook + ' done. ')
       }
     }
