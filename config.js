@@ -174,13 +174,17 @@ var cfg = {
             loader: 'imports?this=>window!exports?window.Modernizr'
           },
           {
+            test: /[\\/](bower_components)[\\/]svgeezy[\\/]svgeezy\.js$/,
+            loader: 'imports?this=>window!exports?window.svgeezy'
+          },
+          {
             // https://www.techchorus.net/blog/using-sass-version-of-bootstrap-with-webpack/
             test: /[\\/](bower_components)[\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]/,
             loader: 'imports?jQuery=jquery,$=jquery,this=>window'
           },
           {
-            test: /[\\/](bower_components)[\\/]svgeezy[\\/]svgeezy\.js$/,
-            loader: 'imports?this=>window!exports?window.svgeezy'
+            test: /[\\/]jquery\..*\.js$/,
+            loader: 'imports?jQuery=jquery,$=jquery,this=>window'
           }
         ]
 

@@ -15,6 +15,7 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.33...v0.0.34)
 
+- [x] Add jquery to bower components
 - [x] Fix coffee loader
 - [x] Add resolve-url-loader so e.g. mediaplayer & select2 can find their relative assets such as `./select2.png` or `./controls.png`
 - [x] Allow asset loaders to load from `bower_components`
