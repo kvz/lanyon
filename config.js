@@ -159,7 +159,7 @@ var cfg = {
             exclude: /(node_modules|bower_components|vendor)/
           },
           {
-            test: /\.coffee$$/,
+            test: /\.coffee$/,
             loader: 'coffee',
             exclude: /(node_modules|bower_components|vendor)/
           },
