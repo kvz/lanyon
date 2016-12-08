@@ -47,7 +47,8 @@ runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cw
 
 runtime.npmRoot = utils.upwardDirContaining('package.json', runtime.projectDir, 'lanyon')
 if (!runtime.npmRoot) {
-  throw new Error('Unable to determine non-lanyon npmRoot')
+  console.error('--> Unable to determine non-lanyon npmRoot, falling back to ' + runtime.projectDir)
+  runtime.npmRoot = runtime.projectDir
 }
 runtime.gitRoot = utils.upwardDirContaining('.git', runtime.npmRoot)
 
