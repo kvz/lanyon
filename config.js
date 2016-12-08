@@ -18,6 +18,7 @@ var webpack = require('webpack')
 var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
 var BowerWebpackPlugin = require('bower-webpack-plugin')
+var Visualizer = require('webpack-visualizer-plugin')
 
 var runtime = {}
 
@@ -246,6 +247,14 @@ var cfg = {
 
       if (runtime.common) {
         plugins.push(new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'common', /* filename= */'common.js'))
+      }
+
+      if (runtime.statistics && !runtime.isDev) {
+        var fullpathStatistics = runtime.assetsBuildDir + '/' + runtime.statistics
+        console.log('--> Will write statistics to ' + fullpathStatistics)
+        plugins.push(new Visualizer({
+          filename: runtime.statistics
+        }))
       }
 
       return plugins
