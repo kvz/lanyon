@@ -124,18 +124,16 @@ Make sure you don't have an old `nodemon` version as a dependency. Npm flat depe
 
 Enable building this project on Travis CI. Add a `.travis.yml` similar to this one:
 
-```yaml
-language: generic
-sudo: false
-script: true # <-- @todo we can test here
-deploy:
-  skip_cleanup: true
-  provider: script
-  script: .lanyon/bin/deploy # <-- this calls 'npm run build:production && npm run deploy'. Travis does not allow commands, only files here..
-  on:
-    branch: master
-    condition: $TRAVIS_OS_NAME = linux
-```
+  language: generic
+  sudo: false
+  script: true # <-- @todo we can test here
+  deploy:
+    skip_cleanup: true
+    provider: script
+    script: .lanyon/bin/deploy # <-- this calls 'npm run build:production && npm run deploy'. Travis does not allow commands, only files here..
+    on:
+      branch: master
+      condition: $TRAVIS_OS_NAME = linux
 
 Add an `env.sh` with the following contents:
 
