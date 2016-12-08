@@ -8,7 +8,7 @@
 // https://webpack.github.io/docs/hot-module-replacement.html
 // https://github.com/css-modules/webpack-demo/issues/8#issuecomment-133922019
 // https://github.com/gowravshekar/font-awesome-webpack
-
+// https://webpack.github.io/docs/code-splitting.html#split-app-and-vendor-code
 var _ = require('lodash')
 var path = require('path')
 var utils = require('./utils')
@@ -113,6 +113,11 @@ var cfg = {
           entries[entry].unshift('webpack-hot-middleware/client')
         }
       })
+
+      if (runtime.common) {
+        // https://webpack.github.io/docs/code-splitting.html#split-app-and-vendor-code
+        entries.common = runtime.common
+      }
 
       return entries
     }()),
@@ -236,6 +241,10 @@ var cfg = {
         plugins.push(new ExtractTextPlugin('[name].css', {
           allChunks: true
         }))
+      }
+
+      if (runtime.common) {
+        plugins.push(new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'common', /* filename= */'common.js'))
       }
 
       return plugins
