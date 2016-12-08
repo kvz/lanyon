@@ -15,6 +15,7 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.33...v0.0.34)
 
+- [x] Add support for long-term caching, and cache busting
 - [x] Add vizualizer by definining `lanyon.statistics: "webpack-statistics.html"` in your `package.json`. Directory is fixed to build dir, and this does not work in `development`/HMR mode
 - [x] Add support for shared code-splitted bundles by defining `lanyon.common` in your `package.json`
 - [x] Add jquery to bower components

@@ -106,9 +106,9 @@ in your layout, include the build (same location works both for production artif
 
 ```html
 <!-- head -->
-<link rel="stylesheet" href="{{site.baseurl}}/assets/build/app.css">
+<link rel="stylesheet" href="{{site.lanyon_assets.app.css}}">
 <!-- footer -->
-<script src="{{ site.baseurl }}/assets/build/app.js"></script>
+<script src="{{site.lanyon_assets.app.css}}"></script>
 ```
 
 Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository.

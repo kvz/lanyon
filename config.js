@@ -9,6 +9,7 @@
 // https://github.com/css-modules/webpack-demo/issues/8#issuecomment-133922019
 // https://github.com/gowravshekar/font-awesome-webpack
 // https://webpack.github.io/docs/code-splitting.html#split-app-and-vendor-code
+// https://medium.com/@okonetchnikov/long-term-caching-of-static-assets-with-webpack-1ecb139adb95#.w0elv8n7o
 var _ = require('lodash')
 var path = require('path')
 var utils = require('./utils')
@@ -19,7 +20,9 @@ var webpackDevMiddleware = require('webpack-dev-middleware')
 var webpackHotMiddleware = require('webpack-hot-middleware')
 var BowerWebpackPlugin = require('bower-webpack-plugin')
 var Visualizer = require('webpack-visualizer-plugin')
-
+var yaml = require('js-yaml')
+var AssetsPlugin = require('assets-webpack-plugin')
+var WebpackMd5Hash = require('webpack-md5-hash')
 var runtime = {}
 
 runtime.lanyonDir = __dirname
@@ -130,8 +133,23 @@ var cfg = {
     output: {
       publicPath: runtime.publicPath,
       path: runtime.assetsBuildDir,
-      filename: '[name].js',
-      cssFilename: '[name].css'
+      filename: (function filename () {
+        var filename = '[name].js'
+
+        if (!runtime.isDev) {
+          filename = '[name].[chunkhash].js'
+        }
+        return filename
+      }()),
+      chunkFilename: '[name].[chunkhash].[id].chunk.js',
+      cssFilename: (function filename () {
+        var filename = '[name].css'
+
+        if (!runtime.isDev) {
+          filename = '[name].[chunkhash].css'
+        }
+        return filename
+      }())
     },
     devtool: 'eval-cheap-source-map',
     // devtool: 'source-map',
@@ -240,7 +258,7 @@ var cfg = {
       if (runtime.isDev) {
         plugins.push(new webpack.HotModuleReplacementPlugin())
       } else {
-        plugins.push(new ExtractTextPlugin('[name].css', {
+        plugins.push(new ExtractTextPlugin('[name].[contenthash].css', {
           allChunks: true
         }))
       }
@@ -251,11 +269,22 @@ var cfg = {
 
       if (runtime.statistics && !runtime.isDev) {
         var fullpathStatistics = runtime.assetsBuildDir + '/' + runtime.statistics
-        console.log('--> Will write statistics to ' + fullpathStatistics)
+        console.log('--> Will write statistics to "' + fullpathStatistics + '"')
         plugins.push(new Visualizer({
           filename: runtime.statistics
         }))
       }
+
+      plugins.push(new AssetsPlugin({
+        filename: 'jekyll.lanyon_assets.yml',
+        path: runtime.cacheDir,
+        processOutput: function (assets) {
+          console.log('--> Writing asset manifest to: "' + runtime.cacheDir + '/jekyll.lanyon_assets.yml"')
+          return yaml.safeDump({lanyon_assets: assets})
+        }
+      }))
+      plugins.push(new WebpackMd5Hash())
+      plugins.push(new webpack.optimize.OccurenceOrderPlugin())
 
       return plugins
     }()),

@@ -9,7 +9,7 @@ var runtime = config.runtime
 
 var scripts = {
   'build:assets': 'webpack --config [cacheDir]/webpack.config.js',
-  'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml',
+  'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
   'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml',
   'build': '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
   'help': 'jekyll build --help',
@@ -111,7 +111,7 @@ if (_.isFunction(cmd)) {
   env.JEKYLL_ENV = runtime.lanyonEnv
   env.LANYON_PROJECT = runtime.projectDir // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
 
-  console.log('--> Running cmd: ' + cmd)
+  console.log('--> Running cmd: "' + cmd + '"')
   utils.passthru(runtime, cmd, {'env': env})
   console.log('--> ' + cmdName + ' done. ')
 } else {
