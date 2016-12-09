@@ -238,11 +238,6 @@ var cfg = {
             loader: ExtractTextPlugin.extract('css?sourceMap!resolve-url?root=' + runtime.projectDir + '!less?sourceMap'),
             exclude: /(node_modules|bower_components|vendor)/
           })
-          // loaders.push({
-          //   test: /\.css$/,
-          //   loader: ExtractTextPlugin.extract('style!css?sourceMap'),
-          //   exclude: /(node_modules|bower_components|vendor)/
-          // })
         }
 
         return loaders
