@@ -273,6 +273,8 @@ var cfg = {
       if (runtime.statistics && !runtime.isDev) {
         var fullpathStatistics = runtime.assetsBuildDir + '/' + runtime.statistics
         console.log('--> Will write statistics to "' + fullpathStatistics + '"')
+        // @todo: Once Vizualizer supports multiple entries, add support for that here
+        // https://github.com/chrisbateman/webpack-visualizer/issues/5
         plugins.push(new Visualizer({
           filename: runtime.statistics
         }))
