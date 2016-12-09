@@ -193,8 +193,7 @@ var cfg = {
           },
           {
             test: /\.(png|gif|jpe?g)$/,
-            loader: 'url?limit=8096',
-            exclude: /(node_modules|vendor)/
+            loader: 'url?limit=8096'
           },
           {
             // https://github.com/webpack/webpack/issues/512
