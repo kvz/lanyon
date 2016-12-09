@@ -270,14 +270,18 @@ var cfg = {
         plugins.push(new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'common', /* filename= */getFilename('js')))
       }
 
-      if (runtime.statistics && !runtime.isDev) {
-        var fullpathStatistics = runtime.assetsBuildDir + '/' + runtime.statistics
-        console.log('--> Will write statistics to "' + fullpathStatistics + '"')
-        // @todo: Once Vizualizer supports multiple entries, add support for that here
-        // https://github.com/chrisbateman/webpack-visualizer/issues/5
-        plugins.push(new Visualizer({
-          filename: runtime.statistics
-        }))
+      if (runtime.statistics) {
+        if (runtime.isDev) {
+          console.log('--> Cannot write statistics to "' + fullpathStatistics + '" in dev mode. Create a production build via LANYON_ENV=production. ')
+        } else {
+          var fullpathStatistics = runtime.assetsBuildDir + '/' + runtime.statistics
+          console.log('--> Will write statistics to "' + fullpathStatistics + '"')
+          // @todo: Once Vizualizer supports multiple entries, add support for that here
+          // https://github.com/chrisbateman/webpack-visualizer/issues/5
+          plugins.push(new Visualizer({
+            filename: runtime.statistics
+          }))
+        }
       }
 
       plugins.push(new AssetsPlugin({
