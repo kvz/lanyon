@@ -10,6 +10,7 @@
 // https://github.com/gowravshekar/font-awesome-webpack
 // https://webpack.github.io/docs/code-splitting.html#split-app-and-vendor-code
 // https://medium.com/@okonetchnikov/long-term-caching-of-static-assets-with-webpack-1ecb139adb95#.w0elv8n7o
+// https://webpack.github.io/docs/optimization.html
 var _ = require('lodash')
 var path = require('path')
 var utils = require('./utils')
@@ -182,11 +183,6 @@ var cfg = {
             loader: 'url?limit=10000&mimetype=image/svg+xml'
           },
           {
-            test: /\.js$/,
-            loaders: [ 'jsx', 'babel' ],
-            exclude: /(node_modules|bower_components|vendor)/
-          },
-          {
             test: /\.coffee$/,
             loader: 'coffee',
             exclude: /(node_modules|bower_components|vendor)/
@@ -226,6 +222,11 @@ var cfg = {
             loader: 'style!css!resolve-url?root=' + runtime.projectDir + '!less?sourceMap&sourceComments',
             exclude: /(node_modules|bower_components|vendor)/
           })
+          loaders.push({
+            test: /\.js$/,
+            loader: 'jsx!babel',
+            exclude: /(node_modules|bower_components|vendor)/
+          })
         } else {
           loaders.push({
             test: /\.scss$/,
@@ -235,6 +236,11 @@ var cfg = {
           loaders.push({
             test: /\.less$/,
             loader: ExtractTextPlugin.extract('css?sourceMap!resolve-url?root=' + runtime.projectDir + '!less?sourceMap'),
+            exclude: /(node_modules|bower_components|vendor)/
+          })
+          loaders.push({
+            test: /\.js$/,
+            loader: 'jsx!babel!uglify',
             exclude: /(node_modules|bower_components|vendor)/
           })
         }
@@ -258,6 +264,11 @@ var cfg = {
         plugins.push(new ExtractTextPlugin(getFilename('css'), {
           allChunks: true
         }))
+        plugins.push(new webpack.optimize.UglifyJsPlugin())
+        plugins.push(new webpack.optimize.OccurrenceOrderPlugin())
+        plugins.push(new webpack.optimize.DedupePlugin())
+        plugins.push(new webpack.optimize.LimitChunkCountPlugin({maxChunks: 15}))
+        plugins.push(new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000}))
       }
 
       if (runtime.common) {
@@ -306,7 +317,8 @@ var cfg = {
         path.resolve(runtime.lanyonDir) + '/node_modules'
       ]
     },
-    uglify: {
+    'uglify-loader': {
+      mange: true,
       compress: {
         warnings: false
       },

@@ -8,7 +8,7 @@ var runtime = config.runtime
 // var debug = require('depurar')('lanyon')
 
 var scripts = {
-  'build:assets': 'webpack --config [cacheDir]/webpack.config.js',
+  'build:assets': 'webpack --progress --config [cacheDir]/webpack.config.js',
   'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
   'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml',
   'build': '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
@@ -25,9 +25,6 @@ console.log('--> cacheDir is "' + runtime.cacheDir + '". ')
 console.log('--> gitRoot is "' + runtime.gitRoot + '". ')
 console.log('--> npmRoot is "' + runtime.npmRoot + '". ')
 
-if (runtime.lanyonEnv !== 'development') {
-  scripts['build:assets'] += ' --production'
-}
 if (runtime.trace) {
   scripts['build:content:incremental'] += ' --trace'
   scripts['build:content'] += ' --trace'

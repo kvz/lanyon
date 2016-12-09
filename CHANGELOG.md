@@ -15,6 +15,7 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.33...v0.0.34)
 
+- [x] More optimization for production builds
 - [x] Fix svgeezy (which works with a local `svgeezy` var, not one on `window`)
 - [x] Enable vizualizer support by default, writing to `assets/build/stats.html`, unless you set `lanyon.statistics` to `false` in your `package.json` 
 - [x] Add support for long-term caching, and cache busting
