@@ -107,6 +107,23 @@ if (runtime.rubyProvidersOnly) {
   })
 }
 
+function getFilename (extension, isChunk, isContent) {
+  var filename = '[name].' + extension
+
+  if (!runtime.isDev) {
+    filename = '[name].[chunkhash].' + extension
+    if (isContent) {
+      filename = '[name].[contenthash].' + extension
+    }
+  }
+
+  if (isChunk) {
+    filename = '[name].[chunkhash].[id].chunk.' + extension
+  }
+
+  return filename
+}
+
 var cfg = {
   webpack: {
     entry: (function entries () {
@@ -133,23 +150,9 @@ var cfg = {
     output: {
       publicPath: runtime.publicPath,
       path: runtime.assetsBuildDir,
-      filename: (function filename () {
-        var filename = '[name].js'
-
-        if (!runtime.isDev) {
-          filename = '[name].[chunkhash].js'
-        }
-        return filename
-      }()),
-      chunkFilename: '[name].[chunkhash].[id].chunk.js',
-      cssFilename: (function filename () {
-        var filename = '[name].css'
-
-        if (!runtime.isDev) {
-          filename = '[name].[chunkhash].css'
-        }
-        return filename
-      }())
+      filename: getFilename('js'),
+      chunkFilename: getFilename('js', true),
+      cssFilename: getFilename('css')
     },
     devtool: 'eval-cheap-source-map',
     // devtool: 'source-map',
@@ -258,13 +261,13 @@ var cfg = {
       if (runtime.isDev) {
         plugins.push(new webpack.HotModuleReplacementPlugin())
       } else {
-        plugins.push(new ExtractTextPlugin('[name].[contenthash].css', {
+        plugins.push(new ExtractTextPlugin(getFilename('css'), {
           allChunks: true
         }))
       }
 
       if (runtime.common) {
-        plugins.push(new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'common', /* filename= */'common.js'))
+        plugins.push(new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'common', /* filename= */getFilename('js')))
       }
 
       if (runtime.statistics && !runtime.isDev) {
