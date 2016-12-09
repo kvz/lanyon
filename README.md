@@ -111,6 +111,8 @@ in your layout, include the build (same location works both for production artif
 <script src="{{site.lanyon_assets.app.css}}"></script>
 ```
 
+> Note that lanyon provides magic `lanyon_assets` variables in Jekyll, pointing to either `/assets/build/common.js` in development, or `/assets/build/common.bfcebf1c103b9f8d41bd.js` in production so you can enable longterm caching of assets and also cachebust them when they change. This works for all entries and asset types, so also for e.g. `app.css`.
+
 Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository.
 
 ## Troubleshooting
@@ -119,6 +121,11 @@ Afterwards, type `npm start`. This will kick a build, spin up file watching and 
 
 Make sure you don't have an old `nodemon` version as a dependency. Npm flat dependencies could will favor local installs and ignore Lanyon's version. Either remove Nodemon from your project or make sure it is at least at a version that recognizes the `--config` flag (e.g. `1.11.0`).
 
+### I'm seeing ruby errors from `vendors`
+
+If you're seeing things like `Invalid date '0000-00-00': Post '/vendor/bundle/ruby/2.1.0/gems/jekyll-2.4.0/lib/site_template/_posts/0000-00-00-welcome-to-jekyll.markdown.erb'`, you are 
+likely upgrading from an existing Jekyll install, and haven't cleared out the `vendor` dir. Lanyon only relies on the `.lanyon` dir
+inside your project, ands so you should clean up old Jekyll residue as Lanyon does not have build `exclude`s for those.
 
 ## Deploy
 
