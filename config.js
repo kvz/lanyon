@@ -266,10 +266,10 @@ var cfg = {
       }
 
       if (runtime.statistics) {
+        var fullpathStatistics = runtime.assetsBuildDir + '/' + runtime.statistics
         if (runtime.isDev) {
           console.log('--> Cannot write statistics to "' + fullpathStatistics + '" in dev mode. Create a production build via LANYON_ENV=production. ')
         } else {
-          var fullpathStatistics = runtime.assetsBuildDir + '/' + runtime.statistics
           console.log('--> Will write statistics to "' + fullpathStatistics + '"')
           // @todo: Once Vizualizer supports multiple entries, add support for that here
           // https://github.com/chrisbateman/webpack-visualizer/issues/5
