@@ -203,7 +203,7 @@ var cfg = {
           },
           {
             test: /[\\/](bower_components)[\\/]svgeezy[\\/]svgeezy\.js$/,
-            loader: 'imports?this=>window!exports?window.svgeezy'
+            loader: 'imports?this=>window!exports?svgeezy'
           },
           {
             // https://www.techchorus.net/blog/using-sass-version-of-bootstrap-with-webpack/
