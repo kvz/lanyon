@@ -1,6 +1,6 @@
 {
   "name": "lanyon",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "dr. Jekyll has turned into mr. Hyde. Lanyon to the rescue!",
   "main": "config.js",
   "bin": {
