@@ -148,6 +148,7 @@
     "shelljs": "0.7.5",
     "spawn-sync": "^1.0.15",
     "style-loader": "0.13.1",
+    "uglify": "^0.1.5",
     "url-loader": "0.5.7",
     "webpack": "1.13.3",
     "webpack-dev-middleware": "^1.8.4",

@@ -17,7 +17,7 @@ var scripts = {
   'deploy': require('./deploy'),
   'encrypt': require('./encrypt'),
   'serve': 'browser-sync start --config [cacheDir]/browsersync.config.js',
-  'start': '[lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
+  'start': '[lanyon] build:assets && [lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
   'build:content:watch': 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"'
 }
 
@@ -33,10 +33,12 @@ if (runtime.trace) {
 var cmdName = process.argv[2]
 var cmd = scripts[cmdName]
 
+// Create asset dirs and git ignores
 if (cmdName.match(/^build|postinstall/)) {
   utils.initProject(runtime)
 }
 
+// Run Hooks
 if (cmdName.match(/^build/)) {
   ['prebuild', 'prebuild:production', 'prebuild:development'].forEach(function (hook) {
     if (runtime[hook]) {
@@ -54,8 +56,10 @@ if (cmdName.match(/^build/)) {
   })
 }
 
+// Write all config files to cacheDir
 utils.writeConfig(config)
 
+// Run cmd arg
 if (_.isFunction(cmd)) {
   cmd(runtime, function (err) {
     if (err) {

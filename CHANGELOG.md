@@ -11,6 +11,14 @@
 - [ ] Add image optimizer from `assets/images` -> `assets/build/images`
 - [ ] Even on webpack production build failures Lanyon reports: `--> build:assets done.`. That needs to be fatal instead.
 
+# v0.0.35
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.34...v0.0.35)
+
+- [x] Build assets first, so that Jekyll can copy it into `_site`, and also `jekyll.lanyon_assets.yml` exists in time
+- [x] Add debugging notes
+- [x] Add uglify as a dependency
+
 # v0.0.34
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.33...v0.0.34)
