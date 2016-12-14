@@ -11,6 +11,12 @@
 - [ ] Add image optimizer from `assets/images` -> `assets/build/images`
 - [ ] Even on webpack production build failures Lanyon reports: `--> build:assets done.`. That needs to be fatal instead.
 
+# v0.0.36
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.35...v0.0.36)
+
+- [x] Move uglify loader to deps (vs devDeps)
+
 # v0.0.35
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.34...v0.0.35)
