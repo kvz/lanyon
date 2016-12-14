@@ -8,6 +8,13 @@
 - [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Add image optimizer from `assets/images` -> `assets/build/images`
 
+## v0.0.41
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.40...v0.0.41)
+
+- [x] Fix bug where only incremental builds receive asset indices
+- [x] Only reset `jekyll.lanyon_assets.yml` if it does not exist
+
 ## v0.0.40
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.39...v0.0.40)
