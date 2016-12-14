@@ -221,13 +221,23 @@ sudo apt-get install -y nodejs
 node -v
 ```
 
-#### Or: Node 0.12
+Or: Node 0.12
 
 Lanyon (still) supports 0.12, so you might prefer a legacy Node.js version so you don't have to add a 3rd party repository:
 
 ```bash
 sudo apt-get install nodejs-legacy npm
 node -v
+```
+
+#### libxml
+
+This can go a long way in making sure nokogiri behaves:
+
+```bash
+sudo -HE apt-get -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" install \
+  libxslt-dev \
+  libxml2-dev
 ```
 
 ## Contributing
