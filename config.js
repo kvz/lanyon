@@ -157,6 +157,7 @@ var cfg = {
     },
     devtool: 'eval-cheap-source-map',
     // devtool: 'source-map',
+    bail: !runtime.isDev,
     module: {
       loaders: (function plugins () {
         var loaders = [
@@ -275,6 +276,7 @@ var cfg = {
         plugins.push(new webpack.optimize.DedupePlugin())
         plugins.push(new webpack.optimize.LimitChunkCountPlugin({maxChunks: 15}))
         plugins.push(new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000}))
+        plugins.push(new webpack.NoErrorsPlugin())
       }
 
       if (runtime.common) {

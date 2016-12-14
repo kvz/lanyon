@@ -3,18 +3,16 @@
 # Unplanned
 
 - [ ] jRuby support https://spin.atomicobject.com/2013/04/24/bundler-jruby-complete/
-- [ ] Use webpack noerrors plugin in dev
-- [ ] Use webpack orderoccurance plugin in dev
 - [ ] Consider shipping all of Lanyon inside a Docker container
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Add image optimizer from `assets/images` -> `assets/build/images`
-- [ ] Even on webpack production build failures Lanyon reports: `--> build:assets done.`. That needs to be fatal instead.
 
 # v0.0.38 (unreleased)
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.37...v0.0.38)
 
+- [x] Make errors fatal in production
 - [x] Include plain css with ExtractTextPlugin
 
 # v0.0.37
