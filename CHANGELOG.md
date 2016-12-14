@@ -15,6 +15,7 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.36...v0.0.37)
 
+- [x] Make Deploy check aware of hashed cachebuster assets
 - [x] Fix less resolve-url-loader sourcemap issues
 
 # v0.0.36

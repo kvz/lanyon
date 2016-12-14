@@ -18,8 +18,8 @@ module.exports = function (runtime, cb) {
     return cb(new Error('GHPAGES_URL was not set. Did you source env.sh? Did you encrypt it with Travis?'))
   }
 
-  if (!shell.test('-f', runtime.contentBuildDir + '/assets/build/app.js')) {
-    return cb(new Error('I refuse to deploy if there is no ' + runtime.contentBuildDir + '/assets/build/app.js - build:production first!'))
+  if (!shell.test('-f', runtime.contentBuildDir + '/assets/build/app*.js')) {
+    return cb(new Error('I refuse to deploy if there is no ' + runtime.contentBuildDir + '/assets/build/app*.js - build:production first!'))
   }
   if (shell.test('-f', runtime.contentBuildDir + '/env.sh')) {
     return cb(new Error('I refuse to deploy if while ' + runtime.contentBuildDir + '/env.sh exists - secure your build first!'))
