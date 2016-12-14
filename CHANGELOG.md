@@ -12,6 +12,8 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.37...v0.0.38)
 
+- [x] No longer exclude `node_modules|bower_components|vendor` by default
+- [x] Disable resolve-url-loader for less as less currently produces invalid css (in its eyes)
 - [x] Make errors fatal in production
 - [x] Include plain css with ExtractTextPlugin
 

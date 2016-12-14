@@ -182,8 +182,7 @@ var cfg = {
           },
           {
             test: /\.coffee$/,
-            loader: 'coffee',
-            exclude: /(node_modules|bower_components|vendor)/
+            loader: 'coffee'
           },
           {
             test: /\.(png|gif|jpe?g)$/,
@@ -216,39 +215,36 @@ var cfg = {
           })
           loaders.push({
             test: /\.scss$/,
-            loader: 'style!css?sourceMap!sass?sourceMap!resolve-url?root=' + runtime.projectDir + '',
-            exclude: /(node_modules|bower_components|vendor)/
+            loader: 'style!css?sourceMap!sass?sourceMap!resolve-url?root=' + runtime.projectDir + ''
           })
           loaders.push({
             test: /\.less$/,
-            loader: 'style!css?sourceMap!less?sourceMap!resolve-url?root=' + runtime.projectDir + '',
-            exclude: /(node_modules|bower_components|vendor)/
+            // @todo Had to disable resolve-url-loader for less as less currently produces invalid css (in its eyes)
+            // see: https://travis-ci.org/tus/tus.io/builds/183913229#L1206
+            loader: 'style!css?sourceMap!less?sourceMap'
           })
           loaders.push({
             test: /\.js$/,
-            loader: 'jsx!babel',
-            exclude: /(node_modules|bower_components|vendor)/
+            loader: 'jsx!babel'
           })
         } else {
           loaders.push({
             test: /\.css$/,
-            loader: ExtractTextPlugin.extract('style!css?sourceMap!resolve-url?root=' + runtime.projectDir + ''),
-            exclude: /(node_modules|bower_components|vendor)/
+            loader: ExtractTextPlugin.extract('css?sourceMap!resolve-url?root=' + runtime.projectDir + '')
           })
           loaders.push({
             test: /\.scss$/,
-            loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap!resolve-url?root=' + runtime.projectDir + ''),
-            exclude: /(node_modules|bower_components|vendor)/
+            loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap!resolve-url?root=' + runtime.projectDir + '')
           })
           loaders.push({
             test: /\.less$/,
-            loader: ExtractTextPlugin.extract('css?sourceMap!less?sourceMap!resolve-url?root=' + runtime.projectDir + ''),
-            exclude: /(node_modules|bower_components|vendor)/
+            // @todo Had to disable resolve-url-loader for less as less currently produces invalid css (in its eyes)
+            // see: https://travis-ci.org/tus/tus.io/builds/183913229#L1206
+            loader: ExtractTextPlugin.extract('css?sourceMap!less?sourceMap')
           })
           loaders.push({
             test: /\.js$/,
-            loader: 'jsx!babel!uglify',
-            exclude: /(node_modules|bower_components|vendor)/
+            loader: 'jsx!babel!uglify'
           })
         }
 
