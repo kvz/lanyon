@@ -214,12 +214,12 @@ var cfg = {
         if (runtime.isDev) {
           loaders.push({
             test: /\.scss$/,
-            loader: 'style!css!resolve-url?root=' + runtime.projectDir + '!sass?sourceMap&sourceComments',
+            loader: 'style!css?sourceMap!sass?sourceMap!resolve-url?root=' + runtime.projectDir + '',
             exclude: /(node_modules|bower_components|vendor)/
           })
           loaders.push({
             test: /\.less$/,
-            loader: 'style!css!resolve-url?root=' + runtime.projectDir + '!less?sourceMap&sourceComments',
+            loader: 'style!css?sourceMap!less?sourceMap!resolve-url?root=' + runtime.projectDir + '',
             exclude: /(node_modules|bower_components|vendor)/
           })
           loaders.push({
@@ -230,12 +230,12 @@ var cfg = {
         } else {
           loaders.push({
             test: /\.scss$/,
-            loader: ExtractTextPlugin.extract('css!resolve-url?root=' + runtime.projectDir + '!sass?sourceMap'),
+            loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap!resolve-url?root=' + runtime.projectDir + ''),
             exclude: /(node_modules|bower_components|vendor)/
           })
           loaders.push({
             test: /\.less$/,
-            loader: ExtractTextPlugin.extract('css?sourceMap!resolve-url?root=' + runtime.projectDir + '!less?sourceMap'),
+            loader: ExtractTextPlugin.extract('css?sourceMap!less?sourceMap!resolve-url?root=' + runtime.projectDir + ''),
             exclude: /(node_modules|bower_components|vendor)/
           })
           loaders.push({

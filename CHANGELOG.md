@@ -11,6 +11,12 @@
 - [ ] Add image optimizer from `assets/images` -> `assets/build/images`
 - [ ] Even on webpack production build failures Lanyon reports: `--> build:assets done.`. That needs to be fatal instead.
 
+# v0.0.37
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.36...v0.0.37)
+
+- [x] Fix less resolve-url-loader sourcemap issues
+
 # v0.0.36
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.35...v0.0.36)
