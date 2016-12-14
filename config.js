@@ -161,9 +161,6 @@ var cfg = {
       loaders: (function plugins () {
         var loaders = [
           {
-            test: /\.css$/,
-            loader: 'style!css?sourceMap!resolve-url'
-          }, {
             test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
             loader: 'url?limit=10000&mimetype=application/font-woff'
           }, {
@@ -213,6 +210,10 @@ var cfg = {
 
         if (runtime.isDev) {
           loaders.push({
+            test: /\.css$/,
+            loader: 'style!css?sourceMap!resolve-url?root=' + runtime.projectDir + ''
+          })
+          loaders.push({
             test: /\.scss$/,
             loader: 'style!css?sourceMap!sass?sourceMap!resolve-url?root=' + runtime.projectDir + '',
             exclude: /(node_modules|bower_components|vendor)/
@@ -228,6 +229,11 @@ var cfg = {
             exclude: /(node_modules|bower_components|vendor)/
           })
         } else {
+          loaders.push({
+            test: /\.css$/,
+            loader: ExtractTextPlugin.extract('style!css?sourceMap!resolve-url?root=' + runtime.projectDir + ''),
+            exclude: /(node_modules|bower_components|vendor)/
+          })
           loaders.push({
             test: /\.scss$/,
             loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap!resolve-url?root=' + runtime.projectDir + ''),
