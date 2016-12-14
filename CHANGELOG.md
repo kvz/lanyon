@@ -8,6 +8,12 @@
 - [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Add image optimizer from `assets/images` -> `assets/build/images`
 
+# v0.0.39
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.38...v0.0.39)
+
+- [x] Fix deploy failsafe
+
 # v0.0.38
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.37...v0.0.38)

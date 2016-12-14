@@ -1,6 +1,7 @@
 var utils = require('./utils')
 var shell = require('shelljs')
 var fs = require('fs')
+var globby = require('globby')
 
 module.exports = function (runtime, cb) {
   if (runtime.onTravis) {
@@ -18,7 +19,7 @@ module.exports = function (runtime, cb) {
     return cb(new Error('GHPAGES_URL was not set. Did you source env.sh? Did you encrypt it with Travis?'))
   }
 
-  if (!shell.test('-f', runtime.contentBuildDir + '/assets/build/app*.js')) {
+  if (!globby.sync(runtime.contentBuildDir + '/assets/build/app*.js').length) {
     return cb(new Error('I refuse to deploy if there is no ' + runtime.contentBuildDir + '/assets/build/app*.js - build:production first!'))
   }
   if (shell.test('-f', runtime.contentBuildDir + '/env.sh')) {
