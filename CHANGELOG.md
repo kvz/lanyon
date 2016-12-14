@@ -8,6 +8,12 @@
 - [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Add image optimizer from `assets/images` -> `assets/build/images`
 
+## v0.0.42
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.41...v0.0.42)
+
+- [x] Ditch uglify loader in favor of plugin, as the loader cannot handle ES6 (even though the babel loader is ran first)
+
 ## v0.0.41
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.40...v0.0.41)

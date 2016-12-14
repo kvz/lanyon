@@ -225,7 +225,8 @@ var cfg = {
           })
           loaders.push({
             test: /\.js$/,
-            loader: 'jsx!babel'
+            loader: 'jsx!babel?presets[]=es2015',
+            exclude: /(node_modules|bower_components)/
           })
         } else {
           loaders.push({
@@ -244,7 +245,8 @@ var cfg = {
           })
           loaders.push({
             test: /\.js$/,
-            loader: 'jsx!babel!uglify'
+            loader: 'jsx!babel?presets[]=es2015',
+            exclude: /(node_modules|bower_components)/
           })
         }
 
@@ -267,12 +269,20 @@ var cfg = {
         plugins.push(new ExtractTextPlugin(getFilename('css'), {
           allChunks: true
         }))
-        plugins.push(new webpack.optimize.UglifyJsPlugin())
+        plugins.push(new webpack.optimize.UglifyJsPlugin({
+          compress: {
+            warnings: true
+          },
+          mangle: true,
+          sourceMap: true,
+          exclude: /(node_modules|bower_components)/
+        }))
+
+        plugins.push(new webpack.NoErrorsPlugin())
         plugins.push(new webpack.optimize.OccurrenceOrderPlugin())
         plugins.push(new webpack.optimize.DedupePlugin())
         plugins.push(new webpack.optimize.LimitChunkCountPlugin({maxChunks: 15}))
         plugins.push(new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000}))
-        plugins.push(new webpack.NoErrorsPlugin())
       }
 
       if (runtime.common) {
@@ -321,16 +331,7 @@ var cfg = {
         path.resolve(runtime.lanyonDir) + '/node_modules'
       ]
     },
-    'uglify-loader': {
-      mange: true,
-      compress: {
-        warnings: false
-      },
-      output: {
-        comments: true
-      },
-      sourceMap: false
-    }
+    debug: runtime.isDev
   }
 }
 
