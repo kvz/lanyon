@@ -126,6 +126,8 @@ require('imports?jQuery=jquery,$=jquery,this=>window!../../js/jquery.legacyplugi
 This will make the `jquery` module available as both `jQuery` and `$`, and make `this` refer to the global `window`, before
 requiring `../../js/jquery.legacyplugin.js`.
 
+Furthermore, `js-untouched` is a Lanyon-magic folder name, that does not get processed by the JS/Babel loaders. You can put JS here that you want, well, untouched, like minified files. This folder can reside in any asset sub-dir, such as `./assets/javascripts/js-untouched/`.
+
 ## Troubleshooting
 
 ### No html file changes are spotted
