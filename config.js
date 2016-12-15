@@ -235,6 +235,7 @@ var cfg = {
                 require.resolve('babel-preset-react'),
                 require.resolve('babel-preset-stage-0')
               ],
+              sourceRoot: runtime.projectDir + '',
               cacheDirectory: runtime.cacheDir + '/babelCache' + ''
             },
             exclude: /(node_modules|bower_components)/
@@ -265,6 +266,7 @@ var cfg = {
                 require.resolve('babel-preset-react'),
                 require.resolve('babel-preset-stage-0')
               ],
+              sourceRoot: runtime.projectDir + '',
               cacheDirectory: runtime.cacheDir + '/babelCache' + ''
             },
             exclude: /(node_modules|bower_components)/
