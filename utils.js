@@ -91,7 +91,7 @@ module.exports.initProject = function (runtime) {
 }
 
 module.exports.writeConfig = function (cfg) {
-  if (!shell.test(cfg.runtime.cacheDir + '/jekyll.lanyon_assets.yml')) {
+  if (!shell.test('-f', cfg.runtime.cacheDir + '/jekyll.lanyon_assets.yml')) {
     fs.writeFileSync(cfg.runtime.cacheDir + '/jekyll.lanyon_assets.yml', '# this file should be overwritten by the Webpack AssetsPlugin', 'utf-8')
   }
   fs.writeFileSync(cfg.runtime.cacheDir + '/jekyll.config.yml', yaml.safeDump(cfg.jekyll), 'utf-8')
