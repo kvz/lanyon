@@ -115,6 +115,17 @@ in your layout, include the build (same location works both for production artif
 
 Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository.
 
+### Legacy
+
+If you're dealing with legacy jQuery plugins and you need to customize loaders, you can do so right in the requires:
+
+```javascript
+require('imports?jQuery=jquery,$=jquery,this=>window!../../js/jquery.legacyplugin.js');
+```
+
+This will make the `jquery` module available as both `jQuery` and `$`, and make `this` refer to the global `window`, before
+requiring `../../js/jquery.legacyplugin.js`.
+
 ## Troubleshooting
 
 ### No html file changes are spotted

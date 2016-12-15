@@ -13,7 +13,7 @@
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.43...v0.0.44)
 
 - [x] Fix babel source maps
-- [x] Only exit on error when in production mode
+- [x] Only exit on error when in production mode`
 
 ## v0.0.43
 
