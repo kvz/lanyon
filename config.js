@@ -310,8 +310,10 @@ var cfg = {
               console.log('--> Wrote ' + runtime.assetsBuildDir + '/' + asset)
             }
             if (stats.compilation.errors && stats.compilation.errors.length) {
-              console.log(stats.compilation.errors)
-              process.exit(1)
+              console.error(stats.compilation.errors)
+              if (!runtime.isDev) {
+                process.exit(1)
+              }
             }
           })
         })
