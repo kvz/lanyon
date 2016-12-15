@@ -238,7 +238,7 @@ var cfg = {
               sourceRoot: runtime.projectDir + '',
               cacheDirectory: runtime.cacheDir + '/babelCache' + ''
             },
-            exclude: /(node_modules|bower_components)/
+            exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/
           })
         } else {
           loaders.push({
@@ -269,7 +269,7 @@ var cfg = {
               sourceRoot: runtime.projectDir + '',
               cacheDirectory: runtime.cacheDir + '/babelCache' + ''
             },
-            exclude: /(node_modules|bower_components)/
+            exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/
           })
         }
 
@@ -298,7 +298,7 @@ var cfg = {
           },
           mangle: true,
           sourceMap: true,
-          exclude: /(node_modules|bower_components)/
+          exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/
         }))
 
         // plugins.push(new webpack.NoErrorsPlugin())

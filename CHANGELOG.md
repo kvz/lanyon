@@ -8,6 +8,12 @@
 - [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Add image optimizer from `assets/images` -> `assets/build/images`
 
+## v0.0.45
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.44...v0.0.45)
+
+- [x] Support for a `js-untouched` directory, where js won't pass through babel
+
 ## v0.0.44
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.43...v0.0.44)
