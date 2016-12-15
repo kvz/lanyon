@@ -229,6 +229,7 @@ var cfg = {
             loader: 'babel',
             query: {
               babelrc: false,
+              // If we ever want multiple loaders on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
               presets: [
                 require.resolve('babel-preset-es2015'),
                 require.resolve('babel-preset-react'),
@@ -258,6 +259,7 @@ var cfg = {
             loader: 'babel',
             query: {
               babelrc: false,
+              // If we ever want multiple loaders on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
               presets: [
                 require.resolve('babel-preset-es2015'),
                 require.resolve('babel-preset-react'),
