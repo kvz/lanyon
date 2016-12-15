@@ -57,10 +57,12 @@ if (cmdName.match(/^build/)) {
 }
 
 // Write all config files to cacheDir
+console.log('--> Writing configs. ')
 utils.writeConfig(config)
 
 // Run cmd arg
 if (_.isFunction(cmd)) {
+  console.log('--> Running ' + cmdName + ' function. ')
   cmd(runtime, function (err) {
     if (err) {
       console.error(cmdName + ' function exited with error ' + err)
@@ -112,7 +114,7 @@ if (_.isFunction(cmd)) {
   env.JEKYLL_ENV = runtime.lanyonEnv
   env.LANYON_PROJECT = runtime.projectDir // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
 
-  console.log('--> Running cmd: "' + cmd + '"')
+  console.log('--> Running ' + cmdName + ' shell cmd: "' + cmd + '"')
   utils.passthru(runtime, cmd, {'env': env})
   console.log('--> ' + cmdName + ' done. ')
 } else {
