@@ -138,6 +138,7 @@ var cfg = {
       })
 
       if (runtime.common) {
+        // e.g.: [ "jquery" ]
         // https://webpack.github.io/docs/code-splitting.html#split-app-and-vendor-code
         entries.common = runtime.common
       }
@@ -157,7 +158,7 @@ var cfg = {
     },
     devtool: 'eval-cheap-source-map',
     // devtool: 'source-map',
-    bail: !runtime.isDev,
+    bail: false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
     module: {
       loaders: (function plugins () {
         var loaders = [
@@ -224,8 +225,17 @@ var cfg = {
             loader: 'style!css?sourceMap!less?sourceMap'
           })
           loaders.push({
-            test: /\.js$/,
-            loader: 'jsx!babel?presets[]=es2015',
+            test: /\.(js|jsx)$/,
+            loader: 'babel',
+            query: {
+              babelrc: false,
+              presets: [
+                require.resolve('babel-preset-es2015'),
+                require.resolve('babel-preset-react'),
+                require.resolve('babel-preset-stage-0')
+              ],
+              cacheDirectory: runtime.cacheDir + '/babelCache' + ''
+            },
             exclude: /(node_modules|bower_components)/
           })
         } else {
@@ -244,8 +254,17 @@ var cfg = {
             loader: ExtractTextPlugin.extract('css?sourceMap!less?sourceMap')
           })
           loaders.push({
-            test: /\.js$/,
-            loader: 'jsx!babel?presets[]=es2015',
+            test: /\.(js|jsx)$/,
+            loader: 'babel',
+            query: {
+              babelrc: false,
+              presets: [
+                require.resolve('babel-preset-es2015'),
+                require.resolve('babel-preset-react'),
+                require.resolve('babel-preset-stage-0')
+              ],
+              cacheDirectory: runtime.cacheDir + '/babelCache' + ''
+            },
             exclude: /(node_modules|bower_components)/
           })
         }
@@ -278,11 +297,22 @@ var cfg = {
           exclude: /(node_modules|bower_components)/
         }))
 
-        plugins.push(new webpack.NoErrorsPlugin())
+        // plugins.push(new webpack.NoErrorsPlugin())
         plugins.push(new webpack.optimize.OccurrenceOrderPlugin())
         plugins.push(new webpack.optimize.DedupePlugin())
         plugins.push(new webpack.optimize.LimitChunkCountPlugin({maxChunks: 15}))
         plugins.push(new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000}))
+        plugins.push(function ReportErrors () {
+          this.plugin('done', function (stats) {
+            for (var asset in stats.compilation.assets) {
+              console.log('--> Wrote ' + runtime.assetsBuildDir + '/' + asset)
+            }
+            if (stats.compilation.errors && stats.compilation.errors.length) {
+              console.log(stats.compilation.errors)
+              process.exit(1)
+            }
+          })
+        })
       }
 
       if (runtime.common) {
@@ -294,9 +324,9 @@ var cfg = {
         if (runtime.isDev) {
           console.log('--> Cannot write statistics to "' + fullpathStatistics + '" in dev mode. Create a production build via LANYON_ENV=production. ')
         } else {
-          console.log('--> Will write statistics to "' + fullpathStatistics + '"')
           // @todo: Once Vizualizer supports multiple entries, add support for that here
           // https://github.com/chrisbateman/webpack-visualizer/issues/5
+          // Currently it just shows stats for all entries in one graph
           plugins.push(new Visualizer({
             filename: runtime.statistics
           }))

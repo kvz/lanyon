@@ -12,6 +12,8 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.42...v0.0.43)
 
+- [x] Use Babel ES2015 as shipped by Lanyon, ignoring any project's `.babelrc` (BREAKING) (We _might_ support sth more intelligent in the future, but for now are favoring convention & near-zero-setup by the project)
+- [x] "Don't use JSX loader, use babel instead" - https://github.com/petehunt/jsx-loader
 - [x] Fix bug: test: could not interpret expression
 
 ## v0.0.42
