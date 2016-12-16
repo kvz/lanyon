@@ -284,6 +284,29 @@ hr {
   background-color: gainsboro; /* Modern Browsers */
 }
 
+table {
+  border-collapse: collapse;
+}
+th {
+  border-bottom: 1px solid #ddd;
+}
+th:not(:first-child), td:not(:first-child) {
+  padding-left: 10px;
+}
+th, td {
+  font-size: 90%;
+  padding-right: 10px;
+}
+th, td:not(:first-child) {
+  white-space: nowrap;
+}
+th:not(:last-child), td:not(:last-child) {
+  border-right: 1px solid #ddd;
+}
+tr:not(:last-child) {
+  border-bottom: 1px solid #eee;
+}
+
 .Social {
   margin: 0 auto;
   text-align: center;

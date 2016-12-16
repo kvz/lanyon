@@ -1,3 +1,5 @@
+This document is best viewed at <http://lanyon.io/faq/>.
+
 <!--more-->
 
 # Frequently Asked Questions
@@ -109,3 +111,41 @@ Or: if you prefer not to have 3rd party sources, Lanyon (still) supports 0.12, s
 sudo apt-get install nodejs-legacy npm
 node -v
 ```
+
+## How will I deploy my Lanyon site?
+
+Lanyon assumes automated deployment to GitHub Pages via Travis CI.
+
+Enable building this project on Travis CI by flipping a switch in your account page. 
+
+Add a `.travis.yml` to your project, similar to this one:
+
+    language: node_js
+    node_js: 6
+    sudo: false
+    script: true # <-- @todo you can test here
+    deploy:
+      skip_cleanup: true
+      provider: script
+      script: .lanyon/bin/deploy
+      on:
+        branch: master
+        condition: $TRAVIS_OS_NAME = linux
+
+Acquire a GitHub token by (creating a dedicated GitHub bot user and giving it access to your repo, logging in as it and) going to [Personal access tokens](https://github.com/settings/tokens). Click Generate new token, name it `Github pages deploy`, click `repo`, and hit Generate.
+
+Add an `env.sh` to your project that you `git ignore`, and add the following contents:
+
+```bash
+export GHPAGES_URL="https://<your github token>@github.com/<your github org>/<your github repo>.git"
+export GHPAGES_BOTNAME="<your github token username>"
+export GHPAGES_BOTEMAIL="<your github token email>"
+```
+
+You can now type `source env.sh` and use `npm run encrypt` to save these secrets on Travis CI.
+
+Now whenever a push to `master` of your project hits GitHub, they'll ping Travis CI to kick a build. Your project will install, hence Lanyon will install. Travis will decrypt the secrets and inject them into the environment. If you didn't fill out any `script` (just `true`), Travis will proceed immediately calling `.lanyon/bin/deploy` which in turn calls `npm run build:production && npm run deploy`. This is done because Travis does not allow commands, only files in that step. Lanyon builds your project, and then uses the secrets to force push to your `GHPAGES_URL`, which includes your repo address as well as your token. Your site is now live and will be refreshed with every push to `master`.
+
+## Wouldn't it be better to just use GitHub pages-rendering?
+
+That's certainly getting better [by the week](https://github.com/blog/2289-publishing-with-github-pages-now-as-easy-as-1-2-3) and we'll keep a close watch on what we can incorporate from their flow, however with local development there's no Webpack/BrowserSync, etc. Without using Travis CI there's little in the way of customization (running your own checkouts / imports / linting and speling checks, etc).
