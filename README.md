@@ -70,8 +70,8 @@ We'll be assuming:
 
 - Sass
 - ES6
-- Assets in `./assets/`, with transpiled assets in `./assets/build`
-- Node modules in `./node_modules/`, Bower components in `./assets/bower_components` (if any)
+- Assets in `./assets/`, with transpiled assets in `./assets/build/`
+- Node modules in `./node_modules/`, Bower components in `./assets/bower_components/` (if any)
 - Our users already have a working Node.js setup and don't mind a `package.json` in their project
 - GitHub pages for deploys (with Travis CI as a builder)
 - Any environment other than `development` means `production`. This is to simplify, and if you have additional stages like `test`, you'll likely want to test as close to production as possible anyway.
@@ -154,7 +154,7 @@ in your layout, include the build (the same location works both for production a
 
 **Note** that lanyon provides the magic `lanyon_assets` variable in Jekyll, pointing to either `/assets/build/app.js` in development, or `/assets/build/app.bfcebf1c103b9f8d41bd.js` in production so that you can enable longterm caching of assets and also cache-bust them when they change. This works for all entries and asset types, so also for e.g. `common.css`.
 
-Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository. The Lanyon website is also bundled under [`website`](./website), this is a little bit more advanced as it builds from the `README.md` and other Markdown files in the repo. This means there is no separate content to maintain on <http://lanyon.io>
+Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository. The Lanyon website is also bundled under [`website`](./website), this is a little bit more advanced as it builds from the `README.md` and other Markdown files in the repo. This means there is no separate content to maintain on <http://lanyon.io>.
 
 ## Changelog
 
