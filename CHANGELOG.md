@@ -14,13 +14,13 @@
 
 - [x] First go into projectDir before running deploy, to support nested websites
 
-## v0.0.47 (Unreleased)
+## v0.0.47
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.46...v0.0.47)
 
 - [x] Basic support for injecters via `contentIgnore` and `contentScandir`
 
-## v0.0.46 (Unreleased)
+## v0.0.46
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.45...v0.0.46)
 
