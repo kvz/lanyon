@@ -23,6 +23,6 @@
     "start": "lanyon start"
   },
   "dependencies": {
-    "lanyon": "0.0.46"
+    "lanyon": "0.0.47"
   }
 }
