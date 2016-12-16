@@ -80,7 +80,7 @@ before_cache:
 - rm -f ./node_modules/.bin/which
 before_deploy:
 - cd website && npm link lanyon
-- website/node_modules/.bin/lanyon postinstall
+- env LANYON_PROJECT=./website ./cli.js postinstall
 deploy:
   skip_cleanup: true
   provider: script
@@ -88,4 +88,4 @@ deploy:
   on:
     branch: master
     node: 6
-    condition: $TRAVIS_OS_NAME = linux
+    condition: $LANYON_ONLY = docker
