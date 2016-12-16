@@ -135,13 +135,14 @@ if (module.hot) {
 }
 ```
 
+**Note** that you do not have to create your own `app.css` stylesheet entry-point. 
+You're supposed to require CSS in `app.js`, and that will be written out by Lanyon
+to `app.css` in production (and live in Webpack memory during development) :scream:
+
 in your layout, include the build (the same location works both for production artifact files, as well as magic Hot Module Reloading during development):
 
 {%raw%}
 ```html
-<!-- You do not have to create your own app.css stylesheet entry-point. 
-You're supposed to require css in app.js, and that will be written out 
-to app.css in production (and live in memory during development) -->
 <head>
   <title>No hassle</title> 
   <link rel="stylesheet" href="{{site.lanyon_assets.app.css}}"> 
