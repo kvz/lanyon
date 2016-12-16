@@ -7,7 +7,7 @@ This document is best viewed at <http://lanyon.io/>.
 Lanyon is a static site generator. It is a wrapper around Jekyll, Webpack, BrowserSync, Nodemon, in an attempt to give you the best of all worlds :earth_asia: :earth_americas: :earth_africa: (Instant asset building & refreshing, fast & reliable file watching). 
 Spitting in the face of unix philosophy, it tries to do many things, such as spell checking, and setting up a working Ruby environment. OTH, One might argue it's applying unix philosophy by making underlying tools do one thing only :thinking:
 
-Whichever the case, Lanyon is certainly okay with embracing/sacrificing whichever philosophy so long as it amounts to THE highest level of convenience around building static websites. Getting started should be as simple as `npm install lanyon` and `lanyon start`.
+Whichever the case, Lanyon is certainly okay with embracing/sacrificing whichever philosophy so long as it amounts to THE highest level of convenience around building static websites. Getting started should be as simple as `npm install lanyon --save` and `npm start`.
 
 ## State
 
@@ -29,9 +29,9 @@ If you're an early adopter of Lanyon, [let us know](https://github.com/kvz/lanyo
 
 ## Background
 
-Jekyll is great for documentation and static websites sites, the ecosystem is vast and mature, things that are straightforward in Jekyll require odd workarounds in Hexo or Hugo. GitHub backing isn't the worst to have either, and we can assume that what we invest in Jekyll today, will still be relevant for a few more years. 
+Jekyll is great for documentation and static websites sites, the ecosystem is vast and mature, things that are straightforward in Jekyll require odd workarounds in Hexo or Hugo. GitHub (Pages) backing isn't the worst thing to have either, and we can assume that what we invest in Jekyll today, will be relevant for a few more years. 
 
-Admittedly the other generators are very appealing and humiliate Jekyll when it comes to file watching, asset building, speed, browser integration, ease of install. Here is a highly opinionated overview:
+Admittedly the other generators are very appealing and humiliate Jekyll when it comes to file watching, asset building, speed, browser integration, ease of install. Here is an opinionated overview:
 
 
 | Quality                                      |        Hugo        |        Hexo        |             Jekyll              |       Lanyon       |  Webpack/BrowserSync/Nodemon   |
@@ -49,9 +49,13 @@ Admittedly the other generators are very appealing and humiliate Jekyll when it 
 
 So what we set out to do with Lanyon, is get the best of all worlds. We're doing so by:
 
-- Using Browsersync with Webpack middleware featuring Hot module reloading
-- Taking a sledge hammer :hammer: approach at getting a suitable Ruby to work on your system, traversing, docker, rbenv, rvm, brew, taking the first thing that can get us a working Ruby 2 install, installing all other dependencies locally
-- Using Nodemon for md/html file-watching, kicking incremental Jekyll builds
+- Using Browsersync with Webpack middleware featuring Hot Module Reloading
+- Taking a sledge hammer :hammer: approach at getting a suitable Ruby to work on your system, traversing, [Docker](https://www.docker.com), [rbenv](https://github.com/rbenv/rbenv), [RVM](https://rvm.io), and [Homebrew](http://brew.sh), taking the first method that can get us a working Ruby 2 install, and installing all other dependencies locally in `.lanyon`
+- Using Nodemon for `.md` / `.html` file-watching, kicking incremental Jekyll builds
+
+This enables you to locally have realtime refreshing assets (colors change in the browser as you save), and have much more reliable and performant content watching than Jekyll offers. It also gives us libsass (vs ruby sass), and can sync browsers on many devices in your office so that they'll follow along with what you are clicking on and scrolling down to.
+
+Normally these things take a ton of time, research and guidance to set up across your team and projects. By standardizing and coupling the tools involved, Lanyon makes this immediate and fun.
 
 Lanyon is geared towards developer convenience and as a bonus offers:
 
@@ -60,15 +64,14 @@ Lanyon is geared towards developer convenience and as a bonus offers:
 - Markdown linting (WIP)
 - Spell checking (WIP)
 
-Lanyon is used by [Transloadit](https://transloadit.com) for static sites, and is geared towards their use-case. Trying to get so many moving parts to behave comes with challenges and a ton of configuration options. This project won't support all the things that its underlying components support, and prefers convention over configuration.
+Lanyon is used by [Transloadit](https://transloadit.com) for static sites, focusses on their use-case. Trying to get so many moving parts to behave comes with challenges and a ton of configuration options. Lanyon won't support all the things that its underlying components support, and prefers convention over configuration.
 
 We'll be assuming:
 
 - Sass
-- ES6 (and maybe React)
+- ES6
 - Assets in `./assets/`, with transpiled assets in `./assets/build`
 - Node modules in `./node_modules/`, Bower components in `./assets/bower_components` (if any)
-- `app.js` is the primary entry point
 - Our users already have a working Node.js setup and don't mind a `package.json` in their project
 - GitHub pages for deploys (with Travis CI as a builder)
 - Any environment other than `development` means `production`. This is to simplify, and if you have additional stages like `test`, you'll likely want to test as close to production as possible anyway.
@@ -117,24 +120,34 @@ If you make changes to your gems later on, run `node node_modules/.bin/lanyon po
 Have an `assets/app.js` in which you require both javascripts and stylesheets:
 
 ```javascript
-require('js/main.js')      // <-- or wherever you kept your javascripts
-require('sass/main.scss')  // <-- or wherever you kept your stylesheets
+require('./main.js') // <-- your original sources 
+require('./style.css') // <-- yes, we also require (s)css. This is a Webpack thing
+
+// Enable Hot Module reloading:
+if (module.hot) {
+  module.hot.accept('./main.js', function () {
+    require('./main.js')
+  })
+  module.hot.accept('./style.css', function () {
+    require('./style.css')
+  })
+}
 ```
 
-in your layout, include the build (same location works both for production artifact files, as well as magic Hot Module Reloading):
+in your layout, include the build (the same location works both for production artifact files, as well as magic Hot Module Reloading during development):
 
 {%raw%}
 ```html
 <!-- head -->
 <link rel="stylesheet" href="{{site.lanyon_assets.app.css}}">
 <!-- footer -->
-<script src="{{site.lanyon_assets.app.css}}"></script>
+<script src="{{site.lanyon_assets.app.js}}"></script>
 ```
 {%endraw%}
 
-**Note** that lanyon provides magic `lanyon_assets` variables in Jekyll, pointing to either `/assets/build/common.js` in development, or `/assets/build/common.bfcebf1c103b9f8d41bd.js` in production so you can enable longterm caching of assets and also cachebust them when they change. This works for all entries and asset types, so also for e.g. `app.css`.
+**Note** that lanyon provides the magic `lanyon_assets` variable in Jekyll, pointing to either `/assets/build/app.js` in development, or `/assets/build/app.bfcebf1c103b9f8d41bd.js` in production so that you can enable longterm caching of assets and also cache-bust them when they change. This works for all entries and asset types, so also for e.g. `common.css`.
 
-Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository.
+Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository. The Lanyon website is also bundled under [`website`](./website), this is a little bit more advanced as it builds from the `README.md` and other Markdown files in the repo. This means there is no separate content to maintain on <http://lanyon.io>
 
 ## Changelog
 
