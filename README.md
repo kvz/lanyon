@@ -48,15 +48,15 @@ Admittedly the other generators are very appealing and humiliate Jekyll when it 
 
 So what we set out to do with Lanyon, is get the best of all worlds. We're doing so by:
 
-- Using Browsersync with Webpack middleware featuring Hot Module Reloading
-- Taking a sledge hammer :hammer: approach at getting a suitable Ruby to work on your system, traversing, [Docker](https://www.docker.com), [rbenv](https://github.com/rbenv/rbenv), [RVM](https://rvm.io), and [Homebrew](http://brew.sh), taking the first method that can get us a working Ruby 2 install, and installing all other dependencies locally in `.lanyon`
-- Using Nodemon for `.md` / `.html` file-watching, kicking incremental Jekyll builds
+- Taking a sledge hammer :hammer: approach at getting a suitable Ruby to work on your system, traversing, [Docker](https://www.docker.com), [rbenv](https://github.com/rbenv/rbenv), [RVM](https://rvm.io), and [Homebrew](http://brew.sh), taking the first method that can get us a working Ruby 2 install, and installing all other dependencies locally in `.lanyon`, relieving any installation pains. 
+- Using Browsersync with Webpack middleware featuring Hot Module Reloading for stylesheets & JavaScript.
+- Using Nodemon for `.md` / `.html` file-watching, kicking incremental Jekyll builds for content.
 
-This enables you to locally have realtime refreshing assets (e.g. font-size changes in-browser as you save without the page reloading), and have much more reliable and performant content watching than Jekyll offers. It also gives us libsass (vs Ruby sass), and can sync browsers on many devices in your office so that they'll follow along with what you are clicking on and scrolling down to. Luxury you might normally not be able to afford for your projects, but now the tech to do this works out of the box with a single `npm install`!
+This enables you to locally have realtime refreshing assets (e.g. font-size changes in-browser as you save without the page reloading), and have much more reliable and performant content watching than Jekyll offers. It also gives us libsass (vs Ruby sass), and can sync browsers on many devices in your office so that they'll follow along with what you are clicking on and scrolling down to on your main workstation. Even just connecting your phone in this fashion goes a long way in spotting responsive issues quickly. A luxury you might normally not be able to afford for your projects, but now the tech to do this works out of the box with just a single `npm install`!
 
 Lanyon is geared towards developer convenience and as a bonus offers:
 
-- Deploys to GitHub Pages (from Travis or your workstation, we are not compatible with as-is `gh-pages` branch-filling and have no desire to support that)
+- Deploys to GitHub Pages from Travis CI or your workstation (we are not compatible with as-is `gh-pages` branch-filling, and have no desire to support that)
 - JS linting (WIP)
 - Markdown linting (WIP)
 - Spell checking (WIP)
