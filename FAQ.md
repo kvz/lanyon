@@ -92,6 +92,12 @@ Then, follow **Docker for Mac** instructions on <https://docs.docker.com/docker-
 docker --version && docker ps
 ```
 
+**Note** that you can force Lanyon to use Docker with this environment variable:
+
+```bash
+export LANYON_ONLY=docker
+```
+
 ## How do I install Node.js on Ubuntu?
 
 Lanyon requires Node.js to be present on your system (although we may consider shipping all of Lanyon inside a Docker container in a future version - currently it's just the Ruby stuff). On older Ubuntu versions, that can 
