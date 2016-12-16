@@ -140,6 +140,8 @@ If you're seeing things like `Invalid date '0000-00-00': Post '/vendor/bundle/ru
 likely upgrading from an existing Jekyll install, and haven't cleared out the `vendor` dir. Lanyon only relies on the `.lanyon` dir
 inside your project, ands so you should clean up old Jekyll residue as Lanyon does not have build `exclude`s for those.
 
+Similarly, it's also important to remove the `.bundle` folder from existing Jekyll apps migrating to Lanyon.
+
 ## Deploy
 
 Enable building this project on Travis CI. Add a `.travis.yml` similar to this one:
