@@ -79,8 +79,8 @@ matrix:
 before_cache:
 - rm -f ./node_modules/.bin/which
 before_deploy:
-- cd website && npm link lanyon
-- env LANYON_PROJECT=./website ./cli.js postinstall
+- cd website && npm link lanyon && cd ..
+- env LANYON_PROJECT=./website node ./cli.js postinstall
 deploy:
   skip_cleanup: true
   provider: script
