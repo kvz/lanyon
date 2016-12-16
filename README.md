@@ -132,7 +132,7 @@ in your layout, include the build (same location works both for production artif
 ```
 {%endraw%}
 
-> Note that lanyon provides magic `lanyon_assets` variables in Jekyll, pointing to either `/assets/build/common.js` in development, or `/assets/build/common.bfcebf1c103b9f8d41bd.js` in production so you can enable longterm caching of assets and also cachebust them when they change. This works for all entries and asset types, so also for e.g. `app.css`.
+**Note** that lanyon provides magic `lanyon_assets` variables in Jekyll, pointing to either `/assets/build/common.js` in development, or `/assets/build/common.bfcebf1c103b9f8d41bd.js` in production so you can enable longterm caching of assets and also cachebust them when they change. This works for all entries and asset types, so also for e.g. `app.css`.
 
 Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository.
 
