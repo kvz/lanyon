@@ -94,7 +94,8 @@ The recommended way to use Lanyon is to add it to your project's npm run scripts
 ...
   "lanyon": {
     "entries": [
-      // As single 'app' entry is the default. List all entries here if you have more
+      // As single 'app' entry is the default. 
+      // List all entries here if you have more
       "app"
     ],
     "gems": {
@@ -138,9 +139,14 @@ in your layout, include the build (the same location works both for production a
 
 {%raw%}
 ```html
-<!-- head -->
-<link rel="stylesheet" href="{{site.lanyon_assets.app.css}}">
-<!-- footer -->
+<!-- You do not have to create your own app.css stylesheet entry-point. 
+You're supposed to require css in app.js, and that will be written out 
+to app.css in production (and live in memory during development) -->
+<head>
+  <title>No hassle</title> 
+  <link rel="stylesheet" href="{{site.lanyon_assets.app.css}}"> 
+</head>
+<body> ... </body>
 <script src="{{site.lanyon_assets.app.js}}"></script>
 ```
 {%endraw%}
