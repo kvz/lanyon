@@ -12,6 +12,7 @@
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.47...v0.0.48)
 
+- [x] Add a website <http://lanyon.io>
 - [x] First go into projectDir before running deploy, to support nested websites
 
 ## v0.0.47
