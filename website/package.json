@@ -5,11 +5,13 @@
     "url": "git://github.com/kvz/lanyon.git"
   },
   "lanyon": {
-    "prebuild": "npm run inject"
+    "prebuild": "./_scripts/inject.sh",
+    "contentScandir": "../",
+    "contentIgnore": [
+      "website/*.md"
+    ]
   },
   "scripts": {
-    "inject": "./_scripts/inject.sh",
-    "injecter": "cd .. && nodemon --verbose --watch ./  --ignore 'website/*.md' --ignore 'website/_site' --ignore 'website/.lanyon' --ext html,json,md,js,css,png,jpg --exec 'npm run inject'",
     "build:production": "LANYON_ENV=production lanyon build",
     "build": "lanyon build",
     "serve:production": "LANYON_ENV=production lanyon serve",

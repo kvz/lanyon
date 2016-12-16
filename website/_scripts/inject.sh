@@ -35,7 +35,7 @@ __base="$(basename ${__file} .sh)"
 
 pushd "${__root}"
 
-for doc in "README" "FAQ" "CHANGELOG"; do
+for doc in "README" "FAQ" "CHANGELOG" "CONTRIBUTING"; do
   targetName="$(echo "${doc}" | awk '{print tolower($0)}')"
   permalink="/${targetName}/"
   subtitle="$(tr '[:lower:]' '[:upper:]' <<< ${targetName:0:1})${targetName:1} | "

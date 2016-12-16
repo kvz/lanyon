@@ -80,6 +80,8 @@ runtime.recordsPath = path.join(runtime.cacheDir, 'records.json')
 runtime.assetsSourceDir = path.join(runtime.projectDir, 'assets')
 runtime.assetsBuildDir = path.join(runtime.assetsSourceDir, 'build')
 runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
+runtime.contentScandir = path.join(runtime.projectDir, runtime.contentScandir || '.')
+runtime.contentIgnore = runtime.contentIgnore || []
 
 // Set prerequisite defaults
 for (var name in runtime.prerequisites) {
@@ -429,18 +431,18 @@ cfg.jekyll = {
 cfg.nodemon = {
   onChangeOnly: true,
   verbose: true,
-  watch: runtime.projectDir,
+  watch: runtime.contentScandir,
   ignore: [
-    '.lanyon/*',
-    'env.sh',
-    'env.*.sh',
-    '.env.sh',
+    '_site/**',
     '.env.*.sh',
-    'assets/*',
-    'vendor/**',
-    'node_modules/*',
-    '_site/*'
-  ],
+    '.env.sh',
+    '.lanyon/**',
+    'assets/**',
+    'env.*.sh',
+    'env.sh',
+    'node_modules/**',
+    'vendor/**'
+  ].concat(runtime.contentIgnore),
   ext: [
     'htm',
     'html',
