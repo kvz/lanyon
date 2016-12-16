@@ -8,11 +8,17 @@
 - [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Add image optimizer from `assets/images` -> `assets/build/images`
 
+## v0.0.48 (Unreleased)
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.47...v0.0.48)
+
+- [x] First go into projectDir before running deploy, to support nested websites
+
 ## v0.0.47 (Unreleased)
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.46...v0.0.47)
 
-- [x] Basic suppot for injecters via `contentIgnore` and `contentScandir`
+- [x] Basic support for injecters via `contentIgnore` and `contentScandir`
 
 ## v0.0.46 (Unreleased)
 

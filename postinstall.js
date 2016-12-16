@@ -182,7 +182,7 @@ module.exports = function (runtime, cb) {
 
   shimPath = path.join(runtime.binDir, 'deploy')
   process.stdout.write('--> Installing: ' + 'deploy' + ' shim to: ' + shimPath + ' ... ')
-  fs.writeFileSync(shimPath, '#!/bin/sh\n(npm run build:production || npm run web:build:production) && (npm run deploy || npm run web:deploy)', { 'encoding': 'utf-8', 'mode': '755' })
+  fs.writeFileSync(shimPath, '#!/bin/sh -ex\ncd "' + runtime.projectDir + '"\n(npm run build:production || npm run web:build:production) && (npm run deploy || npm run web:deploy)', { 'encoding': 'utf-8', 'mode': '755' })
   console.log(yes)
 
   cb(null)
