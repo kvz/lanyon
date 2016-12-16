@@ -8,9 +8,10 @@ body {
 }
 
 #header-overlay {
-  background: #131313 50% 100% no-repeat;
+  background: #a700fd 50% 100% no-repeat;
+  /*background-image = url(/assets/images/1.jpg);*/
   background-size: cover;
-  height: 20vh;
+  height: 25vh;
   width: 100%;
   opacity: 0;
   -webkit-animation-name: overlay;
@@ -53,15 +54,19 @@ body.background-4 #header-overlay {
 
 #logo {
   display: block;
-  background: url(http://thecatapi.com/api/images/get?format=src&type=gif) center;
+  /*background: url(http://thecatapi.com/api/images/get?format=src&type=gif) center;*/
   background-repeat: no-repeat;
   background-size: contain;
-  width: 180px;
+  width: 400px;
   height: 120px;
+  line-height: 120px;
   position: absolute;
+  text-align: center;
+  color: white;
+  font-size: 50px;
   top: 50%;
   left: 50%;
-  margin-left: -100px;
+  margin-left: -200px;
   margin-top: -60px;
   -webkit-animation-name: logo;
           animation-name: logo;
