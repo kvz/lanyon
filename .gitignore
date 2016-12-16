@@ -45,3 +45,15 @@ Gemfile
 .lanyon
 .lanyon/bin
 assets/build
+
+env.sh
+
+website/_site/
+website/assets/build/
+website/.lanyon/
+website/.jekyll-metadata
+
+website/changelog.md
+website/faq.md
+website/index.md
+website/contributing.md

@@ -1,12 +1,14 @@
 {
-  "name": "lanyon-example",
+  "name": "lanyon-website",
   "repository": {
     "type": "git",
     "url": "git://github.com/kvz/lanyon.git"
   },
   "lanyon": {
-    "entries": [
-      "app"
+    "prebuild": "./_scripts/inject.sh",
+    "contentScandir": "../",
+    "contentIgnore": [
+      "website/*.md"
     ]
   },
   "scripts": {
@@ -21,7 +23,6 @@
     "start": "lanyon start"
   },
   "dependencies": {
-    "fakefile": "0.0.8",
     "lanyon": "0.0.47"
   }
 }

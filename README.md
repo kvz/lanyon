@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/kvz/lanyon.svg?branch=master)](https://travis-ci.org/kvz/lanyon)
 
+<!--more-->
+
 Lanyon is a static site generator. It is a wrapper around Jekyll, Webpack, BrowserSync, Nodemon, in an attempt to give you the best of all worlds :earth_asia: :earth_americas: :earth_africa: (Instant asset building & refreshing, fast & reliable file watching). 
 Spitting in the face of unix philosophy, it tries to do many things, such as spell checking, and setting up a working Ruby environment. OTH, One might argue it's applying unix philosophy by making underlying tools do one thing only :thinking:
 
@@ -8,6 +10,18 @@ Whichever the case, Lanyon is certainly okay with embracing/sacrificing whicheve
 ## State
 
 Lanyon is currently pre-alpha. We're still doing many changes and as per SemVer are allowing ourselves to make breaking ones in `<1`. We do not recommend using it for anything serious yet.
+
+## Used by
+
+Lanyon is authored by people at [Transloadit](https://transloadit.com) and hence it already powers their website and most of their pet-projects:
+
+- <https://transloadit.com>
+- <http://uppy.io>
+- <http://tus.io>
+- <http://transloadify.io>
+- <http://bash3boilerplate.sh>
+
+If you're an early adopter using Lanyon for anything, [let us know](https://github.com/kvz/lanyon/issues/new) and get listed!
 
 ## Background
 
@@ -61,7 +75,7 @@ If however, there happens to be an overlap with your use case and you can live w
 ## Install
 
 ```bash
-npm install --save lanyon
+npm install lanyon --save 
 ```
 
 ## Use
@@ -115,45 +129,20 @@ in your layout, include the build (same location works both for production artif
 
 Afterwards, type `npm start`. This will kick a build, spin up file watching and a browser with HMR asset reloading enabled. For more inspiration check out the [`example`](./example) folder in the Lanyon repository.
 
-### Legacy
-
-If you're dealing with legacy jQuery plugins and you need to customize loaders, you can do so right in the requires:
-
-```javascript
-require('imports?jQuery=jquery,$=jquery,this=>window!../../js/jquery.legacyplugin.js');
-```
-
-This will make the `jquery` module available as both `jQuery` and `$`, and make `this` refer to the global `window`, before
-requiring `../../js/jquery.legacyplugin.js`.
-
-Furthermore, `js-untouched` is a Lanyon-magic folder name, that does not get processed by the JS/Babel loaders. You can put JS here that you want, well, untouched, like minified files. This folder can reside in any asset sub-dir, such as `./assets/javascripts/js-untouched/`.
-
-## Troubleshooting
-
-### No html file changes are spotted
-
-Make sure you don't have an old `nodemon` version as a dependency. Npm flat dependencies could will favor local installs and ignore Lanyon's version. Either remove Nodemon from your project or make sure it is at least at a version that recognizes the `--config` flag (e.g. `1.11.0`).
-
-### I'm seeing ruby errors from `vendors`
-
-If you're seeing things like `Invalid date '0000-00-00': Post '/vendor/bundle/ruby/2.1.0/gems/jekyll-2.4.0/lib/site_template/_posts/0000-00-00-welcome-to-jekyll.markdown.erb'`, you are 
-likely upgrading from an existing Jekyll install, and haven't cleared out the `vendor` dir. Lanyon only relies on the `.lanyon` dir
-inside your project, ands so you should clean up old Jekyll residue as Lanyon does not have build `exclude`s for those.
-
 ## Deploy
 
 Enable building this project on Travis CI. Add a `.travis.yml` similar to this one:
 
-  language: generic
-  sudo: false
-  script: true # <-- @todo we can test here
-  deploy:
-    skip_cleanup: true
-    provider: script
-    script: .lanyon/bin/deploy # <-- this calls 'npm run build:production && npm run deploy'. Travis does not allow commands, only files here..
-    on:
-      branch: master
-      condition: $TRAVIS_OS_NAME = linux
+    language: generic
+    sudo: false
+    script: true # <-- @todo we can test here
+    deploy:
+      skip_cleanup: true
+      provider: script
+      script: .lanyon/bin/deploy # <-- this calls 'npm run build:production && npm run deploy'. Travis does not allow commands, only files here..
+      on:
+        branch: master
+        condition: $TRAVIS_OS_NAME = linux
 
 Add an `env.sh` with the following contents:
 
@@ -166,27 +155,6 @@ export GHPAGES_BOTEMAIL="<your github token email>"
 Type `git ignore env.sh`. You can now type `source env.sh` and use `npm run encrypt` to save these secrets on Travis CI.
 
 The GitHub token can be acquired by (creating a dedicated GitHub bot user and giving it access to your repo, logging in as it and) going to [Personal access tokens](https://github.com/settings/tokens). Click Generate new token, name it `Github pages deploy`, click `repo`, and hit Generate.
-
-## About Ruby
-
-It's definitely a paint-point making us jealous of Hugo (and even Hexo). So far 10/10 devs that we asked to make Jekyll working locally had _some_ problem with their Ruby install and its dependencies. The number of nokogiri or permission errors, version conflicts, etc, we've had to deal with, are just, sad. Lanyon tries its best at resolving this. We're testing for many different Operating Systems and versions, as well as different versions of Node, and Ruby version managers, to see if we can still automatically get Ruby to work on them:
-
-![screen shot 2016-11-25 at 21 17 39](https://cloud.githubusercontent.com/assets/26752/20634771/9e163fb2-b354-11e6-914c-ac8e54ab68e1.png)
-
-### Flow
-
-Lanyon tries to utilize one of following components to acquire a working Ruby 2+ install:
-
-1. (Just use the `system`'s) Ruby
-1. [`docker`](https://www.docker.com/)
-1. [`rbenv`](https://github.com/rbenv/rbenv) (with the [ruby-build](https://github.com/rbenv/ruby-build) plugin)
-1. [`rvm`](https://rvm.io/)
-
-As soon as we have a working Ruby install, we install Bundler & gems locally in your project directory, and Lanyon can start building.
-
-You can disable any of these via e.g. `LANYON_SKIP="rbenv docker"`.
-
-To force a particular type, you can also use `LANYON_ONLY=docker`. This is how we isolate methods of installment on Travis for testing as well.
 
 ## Prerequisites
 
@@ -252,17 +220,6 @@ sudo -HE apt-get -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--f
   libxslt-dev \
   libxml2-dev
 ```
-
-## Contributing
-
-Fixes are much appreciated, for adding features, please get in contact first because Lanyon aims to be somewhat narrow in the things
-it wants to support.
-
-For local development, it's great to have an example project to use Lanyon in. In this example, we'll use the [tus.io](http://tus.io) website, which is open source and already happens to use Lanyon. We'll assume you'll have the example project living in `~/code/tus.io`, you have `git pull`-ed, and `npm install`-ed. First see if the version bundled with tus.io works, by trying `npm start`. All good? Great.
-
-Clone the Lanyon repo to `~/code/lanyon`, there, type `npm install` and `npm link`. Now go back to `~/code/tus.io`. In that dir, type: `npm link lanyon`. This hot-wires your locally checked out Lanyon source into the tus.io dir as a dependency. Any changes you make to lanyon will be reflected immediately in your example project (tus.io in this case).
-
-To re-trigger the Lanyon postinstall hook, type: `./node_modules/.bin/lanyon postinstall` from `~/code/tus.io`. You can run this as many times as you want until it happily installs Ruby and the other stuff. tus.io already has npm scripts so you can also type `npm start` to try your local Lanyon building. If your example project does not have npm scripts, use `./node_modules/.bin/lanyon start` instead.
 
 ## License
 
