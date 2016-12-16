@@ -8,7 +8,7 @@ It's definitely a paint-point making us jealous of Hugo (and even Hexo). So far 
 
 ![screen shot 2016-11-25 at 21 17 39](https://cloud.githubusercontent.com/assets/26752/20634771/9e163fb2-b354-11e6-914c-ac8e54ab68e1.png)
 
-### Flow
+## How does Lanyon try to install Ruby?
 
 Lanyon tries to utilize one of following components to acquire a working Ruby 2+ install:
 
@@ -23,8 +23,7 @@ You can disable any of these via e.g. `LANYON_SKIP="rbenv docker"`.
 
 To force a particular type, you can also use `LANYON_ONLY=docker`. This is how we isolate methods of installment on Travis for testing as well.
 
-
-## Can I Require Legacy JavaScript?
+## Can I Require Legacy JavaScript in my static site?
 
 Yes. While Lanyon uses Webpack under the hood for asset management, and its focus is on modules, you can still work around this due to Webpack's flexibility. If you're dealing with legacy jQuery plugins, you may need to customize loaders. You can do so right in the requires:
 
@@ -48,3 +47,65 @@ likely upgrading from an existing Jekyll install, and haven't cleared out the `v
 inside your project, ands so you should clean up old Jekyll residue as Lanyon does not have build `exclude`s for those.
 
 Similarly, it's also important to remove the `.bundle` folder from existing Jekyll apps migrating to Lanyon.
+
+## How can I solve nokogiri errors on Ubuntu?
+
+You can force docker via `LANYON_ONLY=docker`, that will take care of any Ruby dependency mess by 
+using a Lanyon-maintained Docker container. Short of that, this can go a long way in making sure nokogiri behaves:
+
+```bash
+sudo -HE apt-get -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" install \
+  libxslt-dev \
+  libxml2-dev
+```
+
+## What are Lanyon's Prerequisites?
+
+Lanyon should -just work- but here are some tips on when it doesn't:
+
+- OSX / Linux (& Bash)
+- Node.js 0.12+ (& npm)
+- Docker or Rvm or Rbenv or Brew
+
+## How do I walk the Docker route on macOS?
+
+Lanyon tries its best to contain the work it does and leave your current Ruby setup alone.
+The best way to do this today is with containers, and if your system
+supports `docker`, that's what Lanyon will use if your system doesn't natively support 
+the required Ruby versions.
+
+Since this is a very low-risk approach, it's the recommended way to run Lanyon, and
+we therefore also recommend to install a recent version of Docker first:
+
+In case you had previous Docker, experiments please uninstall those:
+
+```bash
+brew uninstall --force docker-machine boot2docker docker
+```
+
+Then, follow **Docker for Mac** instructions on <https://docs.docker.com/docker-for-mac/> 
+(it's just installing a `.dmg`) and verify it worked:
+
+```bash
+docker --version && docker ps
+```
+
+## How do I install Node.js on Ubuntu?
+
+Lanyon requires Node.js to be present on your system (although we may consider shipping all of Lanyon inside a Docker container in a future version - currently it's just the Ruby stuff). On older Ubuntu versions, that can 
+still be a bit of a hassle. Here are two different ways of installing Node.js on Ubuntu Trusty:
+
+To install Node.js 6 on Ubuntu Trusty, either use a new release from NodeSource:
+
+```bash
+curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+sudo apt-get install -y nodejs
+node -v
+```
+
+Or: if you prefer not to have 3rd party sources, Lanyon (still) supports 0.12, so you might prefer a legacy Node.js version instead:
+
+```bash
+sudo apt-get install nodejs-legacy npm
+node -v
+```

@@ -19,9 +19,11 @@ Lanyon is authored by people at [Transloadit](https://transloadit.com) and hence
 - <http://uppy.io>
 - <http://tus.io>
 - <http://transloadify.io>
+- <http://freyproject.io>
 - <http://bash3boilerplate.sh>
+- <http://lanyon.io> :tada: surprise!
 
-If you're an early adopter using Lanyon for anything, [let us know](https://github.com/kvz/lanyon/issues/new) and get listed!
+If you're an early adopter of Lanyon, [let us know](https://github.com/kvz/lanyon/issues/new) and get listed!
 
 ## Background
 
@@ -156,70 +158,21 @@ Type `git ignore env.sh`. You can now type `source env.sh` and use `npm run encr
 
 The GitHub token can be acquired by (creating a dedicated GitHub bot user and giving it access to your repo, logging in as it and) going to [Personal access tokens](https://github.com/settings/tokens). Click Generate new token, name it `Github pages deploy`, click `repo`, and hit Generate.
 
-## Prerequisites
+## Changelog
 
-Lanyon should -just work- but here are some tips on when it doesn't
+Please see the [CHANGELOG.md](./CHANGELOG.md) file.
 
-- OSX / Linux (& Bash)
-- Node.js 0.12+ (& npm)
-- Docker or Rvm or Rbenv or Brew
+## Frequently Asked Questions
 
-### macOS
+Please see the [FAQ.md](./FAQ.md) file.
 
-Lanyon tries its best to contain the work it does and leave your current Ruby setup alone.
-The best way to do this today is with containers, and if your system
-supports `docker`, that's what Lanyon will use if your system doesn't natively support 
-the required Ruby versions.
+## Contributing
 
-Since this is a very low-risk approach, it's the recommended way to run Lanyon, and
-we therefore also recommend to install a recent version of Docker first:
+Please see the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
 
-In case you had previous Docker, experiments please uninstall those:
+## Authors
 
-```bash
-brew uninstall --force docker-machine boot2docker docker
-```
-
-Then, follow **Docker for Mac** instructions on <https://docs.docker.com/docker-for-mac/> 
-(it's just installing a `.dmg`) and verify it worked:
-
-```bash
-docker --version && docker ps
-```
-
-### Ubuntu Trusty
-
-Lanyon requires Node.js to be present on your system (although we may consider shipping all of Lanyon inside a Docker container in a future version - currently it's just the Ruby stuff). On older Ubuntu versions, that can 
-still be a bit of a hassle. Here are two different ways of installing Node.js on Ubuntu Trusty:
-
-#### Node 6
-
-To install the Node.js dependency on Ubuntu Trusty, either use a new release from NodeSource:
-
-```bash
-curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
-sudo apt-get install -y nodejs
-node -v
-```
-
-Or: Node 0.12
-
-Lanyon (still) supports 0.12, so you might prefer a legacy Node.js version so you don't have to add a 3rd party repository:
-
-```bash
-sudo apt-get install nodejs-legacy npm
-node -v
-```
-
-#### libxml
-
-This can go a long way in making sure nokogiri behaves:
-
-```bash
-sudo -HE apt-get -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" install \
-  libxslt-dev \
-  libxml2-dev
-```
+ - [Kevin van Zonneveld](https://transloadit.com/about/#kevin)
 
 ## License
 
