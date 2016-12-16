@@ -18,7 +18,6 @@ Lanyon is currently pre-alpha. We're still doing many changes and as per SemVer 
 Lanyon is authored by people at [Transloadit](https://transloadit.com) and hence it already powers their website and most of their pet-projects:
 
 - <https://transloadit.com>
-- <http://uppy.io>
 - <http://tus.io>
 - <http://transloadify.io>
 - <http://freyproject.io>
