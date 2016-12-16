@@ -88,40 +88,41 @@ npm install lanyon --save
 
 ## Use
 
-The recommended way to use Lanyon is to add it to your project's npm run scripts, in your `package.json`, add:
+The recommended way to use Lanyon is to add it to your project's npm scripts, in your `package.json`, add:
 
 ```javascript
 ...
-  "lanyon": {
-    "entries": [
-      // As single 'app' entry is the default. 
-      // List all entries here if you have more
-      "app"
-    ],
-    "gems": {
-      // If you require custom gems
-      "liquid_pluralize": "1.0.2"
-    }
-  },
-  "scripts": {
-    "build:production": "LANYON_ENV=production lanyon build",
-    "build": "lanyon build",
-    "deploy": "lanyon deploy",
-    "encrypt": "lanyon encrypt",    
-    "serve:production": "LANYON_ENV=production lanyon serve",
-    "serve": "lanyon serve",
-    "start:production": "npm run build:production && npm run serve:production",
-    "start": "lanyon start"
-  },
+"lanyon": {
+  "entries": [
+    // As single 'app' entry is the default. 
+    // List all entries here if you have more
+    "app"
+  ],
+  "gems": {
+    // If you require custom gems
+    "liquid_pluralize": "1.0.2"
+  }
+},
+"scripts": {
+  "install": "bower install && lanyon postinstall",
+  "build": "lanyon build",
+  "build:production": "LANYON_ENV=production lanyon build",
+  "serve": "lanyon serve",
+  "serve:production": "LANYON_ENV=production lanyon serve",
+  "start": "lanyon start",
+  "start:production": "npm run build:production && npm run serve:production",
+  "encrypt": "lanyon encrypt",
+  "deploy": "lanyon deploy"
+},
 ...
 ```
 
-If you make changes to your gems later on, run `node node_modules/.bin/lanyon postinstall` to re-trigger a build.
+If you make changes to your gems later on, re-run `npm install` to re-trigger a build.
 
 Have an `assets/app.js` in which you require both javascripts and stylesheets:
 
 ```javascript
-require('./main.js') // <-- your original sources 
+require('./main.js') // <-- your original sources, as many as you like
 require('./style.css') // <-- yes, we also require (s)css. This is a Webpack thing
 
 // Enable Hot Module reloading:
