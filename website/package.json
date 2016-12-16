@@ -1,0 +1,26 @@
+{
+  "name": "lanyon-website",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kvz/lanyon.git"
+  },
+  "lanyon": {
+    "prebuild": "npm run inject"
+  },
+  "scripts": {
+    "inject": "./_scripts/inject.sh",
+    "injecter": "cd .. && nodemon --verbose --watch ./  --ignore 'website/*.md' --ignore 'website/_site' --ignore 'website/.lanyon' --ext html,json,md,js,css,png,jpg --exec 'npm run inject'",
+    "build:production": "LANYON_ENV=production lanyon build",
+    "build": "lanyon build",
+    "serve:production": "LANYON_ENV=production lanyon serve",
+    "deploy": "lanyon deploy",
+    "encrypt": "lanyon encrypt",
+    "install": "lanyon postinstall",
+    "serve": "lanyon serve",
+    "start:production": "npm run build:production && npm run serve:production",
+    "start": "lanyon start"
+  },
+  "dependencies": {
+    "lanyon": "0.0.46"
+  }
+}
