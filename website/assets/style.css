@@ -307,6 +307,10 @@ tr:not(:last-child) {
   border-bottom: 1px solid #eee;
 }
 
+img {
+  max-width: 100%;
+}
+
 .Social {
   margin: 0 auto;
   text-align: center;

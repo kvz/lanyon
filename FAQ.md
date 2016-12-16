@@ -44,8 +44,13 @@ Make sure you don't have an old `nodemon` version as a dependency. Npm flat depe
 
 ## Why am I seeing Ruby errors about `./vendors`?
 
-If you're seeing things like `Invalid date '0000-00-00': Post '/vendor/bundle/ruby/2.1.0/gems/jekyll-2.4.0/lib/site_template/_posts/0000-00-00-welcome-to-jekyll.markdown.erb'`, you are 
-likely upgrading from an existing Jekyll install, and haven't cleared out the `vendor` dir. Lanyon only relies on the `.lanyon` dir
+If you're seeing things like:
+
+```bash
+Invalid date '0000-00-00': Post '/vendor/bundle/ruby/2.1.0/gems/jekyll-2.4.0/lib/site_template/_posts/0000-00-00-welcome-to-jekyll.markdown.erb'
+```
+
+you are likely upgrading from an existing Jekyll install, and haven't cleared out the `vendor` dir. Lanyon only relies on the `.lanyon` dir
 inside your project, ands so you should clean up old Jekyll residue as Lanyon does not have build `exclude`s for those.
 
 Similarly, it's also important to remove the `.bundle` folder from existing Jekyll apps migrating to Lanyon.
