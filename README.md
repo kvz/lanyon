@@ -50,7 +50,7 @@ Here is an opinionated overview:
 
 What we set out to do with Lanyon, is to get the best of all worlds. We are doing so by:
 
-- Taking the sledge hammer :hammer: approach towards getting a suitable version of Ruby to work on your system, traversing, [Docker](https://www.docker.com), [rbenv](https://github.com/rbenv/rbenv), [RVM](https://rvm.io), and [Homebrew](http://brew.sh), taking the first method that can get us a working Ruby 2 install, and installing all other dependencies locally in `.lanyon`, relieving any installation pains. 
+- Taking a sledge hammer :hammer: approach towards getting a suitable version of Ruby to work on your system. Lanyon traverses [Docker](https://www.docker.com), [rbenv](https://github.com/rbenv/rbenv), [RVM](https://rvm.io), and [Homebrew](http://brew.sh), and takes the first method that provides a working Ruby 2 install. All other dependencies are then installed locally in the `.lanyon`, relieving any installation pains. 
 - Using Browsersync with Webpack middleware, featuring Hot Module Reloading for stylesheets and JavaScript.
 - Using Nodemon for `.md` / `.html` file-watching, while kicking incremental Jekyll builds for content.
 
