@@ -7,6 +7,8 @@
 - [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Add image optimizer from `assets/images` -> `assets/build/images`
+- [ ] Brush up terminal output (less verbose jekyll etc, instruct the user to "please wait on browsersync->webpack, assets will automatically load")
+- [ ] Throw an error if we find legacy Jekyll residue such as `./vendors` or `.bundle`
 
 ## v0.0.48 (Unreleased)
 
