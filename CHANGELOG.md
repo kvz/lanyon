@@ -10,6 +10,9 @@
 - [ ] Brush up terminal output (less verbose jekyll etc, instruct the user to "please wait on browsersync->webpack, assets will automatically load")
 - [ ] Throw an error if we find legacy Jekyll residue such as `./vendors` or `.bundle`
 - [ ] Maybe add https://github.com/btford/write-good
+- [ ] Consider https://www.npmjs.com/package/webpack-svgstore-plugin
+- [ ] Consider postcss
+- [ ] Hooks are ran with every build, but not when doing HMR. We might be able to write a `CallHooksPlugin` to work around this
 
 ## v0.0.48 (Unreleased)
 
