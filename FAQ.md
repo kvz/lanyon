@@ -42,6 +42,8 @@ Furthermore, `js-untouched` is a Lanyon-magic folder name, that does not get pro
 
 Make sure you don't have an old `nodemon` version as a dependency. Npm flat dependencies could favor local installs and ignore Lanyon's version. Either remove Nodemon from your project or make sure it is at least at a version that recognizes the `--config` flag (e.g. `1.11.0`).
 
+In one other case that was reported, it turned out to be misconfigured file permissions. You will probably not want to just paste this as it is extremely **dangerous**, but it was ultimately fixed via `sudo chown -vR ${USER}:staff ${HOME} && sudo chmod -vR ug+rwX,o= ${HOME}` on macOS.
+
 ## Why am I seeing Ruby errors about `./vendors`?
 
 If you are seeing things like:
