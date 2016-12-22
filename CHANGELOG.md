@@ -13,6 +13,8 @@
 - [ ] Consider https://www.npmjs.com/package/webpack-svgstore-plugin
 - [ ] Consider postcss
 - [ ] Hooks are ran with every build, but not when doing HMR. We might be able to write a `CallHooksPlugin` to work around this
+- [ ] Consider sourcemaps like https://github.com/rstacruz/webpack-tricks#source-maps
+- [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
 
 ## v0.0.48 (Unreleased)
 
