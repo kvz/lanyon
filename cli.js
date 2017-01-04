@@ -34,7 +34,7 @@ var cmdName = process.argv[2]
 var cmd = scripts[cmdName]
 
 // Create asset dirs and git ignores
-if (cmdName.match(/^build|postinstall/)) {
+if (cmdName.match(/^build|postinstall|start/)) {
   utils.initProject(runtime)
 }
 

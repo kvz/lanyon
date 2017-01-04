@@ -16,11 +16,13 @@
 - [ ] Consider sourcemaps like https://github.com/rstacruz/webpack-tricks#source-maps
 - [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
 - [ ] Fix bug: Lanyon is lying about being symlinked: `Booting symlinked lanyon v0.0.47` when this is not the case
+- [ ] Switch to ES6 (see https://github.com/transloadit/botty/blob/738f9d51417d84d429cd4b558898bc3a9826cd9d/decaf.sh), mostly to profit from template strings. Transpile down to ES5 for npm as Lanyon aims for portability.
 
 ## v0.0.48 (Unreleased)
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.47...v0.0.48)
 
+- [x] 
 - [x] Add a website <http://lanyon.io>
 - [x] First go into projectDir before running deploy, to support nested websites
 
