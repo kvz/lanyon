@@ -1,6 +1,7 @@
 var _ = require('lodash')
 var path = require('path')
 var utils = require('./utils')
+var shell = require('shelljs')
 var fs = require('fs')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var webpack = require('webpack')
@@ -69,6 +70,27 @@ runtime.assetsBuildDir = path.join(runtime.assetsSourceDir, 'build')
 runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
 runtime.contentScandir = path.join(runtime.projectDir, runtime.contentScandir || '.')
 runtime.contentIgnore = runtime.contentIgnore || []
+
+// Load project's jekyll _config.yml
+runtime.jekyllConfig = {}
+var jekyllConfigPath = path.join(runtime.projectDir, '_config.yml')
+try {
+  var buf = fs.readFileSync(jekyllConfigPath)
+  runtime.jekyllConfig = yaml.safeLoad(buf)
+} catch (e) {
+  console.error('Unable to load ' + jekyllConfigPath)
+}
+
+runtime.themeDir = false
+if (runtime.jekyllConfig.theme) {
+  var cmd = path.join(runtime.binDir, 'bundler') + ' show ' + runtime.jekyllConfig.theme
+  var z = shell.exec(cmd).stdout
+  if (!z) {
+    console.error('Unable find defined them "' + runtime.jekyllConfig.theme + '" via cmd: "' + cmd + '"')
+  } else {
+    runtime.themeDir = z
+  }
+}
 
 // Set prerequisite defaults
 for (var name in runtime.prerequisites) {
@@ -386,8 +408,10 @@ cfg.browsersync = {
       if (!middlewares.length) {
         return false
       }
+
       return middlewares
     }())
+    // serveStatic: runtime.themeDir
   },
   watchOptions: {
     ignoreInitial: true,
