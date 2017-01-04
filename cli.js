@@ -11,6 +11,7 @@ var scripts = {
   'build:assets': 'webpack --config [cacheDir]/webpack.config.js',
   'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
   'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
+  'container:connect': utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
   'list:ghpgems': 'bundler exec github-pages versions --gem',
   'build': '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
   'help': 'jekyll build --help',

@@ -12,6 +12,7 @@
     "web:install": "cd website && npm run install",
     "web:start": "cd website && npm run start",
     "install": "node cli.js postinstall",
+    "container:connect": "node cli.js connect",
     "container:build": "env DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node cli.js postinstall",
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",

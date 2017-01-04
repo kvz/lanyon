@@ -17,6 +17,8 @@
 - [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
 - [ ] Fix bug: Lanyon is lying about being symlinked: `Booting symlinked lanyon v0.0.47` when this is not the case
 - [ ] Consider distributing the Gem lockfile so new installs don't get bumped to incompatible versions like what happened with nokogiri gracefully upgrading from 1.6->1.7 but then requiring ruby 2.0->2.1 wich isn't present on OSX, hence requiring a full 3rd party ruby install that could easily have been avoided
+- [ ] Replace shelljs with https://github.com/dthree/cash (maybe)
+- [ ] Add a real command line parser for `cli.js` like minimist
 - [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0),  add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling bundle exec gemoji extract assets/images/emoji) 
 - [ ] Switch to ES6 (see https://github.com/transloadit/botty/blob/738f9d51417d84d429cd4b558898bc3a9826cd9d/decaf.sh), mostly to profit from template strings. Transpile down to ES5 for npm as Lanyon aims for portability.
 
@@ -26,6 +28,7 @@ Released: Not yet
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.48...v0.0.49).
 
+- [x] Add `container:connect` command to look inside docker container
 - [x] Give Lanyon Jekyll :gem: theme awareness
 
 ## v0.0.48
