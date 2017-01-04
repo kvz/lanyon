@@ -39,7 +39,7 @@ Here is an opinionated overview:
 |:---------------------------------------------|:------------------:|:------------------:|:-------------------------------:|:------------------:|:------------------------------:|
 | Easy to maintain many documents              | :white_check_mark: |                    | :white_check_mark::arrow_right: | :white_check_mark: |                                |
 | Great templating engine                      |                    |                    | :white_check_mark::arrow_right: | :white_check_mark: |                                |
-| Vast and mature ecosystem                      |                    |                    | :white_check_mark::arrow_right: | :white_check_mark: | :arrow_left::white_check_mark: |
+| Vast and mature ecosystem                    |                    |                    | :white_check_mark::arrow_right: | :white_check_mark: | :arrow_left::white_check_mark: |
 | Easy to get help                             | :white_check_mark: |                    | :white_check_mark::arrow_right: | :white_check_mark: | :arrow_left::white_check_mark: |
 | Backed by GitHub                             |                    |                    | :white_check_mark::arrow_right: | :white_check_mark: |                                |
 | Easy to install                              | :white_check_mark: | :white_check_mark: |                                 | :white_check_mark: | :arrow_left::white_check_mark: |
@@ -105,6 +105,7 @@ The recommended way to use Lanyon is to add it to your project's npm scripts, in
 "scripts": {
   "install": "bower install && lanyon postinstall",
   "build": "lanyon build",
+  "build:emoji": "lanyon build:emoji",
   "build:production": "LANYON_ENV=production lanyon build",
   "serve": "lanyon serve",
   "serve:production": "LANYON_ENV=production lanyon serve",

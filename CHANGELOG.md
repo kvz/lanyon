@@ -16,13 +16,15 @@
 - [ ] Consider sourcemaps like https://github.com/rstacruz/webpack-tricks#source-maps
 - [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
 - [ ] Fix bug: Lanyon is lying about being symlinked: `Booting symlinked lanyon v0.0.47` when this is not the case
+- [ ] Consider distributing the Gem lockfile so new installs don't get bumped to incompatible versions like what happened with nokogiri gracefully upgrading from 1.6->1.7 but then requiring ruby 2.0->2.1 wich isn't present on OSX, hence requiring a full 3rd party ruby install that could easily have been avoided
 - [ ] Switch to ES6 (see https://github.com/transloadit/botty/blob/738f9d51417d84d429cd4b558898bc3a9826cd9d/decaf.sh), mostly to profit from template strings. Transpile down to ES5 for npm as Lanyon aims for portability.
 
 ## v0.0.48 (Unreleased)
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.47...v0.0.48)
 
-- [x] 
+- [x] Avoid new installs preferring nokogiri 1.7 over 1.6 so more systems can use Ruby 2.0 vs then nokogiri 1.7 required 2.1
+- [x] Also initProject at `start` so that config can be written if users type start as a first run
 - [x] Add a website <http://lanyon.io>
 - [x] First go into projectDir before running deploy, to support nested websites
 

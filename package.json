@@ -74,6 +74,8 @@
     "gems": {
       "github-pages": "104",
       "jekyll-crosspost-to-medium": "0.1.14",
+      "gemoji": "2.0.0",
+      "nokogiri": "1.6.8.1",
       "stringex": "2.6.0"
     }
   },
