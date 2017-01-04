@@ -20,9 +20,11 @@
 - [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0),  add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling bundle exec gemoji extract assets/images/emoji) 
 - [ ] Switch to ES6 (see https://github.com/transloadit/botty/blob/738f9d51417d84d429cd4b558898bc3a9826cd9d/decaf.sh), mostly to profit from template strings. Transpile down to ES5 for npm as Lanyon aims for portability.
 
-## v0.0.48 (Unreleased)
+## v0.0.48
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.47...v0.0.48)
+Released: 2017-01-04.
+
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.47...v0.0.48).
 
 - [x] Upgrade to github pages gem version `v104` -> `v112` (https://github.com/github/pages-gem/compare/v104...v112)
 - [x] Provide access to gemlist of gh pages gem for internal use via `./cli.js list:ghpgems`
@@ -33,32 +35,32 @@
 
 ## v0.0.47
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.46...v0.0.47)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.46...v0.0.47).
 
 - [x] Basic support for injecters via `contentIgnore` and `contentScandir`
 
 ## v0.0.46
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.45...v0.0.46)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.45...v0.0.46).
 
 - [x] Add support for `OptimizeCssAssetsPlugin`
 
 ## v0.0.45
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.44...v0.0.45)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.44...v0.0.45).
 
 - [x] Support for a `js-untouched` directory, where js won't pass through babel
 
 ## v0.0.44
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.43...v0.0.44)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.43...v0.0.44).
 
 - [x] Fix babel source maps
 - [x] Only exit on error when in production mode`
 
 ## v0.0.43
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.42...v0.0.43)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.42...v0.0.43).
 
 - [x] Use Babel ES2015 as shipped by Lanyon, ignoring any project's `.babelrc` (BREAKING) (We _might_ support sth more intelligent in the future, but for now are favoring convention & near-zero-setup by the project)
 - [x] "Don't use JSX loader, use babel instead" - https://github.com/petehunt/jsx-loader
@@ -66,32 +68,32 @@
 
 ## v0.0.42
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.41...v0.0.42)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.41...v0.0.42).
 
 - [x] Ditch uglify loader in favor of plugin, as the loader cannot handle ES6 (even though the babel loader is ran first)
 
 ## v0.0.41
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.40...v0.0.41)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.40...v0.0.41).
 
 - [x] Fix bug where only incremental builds receive asset indices
 - [x] Only reset `jekyll.lanyon_assets.yml` if it does not exist
 
 ## v0.0.40
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.39...v0.0.40)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.39...v0.0.40).
 
 - [x] Add globby as a dependency
 
 ## v0.0.39
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.38...v0.0.39)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.38...v0.0.39).
 
 - [x] Fix deploy failsafe
 
 ## v0.0.38
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.37...v0.0.38)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.37...v0.0.38).
 
 - [x] No longer exclude `node_modules|bower_components|vendor` by default
 - [x] Disable resolve-url-loader for less as less currently produces invalid css (in its eyes)
@@ -100,20 +102,20 @@
 
 ## v0.0.37
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.36...v0.0.37)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.36...v0.0.37).
 
 - [x] Make Deploy check aware of hashed cachebuster assets
 - [x] Fix less resolve-url-loader sourcemap issues
 
 ## v0.0.36
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.35...v0.0.36)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.35...v0.0.36).
 
 - [x] Move uglify loader to deps (vs devDeps)
 
 ## v0.0.35
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.34...v0.0.35)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.34...v0.0.35).
 
 - [x] Build assets first, so that Jekyll can copy it into `_site`, and also `jekyll.lanyon_assets.yml` exists in time
 - [x] Add debugging notes
@@ -121,7 +123,7 @@
 
 ## v0.0.34
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.33...v0.0.34)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.33...v0.0.34).
 
 - [x] More optimization for production builds
 - [x] Fix svgeezy (which works with a local `svgeezy` var, not one on `window`)
@@ -143,98 +145,98 @@
 
 ## v0.0.33 (bad build)
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.32...v0.0.33)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.32...v0.0.33).
 
 - [x] Add plain css files to extract text plugin /thx @Acconut
 
 ## v0.0.32
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.31...v0.0.32)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.31...v0.0.32).
 
 - [x] Allow relative projectDir
 
 ## v0.0.31
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.30...v0.0.31)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.30...v0.0.31).
 
 - [x] Allow scanning from `LANYON_PROJECT`
 
 ## v0.0.30
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.29...v0.0.30)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.29...v0.0.30).
 
 - [x] Never settle for `lanyon` as a projectDir
 
 ## v0.0.29
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.28...v0.0.29)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.28...v0.0.29).
 
 - [x] Do `realpathSync` relative from `gitRoot`
 
 ## v0.0.28
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.27...v0.0.28)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.27...v0.0.28).
 
 - [x] Fix bad build
 
 ## v0.0.27
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.26...v0.0.27)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.26...v0.0.27).
 
 - [x] Added `utils.upwardDirContaining` for definitive pathfinding
 
 ## v0.0.26
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.25...v0.0.26)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.25...v0.0.26).
 
 - [x] Use `find-up` for finding `gitRoot` and `npmRoot`, which might not be `projectDir`
 - [x] Also support `web:deploy` npm script name
 
 ## v0.0.25
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.24...v0.0.25)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.24...v0.0.25).
 
 - [x] Also traverse upwards from projectDir to find `node_modules`
 
 ## v0.0.24
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.23...v0.0.24)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.23...v0.0.24).
 
 - [x] Better module pathfinding
 
 ## v0.0.23
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.22...v0.0.23)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.22...v0.0.23).
 
 - [x] Use `gitRoot` instead of `projectDir` for flat module finding, so it works when your project is in a subdir (like `website` or `docs`)
 
 ## v0.0.22
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.21...v0.0.22)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.21...v0.0.22).
 
 - [x] Support for flat module structure where modules live in `projectDir`
 
 ## v0.0.21
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.20...v0.0.21)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.20...v0.0.21).
 
 - [x] Deploy now supports `web:build:production`
 
 ## v0.0.20
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.19...v0.0.20)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.19...v0.0.20).
 
 - [x] Prefix deps with node
 
 ## v0.0.19
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.18...v0.0.19)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.18...v0.0.19).
 
 - [x] Fix bug leading to block postinstall resets
 
 ## v0.0.18
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.17...v0.0.18)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.17...v0.0.18).
 
 - [x] Make installs idempotent
 - [x] Detect rubyProvider of existing shims
@@ -242,19 +244,19 @@
 
 ## v0.0.17
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.16...v0.0.17)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.16...v0.0.17).
 
 - [x] Don't rely on `.bin` symlinks as they don't appear to survive Travis CI cache
 
 ## v0.0.16
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.15...v0.0.16)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.15...v0.0.16).
 
 - [x] Use spawn-sync for older nodes
 
 ## v0.0.15
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.14...v0.0.15)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.14...v0.0.15).
 
 - [x] Pathfinding fixes, added `gitRoot`
 - [x] Rename `vendor/bin` to `bin`
@@ -262,7 +264,7 @@
 
 ## v0.0.14
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.13...v0.0.14)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.13...v0.0.14).
 
 - [x] Offer `lanyon deploy` for deploying onto GitHub Pages
 - [x] Offer `lanyon encrypt` for encrypting GitHub Pages deploy secrets onto Travis CI
@@ -270,13 +272,13 @@
 
 ## v0.0.13
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.12...v0.0.13)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.12...v0.0.13).
 
 - [x] Avoid double installs by fixing binDir references for shims
 
 ## v0.0.12
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.11...v0.0.12)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.11...v0.0.12).
 
 - [x] Utilize Webpack `--production` flag
 - [x] Add Jekyll config writer (so we can ignore `node_modules` and `.lanyon`)
@@ -284,7 +286,7 @@
 
 ## v0.0.11
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.10...v0.0.11)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.10...v0.0.11).
 
 - [x] Add support for `production`-or-`development`-only hooks
 - [x] Add coffeescript support
@@ -292,14 +294,14 @@
 
 ## v0.0.10
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.9...v0.0.10)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.9...v0.0.10).
 
 - [x] Add support for configurable projectDir (so you can have a `./website` or `./docs` in your project)
 - [x] Refactoring
 
 ## v0.0.9
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.8...v0.0.9)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.8...v0.0.9).
 
 - [x] Switch to a local lanyon install if available
 - [x] Simplify/fix Browserify file watching
@@ -308,13 +310,13 @@
 
 ## v0.0.8
 
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.7...v0.0.8)
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.7...v0.0.8).
 
 - [x] Support for prebuild hook
 
 ## v0.0.7
 
-[Diff](https://github.com/kvz/lanyon/compare/8d2286d78ea5f0e0ad2b9f021a00158774d31891...v0.0.7)
+[Diff](https://github.com/kvz/lanyon/compare/8d2286d78ea5f0e0ad2b9f021a00158774d31891...v0.0.7).
 
 - [x] Use textextractor loader in production for scss, also check https://github.com/gowravshekar/font-awesome-webpack#extract-text-webpack-plugin
 - [x] checkout http://stackoverflow.com/questions/33649761/how-do-i-load-font-awesome-using-scss-sass-in-webpack-using-relative-paths
