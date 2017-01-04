@@ -25,6 +25,7 @@
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.47...v0.0.48)
 
 - [x] Upgrade to github pages gem version `v104` -> `v112` (https://github.com/github/pages-gem/compare/v104...v112)
+- [x] Provide access to gemlist of gh pages gem for internal use via `./cli.js list:ghpgems`
 - [x] Avoid new installs preferring nokogiri 1.7 over 1.6 so more systems can use Ruby 2.0 vs then nokogiri 1.7 required 2.1
 - [x] Also initProject at `start` so that config can be written if users type start as a first run
 - [x] Add a website <http://lanyon.io>
