@@ -22,6 +22,7 @@ Lanyon is authored by people at [Transloadit](https://transloadit.com), where it
 - <http://transloadify.io>
 - <http://freyproject.io>
 - <http://bash3boilerplate.sh>
+- <http://kvz.io>
 - <http://lanyon.io> :tada: surprise!
 
 If you are an early adopter of Lanyon, [let us know](https://github.com/kvz/lanyon/issues/new) and get listed! :heart:
