@@ -50,8 +50,8 @@ module.exports = function (runtime, cb) {
   } else if (utils.satisfied(runtime, 'docker')) {
     rubyProvider = 'docker'
     if (process.env.DOCKER_BUILD === '1') {
-      utils.fatalExe('docker build --no-cache -t kevinvz/lanyon:' + runtime.lanyonVersion + ' .')
-      utils.fatalExe('docker push kevinvz/lanyon:' + runtime.lanyonVersion + '')
+      utils.fatalExe('cd .lanyon && docker build -t kevinvz/lanyon:' + runtime.lanyonVersion + ' .')
+      utils.fatalExe('cd .lanyon && docker push kevinvz/lanyon:' + runtime.lanyonVersion + '')
     }
     runtime.prerequisites.sh.exe = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
     runtime.prerequisites.ruby.exe = utils.dockerCmd(runtime, 'ruby')

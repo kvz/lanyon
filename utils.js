@@ -100,7 +100,19 @@ module.exports.writeConfig = function (cfg) {
   fs.writeFileSync(cfg.runtime.cacheDir + '/browsersync.config.js', 'module.exports = require("' + cfg.runtime.lanyonDir + '/config.js").browsersync', 'utf-8')
   fs.writeFileSync(cfg.runtime.cacheDir + '/webpack.config.js', 'module.exports = require("' + cfg.runtime.lanyonDir + '/config.js").webpack', 'utf-8')
   fs.writeFileSync(cfg.runtime.recordsPath, JSON.stringify({}, null, '  '), 'utf-8')
-  shell.cp(path.join(cfg.runtime.lanyonDir, 'Dockerfile'), path.join(cfg.runtime.cacheDir, 'Dockerfile'))
+  fs.writeFileSync(cfg.runtime.cacheDir + '/Dockerfile', `FROM ruby:2.3.3-alpine
+  RUN mkdir -p /jekyll
+  WORKDIR /jekyll
+  COPY Gemfile /jekyll/
+
+  RUN true \
+    && apk --update add make gcc g++ \
+    && bundler install --path /jekyll/vendor/bundler \
+    && bundler update \
+    && apk del make gcc g++ \
+    && rm -rf /var/cache/apk/* \
+    && true`, 'utf-8')
+
   var buf = 'source \'https://rubygems.org\'\n'
   for (var name in cfg.runtime.gems) {
     var version = cfg.runtime.gems[name]
