@@ -162,3 +162,23 @@ Now, whenever a push to `master` of your project hits GitHub, they will ping Tra
 ## Wouldn't it be better to just use GitHub pages-rendering?
 
 That's certainly getting better [by the week](https://github.com/blog/2289-publishing-with-github-pages-now-as-easy-as-1-2-3) and we'll keep a close watch on what we can incorporate from their flow. However, with local development there is no Webpack/BrowserSync, etc. Without using Travis CI, there is little in the way of customization (running your own checkouts / imports / linting and speling checks, etc).
+
+## What if I have custom build steps?
+
+Consider using hooks, Lanyon currently supports:
+
+- `prebuild`
+- `prebuild:production`
+- `prebuild:development`
+
+Add them like soin your `package.json`:
+
+```javascript
+...
+"lanyon": {
+  "prebuild": "./_scripts/inject.sh",
+}
+...
+```
+
+The environment suffix is for when you only want to run the hook in a certain environment. You can use a string or an array for strings, to be ran sequentially from your `projectDir`.
