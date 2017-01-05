@@ -27,6 +27,7 @@ Released: Not yet
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.48...v0.0.49).
 
+- [x] Add experimental support for optimizing images via `build:images` (from `assets/images` to `assets/build/images`)
 - [x] Build docker container inside `.lanyon` dir. Write config from `utils` like any other config, vs copying over files (allows for intelligent cache invalidation later on also)
 - [x] Do not use docker cache so we get a fresh Gemfile. Fixes https://travis-ci.org/kvz/lanyon/jobs/188882616#L1530
 - [x] Add `container:connect` command to look inside docker container
