@@ -182,3 +182,5 @@ Add them like soin your `package.json`:
 ```
 
 The environment suffix is for when you only want to run the hook in a certain environment. You can use a string or an array for strings, to be ran sequentially from your `projectDir`.
+
+Note that in development, asset changes don't trigger builds (content changes do) as they are handled in-memory by Webpack to enable HMR, so you'll have to kick run the hook manually in this case. Changing content will also work. We'd like to research if we can hook into Webpack via a custom plugin so that we don't have to think about these exceptions anymore.

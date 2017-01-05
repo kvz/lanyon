@@ -8,7 +8,8 @@ var runtime = config.runtime
 // var debug = require('depurar')('lanyon')
 
 var scripts = {
-  'build:images': 'imagemin [projectDir]/assets/images/* --out-dir=[projectDir]/assets/build/images',
+  // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
+  'build:images': 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
   'build:assets': 'webpack --config [cacheDir]/webpack.config.js',
   'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
   'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
@@ -42,7 +43,7 @@ if (cmdName.match(/^build|postinstall|start/)) {
 }
 
 // Run Hooks
-if (cmdName.match(/^build/)) {
+if (cmdName.match(/^build:(assets|content)/)) {
   ['prebuild', 'prebuild:production', 'prebuild:development'].forEach(function (hook) {
     if (runtime[hook]) {
       var needEnv = hook.split(':')[1]
