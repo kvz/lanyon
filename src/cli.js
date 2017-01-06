@@ -84,7 +84,7 @@ if (_.isFunction(cmd)) {
   const npmBins = {
     'browser-sync': '/node_modules/browser-sync/bin/browser-sync.js',
     'webpack': '/node_modules/webpack/bin/webpack.js',
-    'imagemin': '/node_modules/imagemin-cli/lib/cli.js',
+    'imagemin': '/node_modules/imagemin-cli/cli.js',
     'nodemon': '/node_modules/nodemon/bin/nodemon.js',
     'npm-run-all': '/node_modules/npm-run-all/bin/npm-run-all/index.js',
     'parallelshell': '/node_modules/parallelshell/index.js'

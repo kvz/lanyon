@@ -106,10 +106,6 @@
     }
   },
   "devDependencies": {
-    "eslint": "3.12.2",
-    "eslint-config-standard": "6.2.1",
-    "eslint-plugin-promise": "^3.4.0",
-    "eslint-plugin-standard": "2.0.1",
     "ava": "0.17.0",
     "babel-cli": "6.11.4",
     "babel-eslint": "6.1.2",
@@ -119,6 +115,10 @@
     "babel-plugin-transform-proto-to-assign": "6.9.0",
     "babel-polyfill": "6.9.1",
     "babel-register": "6.9.0",
+    "eslint": "3.12.2",
+    "eslint-config-standard": "6.2.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "2.0.1",
     "next-update": "1.5.1"
   },
   "dependencies": {
@@ -145,6 +145,7 @@
     "font-awesome-loader": "1.0.1",
     "globby": "^6.1.0",
     "http-server": "0.9.0",
+    "imagemin": "^5.2.2",
     "imagemin-cli": "^3.0.0",
     "imports-loader": "0.7.0",
     "js-yaml": "^3.7.0",
