@@ -1,11 +1,16 @@
 #!/usr/bin/env node
-const utils = require('./utils')
+const utils     = require('./utils')
 utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib/cli.js', require('../package.json').version)
-const _       = require('lodash')
-const config  = require('./config')
-const shell   = require('shelljs')
-const runtime = config.runtime
+const _         = require('lodash')
+const config    = require('./config')
+const shell     = require('shelljs')
+const executive = require('./executive')
+const runtime   = config.runtime
 // var debug = require('depurar')('lanyon')
+
+// const out = executive('cat /var/log/install.log', { singlescroll: true })
+// console.log(out)
+// process.exit()
 
 const scripts = {
   'build:assets'             : 'webpack --config [cacheDir]/webpack.config.js',
