@@ -26,7 +26,7 @@ module.exports.preferLocalPackage = function (args, filename, appDir, name, entr
         console.log('--> Booting local ' + name + ' v' + localModulePackage.version)
         var exe = args.shift()
         for (var i in args) {
-          // Replace the current entry, e.g. /usr/local/frey/cli.js with the local package
+          // Replace the current entry, e.g. /usr/local/frey/lib/cli.js with the local package
           if (args[i] === filename) {
             args[i] = absoluteEntry
           }
@@ -97,8 +97,8 @@ module.exports.writeConfig = function (cfg) {
   fs.writeFileSync(cfg.runtime.cacheDir + '/jekyll.config.yml', yaml.safeDump(cfg.jekyll), 'utf-8')
   fs.writeFileSync(cfg.runtime.cacheDir + '/nodemon.config.json', JSON.stringify(cfg.nodemon, null, '  '), 'utf-8')
   fs.writeFileSync(cfg.runtime.cacheDir + '/full-config-dump.json', JSON.stringify(cfg, null, '  '), 'utf-8')
-  fs.writeFileSync(cfg.runtime.cacheDir + '/browsersync.config.js', 'module.exports = require("' + cfg.runtime.lanyonDir + '/config.js").browsersync', 'utf-8')
-  fs.writeFileSync(cfg.runtime.cacheDir + '/webpack.config.js', 'module.exports = require("' + cfg.runtime.lanyonDir + '/config.js").webpack', 'utf-8')
+  fs.writeFileSync(cfg.runtime.cacheDir + '/browsersync.lib/config.js', 'module.exports = require("' + cfg.runtime.lanyonDir + '/lib/config.js").browsersync', 'utf-8')
+  fs.writeFileSync(cfg.runtime.cacheDir + '/webpack.lib/config.js', 'module.exports = require("' + cfg.runtime.lanyonDir + '/lib/config.js").webpack', 'utf-8')
   fs.writeFileSync(cfg.runtime.recordsPath, JSON.stringify({}, null, '  '), 'utf-8')
 
   var dBuf = ''
