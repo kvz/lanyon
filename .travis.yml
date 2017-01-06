@@ -8,8 +8,8 @@ cache:
 # via linking. If we run postscripts we get into a chicken-egg situation where postinstall relies on transpiled
 # scripts, but that relies on install.
 install:
-  - type yarn || npm install -g yarn@0.18.1
-  - yarn --ignore-scripts
+  - type yarn || npm install -g yarn@0.18.1 || true
+  - yarn --ignore-scripts || npm install --ignore-scripts
 
 script:
   - npm run build
