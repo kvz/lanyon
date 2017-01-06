@@ -8,21 +8,21 @@ const runtime = config.runtime
 // var debug = require('depurar')('lanyon')
 
 const scripts = {
-  // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
-  'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
   'build:assets'             : 'webpack --config [cacheDir]/webpack.config.js',
   'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
+  'build:content:watch'      : 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"',
   'build:content'            : 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
-  'container:connect'        : utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
-  'list:ghpgems'             : 'bundler exec github-pages versions --gem',
+  // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
+  'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
   'build'                    : '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
-  'help'                     : 'jekyll build --help',
-  'postinstall'              : require('./postinstall'),
+  'container:connect'        : utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
   'deploy'                   : require('./deploy'),
   'encrypt'                  : require('./encrypt'),
+  'help'                     : 'jekyll build --help',
+  'list:ghpgems'             : 'bundler exec github-pages versions --gem',
+  'postinstall'              : require('./postinstall'),
   'serve'                    : 'browser-sync start --config [cacheDir]/browsersync.config.js',
   'start'                    : '[lanyon] build:assets && [lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
-  'build:content:watch'      : 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"',
 }
 
 console.log(`--> cacheDir is "${runtime.cacheDir}". `)
