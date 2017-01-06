@@ -132,7 +132,7 @@ module.exports = (runtime, cb) => {
         'config build.nokogiri',
         '--use-system-libraries',
         `--with-xml2-include=$(brew --prefix libxml2)/include/libxml2${runtime.prerequisites.ruby.exeSuffix}`,
-        ')'
+        ')',
       ])
     } else {
       utils.fatalExe([
@@ -141,7 +141,7 @@ module.exports = (runtime, cb) => {
         '&&',
         runtime.prerequisites.bundler.exe,
         'config build.nokogiri',
-        `--use-system-libraries${runtime.prerequisites.ruby.exeSuffix}`
+        `--use-system-libraries${runtime.prerequisites.ruby.exeSuffix}`,
       ])
     }
 
@@ -161,7 +161,7 @@ module.exports = (runtime, cb) => {
       '||',
       runtime.prerequisites.bundler.exe,
       `update${runtime.prerequisites.ruby.exeSuffix}`,
-      ')'
+      ')',
     ])
   }
 

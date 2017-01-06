@@ -9,20 +9,20 @@ const runtime = config.runtime
 
 const scripts = {
   // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
-  'build:images': 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
-  'build:assets': 'webpack --config [cacheDir]/webpack.config.js',
+  'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
+  'build:assets'             : 'webpack --config [cacheDir]/webpack.config.js',
   'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
-  'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
-  'container:connect': utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
-  'list:ghpgems': 'bundler exec github-pages versions --gem',
-  'build': '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
-  'help': 'jekyll build --help',
-  'postinstall': require('./postinstall'),
-  'deploy': require('./deploy'),
-  'encrypt': require('./encrypt'),
-  'serve': 'browser-sync start --config [cacheDir]/browsersync.config.js',
-  'start': '[lanyon] build:assets && [lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
-  'build:content:watch': 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"'
+  'build:content'            : 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
+  'container:connect'        : utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
+  'list:ghpgems'             : 'bundler exec github-pages versions --gem',
+  'build'                    : '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
+  'help'                     : 'jekyll build --help',
+  'postinstall'              : require('./postinstall'),
+  'deploy'                   : require('./deploy'),
+  'encrypt'                  : require('./encrypt'),
+  'serve'                    : 'browser-sync start --config [cacheDir]/browsersync.config.js',
+  'start'                    : '[lanyon] build:assets && [lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
+  'build:content:watch'      : 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"',
 }
 
 console.log(`--> cacheDir is "${runtime.cacheDir}". `)
@@ -82,19 +82,19 @@ if (_.isFunction(cmd)) {
   cmd = cmd.replace(/\[cacheDir]/g, runtime.cacheDir)
 
   const npmBins = {
-    'browser-sync': '/node_modules/browser-sync/bin/browser-sync.js',
-    'webpack': '/node_modules/webpack/bin/webpack.js',
-    'imagemin': '/node_modules/imagemin-cli/cli.js',
-    'nodemon': '/node_modules/nodemon/bin/nodemon.js',
-    'npm-run-all': '/node_modules/npm-run-all/bin/npm-run-all/index.js',
-    'parallelshell': '/node_modules/parallelshell/index.js'
+    'browser-sync' : '/node_modules/browser-sync/bin/browser-sync.js',
+    'webpack'      : '/node_modules/webpack/bin/webpack.js',
+    'imagemin'     : '/node_modules/imagemin-cli/cli.js',
+    'nodemon'      : '/node_modules/nodemon/bin/nodemon.js',
+    'npm-run-all'  : '/node_modules/npm-run-all/bin/npm-run-all/index.js',
+    'parallelshell': '/node_modules/parallelshell/index.js',
   }
   for (const name in npmBins) {
     const tests = [
       runtime.lanyonDir + npmBins[name],
       runtime.gitRoot + npmBins[name],
       runtime.projectDir + npmBins[name],
-      `${runtime.projectDir}/..${npmBins[name]}`
+      `${runtime.projectDir}/..${npmBins[name]}`,
     ]
 
     let found = false

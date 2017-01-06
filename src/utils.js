@@ -53,7 +53,7 @@ module.exports.dockerCmd = ({cacheDir, projectDir, lanyonVersion}, cmd, flags) =
     ` --volume ${cacheDir}:${cacheDir}`,
     ` --volume ${projectDir}:${projectDir}`,
     ` kevinvz/lanyon:${lanyonVersion}`,
-    ` ${cmd}`
+    ` ${cmd}`,
   ].join('')
 }
 
@@ -130,7 +130,7 @@ module.exports.passthru = ({cacheDir}, cmd, opts) => {
 
   opts = _.defaults(opts, {
     'stdio': 'inherit', // ignore
-    'cwd': cacheDir
+    'cwd'  : cacheDir,
   })
 
   const p = spawnSync('sh', ['-c', cmd], opts)

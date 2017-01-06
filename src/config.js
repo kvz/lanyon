@@ -30,9 +30,9 @@ runtime.rubyProvidersSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
 runtime.lanyonReset = process.env.LANYON_RESET === '1'
 runtime.onTravis = process.env.TRAVIS === 'true'
 runtime.ghPagesEnv = {
-  GHPAGES_URL: process.env.GHPAGES_URL,
-  GHPAGES_BOTNAME: process.env.GHPAGES_BOTNAME,
-  GHPAGES_BOTEMAIL: process.env.GHPAGES_BOTEMAIL
+  GHPAGES_URL     : process.env.GHPAGES_URL,
+  GHPAGES_BOTNAME : process.env.GHPAGES_BOTNAME,
+  GHPAGES_BOTEMAIL: process.env.GHPAGES_BOTEMAIL,
 }
 runtime.isDev = runtime.lanyonEnv === 'development'
 runtime.isHotLoading = runtime.isDev && ['serve', 'start'].indexOf(process.argv[2]) !== -1
@@ -158,159 +158,159 @@ const cfg = {
       return entries
     }()),
     node: {
-      fs: 'empty'
+      fs: 'empty',
     },
     target: 'web',
     output: {
-      publicPath: runtime.publicPath,
-      path: runtime.assetsBuildDir,
-      filename: getFilename('js'),
+      publicPath   : runtime.publicPath,
+      path         : runtime.assetsBuildDir,
+      filename     : getFilename('js'),
       chunkFilename: getFilename('js', true),
-      cssFilename: getFilename('css')
+      cssFilename  : getFilename('css'),
     },
     devtool: 'eval-cheap-source-map',
     // devtool: 'source-map',
-    bail: false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
-    module: {
+    bail   : false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
+    module : {
       loaders: (function plugins () {
         const loaders = [
           {
-            test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=application/font-woff'
+            test  : /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+            loader: 'url?limit=10000&mimetype=application/font-woff',
           }, {
-            test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=application/font-woff'
+            test  : /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+            loader: 'url?limit=10000&mimetype=application/font-woff',
           }, {
-            test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=application/octet-stream'
+            test  : /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+            loader: 'url?limit=10000&mimetype=application/octet-stream',
           }, {
-            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'file'
+            test  : /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+            loader: 'file',
           }, {
-            test: /\.cur(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'file'
+            test  : /\.cur(\?v=\d+\.\d+\.\d+)?$/,
+            loader: 'file',
           }, {
-            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=image/svg+xml'
+            test  : /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            loader: 'url?limit=10000&mimetype=image/svg+xml',
           },
           {
-            test: /\.coffee$/,
-            loader: 'coffee'
+            test  : /\.coffee$/,
+            loader: 'coffee',
           },
           {
-            test: /\.(png|gif|jpe?g)$/,
-            loader: 'url?limit=8096'
+            test  : /\.(png|gif|jpe?g)$/,
+            loader: 'url?limit=8096',
           },
           {
             // https://github.com/webpack/webpack/issues/512
-            test: /[\\/](bower_components)[\\/]modernizr[\\/]modernizr\.js$/,
-            loader: 'imports?this=>window!exports?window.Modernizr'
+            test  : /[\\/](bower_components)[\\/]modernizr[\\/]modernizr\.js$/,
+            loader: 'imports?this=>window!exports?window.Modernizr',
           },
           {
-            test: /[\\/](bower_components)[\\/]svgeezy[\\/]svgeezy\.js$/,
-            loader: 'imports?this=>window!exports?svgeezy'
+            test  : /[\\/](bower_components)[\\/]svgeezy[\\/]svgeezy\.js$/,
+            loader: 'imports?this=>window!exports?svgeezy',
           },
           {
             // https://www.techchorus.net/blog/using-sass-version-of-bootstrap-with-webpack/
-            test: /[\\/](bower_components)[\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]/,
-            loader: 'imports?jQuery=jquery,$=jquery,this=>window'
+            test  : /[\\/](bower_components)[\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]/,
+            loader: 'imports?jQuery=jquery,$=jquery,this=>window',
           },
           {
-            test: /[\\/]jquery\..*\.js$/,
-            loader: 'imports?jQuery=jquery,$=jquery,this=>window'
-          }
+            test  : /[\\/]jquery\..*\.js$/,
+            loader: 'imports?jQuery=jquery,$=jquery,this=>window',
+          },
         ]
 
         if (runtime.isDev) {
           loaders.push({
-            test: /\.css$/,
-            loader: `style!css?sourceMap!resolve-url?root=${runtime.projectDir}`
+            test  : /\.css$/,
+            loader: `style!css?sourceMap!resolve-url?root=${runtime.projectDir}`,
           })
           loaders.push({
-            test: /\.scss$/,
-            loader: `style!css?sourceMap!sass?sourceMap!resolve-url?root=${runtime.projectDir}`
+            test  : /\.scss$/,
+            loader: `style!css?sourceMap!sass?sourceMap!resolve-url?root=${runtime.projectDir}`,
           })
           loaders.push({
-            test: /\.less$/,
+            test  : /\.less$/,
             // @todo Had to disable resolve-url-loader for less as less currently produces invalid css (in its eyes)
             // see: https://travis-ci.org/tus/tus.io/builds/183913229#L1206
-            loader: 'style!css?sourceMap!less?sourceMap'
+            loader: 'style!css?sourceMap!less?sourceMap',
           })
           loaders.push({
-            test: /\.(js|jsx)$/,
+            test  : /\.(js|jsx)$/,
             loader: 'babel',
-            query: {
+            query : {
               babelrc: false,
               // If we ever want multiple loaders on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
               presets: [
                 require.resolve('babel-preset-es2015'),
                 require.resolve('babel-preset-react'),
-                require.resolve('babel-preset-stage-0')
+                require.resolve('babel-preset-stage-0'),
               ],
-              sourceRoot: `${runtime.projectDir}`,
-              cacheDirectory: `${runtime.cacheDir}/babelCache`
+              sourceRoot    : `${runtime.projectDir}`,
+              cacheDirectory: `${runtime.cacheDir}/babelCache`,
             },
-            exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/
+            exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
           })
         } else {
           loaders.push({
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract(`css?sourceMap!resolve-url?root=${runtime.projectDir}`)
+            test  : /\.css$/,
+            loader: ExtractTextPlugin.extract(`css?sourceMap!resolve-url?root=${runtime.projectDir}`),
           })
           loaders.push({
-            test: /\.scss$/,
-            loader: ExtractTextPlugin.extract(`css?sourceMap!sass?sourceMap!resolve-url?root=${runtime.projectDir}`)
+            test  : /\.scss$/,
+            loader: ExtractTextPlugin.extract(`css?sourceMap!sass?sourceMap!resolve-url?root=${runtime.projectDir}`),
           })
           loaders.push({
-            test: /\.less$/,
+            test  : /\.less$/,
             // @todo Had to disable resolve-url-loader for less as less currently produces invalid css (in its eyes)
             // see: https://travis-ci.org/tus/tus.io/builds/183913229#L1206
-            loader: ExtractTextPlugin.extract('css?sourceMap!less?sourceMap')
+            loader: ExtractTextPlugin.extract('css?sourceMap!less?sourceMap'),
           })
           loaders.push({
-            test: /\.(js|jsx)$/,
+            test  : /\.(js|jsx)$/,
             loader: 'babel',
-            query: {
+            query : {
               babelrc: false,
               // If we ever want multiple loaders on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
               presets: [
                 require.resolve('babel-preset-es2015'),
                 require.resolve('babel-preset-react'),
-                require.resolve('babel-preset-stage-0')
+                require.resolve('babel-preset-stage-0'),
               ],
-              sourceRoot: `${runtime.projectDir}`,
-              cacheDirectory: `${runtime.cacheDir}/babelCache`
+              sourceRoot    : `${runtime.projectDir}`,
+              cacheDirectory: `${runtime.cacheDir}/babelCache`,
             },
-            exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/
+            exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
           })
         }
 
         return loaders
-      }())
+      }()),
     },
     plugins: (function plugins () {
       var plugins = [
         new BowerWebpackPlugin(),
         new webpack.ProvidePlugin({
-          _: 'lodash',
-          $: 'jquery',
-          jQuery: 'jquery'
-        })
+          _     : 'lodash',
+          $     : 'jquery',
+          jQuery: 'jquery',
+        }),
       ]
 
       if (runtime.isDev) {
         plugins.push(new webpack.HotModuleReplacementPlugin())
       } else {
         plugins.push(new ExtractTextPlugin(getFilename('css'), {
-          allChunks: true
+          allChunks: true,
         }))
         plugins.push(new webpack.optimize.UglifyJsPlugin({
           compress: {
-            warnings: true
+            warnings: true,
           },
-          mangle: true,
+          mangle   : true,
           sourceMap: true,
-          exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/
+          exclude  : /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
         }))
 
         // plugins.push(new webpack.NoErrorsPlugin())
@@ -347,18 +347,18 @@ const cfg = {
           // https://github.com/chrisbateman/webpack-visualizer/issues/5
           // Currently it just shows stats for all entries in one graph
           plugins.push(new Visualizer({
-            filename: runtime.statistics
+            filename: runtime.statistics,
           }))
         }
       }
 
       plugins.push(new AssetsPlugin({
         filename: 'jekyll.lanyon_assets.yml',
-        path: runtime.cacheDir,
+        path    : runtime.cacheDir,
         processOutput (assets) {
           console.log(`--> Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
           return yaml.safeDump({lanyon_assets: assets})
-        }
+        },
       }))
       plugins.push(new WebpackMd5Hash())
       plugins.push(new webpack.optimize.OccurenceOrderPlugin())
@@ -368,20 +368,20 @@ const cfg = {
     resolveLoader: {
       root: [
         path.join(runtime.lanyonDir, 'node_modules'),
-        path.join(runtime.projectDir, 'node_modules')
-      ]
+        path.join(runtime.projectDir, 'node_modules'),
+      ],
     },
     recordsPath: runtime.recordsPath,
-    resolve: {
+    resolve    : {
       root: [
         path.resolve(runtime.assetsSourceDir),
         `${path.resolve(runtime.assetsSourceDir)}/bower_components`,
         `${path.resolve(runtime.projectDir)}/node_modules`,
-        `${path.resolve(runtime.lanyonDir)}/node_modules`
-      ]
+        `${path.resolve(runtime.lanyonDir)}/node_modules`,
+      ],
     },
-    debug: runtime.isDev
-  }
+    debug: runtime.isDev,
+  },
 }
 
 if (runtime.isHotLoading) {
@@ -390,17 +390,17 @@ if (runtime.isHotLoading) {
 
 cfg.browsersync = {
   server: {
-    port: runtime.ports.content,
-    baseDir: runtime.contentBuildDir,
+    port      : runtime.ports.content,
+    baseDir   : runtime.contentBuildDir,
     middleware: (function middlewares () {
       var middlewares = []
 
       if (runtime.isHotLoading) {
         middlewares.push(webpackDevMiddleware(bundler, {
           publicPath: runtime.publicPath,
-          hot: true,
-          inline: true,
-          stats: { colors: true }
+          hot       : true,
+          inline    : true,
+          stats     : { colors: true },
         }))
         middlewares.push(webpackHotMiddleware(bundler))
       }
@@ -410,22 +410,22 @@ cfg.browsersync = {
       }
 
       return middlewares
-    }())
+    }()),
     // serveStatic: runtime.themeDir
   },
   watchOptions: {
     ignoreInitial: true,
-    ignored: [
+    ignored      : [
       // no need to watch '*.js' here, webpack will take care of it for us,
       // including full page reloads if HMR won't work
       '*.js',
       '.git',
       'assets/build',
-      '.lanyon'
-    ]
+      '.lanyon',
+    ],
   },
   reloadDelay: 200,
-  files: runtime.contentBuildDir
+  files      : runtime.contentBuildDir,
 }
 
 cfg.jekyll = {
@@ -435,15 +435,15 @@ cfg.jekyll = {
     'env.*.sh',
     '.env.sh',
     '.env.*.sh',
-    '.lanyon'
-  ]
+    '.lanyon',
+  ],
 }
 
 cfg.nodemon = {
   onChangeOnly: true,
-  verbose: true,
-  watch: runtime.contentScandir,
-  ignore: [
+  verbose     : true,
+  watch       : runtime.contentScandir,
+  ignore      : [
     '_site/**',
     '.env.*.sh',
     '.env.sh',
@@ -452,7 +452,7 @@ cfg.nodemon = {
     'env.*.sh',
     'env.sh',
     'node_modules/**',
-    'vendor/**'
+    'vendor/**',
   ].concat(runtime.contentIgnore),
   ext: [
     'htm',
@@ -462,8 +462,8 @@ cfg.nodemon = {
     'md',
     'png',
     'sh',
-    'yml'
-  ].join(',')
+    'yml',
+  ].join(','),
 }
 
 cfg.runtime = runtime
