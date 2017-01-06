@@ -10,6 +10,7 @@ cache:
 #   - true
 
 script:
+  - npm run build
   - npm run lint
   - npm run test
   # OSX rvm build needs more than 10m no-output-travis-time
