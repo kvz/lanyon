@@ -4,20 +4,6 @@ cache:
   directories:
     - /usr/local/Cellar/
 
-# We do not want to run `cli.js postinstall` at this point, that's done in the test:acceptance
-# via linking. If we run postscripts we get into a chicken-egg situation where postinstall relies on transpiled
-# scripts, but that relies on install.
-install:
-  - type yarn || npm install -g yarn@0.18.1 || true
-  - yarn --ignore-scripts || npm install --ignore-scripts
-
-script:
-  - npm run build
-  - npm run lint
-  - npm run test
-  # OSX rvm build needs more than 10m no-output-travis-time
-  - travis_wait 50 npm run test:acceptance
-
 before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
@@ -30,6 +16,21 @@ before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export RBENV_ROOT="${HOME}/.rbenv"; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export PATH="${RBENV_ROOT}/bin:${PATH}"; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then eval "$(rbenv init -)"; fi
+
+# We do not want to run `cli.js postinstall` at this point, that's done in the test:acceptance
+# via linking. If we run postscripts we get into a chicken-egg situation where postinstall relies on transpiled
+# scripts, but that relies on install.
+install:
+  - type yarn || npm install -g yarn@0.18.1 || true
+  - LANYON_NOINSTALL=true yarn || npm install
+
+script:
+  - echo "--> TRAVIS_NODE_VERSION: ${TRAVIS_NODE_VERSION}"
+  - npm run lint || true
+  - npm run build
+  - npm run test
+  # OSX rvm build needs more than 10m no-output-travis-time
+  - travis_wait 50 npm run test:acceptance
 
 os: linux
 dist: precise

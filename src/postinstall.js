@@ -13,6 +13,11 @@ module.exports = (runtime, cb) => {
   const passEnv    = {}
   let rubyProvider = ''
 
+  if (runtime.lanyonNoinstall) {
+    console.log('--> Skipping install as LANYON_NOINSTALL was specified')
+    return
+  }
+
   if (runtime.lanyonReset) {
     console.log('--> Removing existing shims')
     shell.rm('-f', `${runtime.binDir}/*`)

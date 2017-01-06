@@ -28,9 +28,10 @@ runtime.publicPath = '/assets/build/'
 runtime.rubyProvidersOnly = (process.env.LANYON_ONLY || '')
 runtime.rubyProvidersSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
 
-runtime.lanyonReset = process.env.LANYON_RESET === '1'
-runtime.onTravis    = process.env.TRAVIS === 'true'
-runtime.ghPagesEnv  = {
+runtime.lanyonReset     = process.env.LANYON_RESET     === '1'
+runtime.onTravis        = process.env.TRAVIS           === 'true'
+runtime.lanyonNoinstall = process.env.LANYON_NOINSTALL === '1'
+runtime.ghPagesEnv      = {
   GHPAGES_URL     : process.env.GHPAGES_URL,
   GHPAGES_BOTNAME : process.env.GHPAGES_BOTNAME,
   GHPAGES_BOTEMAIL: process.env.GHPAGES_BOTEMAIL,
