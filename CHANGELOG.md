@@ -20,11 +20,16 @@
 - [ ] Add a real command line parser for `cli.js` like minimist
 - [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0),  add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling bundle exec gemoji extract assets/images/emoji) 
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building
+
+## v0.0.50
+
+Released: Not yet.
+
 - [ ] Switch to ES6 (see https://github.com/transloadit/botty/blob/738f9d51417d84d429cd4b558898bc3a9826cd9d/decaf.sh), mostly to profit from template strings. Transpile down to ES5 for npm as Lanyon aims for portability.
 
 ## v0.0.49
 
-Released: Not yet
+Released: 2017-01-06.
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.48...v0.0.49).
 
