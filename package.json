@@ -19,7 +19,7 @@
     "release:patch": "env SEMANTIC=patch npm run release",
     "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm run container:build && git push && git push --tags && npm publish",
     "upgrade:modules": "next-update --keep true --tldr",
-    "test": "./test.sh"
+    "test": "./scripts/test.sh"
   },
   "lanyon": {
     "statistics": "stats.html",
