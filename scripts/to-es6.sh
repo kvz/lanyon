@@ -3,7 +3,7 @@
 set -o pipefail
 set -o errexit
 set -o nounset
-# set -o xtrace
+set -o xtrace
 
 if ! type decaffeinate; then
   npm install -g decaffeinate
@@ -23,5 +23,5 @@ for file in "${files[@]}"; do
   ./node_modules/.bin/eslint ${file%.*}.es6 --fix || true
   # rm ${file%.*}.js
   mv -f ${file%.*}.es6 ${file%.*}.js
-  rm ${file}
+  # rm ${file}
 done
