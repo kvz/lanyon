@@ -1,17 +1,16 @@
-const chalk = require('chalk')
-const path = require('path')
-const utils = require('./utils')
-const shell = require('shelljs')
-const os = require('os')
-const fs = require('fs')
+const chalk  = require('chalk')
+const path   = require('path')
+const utils  = require('./utils')
+const shell  = require('shelljs')
+const os     = require('os')
+const fs     = require('fs')
 // var debug = require('depurar')('lanyon')
-
-const yes = chalk.green('✓ ')
-// var no = chalk.red('✗ ')
+const yes    = chalk.green('✓ ')
+// var no    = chalk.red('✗ ')
 
 module.exports = (runtime, cb) => {
-  let envPrefix = ''
-  const passEnv = {}
+  let envPrefix    = ''
+  const passEnv    = {}
   let rubyProvider = ''
 
   if (runtime.lanyonReset) {
@@ -36,16 +35,16 @@ module.exports = (runtime, cb) => {
       rubyProvider = 'system'
     }
     console.log(`--> Found a working shim - determined to be a "${rubyProvider}" rubyProvider`)
-    runtime.prerequisites.ruby.exe = fs.readFileSync(`${runtime.binDir}/ruby`, 'utf-8').trim().replace(' $*', '')
-    runtime.prerequisites.ruby.writeShim = false
+    runtime.prerequisites.ruby.exe          = fs.readFileSync(`${runtime.binDir}/ruby`, 'utf-8').trim().replace(' $*', '')
+    runtime.prerequisites.ruby.writeShim    = false
     runtime.prerequisites.ruby.versionCheck = `${runtime.prerequisites.ruby.exe} -v${runtime.prerequisites.ruby.exeSuffix}`
-    runtime.prerequisites.gem.exe = fs.readFileSync(`${runtime.binDir}/gem`, 'utf-8').trim().replace(' $*', '')
-    runtime.prerequisites.gem.writeShim = false
-    runtime.prerequisites.bundler.exe = `${runtime.binDir}/bundler` // <-- not a lanyon shim, it's a real gem bin
+    runtime.prerequisites.gem.exe           = fs.readFileSync(`${runtime.binDir}/gem`, 'utf-8').trim().replace(' $*', '')
+    runtime.prerequisites.gem.writeShim     = false
+    runtime.prerequisites.bundler.exe       = `${runtime.binDir}/bundler` // <-- not a lanyon shim, it's a real gem bin
     runtime.prerequisites.bundler.writeShim = false
   } else if (utils.satisfied(runtime, 'ruby', undefined, 'system')) {
     rubyProvider = 'system'
-    runtime.prerequisites.gem.exe = shell.which('gem').stdout
+    runtime.prerequisites.gem.exe     = shell.which('gem').stdout
     runtime.prerequisites.bundler.exe = shell.which('bundler').stdout
   } else if (utils.satisfied(runtime, 'docker')) {
     rubyProvider = 'docker'
@@ -53,21 +52,21 @@ module.exports = (runtime, cb) => {
       utils.fatalExe(`cd .lanyon && docker build -t kevinvz/lanyon:${runtime.lanyonVersion} .`)
       utils.fatalExe(`cd .lanyon && docker push kevinvz/lanyon:${runtime.lanyonVersion}`)
     }
-    runtime.prerequisites.sh.exe = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
-    runtime.prerequisites.ruby.exe = utils.dockerCmd(runtime, 'ruby')
+    runtime.prerequisites.sh.exe     = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
+    runtime.prerequisites.ruby.exe   = utils.dockerCmd(runtime, 'ruby')
     runtime.prerequisites.jekyll.exe = utils.dockerCmd(runtime, 'bundler exec jekyll')
   } else if (utils.satisfied(runtime, 'rbenv') && shell.exec('rbenv install --help', { 'silent': false }).code === 0) {
     // rbenv does not offer installing of rubies by default, it will also require the install plugin --^
     rubyProvider = 'rbenv'
     utils.fatalExe(`bash -c "rbenv install --skip-existing '${runtime.prerequisites.ruby.preferred}'"`)
-    runtime.prerequisites.ruby.exe = `bash -c "eval $(rbenv init -) && rbenv shell '${runtime.prerequisites.ruby.preferred}' &&`
-    runtime.prerequisites.ruby.exeSuffix = '"'
+    runtime.prerequisites.ruby.exe          = `bash -c "eval $(rbenv init -) && rbenv shell '${runtime.prerequisites.ruby.preferred}' &&`
+    runtime.prerequisites.ruby.exeSuffix    = '"'
     runtime.prerequisites.ruby.versionCheck = `${runtime.prerequisites.ruby.exe}ruby -v${runtime.prerequisites.ruby.exeSuffix}`
   } else if (utils.satisfied(runtime, 'rvm')) {
     rubyProvider = 'rvm'
     utils.fatalExe(`bash -c "rvm install '${runtime.prerequisites.ruby.preferred}'"`)
-    runtime.prerequisites.ruby.exe = `bash -c "rvm '${runtime.prerequisites.ruby.preferred}' exec`
-    runtime.prerequisites.ruby.exeSuffix = '"'
+    runtime.prerequisites.ruby.exe          = `bash -c "rvm '${runtime.prerequisites.ruby.preferred}' exec`
+    runtime.prerequisites.ruby.exeSuffix    = '"'
     runtime.prerequisites.ruby.versionCheck = `${runtime.prerequisites.ruby.exe} ruby -v${runtime.prerequisites.ruby.exeSuffix}`
   } else {
     console.error('Ruby version not satisfied, and exhausted ruby version installer helpers (rvm, rbenv, brew)')

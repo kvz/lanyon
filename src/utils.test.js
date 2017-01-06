@@ -1,10 +1,10 @@
-const utils = require('./utils')
-const test = require('ava')
+const utils    = require('./utils')
+const test     = require('ava')
 // const debug = require('depurar')('sut')
-const sut = utils
+const sut      = utils
 
-const cacheDir = 'CACHEDIR'
-const projectDir = 'PROJECTDIR'
+const cacheDir      = 'CACHEDIR'
+const projectDir    = 'PROJECTDIR'
 const lanyonVersion = 'LANYONVERSION'
 
 test('dockerCmd', (t) => {

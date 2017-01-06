@@ -14,10 +14,10 @@ module.exports.preferLocalPackage = (args, filename, appDir, name, entry, versio
   let absoluteEntry
   try {
     localModulePackage = require(`${appDir}/node_modules/${name}/package.json`)
-    absoluteEntry = fs.realpathSync(`${appDir}/node_modules/${name}/${entry}`)
+    absoluteEntry      = fs.realpathSync(`${appDir}/node_modules/${name}/${entry}`)
   } catch (e) {
     localModulePackage = {}
-    absoluteEntry = false
+    absoluteEntry      = false
   } finally {
     if (localModulePackage.version && absoluteEntry) {
       if (filename === absoluteEntry) {
@@ -102,23 +102,23 @@ module.exports.writeConfig = cfg => {
   fs.writeFileSync(cfg.runtime.recordsPath, JSON.stringify({}, null, '  '), 'utf-8')
 
   let dBuf = ''
-  dBuf += 'FROM ruby:2.3.3-alpine\n'
-  dBuf += 'RUN mkdir -p /jekyll\n'
-  dBuf += 'WORKDIR /jekyll\n'
-  dBuf += 'COPY Gemfile /jekyll/\n'
-  dBuf += 'RUN true \\\n'
-  dBuf += '  && apk --update add make gcc g++ \\\n'
-  dBuf += '  && bundler install --path /jekyll/vendor/bundler \\\n'
-  dBuf += '  && bundler update \\\n'
-  dBuf += '  && apk del make gcc g++ \\\n'
-  dBuf += '  && rm -rf /var/cache/apk/* \\\n'
-  dBuf += '  && true\n'
+  dBuf    += 'FROM ruby:2.3.3-alpine\n'
+  dBuf    += 'RUN mkdir -p /jekyll\n'
+  dBuf    += 'WORKDIR /jekyll\n'
+  dBuf    += 'COPY Gemfile /jekyll/\n'
+  dBuf    += 'RUN true \\\n'
+  dBuf    += '  && apk --update add make gcc g++ \\\n'
+  dBuf    += '  && bundler install --path /jekyll/vendor/bundler \\\n'
+  dBuf    += '  && bundler update \\\n'
+  dBuf    += '  && apk del make gcc g++ \\\n'
+  dBuf    += '  && rm -rf /var/cache/apk/* \\\n'
+  dBuf    += '  && true\n'
   fs.writeFileSync(`${cfg.runtime.cacheDir}/Dockerfile`, dBuf, 'utf-8')
 
   let gBuf = 'source \'https://rubygems.org\'\n'
   for (const name in cfg.runtime.gems) {
     const version = cfg.runtime.gems[name]
-    gBuf += `gem '${name}', '${version}'\n`
+    gBuf         += `gem '${name}', '${version}'\n`
   }
   fs.writeFileSync(path.join(cfg.runtime.cacheDir, 'Gemfile'), gBuf, 'utf-8')
 }

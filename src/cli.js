@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 const utils = require('./utils')
 utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib/cli.js', require('../package.json').version)
-const _ = require('lodash')
-const config = require('./config')
-const shell = require('shelljs')
+const _       = require('lodash')
+const config  = require('./config')
+const shell   = require('shelljs')
 const runtime = config.runtime
 // var debug = require('depurar')('lanyon')
 
@@ -31,7 +31,7 @@ console.log(`--> npmRoot is "${runtime.npmRoot}". `)
 
 if (runtime.trace) {
   scripts['build:content:incremental'] += ' --trace'
-  scripts['build:content'] += ' --trace'
+  scripts['build:content']             += ' --trace'
 }
 
 const cmdName = process.argv[2]
@@ -116,8 +116,8 @@ if (_.isFunction(cmd)) {
   cmd = cmd.replace(/(\s|^)bundler(\s|$)/, `$1${runtime.binDir}/bundler$2`)
 
   var env = process.env
-  env.NODE_ENV = runtime.lanyonEnv
-  env.JEKYLL_ENV = runtime.lanyonEnv
+  env.NODE_ENV       = runtime.lanyonEnv
+  env.JEKYLL_ENV     = runtime.lanyonEnv
   env.LANYON_PROJECT = runtime.projectDir // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
 
   console.log(`--> Running ${cmdName} shell cmd: "${cmd}"`)

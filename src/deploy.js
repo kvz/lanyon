@@ -1,6 +1,6 @@
-const utils = require('./utils')
-const shell = require('shelljs')
-const fs = require('fs')
+const utils  = require('./utils')
+const shell  = require('shelljs')
+const fs     = require('fs')
 const globby = require('globby')
 
 module.exports = (runtime, cb) => {

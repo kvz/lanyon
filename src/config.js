@@ -1,40 +1,41 @@
-const _ = require('lodash')
-const path = require('path')
-const utils = require('./utils')
-const shell = require('shelljs')
-const fs = require('fs')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const webpack = require('webpack')
-const webpackDevMiddleware = require('webpack-dev-middleware')
-const webpackHotMiddleware = require('webpack-hot-middleware')
-const BowerWebpackPlugin = require('bower-webpack-plugin')
+const _                       = require('lodash')
+const path                    = require('path')
+const utils                   = require('./utils')
+const shell                   = require('shelljs')
+const fs                      = require('fs')
+const ExtractTextPlugin       = require('extract-text-webpack-plugin')
+const webpack                 = require('webpack')
+const webpackDevMiddleware    = require('webpack-dev-middleware')
+const webpackHotMiddleware    = require('webpack-hot-middleware')
+const BowerWebpackPlugin      = require('bower-webpack-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const Visualizer = require('webpack-visualizer-plugin')
-const yaml = require('js-yaml')
-const AssetsPlugin = require('assets-webpack-plugin')
-const WebpackMd5Hash = require('webpack-md5-hash')
+const Visualizer              = require('webpack-visualizer-plugin')
+const yaml                    = require('js-yaml')
+const AssetsPlugin            = require('assets-webpack-plugin')
+const WebpackMd5Hash          = require('webpack-md5-hash')
+
 let runtime = {}
 
-runtime.lanyonDir = path.join(__dirname, '..')
-runtime.lanyonEnv = process.env.LANYON_ENV || 'development'
+runtime.lanyonDir         = path.join(__dirname, '..')
+runtime.lanyonEnv         = process.env.LANYON_ENV || 'development'
 runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
-const lanyonPackage = require(runtime.lanyonPackageFile)
-runtime.lanyonVersion = lanyonPackage.version
+const lanyonPackage       = require(runtime.lanyonPackageFile)
+runtime.lanyonVersion     = lanyonPackage.version
 
-runtime.trace = process.env.LANYON_TRACE === '1'
+runtime.trace      = process.env.LANYON_TRACE === '1'
 runtime.publicPath = '/assets/build/'
 
 runtime.rubyProvidersOnly = (process.env.LANYON_ONLY || '')
 runtime.rubyProvidersSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
 
 runtime.lanyonReset = process.env.LANYON_RESET === '1'
-runtime.onTravis = process.env.TRAVIS === 'true'
-runtime.ghPagesEnv = {
+runtime.onTravis    = process.env.TRAVIS === 'true'
+runtime.ghPagesEnv  = {
   GHPAGES_URL     : process.env.GHPAGES_URL,
   GHPAGES_BOTNAME : process.env.GHPAGES_BOTNAME,
   GHPAGES_BOTEMAIL: process.env.GHPAGES_BOTEMAIL,
 }
-runtime.isDev = runtime.lanyonEnv === 'development'
+runtime.isDev        = runtime.lanyonEnv === 'development'
 runtime.isHotLoading = runtime.isDev && ['serve', 'start'].indexOf(process.argv[2]) !== -1
 
 runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cwd() // <-- symlinked npm will mess up process.cwd() and point to ~/code/lanyon
@@ -54,7 +55,7 @@ try {
 }
 
 runtime.gems = _.defaults(_.get(projectPackage, 'lanyon.gems') || {}, _.get(lanyonPackage, 'lanyon.gems'))
-runtime = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
+runtime      = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
 
 try {
   runtime.projectDir = fs.realpathSync(runtime.projectDir)
@@ -62,20 +63,20 @@ try {
   runtime.projectDir = fs.realpathSync(`${runtime.gitRoot}/${runtime.projectDir}`)
 }
 
-runtime.cacheDir = path.join(runtime.projectDir, '.lanyon')
-runtime.binDir = path.join(runtime.cacheDir, 'bin')
-runtime.recordsPath = path.join(runtime.cacheDir, 'records.json')
+runtime.cacheDir        = path.join(runtime.projectDir, '.lanyon')
+runtime.binDir          = path.join(runtime.cacheDir, 'bin')
+runtime.recordsPath     = path.join(runtime.cacheDir, 'records.json')
 runtime.assetsSourceDir = path.join(runtime.projectDir, 'assets')
-runtime.assetsBuildDir = path.join(runtime.assetsSourceDir, 'build')
+runtime.assetsBuildDir  = path.join(runtime.assetsSourceDir, 'build')
 runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
-runtime.contentScandir = path.join(runtime.projectDir, runtime.contentScandir || '.')
-runtime.contentIgnore = runtime.contentIgnore || []
+runtime.contentScandir  = path.join(runtime.projectDir, runtime.contentScandir || '.')
+runtime.contentIgnore   = runtime.contentIgnore || []
 
 // Load project's jekyll _config.yml
-runtime.jekyllConfig = {}
+runtime.jekyllConfig   = {}
 const jekyllConfigPath = path.join(runtime.projectDir, '_config.yml')
 try {
-  const buf = fs.readFileSync(jekyllConfigPath)
+  const buf            = fs.readFileSync(jekyllConfigPath)
   runtime.jekyllConfig = yaml.safeLoad(buf)
 } catch (e) {
   console.error(`Unable to load ${jekyllConfigPath}`)
@@ -84,7 +85,7 @@ try {
 runtime.themeDir = false
 if (runtime.jekyllConfig.theme) {
   const cmd = `${path.join(runtime.binDir, 'bundler')} show ${runtime.jekyllConfig.theme}`
-  const z = shell.exec(cmd).stdout
+  const z   = shell.exec(cmd).stdout
   if (!z) {
     console.error(`Unable find defined them "${runtime.jekyllConfig.theme}" via cmd: "${cmd}"`)
   } else {
