@@ -4,10 +4,10 @@ cache:
   directories:
     - /usr/local/Cellar/
 
-# Since we're npm install-ing ourserves via npm link in a clean /tmp/xxx directory,
-# we're skipping the install here
-install:
-  - true
+# # Since we're npm install-ing ourserves via npm link in a clean /tmp/xxx directory,
+# # we're skipping the install here
+# install:
+#   - true
 
 script:
   - npm run lint
