@@ -4,15 +4,6 @@ cache:
   directories:
     - /usr/local/Cellar/
 
-# Since we're npm install-ing ourserves via npm link in a clean /tmp/xxx directory,
-# we're skipping the install here
-install:
-  - true
-
-script:
-  # OSX rvm build needs more than 10m no-output-travis-time
-  - travis_wait 50 npm run test
-
 before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
@@ -25,6 +16,22 @@ before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export RBENV_ROOT="${HOME}/.rbenv"; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export PATH="${RBENV_ROOT}/bin:${PATH}"; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then eval "$(rbenv init -)"; fi
+
+# We do not want to run `cli.js postinstall` at this point, that's done in the test:acceptance
+# via linking. If we run postscripts we get into a chicken-egg situation where postinstall relies on transpiled
+# scripts, but that relies on install.
+install:
+  - type yarn || npm install -g yarn@0.18.1 || true
+  - LANYON_NOINSTALL=true yarn || npm install
+
+script:
+  # eslint does not work on old nodes
+  - if [ "${TRAVIS_NODE_VERSION}" = "6" ]; then npm run lint; fi
+  # babel compile does not work on flat npm structure
+  - if [ "${TRAVIS_NODE_VERSION}" = "6" ]; then npm run build; fi
+  - npm run test
+  # OSX rvm build needs more than 10m no-output-travis-time
+  - travis_wait 50 npm run test:acceptance
 
 os: linux
 dist: precise
@@ -80,7 +87,7 @@ before_cache:
 - rm -f ./node_modules/.bin/which
 before_deploy:
 - cd website && npm link lanyon && cd ..
-- env LANYON_PROJECT=./website node ./cli.js postinstall
+- env LANYON_PROJECT=./website node ./lib/cli.js postinstall
 deploy:
   skip_cleanup: true
   provider: script
