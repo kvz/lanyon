@@ -1,11 +1,11 @@
-const logUpdate   = require('log-update')
-const logSymbols  = require('log-symbols')
-const cliCursor   = require('cli-cursor')
-const cliSpinner  = require('cli-spinner')
-const cliTruncate = require('cli-truncate')
-const spawnSync   = require('spawn-sync')
-const chalk       = require('chalk')
-const _           = require('lodash')
+// const logUpdate   = require('log-update')
+// const logSymbols  = require('log-symbols')
+// const cliCursor   = require('cli-cursor')
+// const cliSpinner  = require('cli-spinner')
+// const cliTruncate = require('cli-truncate')
+// const spawnSync   = require('spawn-sync')
+// const chalk       = require('chalk')
+const _ = require('lodash')
 
 module.exports.executive = (args, opts, cb) => {
   let cmd = ''
@@ -22,6 +22,4 @@ module.exports.executive = (args, opts, cb) => {
     'stdio'       : 'inherit', // ignore
     'cwd'         : process.cwd(),
   })
-
-  
 }

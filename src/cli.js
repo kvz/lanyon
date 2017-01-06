@@ -4,7 +4,7 @@ utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib
 const _         = require('lodash')
 const config    = require('./config')
 const shell     = require('shelljs')
-const executive = require('./executive')
+// const executive = require('./executive')
 const runtime   = config.runtime
 // var debug = require('depurar')('lanyon')
 
