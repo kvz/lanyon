@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
-
 set -o pipefail
 set -o errexit
 set -o nounset
-set -o xtrace
+# set -o xtrace
 
 if ! type decaffeinate; then
   npm install -g decaffeinate

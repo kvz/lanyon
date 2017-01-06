@@ -7,19 +7,22 @@
     "lanyon": "lib/cli.js"
   },
   "scripts": {
-    "fix": "eslint . --fix",
-    "lint": "eslint .",
-    "web:install": "cd website && npm run install",
-    "web:start": "cd website && npm run start",
-    "install": "node lib/cli.js postinstall",
-    "container:connect": "node lib/cli.js connect",
+    "build": "babel src --out-dir lib",
     "container:build": "env DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node lib/cli.js postinstall",
+    "container:connect": "node lib/cli.js connect",
+    "fix": "eslint . --fix",
+    "install": "node lib/cli.js postinstall",
+    "lint": "eslint .",
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
     "release:patch": "env SEMANTIC=patch npm run release",
     "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm run container:build && git push && git push --tags && npm publish",
+    "test": "npm run build && env NODE_ENV=test ava lib/**/*.test.js",
+    "test-acceptance": "./scripts/test-acceptance.sh",
+    "test-watcher": "npm test -- --watch",
     "upgrade:modules": "next-update --keep true --tldr",
-    "test": "./scripts/test.sh"
+    "web:install": "cd website && npm run install",
+    "web:start": "cd website && npm run start"
   },
   "lanyon": {
     "statistics": "stats.html",
