@@ -4,17 +4,18 @@ cache:
   directories:
     - /usr/local/Cellar/
 
-# # Since we're npm install-ing ourserves via npm link in a clean /tmp/xxx directory,
-# # we're skipping the install here
-# install:
-#   - true
+# We do not want to run `cli.js postinstall` at this point, that's done in the test:acceptance
+# via linking. If we run postscripts we get into a chicken-egg situation where postinstall relies on transpiled
+# scripts, but that relies on install.
+install:
+  - yarn --ignore-scripts
 
 script:
   - npm run build
   - npm run lint
   - npm run test
   # OSX rvm build needs more than 10m no-output-travis-time
-  - travis_wait 50 npm run test-acceptance
+  - travis_wait 50 npm run test:acceptance
 
 before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload; fi
