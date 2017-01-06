@@ -25,9 +25,10 @@ install:
   - LANYON_NOINSTALL=true yarn || npm install
 
 script:
-  - echo Node ${TRAVIS_NODE_VERSION}
-  - npm run lint || true
-  - npm run build
+  # eslint does not work on old nodes
+  - if [ "${TRAVIS_NODE_VERSION}" = "6" ]; then npm run lint; fi
+  # babel compile does not work on flat npm structure
+  - if [ "${TRAVIS_NODE_VERSION}" = "6" ]; then npm run build; fi
   - npm run test
   # OSX rvm build needs more than 10m no-output-travis-time
   - travis_wait 50 npm run test:acceptance

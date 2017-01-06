@@ -7,7 +7,7 @@
     "lanyon": "lib/cli.js"
   },
   "scripts": {
-    "build": "babel src --out-dir lib",
+    "build": "babel src --out-dir lib && git commit lib -m 'Save transpiled version so we can still run tests on Node 0.12'",
     "container:build": "env DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node lib/cli.js postinstall",
     "container:connect": "node lib/cli.js connect",
     "fix": "eslint . --fix",
