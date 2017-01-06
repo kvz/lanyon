@@ -15,7 +15,7 @@ const AssetsPlugin = require('assets-webpack-plugin')
 const WebpackMd5Hash = require('webpack-md5-hash')
 let runtime = {}
 
-runtime.lanyonDir = __dirname
+runtime.lanyonDir = path.join(__dirname, '..')
 runtime.lanyonEnv = process.env.LANYON_ENV || 'development'
 runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 const lanyonPackage = require(runtime.lanyonPackageFile)

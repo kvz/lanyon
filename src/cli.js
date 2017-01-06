@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const utils = require('./utils')
-utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib/cli.js', require('./package.json').version)
+utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib/cli.js', require('../package.json').version)
 const _ = require('lodash')
 const config = require('./config')
 const shell = require('shelljs')
@@ -10,7 +10,7 @@ const runtime = config.runtime
 const scripts = {
   // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
   'build:images': 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
-  'build:assets': 'webpack --config [cacheDir]/webpack.lib/config.js',
+  'build:assets': 'webpack --config [cacheDir]/webpack.config.js',
   'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
   'build:content': 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
   'container:connect': utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
@@ -20,7 +20,7 @@ const scripts = {
   'postinstall': require('./postinstall'),
   'deploy': require('./deploy'),
   'encrypt': require('./encrypt'),
-  'serve': 'browser-sync start --config [cacheDir]/browsersync.lib/config.js',
+  'serve': 'browser-sync start --config [cacheDir]/browsersync.config.js',
   'start': '[lanyon] build:assets && [lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
   'build:content:watch': 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"'
 }
