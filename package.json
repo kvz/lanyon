@@ -18,8 +18,8 @@
     "release:patch": "env SEMANTIC=patch npm run release",
     "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm run container:build && git push && git push --tags && npm publish",
     "test": "npm run build && env NODE_ENV=test ava lib/**/*.test.js",
-    "test-acceptance": "npm run build && ./scripts/test-acceptance.sh",
-    "test-watcher": "npm test -- --watch",
+    "test:acceptance": "npm run build && ./scripts/test-acceptance.sh",
+    "test:watcher": "npm test -- --watch",
     "upgrade:modules": "next-update --keep true --tldr",
     "web:install": "cd website && npm run install",
     "web:start": "cd website && npm run start"
