@@ -1,24 +1,24 @@
-var _ = require('lodash')
-var path = require('path')
-var utils = require('./utils')
-var shell = require('shelljs')
-var fs = require('fs')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var webpack = require('webpack')
-var webpackDevMiddleware = require('webpack-dev-middleware')
-var webpackHotMiddleware = require('webpack-hot-middleware')
-var BowerWebpackPlugin = require('bower-webpack-plugin')
-var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-var Visualizer = require('webpack-visualizer-plugin')
-var yaml = require('js-yaml')
-var AssetsPlugin = require('assets-webpack-plugin')
-var WebpackMd5Hash = require('webpack-md5-hash')
-var runtime = {}
+const _ = require('lodash')
+const path = require('path')
+const utils = require('./utils')
+const shell = require('shelljs')
+const fs = require('fs')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const webpack = require('webpack')
+const webpackDevMiddleware = require('webpack-dev-middleware')
+const webpackHotMiddleware = require('webpack-hot-middleware')
+const BowerWebpackPlugin = require('bower-webpack-plugin')
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const Visualizer = require('webpack-visualizer-plugin')
+const yaml = require('js-yaml')
+const AssetsPlugin = require('assets-webpack-plugin')
+const WebpackMd5Hash = require('webpack-md5-hash')
+let runtime = {}
 
 runtime.lanyonDir = __dirname
 runtime.lanyonEnv = process.env.LANYON_ENV || 'development'
 runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
-var lanyonPackage = require(runtime.lanyonPackageFile)
+const lanyonPackage = require(runtime.lanyonPackageFile)
 runtime.lanyonVersion = lanyonPackage.version
 
 runtime.trace = process.env.LANYON_TRACE === '1'
@@ -41,7 +41,7 @@ runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cw
 
 runtime.npmRoot = utils.upwardDirContaining('package.json', runtime.projectDir, 'lanyon')
 if (!runtime.npmRoot) {
-  console.error('--> Unable to determine non-lanyon npmRoot, falling back to ' + runtime.projectDir)
+  console.error(`--> Unable to determine non-lanyon npmRoot, falling back to ${runtime.projectDir}`)
   runtime.npmRoot = runtime.projectDir
 }
 runtime.gitRoot = utils.upwardDirContaining('.git', runtime.npmRoot)
@@ -59,7 +59,7 @@ runtime = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
 try {
   runtime.projectDir = fs.realpathSync(runtime.projectDir)
 } catch (e) {
-  runtime.projectDir = fs.realpathSync(runtime.gitRoot + '/' + runtime.projectDir)
+  runtime.projectDir = fs.realpathSync(`${runtime.gitRoot}/${runtime.projectDir}`)
 }
 
 runtime.cacheDir = path.join(runtime.projectDir, '.lanyon')
@@ -73,27 +73,27 @@ runtime.contentIgnore = runtime.contentIgnore || []
 
 // Load project's jekyll _config.yml
 runtime.jekyllConfig = {}
-var jekyllConfigPath = path.join(runtime.projectDir, '_config.yml')
+const jekyllConfigPath = path.join(runtime.projectDir, '_config.yml')
 try {
-  var buf = fs.readFileSync(jekyllConfigPath)
+  const buf = fs.readFileSync(jekyllConfigPath)
   runtime.jekyllConfig = yaml.safeLoad(buf)
 } catch (e) {
-  console.error('Unable to load ' + jekyllConfigPath)
+  console.error(`Unable to load ${jekyllConfigPath}`)
 }
 
 runtime.themeDir = false
 if (runtime.jekyllConfig.theme) {
-  var cmd = path.join(runtime.binDir, 'bundler') + ' show ' + runtime.jekyllConfig.theme
-  var z = shell.exec(cmd).stdout
+  const cmd = `${path.join(runtime.binDir, 'bundler')} show ${runtime.jekyllConfig.theme}`
+  const z = shell.exec(cmd).stdout
   if (!z) {
-    console.error('Unable find defined them "' + runtime.jekyllConfig.theme + '" via cmd: "' + cmd + '"')
+    console.error(`Unable find defined them "${runtime.jekyllConfig.theme}" via cmd: "${cmd}"`)
   } else {
     runtime.themeDir = z
   }
 }
 
 // Set prerequisite defaults
-for (var name in runtime.prerequisites) {
+for (const name in runtime.prerequisites) {
   if (!runtime.prerequisites[name].exeSuffix) {
     runtime.prerequisites[name].exeSuffix = ''
   }
@@ -101,19 +101,19 @@ for (var name in runtime.prerequisites) {
     runtime.prerequisites[name].exe = name
   }
   if (!runtime.prerequisites[name].versionCheck) {
-    runtime.prerequisites[name].versionCheck = runtime.prerequisites[name].exe + ' -v'
+    runtime.prerequisites[name].versionCheck = `${runtime.prerequisites[name].exe} -v`
   }
 }
 
 // Determine rubyProvider sources to traverse
-var allApps = [ 'system', 'docker', 'rbenv', 'rvm', 'ruby-shim' ]
+const allApps = [ 'system', 'docker', 'rbenv', 'rvm', 'ruby-shim' ]
 if (runtime.rubyProvidersOnly === 'auto-all') {
   runtime.rubyProvidersOnly = ''
 }
 
 if (runtime.rubyProvidersOnly) {
   runtime.rubyProvidersSkip = []
-  allApps.forEach(function (app) {
+  allApps.forEach(app => {
     if (app !== runtime.rubyProvidersOnly) {
       runtime.rubyProvidersSkip.push(app)
     }
@@ -121,28 +121,28 @@ if (runtime.rubyProvidersOnly) {
 }
 
 function getFilename (extension, isChunk, isContent) {
-  var filename = '[name].' + extension
+  let filename = `[name].${extension}`
 
   if (!runtime.isDev) {
-    filename = '[name].[chunkhash].' + extension
+    filename = `[name].[chunkhash].${extension}`
     if (isContent) {
-      filename = '[name].[contenthash].' + extension
+      filename = `[name].[contenthash].${extension}`
     }
   }
 
   if (isChunk) {
-    filename = '[name].[chunkhash].[id].chunk.' + extension
+    filename = `[name].[chunkhash].[id].chunk.${extension}`
   }
 
   return filename
 }
 
-var cfg = {
+const cfg = {
   webpack: {
     entry: (function entries () {
       var entries = {}
-      runtime.entries.forEach(function (entry) {
-        entries[entry] = [ path.join(runtime.assetsSourceDir, entry + '.js') ]
+      runtime.entries.forEach(entry => {
+        entries[entry] = [ path.join(runtime.assetsSourceDir, `${entry}.js`) ]
 
         if (entry === 'app' && runtime.isDev) {
           entries[entry].unshift('webpack-hot-middleware/client')
@@ -173,7 +173,7 @@ var cfg = {
     bail: false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
     module: {
       loaders: (function plugins () {
-        var loaders = [
+        const loaders = [
           {
             test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
             loader: 'url?limit=10000&mimetype=application/font-woff'
@@ -224,11 +224,11 @@ var cfg = {
         if (runtime.isDev) {
           loaders.push({
             test: /\.css$/,
-            loader: 'style!css?sourceMap!resolve-url?root=' + runtime.projectDir + ''
+            loader: `style!css?sourceMap!resolve-url?root=${runtime.projectDir}`
           })
           loaders.push({
             test: /\.scss$/,
-            loader: 'style!css?sourceMap!sass?sourceMap!resolve-url?root=' + runtime.projectDir + ''
+            loader: `style!css?sourceMap!sass?sourceMap!resolve-url?root=${runtime.projectDir}`
           })
           loaders.push({
             test: /\.less$/,
@@ -247,19 +247,19 @@ var cfg = {
                 require.resolve('babel-preset-react'),
                 require.resolve('babel-preset-stage-0')
               ],
-              sourceRoot: runtime.projectDir + '',
-              cacheDirectory: runtime.cacheDir + '/babelCache' + ''
+              sourceRoot: `${runtime.projectDir}`,
+              cacheDirectory: `${runtime.cacheDir}/babelCache`
             },
             exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/
           })
         } else {
           loaders.push({
             test: /\.css$/,
-            loader: ExtractTextPlugin.extract('css?sourceMap!resolve-url?root=' + runtime.projectDir + '')
+            loader: ExtractTextPlugin.extract(`css?sourceMap!resolve-url?root=${runtime.projectDir}`)
           })
           loaders.push({
             test: /\.scss$/,
-            loader: ExtractTextPlugin.extract('css?sourceMap!sass?sourceMap!resolve-url?root=' + runtime.projectDir + '')
+            loader: ExtractTextPlugin.extract(`css?sourceMap!sass?sourceMap!resolve-url?root=${runtime.projectDir}`)
           })
           loaders.push({
             test: /\.less$/,
@@ -278,8 +278,8 @@ var cfg = {
                 require.resolve('babel-preset-react'),
                 require.resolve('babel-preset-stage-0')
               ],
-              sourceRoot: runtime.projectDir + '',
-              cacheDirectory: runtime.cacheDir + '/babelCache' + ''
+              sourceRoot: `${runtime.projectDir}`,
+              cacheDirectory: `${runtime.cacheDir}/babelCache`
             },
             exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/
           })
@@ -320,12 +320,12 @@ var cfg = {
         plugins.push(new webpack.optimize.LimitChunkCountPlugin({maxChunks: 15}))
         plugins.push(new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000}))
         plugins.push(function ReportErrors () {
-          this.plugin('done', function (stats) {
-            for (var asset in stats.compilation.assets) {
-              console.log('--> Wrote ' + runtime.assetsBuildDir + '/' + asset)
+          this.plugin('done', ({compilation}) => {
+            for (const asset in compilation.assets) {
+              console.log(`--> Wrote ${runtime.assetsBuildDir}/${asset}`)
             }
-            if (stats.compilation.errors && stats.compilation.errors.length) {
-              console.error(stats.compilation.errors)
+            if (compilation.errors && compilation.errors.length) {
+              console.error(compilation.errors)
               if (!runtime.isDev) {
                 process.exit(1)
               }
@@ -339,9 +339,9 @@ var cfg = {
       }
 
       if (runtime.statistics) {
-        var fullpathStatistics = runtime.assetsBuildDir + '/' + runtime.statistics
+        const fullpathStatistics = `${runtime.assetsBuildDir}/${runtime.statistics}`
         if (runtime.isDev) {
-          console.log('--> Cannot write statistics to "' + fullpathStatistics + '" in dev mode. Create a production build via LANYON_ENV=production. ')
+          console.log(`--> Cannot write statistics to "${fullpathStatistics}" in dev mode. Create a production build via LANYON_ENV=production. `)
         } else {
           // @todo: Once Vizualizer supports multiple entries, add support for that here
           // https://github.com/chrisbateman/webpack-visualizer/issues/5
@@ -355,8 +355,8 @@ var cfg = {
       plugins.push(new AssetsPlugin({
         filename: 'jekyll.lanyon_assets.yml',
         path: runtime.cacheDir,
-        processOutput: function (assets) {
-          console.log('--> Writing asset manifest to: "' + runtime.cacheDir + '/jekyll.lanyon_assets.yml"')
+        processOutput (assets) {
+          console.log(`--> Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
           return yaml.safeDump({lanyon_assets: assets})
         }
       }))
@@ -375,9 +375,9 @@ var cfg = {
     resolve: {
       root: [
         path.resolve(runtime.assetsSourceDir),
-        path.resolve(runtime.assetsSourceDir) + '/bower_components',
-        path.resolve(runtime.projectDir) + '/node_modules',
-        path.resolve(runtime.lanyonDir) + '/node_modules'
+        `${path.resolve(runtime.assetsSourceDir)}/bower_components`,
+        `${path.resolve(runtime.projectDir)}/node_modules`,
+        `${path.resolve(runtime.lanyonDir)}/node_modules`
       ]
     },
     debug: runtime.isDev
