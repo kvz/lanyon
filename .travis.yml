@@ -25,7 +25,7 @@ install:
   - LANYON_NOINSTALL=true yarn || npm install
 
 script:
-  - echo "--> TRAVIS_NODE_VERSION: ${TRAVIS_NODE_VERSION}"
+  - echo Node ${TRAVIS_NODE_VERSION}
   - npm run lint || true
   - npm run build
   - npm run test
