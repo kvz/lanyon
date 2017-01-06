@@ -7,7 +7,9 @@
     "lanyon": "lib/cli.js"
   },
   "scripts": {
-    "build": "babel src --out-dir lib && git commit lib -m 'Save transpiled version so we can still run tests on Node 0.12'",
+    "build": "babel src --out-dir lib",
+    "commit:es5": "git commit lib -m 'Save transpiled version so we can still run tests on Node 0.12' || true",
+    "push": "git push && git push --tags",
     "container:build": "env DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node lib/cli.js postinstall",
     "container:connect": "node lib/cli.js connect",
     "fix": "eslint . --fix",
@@ -16,7 +18,7 @@
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
     "release:patch": "env SEMANTIC=patch npm run release",
-    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm run container:build && git push && git push --tags && npm publish",
+    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all build commit:es5 container:build push publish",
     "test": "env NODE_ENV=test ava lib/**/*.test.js",
     "test:acceptance": "./scripts/test-acceptance.sh",
     "test:watcher": "npm test -- --watch",
