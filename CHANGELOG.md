@@ -25,7 +25,8 @@
 
 Released: Not yet.
 
-- [ ] Switch to ES6 (see https://github.com/transloadit/botty/blob/738f9d51417d84d429cd4b558898bc3a9826cd9d/decaf.sh), mostly to profit from template strings. Transpile down to ES5 for npm as Lanyon aims for portability.
+- [x] Skip installs if `LANYON_NOINSTALL==1`
+- [x] Switch to ES6 (see https://github.com/transloadit/botty/blob/738f9d51417d84d429cd4b558898bc3a9826cd9d/decaf.sh), mostly to profit from template strings. Transpile down to ES5 for npm as Lanyon aims for portability.
 
 ## v0.0.49
 

@@ -11,7 +11,7 @@
     "container:build": "env DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node lib/cli.js postinstall",
     "container:connect": "node lib/cli.js connect",
     "fix": "eslint . --fix",
-    "install": "node lib/cli.js postinstall",
+    "install": "[ \"${LANYON_NOINSTALL:-0}\" != \"1\" ] && node lib/cli.js postinstall || true",
     "lint": "eslint .",
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
