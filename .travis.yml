@@ -10,6 +10,8 @@ install:
   - true
 
 script:
+  - npm run lint
+  - npm run test
   # OSX rvm build needs more than 10m no-output-travis-time
   - travis_wait 50 npm run test-acceptance
 
