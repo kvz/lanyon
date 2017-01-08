@@ -1,7 +1,7 @@
 const logUpdate   = require('log-update')
+const cliSpinner  = require('cli-spinners').dots10
 const logSymbols  = require('log-symbols')
 const cliCursor   = require('cli-cursor')
-const cliSpinner  = require('cli-spinner')
 const cliTruncate = require('cli-truncate')
 const chalk       = require('chalk')
 const spawnSync   = require('spawn-sync')
@@ -13,23 +13,29 @@ const _           = require('lodash')
 
 class Executive {
   constructor () {
-    this._opts          = null
-    this._cmd           = null
+    this._opts = null
+    this._cmd  = null
 
-    this._pid           = null
-    this._error         = null
-    this._status        = null
-    this._stdout        = null
-    this._stderr        = null
+    this._pid      = null
+    this._error    = null
+    this._status   = null
+    this._stdout   = null
+    this._stderr   = null
+    this._timer    = null
+    this._lastLine = ''
+    this._buffers  = {
+      stdout: '',
+      stderr: '',
+    }
   }
 
   _return (cb) {
     if (cb) {
-      if (this._opts.tmpFileStdout) {
-        this._stdout = fs.readFileSync(this._opts.tmpFileStdout, 'utf-8')
+      if (this._opts.tmpFiles.stdout) {
+        this._stdout = fs.readFileSync(this._opts.tmpFiles.stdout, 'utf-8')
       }
-      if (this._opts.tmpFileStderr) {
-        this._stderr = fs.readFileSync(this._opts.tmpFileStderr, 'utf-8')
+      if (this._opts.tmpFiles.stderr) {
+        this._stderr = fs.readFileSync(this._opts.tmpFiles.stderr, 'utf-8')
       }
     }
 
@@ -44,6 +50,10 @@ class Executive {
       }
       err = new Error(msgs.join('. '))
     }
+
+    this._emptyBuffer('stdout', true)
+    this._emptyBuffer('stderr', true)
+    this._stopAnimation()
 
     if (cb) {
       return cb(err, this._stdout.trim())
@@ -60,23 +70,95 @@ class Executive {
       return
     }
 
-    if (type === 'stdout' && this._opts.tmpFileStdout) {
-      fs.appendFileSync(this._opts.tmpFileStdout, data, 'utf-8')
+    if (type === 'stdout') {
+      this._buffers.stdout += data
+      if (this._opts.tmpFiles.stdout) {
+        fs.appendFileSync(this._opts.tmpFiles.stdout, data, 'utf-8')
+      }
+      this._emptyBuffer(type)
     }
-    if (type === 'stderr' && this._opts.tmpFileStderr) {
-      fs.appendFileSync(this._opts.tmpFileStderr, data, 'utf-8')
+
+    if (type === 'stderr') {
+      this._buffers.stderr += data
+      if (this._opts.tmpFiles.stderr) {
+        fs.appendFileSync(this._opts.tmpFiles.stderr, data, 'utf-8')
+      }
+      this._emptyBuffer(type)
+    }
+  }
+
+  _emptyBuffer (type, flush = false) {
+    let pos = -1
+    while ((pos = this._buffers[type].indexOf('\n')) > -1) {
+      let line = this._buffers[type].substr(0, pos + 1)
+      this._linefeed(type, line)
+      this._buffers[type] = this._buffers[type].substr(pos + 1, this._buffers[type].length - 1)
+    }
+
+    if (flush) {
+      this._linefeed(type, this._buffers[type], flush)
+      this._buffers[type] = ''
+    }
+  }
+
+  _startAnimation () {
+    let i      = 0
+    let frames = cliSpinner.frames
+    let that   = this
+    this._timer = setInterval(() => {
+      let frame = frames[i++ % frames.length]
+      this._drawAnimation.bind(that)(frame)
+    }, cliSpinner.interval)
+  }
+
+  _drawAnimation (frame, flush = false) {
+    if (!frame) {
+      frame = cliSpinner.frames[0]
+    }
+    let line = this._prefix() + frame + ' ' + cliTruncate(this._lastLine.trim(), process.stdout.columns - 20)
+
+    if (flush) {
+      if (this._status === 0) {
+        line += ' ' + logSymbols.success
+      } else {
+        line += ' ' + logSymbols.error
+      }
+    }
+
+    logUpdate(line)
+  }
+
+  _stopAnimation () {
+    clearInterval(this._timer)
+    this._timer = null
+  }
+
+  _prefix () {
+    return 'hey > '
+  }
+
+  _linefeed (type, line, flush = false) {
+    if (line) {
+      this._lastLine = line
     }
 
     if (this._opts.passthru === true) {
       if (this._opts.singlescroll === true) {
-        logUpdate(data)
-      } else {
-        process.stdout.write(data)
+        // handled by lastline + animation, unless the command exited before the interval
+        this._drawAnimation(undefined, flush)
+        if (flush) {
+        }
+        return
       }
+    }
+
+    if (line) {
+      process[type].write(line)
     }
   }
 
   exe (args, opts, cb) {
+    this._startAnimation()
     let cmd         = ''
     let showCommand = ''
     let argus       = args
@@ -96,6 +178,7 @@ class Executive {
       'showCommand' : showCommand,
       'singlescroll': true,
       'passthru'    : true,
+      'tmpFiles'    : {},
       'cwd'         : process.cwd(),
     })
 
@@ -113,18 +196,23 @@ class Executive {
       const child = spawn(cmd, argus, spawnOpts)
       this._pid = child.pid
 
-      if (!this._opts.tmpFileStdout && this._opts.tmpFileStdout !== false) {
-        this._opts.tmpFileStdout = `${osTmpdir()}/executive-${opts.showCommand}-stdout-${this._pid}.log`
-      }
-      if (!this._opts.tmpFileStderr && this._opts.tmpFileStderr !== false) {
-        this._opts.tmpFileStderr = `${osTmpdir()}/executive-${opts.showCommand}-stderr-${this._pid}.log`
+      if (this._opts.tmpFiles === false) {
+        this._opts.tmpFiles.stdout = false
+        this._opts.tmpFiles.stderr = false
+      } else {
+        if (!this._opts.tmpFiles.stdout && this._opts.tmpFiles.stdout !== false) {
+          this._opts.tmpFiles.stdout = `${osTmpdir()}/executive-${opts.showCommand}-stdout-${this._pid}.log`
+        }
+        if (!this._opts.tmpFiles.stderr && this._opts.tmpFiles.stderr !== false) {
+          this._opts.tmpFiles.stderr = `${osTmpdir()}/executive-${opts.showCommand}-stderr-${this._pid}.log`
+        }
       }
 
-      if (this._opts.tmpFileStdout) {
-        fs.writeFileSync(this._opts.tmpFileStdout, '', 'utf-8')
+      if (this._opts.tmpFiles.stdout) {
+        fs.writeFileSync(this._opts.tmpFiles.stdout, '', 'utf-8')
       }
-      if (this._opts.tmpFileStderr) {
-        fs.writeFileSync(this._opts.tmpFileStderr, '', 'utf-8')
+      if (this._opts.tmpFiles.stderr) {
+        fs.writeFileSync(this._opts.tmpFiles.stderr, '', 'utf-8')
       }
 
       if (child.stdout) {

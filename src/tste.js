@@ -2,14 +2,12 @@ const executive = require('./executive')
 
 // var debug = require('depurar')('lanyon')
 
-// const out = executive('cat /var/log/install.log', { singlescroll: true })
+// const out = executive(`cat ${__dirname}/../CHANGELOG.md`, { singlescroll: true })
 // console.log(out)
-// process.exit()
 
-executive('cat /var/log/install.log', { singlescroll: true }, (err, out2) => {
+executive(`cat ${__dirname}/../CHANGELOG.md && echo done`, { singlescroll: true }, (err, out2) => {
   if (err) {
     throw new Error(err)
   }
-  console.log(out2)
-  process.exit()
+  // console.log(out2)
 })
