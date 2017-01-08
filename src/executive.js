@@ -1,7 +1,6 @@
 const logUpdate   = require('log-update')
 const cliSpinner  = require('cli-spinners').dots10
 const logSymbols  = require('log-symbols')
-const cliCursor   = require('cli-cursor')
 const cliTruncate = require('cli-truncate')
 const chalk       = require('chalk')
 const spawnSync   = require('spawn-sync')
@@ -115,7 +114,9 @@ class Executive {
     if (!frame) {
       frame = cliSpinner.frames[0]
     }
-    let line = this._prefix() + frame + ' ' + cliTruncate(this._lastLine.trim(), process.stdout.columns - 20)
+    let line = this._prefix() + frame + ' '
+
+    line += cliTruncate(this._lastLine.trim(), process.stdout.columns - (line.length + (flush ? 2 : 0)))
 
     if (flush) {
       if (this._status === 0) {
@@ -134,7 +135,16 @@ class Executive {
   }
 
   _prefix () {
-    return 'hey > '
+    let buf = ''
+    this._opts.components.forEach((component) => {
+      buf += `${chalk.dim(component)} \u276f`
+    })
+
+    if (buf) {
+      buf += ' '
+    }
+
+    return buf
   }
 
   _linefeed (type, line, flush = false) {
@@ -146,8 +156,6 @@ class Executive {
       if (this._opts.singlescroll === true) {
         // handled by lastline + animation, unless the command exited before the interval
         this._drawAnimation(undefined, flush)
-        if (flush) {
-        }
         return
       }
     }
@@ -174,13 +182,20 @@ class Executive {
     }
 
     opts = _.defaults(opts, {
-      'env'         : process.env,
-      'showCommand' : showCommand,
-      'singlescroll': true,
-      'passthru'    : true,
-      'tmpFiles'    : {},
-      'cwd'         : process.cwd(),
+      'env'                   : process.env,
+      'showCommand'           : showCommand,
+      'addCommandAsComponent' : true,
+      'components'            : [],
+      'singlescroll'          : true,
+      'announce'              : true,
+      'passthru'              : true,
+      'tmpFiles'              : {},
+      'cwd'                   : process.cwd(),
     })
+
+    if (opts.addCommandAsComponent) {
+      opts.components.push(opts.showCommand)
+    }
 
     const spawnOpts = {
       env  : opts.env,
@@ -191,6 +206,10 @@ class Executive {
     this._cmd  = cmd
     this._opts = opts
     this._cb   = cb
+
+    if (opts.announce === true) {
+      this._linefeed('stdout', `Executing: ${this._cmd}`)
+    }
 
     if (cb) {
       const child = spawn(cmd, argus, spawnOpts)
