@@ -5,7 +5,7 @@ const cliTruncate = require('cli-truncate')
 const chalk       = require('chalk')
 const spawnSync   = require('spawn-sync')
 const osTmpdir    = require('os-tmpdir')
-const debug       = require('depurar')('lanyon')
+// const debug       = require('depurar')('lanyon')
 const fs          = require('fs')
 const spawn       = require('child_process').spawn
 const _           = require('lodash')
@@ -15,38 +15,50 @@ class Executive {
     this._opts = null
     this._cmd  = null
 
-    this._pid      = null
-    this._error    = null
-    this._status   = null
-    this._stdout   = null
-    this._stderr   = null
-    this._timer    = null
-    this._lastLine = ''
-    this._buffers  = {
+    this._types      = [ 'stdout', 'stderr' ]
+    this._pid        = null
+    this._error      = null
+    this._status     = null
+    this._timer      = null
+    this._lastPrefix = null
+    this._lastLine   = ''
+    this._buffers    = {
       stdout: '',
       stderr: '',
+    }
+    this._results = {
+      stdout: null,
+      stderr: null,
     }
   }
 
   _return (cb) {
     if (cb) {
-      if (this._opts.tmpFiles.stdout) {
-        this._stdout = fs.readFileSync(this._opts.tmpFiles.stdout, 'utf-8')
-      }
-      if (this._opts.tmpFiles.stderr) {
-        this._stderr = fs.readFileSync(this._opts.tmpFiles.stderr, 'utf-8')
-      }
+      this._types.forEach((type) => {
+        if (this._opts.tmpFiles[type]) {
+          this._results[type] = fs.readFileSync(this._opts.tmpFiles[type], 'utf-8')
+          if (this._opts.cleanupTmpFiles === true) {
+            fs.unlinkSync(this._opts.tmpFiles[type])
+          }
+        }
+      })
     }
 
     let err
     if (this._error || this._status !== 0) {
-      let msgs = [ `Error while executing "${this._cmd}"` ]
+      let msgs = [ `Error while executing "${this._fullcmd}"` ]
       if (this._error) {
         msgs.push(this._error)
       }
-      if (this._stderr) {
-        msgs.push(this._stderr)
+      if (this._results.stderr) {
+        msgs.push(this._results.stderr)
       }
+
+      if (msgs.length === 1) {
+        msgs.push(`Exit code: ${this._status}`)
+        msgs.push(this._results.stdout)
+      }
+
       err = new Error(msgs.join('. '))
     }
 
@@ -55,12 +67,12 @@ class Executive {
     this._stopAnimation()
 
     if (cb) {
-      return cb(err, this._stdout.trim())
+      return cb(err, this._results.stdout.trim())
     } else {
       if (err) {
         throw new Error(err)
       }
-      return this._stdout.trim()
+      return this._results.stdout.trim()
     }
   }
 
@@ -69,21 +81,11 @@ class Executive {
       return
     }
 
-    if (type === 'stdout') {
-      this._buffers.stdout += data
-      if (this._opts.tmpFiles.stdout) {
-        fs.appendFileSync(this._opts.tmpFiles.stdout, data, 'utf-8')
-      }
-      this._emptyBuffer(type)
+    this._buffers[type] += data
+    if (this._opts.tmpFiles[type]) {
+      fs.appendFileSync(this._opts.tmpFiles[type], data, 'utf-8')
     }
-
-    if (type === 'stderr') {
-      this._buffers.stderr += data
-      if (this._opts.tmpFiles.stderr) {
-        fs.appendFileSync(this._opts.tmpFiles.stderr, data, 'utf-8')
-      }
-      this._emptyBuffer(type)
-    }
+    this._emptyBuffer(type)
   }
 
   _emptyBuffer (type, flush = false) {
@@ -114,19 +116,26 @@ class Executive {
     if (!frame) {
       frame = cliSpinner.frames[0]
     }
-    let line = this._prefix() + frame + ' '
+
+    let prefix = this._prefix()
+    let line   = prefix + frame + ' '
 
     line += cliTruncate(this._lastLine.trim(), process.stdout.columns - (line.length + (flush ? 2 : 0)))
 
     if (flush) {
       if (this._status === 0) {
-        line += ' ' + logSymbols.success
+        logUpdate.clear()
+        line = prefix + chalk.reset('') + logSymbols.success
       } else {
-        line += ' ' + logSymbols.error
+        line += logSymbols.error
       }
     }
 
     logUpdate(line)
+    if (flush && prefix !== this._lastPrefix && this._lastPrefix !== null) {
+      logUpdate.done()
+    }
+    this._lastPrefix = prefix
   }
 
   _stopAnimation () {
@@ -155,13 +164,11 @@ class Executive {
     if (this._opts.passthru === true) {
       if (this._opts.singlescroll === true) {
         // handled by lastline + animation, unless the command exited before the interval
-        this._drawAnimation(undefined, flush)
-        return
+        return this._drawAnimation(undefined, flush)
       }
-    }
-
-    if (line) {
-      process[type].write(line)
+      if (line) {
+        return process[type].write(line)
+      }
     }
   }
 
@@ -169,24 +176,24 @@ class Executive {
     this._startAnimation()
     let cmd         = ''
     let showCommand = ''
-    let argus       = args
+    let origArgs    = args
+    let modArgs       = args
 
     if (`${args}` === args) {
       cmd         = 'sh'
-      showCommand = argus.split(/\s+/)[0]
-      argus       = ['-c'].concat(argus)
+      showCommand = modArgs.split(/\s+/)[0]
+      modArgs       = ['-c'].concat(modArgs)
     } else {
-      debug(argus)
-      cmd         = argus.pop()
+      cmd         = modArgs.pop()
       showCommand = cmd
     }
 
     opts = _.defaults(opts, {
-      'env'                  : process.env,
       'showCommand'          : showCommand,
       'addCommandAsComponent': false,
       'components'           : [],
       'singlescroll'         : true,
+      'cleanupTmpFiles'      : true,
       'announce'             : true,
       'passthru'             : true,
       'tmpFiles'             : {},
@@ -201,34 +208,44 @@ class Executive {
       opts.components.push(opts.showCommand)
     }
 
-    const spawnOpts = {
-      env  : opts.env,
-      stdio: opts.stdio,
-      cwd  : opts.cwd,
+    const spawnOpts = {}
+    if (opts.env !== undefined) {
+      spawnOpts.env = opts.env
+    } else {
+      spawnOpts.env = {
+        DEBUG   : process.env.DEBUG,
+        NODE_ENV: process.env.NODE_ENV,
+        HOME    : process.env.HOME,
+        USER    : process.env.USER,
+        PATH    : process.env.PATH,
+      }
+    }
+    if (opts.cwd !== undefined) spawnOpts.cwd = opts.cwd
+    if (opts.stdio !== undefined) spawnOpts.stdio = opts.stdio
+
+    this._fullcmd = (_.isArray(args) ? args.join(' ') : args)
+    this._cmd     = cmd
+    this._opts    = opts
+    this._cb      = cb
+
+    if (this._opts.announce === true) {
+      this._linefeed('stdout', `Executing: ${this._fullcmd}`)
     }
 
-    this._cmd  = cmd
-    this._opts = opts
-    this._cb   = cb
-
-    if (opts.announce === true) {
-      this._linefeed('stdout', `Executing: ${this._cmd}`)
+    if (this._opts.tmpFiles === false) {
+      this._opts.tmpFiles.stdout = false
+      this._opts.tmpFiles.stderr = false
     }
 
     if (cb) {
-      const child = spawn(cmd, argus, spawnOpts)
+      const child = spawn(cmd, modArgs, spawnOpts)
       this._pid = child.pid
 
-      if (this._opts.tmpFiles === false) {
-        this._opts.tmpFiles.stdout = false
-        this._opts.tmpFiles.stderr = false
-      } else {
-        if (!this._opts.tmpFiles.stdout && this._opts.tmpFiles.stdout !== false) {
-          this._opts.tmpFiles.stdout = `${osTmpdir()}/executive-${opts.showCommand}-stdout-${this._pid}.log`
-        }
-        if (!this._opts.tmpFiles.stderr && this._opts.tmpFiles.stderr !== false) {
-          this._opts.tmpFiles.stderr = `${osTmpdir()}/executive-${opts.showCommand}-stderr-${this._pid}.log`
-        }
+      if (!this._opts.tmpFiles.stdout && this._opts.tmpFiles.stdout !== false) {
+        this._opts.tmpFiles.stdout = `${osTmpdir()}/executive-${this._opts.showCommand}-stdout-${this._pid}.log`
+      }
+      if (!this._opts.tmpFiles.stderr && this._opts.tmpFiles.stderr !== false) {
+        this._opts.tmpFiles.stderr = `${osTmpdir()}/executive-${this._opts.showCommand}-stderr-${this._pid}.log`
       }
 
       if (this._opts.tmpFiles.stdout) {
@@ -250,13 +267,41 @@ class Executive {
         return this._return(cb)
       })
     } else {
-      const child = spawnSync(cmd, argus, spawnOpts)
+      let interpretter         = process.argv[0]
+      const sideSpawnOpts      = _.clone(spawnOpts)
+      const sideOpts           = _.clone(this._opts)
+      sideSpawnOpts.stdio      = 'inherit'
+      sideOpts.cleanupTmpFiles = false
+      sideOpts.tmpFiles        = {
+        stdout: `${osTmpdir()}/executive-${this._opts.showCommand}-stdout-sidekick.log`,
+        stderr: `${osTmpdir()}/executive-${this._opts.showCommand}-stderr-sidekick.log`,
+      }
+      const sideArgs = [__filename, 'sidekick', JSON.stringify({
+        cmd     : cmd,
+        origArgs: origArgs,
+        opts    : sideOpts,
+      })]
+      const child = spawnSync(interpretter, sideArgs, sideSpawnOpts)
+      // debug(`${interpretter} ${sideArgs.join(' ')}`)
+
+      // const child = spawnSync(cmd, modArgs, spawnOpts)
       this._pid    = child.pid
       this._error  = child.error
       this._signal = child.signal
       this._status = child.status
-      this._stderr = child.stderr + ''
-      this._stdout = child.stdout + ''
+
+      this._types.forEach((type) => {
+        try {
+          this._results[type] = fs.readFileSync(this._opts.tmpFiles[type], 'utf-8')
+          fs.unlinkSync(this._opts.tmpFiles[type])
+        } catch (e) {
+          console.error(`Temp file error for ${this._opts.tmpFiles[type]}: ${e}`)
+        }
+
+        if (!this._results[type]) {
+          this._results[type] = child[type] + ''
+        }
+      })
 
       return this._return()
     }
@@ -266,4 +311,15 @@ class Executive {
 module.exports = (args, opts, cb) => {
   const exec = new Executive()
   return exec.exe(args, opts, cb)
+}
+
+if (process.argv[2] === 'sidekick') {
+  let {cmd, origArgs, spawnOpts, opts} = JSON.parse(process.argv[3])
+  // debug({cmd, origArgs, spawnOpts, opts})
+  const exec = new Executive()
+  exec.exe(origArgs, opts, (err, out) => {
+    if (err) {
+      throw new Error(err)
+    }
+  })
 }

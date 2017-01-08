@@ -86,8 +86,7 @@ module.exports = (runtime, cb) => {
     if (!utils.satisfied(runtime, 'bundler', `${runtime.prerequisites.bundler.exe} -v${runtime.prerequisites.ruby.exeSuffix}`)) {
       const bunderInstaller = []
 
-      bunderInstaller.push('cd')
-      bunderInstaller.push(runtime.cacheDir)
+      bunderInstaller.push(`cd ${runtime.cacheDir}`)
       bunderInstaller.push('&&')
       bunderInstaller.push(`${runtime.prerequisites.ruby.exe} ${runtime.prerequisites.gem.exe} install`)
       if (rubyProvider === 'system') {
