@@ -182,16 +182,20 @@ class Executive {
     }
 
     opts = _.defaults(opts, {
-      'env'                   : process.env,
-      'showCommand'           : showCommand,
-      'addCommandAsComponent' : true,
-      'components'            : [],
-      'singlescroll'          : true,
-      'announce'              : true,
-      'passthru'              : true,
-      'tmpFiles'              : {},
-      'cwd'                   : process.cwd(),
+      'env'                  : process.env,
+      'showCommand'          : showCommand,
+      'addCommandAsComponent': false,
+      'components'           : [],
+      'singlescroll'         : true,
+      'announce'             : true,
+      'passthru'             : true,
+      'tmpFiles'             : {},
+      'cwd'                  : process.cwd(),
     })
+
+    if (`${opts.components}` === opts.components) {
+      opts.components = opts.components.split('/')
+    }
 
     if (opts.addCommandAsComponent) {
       opts.components.push(opts.showCommand)

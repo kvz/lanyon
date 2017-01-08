@@ -4,6 +4,7 @@ utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib
 const _         = require('lodash')
 const config    = require('./config')
 const shell     = require('shelljs')
+const executive = require('./executive')
 const runtime   = config.runtime
 // var debug = require('depurar')('lanyon')
 
@@ -48,13 +49,12 @@ if (cmdName.match(/^build:(assets|content)/)) {
     if (runtime[hook]) {
       const needEnv = hook.split(':')[1]
       if (!needEnv || runtime.lanyonEnv === needEnv) {
-        console.log(`--> Running ${hook}: ${runtime[hook]}`)
-        let squashed = runtime[hook]
+        let squashedHooks = runtime[hook]
         if (_.isArray(runtime[hook])) {
-          squashed = runtime[hook].join(' && ')
+          squashedHooks = runtime[hook].join(' && ')
         }
-        utils.passthru(runtime, squashed, { env, cwd: runtime.projectDir })
-        console.log(`--> ${hook} done. `)
+        executive(squashedHooks, { cwd: runtime.projectDir, components: `lanyon/build/${hook}` })
+        // console.log(`--> ${hook} done. `)
       }
     }
   })
@@ -121,7 +121,7 @@ if (_.isFunction(cmd)) {
   env.LANYON_PROJECT = runtime.projectDir // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
 
   console.log(`--> Running ${cmdName} shell cmd: "${cmd}"`)
-  utils.passthru(runtime, cmd, {'env': env})
+  executive(cmd, {'env': env, 'cwd': runtime.cacheDir, components: `lanyon/${cmdName}`})
   console.log(`--> ${cmdName} done. `)
 } else {
   console.error(`--> "${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)

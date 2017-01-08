@@ -7,6 +7,7 @@ const fs     = require('fs')
 // var debug = require('depurar')('lanyon')
 const yes    = chalk.green('✓ ')
 // var no    = chalk.red('✗ ')
+const executive = require('./executive')
 
 module.exports = (runtime, cb) => {
   let envPrefix    = ''
@@ -49,8 +50,8 @@ module.exports = (runtime, cb) => {
   } else if (utils.satisfied(runtime, 'docker')) {
     rubyProvider = 'docker'
     if (process.env.DOCKER_BUILD === '1') {
-      utils.fatalExe(`cd .lanyon && docker build -t kevinvz/lanyon:${runtime.lanyonVersion} .`)
-      utils.fatalExe(`cd .lanyon && docker push kevinvz/lanyon:${runtime.lanyonVersion}`)
+      executive(`cd .lanyon && docker build -t kevinvz/lanyon:${runtime.lanyonVersion} .`, { components: ['lanyon/postinstall/docker/build'] })
+      executive(`cd .lanyon && docker push kevinvz/lanyon:${runtime.lanyonVersion}`, { components: ['lanyon/postinstall/docker/push'] })
     }
     runtime.prerequisites.sh.exe     = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
     runtime.prerequisites.ruby.exe   = utils.dockerCmd(runtime, 'ruby')
@@ -58,13 +59,13 @@ module.exports = (runtime, cb) => {
   } else if (utils.satisfied(runtime, 'rbenv') && shell.exec('rbenv install --help', { 'silent': false }).code === 0) {
     // rbenv does not offer installing of rubies by default, it will also require the install plugin --^
     rubyProvider = 'rbenv'
-    utils.fatalExe(`bash -c "rbenv install --skip-existing '${runtime.prerequisites.ruby.preferred}'"`)
+    executive(`bash -c "rbenv install --skip-existing '${runtime.prerequisites.ruby.preferred}'"`, { components: ['lanyon/postinstall/rbenv/install'] })
     runtime.prerequisites.ruby.exe          = `bash -c "eval $(rbenv init -) && rbenv shell '${runtime.prerequisites.ruby.preferred}' &&`
     runtime.prerequisites.ruby.exeSuffix    = '"'
     runtime.prerequisites.ruby.versionCheck = `${runtime.prerequisites.ruby.exe}ruby -v${runtime.prerequisites.ruby.exeSuffix}`
   } else if (utils.satisfied(runtime, 'rvm')) {
     rubyProvider = 'rvm'
-    utils.fatalExe(`bash -c "rvm install '${runtime.prerequisites.ruby.preferred}'"`)
+    executive(`bash -c "rvm install '${runtime.prerequisites.ruby.preferred}'"`, { components: ['lanyon/postinstall/rvm/install'] })
     runtime.prerequisites.ruby.exe          = `bash -c "rvm '${runtime.prerequisites.ruby.preferred}' exec`
     runtime.prerequisites.ruby.exeSuffix    = '"'
     runtime.prerequisites.ruby.versionCheck = `${runtime.prerequisites.ruby.exe} ruby -v${runtime.prerequisites.ruby.exeSuffix}`
@@ -98,7 +99,7 @@ module.exports = (runtime, cb) => {
       bunderInstaller.push('bundler')
       bunderInstaller.push(`-v '${runtime.prerequisites.bundler.preferred}'${runtime.prerequisites.ruby.exeSuffix}`)
 
-      utils.fatalExe(bunderInstaller)
+      executive(bunderInstaller, { components: ['lanyon/postinstall/bundler/install'] })
 
       if (rubyProvider === 'system') {
         runtime.prerequisites.bundler.exe = `${runtime.binDir}/bundler`
@@ -119,9 +120,8 @@ module.exports = (runtime, cb) => {
     }
 
     // Configure Bundler (nokogiri)
-    process.stdout.write('--> Configuring: Bundler ... ')
     if (os.platform() === 'darwin' && shell.exec('brew -v', { 'silent': true }).code === 0) {
-      utils.fatalExe([
+      executive([
         'cd',
         runtime.cacheDir,
         '&&',
@@ -132,23 +132,22 @@ module.exports = (runtime, cb) => {
         '--use-system-libraries',
         `--with-xml2-include=$(brew --prefix libxml2)/include/libxml2${runtime.prerequisites.ruby.exeSuffix}`,
         ')',
-      ])
+      ].join(' '), { components: ['lanyon/postinstall/bundler/configure'] })
     } else {
-      utils.fatalExe([
+      executive([
         'cd',
         runtime.cacheDir,
         '&&',
         runtime.prerequisites.bundler.exe,
         'config build.nokogiri',
         `--use-system-libraries${runtime.prerequisites.ruby.exeSuffix}`,
-      ])
+      ].join(' '), { components: ['lanyon/postinstall/bundler/configure'] })
     }
 
     runtime.prerequisites.jekyll.exe = `${runtime.prerequisites.bundler.exe} exec jekyll`
 
     // Install Gems from Gemfile bundle
-    process.stdout.write('--> Installing: Gems ... ')
-    utils.fatalExe([
+    executive([
       'cd',
       runtime.cacheDir,
       '&&',
@@ -161,7 +160,7 @@ module.exports = (runtime, cb) => {
       runtime.prerequisites.bundler.exe,
       `update${runtime.prerequisites.ruby.exeSuffix}`,
       ')',
-    ])
+    ].join(' '), { components: ['lanyon/postinstall/gems/install'] })
   }
 
   // Write shims

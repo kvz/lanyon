@@ -1,9 +1,8 @@
 const semver = require('semver')
 const chalk = require('chalk')
 const fs = require('fs')
-const _ = require('lodash')
+// const _ = require('lodash')
 const path = require('path')
-const executive = require('./executive')
 const yaml = require('js-yaml')
 const shell = require('shelljs')
 const no = chalk.red('✗ ')
@@ -122,20 +121,6 @@ module.exports.writeConfig = cfg => {
     gBuf         += `gem '${name}', '${version}'\n`
   }
   fs.writeFileSync(path.join(cfg.runtime.cacheDir, 'Gemfile'), gBuf, 'utf-8')
-}
-
-module.exports.passthru = ({cacheDir}, cmd, opts) => {
-  if (_.isArray(cmd)) {
-    cmd = cmd.join(' ')
-  }
-  executive(cmd, { cwd: cacheDir })
-}
-
-module.exports.fatalExe = cmd => {
-  if (_.isArray(cmd)) {
-    cmd = cmd.join(' ')
-  }
-  return executive(cmd)
 }
 
 module.exports.satisfied = ({prerequisites, rubyProvidersSkip}, app, cmd, checkOn) => {
