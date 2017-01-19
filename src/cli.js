@@ -121,7 +121,12 @@ if (_.isFunction(cmd)) {
   env.LANYON_PROJECT = runtime.projectDir // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
 
   console.log(`--> Running ${cmdName} shell cmd: "${cmd}"`)
-  Scrolex.exe(cmd, {'env': env, 'cwd': runtime.cacheDir, components: `lanyon>${cmdName}`})
+  Scrolex.exe(cmd, {
+    mode      : cmdName === 'start' ? 'singlescroll' : 'passthru',
+    env       : env,
+    cwd       : runtime.cacheDir,
+    components: `lanyon>${cmdName}`,
+  })
   console.log(`--> ${cmdName} done. `)
 } else {
   console.error(`--> "${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)
