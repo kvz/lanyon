@@ -188,6 +188,10 @@ These articles where helpful in creating Lanyon
 - <https://medium.com/@okonetchnikov/long-term-caching-of-static-assets-with-webpack-1ecb139adb95#.w0elv8n7o>
 - <https://webpack.github.io/docs/optimization.html>
 
+## Social Media Discussions
+
+- <https://www.reddit.com/r/webdev/comments/5m5pk9/introducing_lanyon/>
+
 ## Authors
 
  - [Kevin van Zonneveld](https://transloadit.com/about/#kevin)

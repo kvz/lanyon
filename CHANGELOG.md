@@ -20,6 +20,7 @@
 - [ ] Add a real command line parser for `lib/cli.js` like minimist
 - [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0),  add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling bundle exec gemoji extract assets/images/emoji) 
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building
+- [ ] Windows support. See #1 - See also https://github.com/avajs/ava/blob/master/appveyor.yml
 
 ## v0.0.50
 
