@@ -4,7 +4,7 @@ utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib
 const _         = require('lodash')
 const config    = require('./config')
 const shell     = require('shelljs')
-const executive = require('./executive')
+const Scrolex  = require('scrolex')
 const runtime   = config.runtime
 // var debug = require('depurar')('lanyon')
 
@@ -53,7 +53,7 @@ if (cmdName.match(/^build:(assets|content)/)) {
         if (_.isArray(runtime[hook])) {
           squashedHooks = runtime[hook].join(' && ')
         }
-        executive(squashedHooks, { cwd: runtime.projectDir, components: `lanyon/build/${hook}` })
+        Scrolex.exe(squashedHooks, { cwd: runtime.projectDir, components: `lanyon>build>${hook}` })
         // console.log(`--> ${hook} done. `)
       }
     }
@@ -121,7 +121,7 @@ if (_.isFunction(cmd)) {
   env.LANYON_PROJECT = runtime.projectDir // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
 
   console.log(`--> Running ${cmdName} shell cmd: "${cmd}"`)
-  executive(cmd, {'env': env, 'cwd': runtime.cacheDir, components: `lanyon/${cmdName}`})
+  Scrolex.exe(cmd, {'env': env, 'cwd': runtime.cacheDir, components: `lanyon>${cmdName}`})
   console.log(`--> ${cmdName} done. `)
 } else {
   console.error(`--> "${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)
