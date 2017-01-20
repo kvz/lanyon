@@ -22,10 +22,18 @@
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building
 - [ ] Windows support. See #1 - See also https://github.com/avajs/ava/blob/master/appveyor.yml
 
+## v0.0.51
+
+Released: TBA.
+
+
 ## v0.0.50
 
-Released: Not yet.
+Released: 2017-01-06.
 
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.49...v0.0.50).
+
+- [x] Add pkg-config to resolve another Another Nokogiri error https://travis-ci.org/kvz/lanyon/jobs/193744753#L418
 - [x] Skip installs if `LANYON_NOINSTALL==1`
 - [x] Switch to ES6 (see https://github.com/transloadit/botty/blob/738f9d51417d84d429cd4b558898bc3a9826cd9d/decaf.sh), mostly to profit from template strings. Transpile down to ES5 for npm as Lanyon aims for portability.
 
