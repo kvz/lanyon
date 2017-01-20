@@ -26,6 +26,7 @@
 
 Released: TBA.
 
+- [x] Add `container:rebuild` to rebuild a container from scratc (`docker build --no-cache`)
 
 ## v0.0.50
 
