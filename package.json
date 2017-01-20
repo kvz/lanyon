@@ -82,6 +82,7 @@
       "github-pages": "112",
       "jekyll-crosspost-to-medium": "0.1.14",
       "nokogiri": "1.6.8.1",
+      "pkg-config": "1.1.7",
       "stringex": "2.6.0"
     }
   },
