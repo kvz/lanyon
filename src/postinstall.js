@@ -131,7 +131,7 @@ module.exports = (runtime, cb) => {
         runtime.prerequisites.bundler.exe,
         'config build.nokogiri',
         '--use-system-libraries',
-        `--with-xml2-include=$(brew --prefix libxml2)/include/libxml2${runtime.prerequisites.ruby.exeSuffix}`,
+        `--with-xml2-include=$(brew --prefix libxml2 | sed 's@_[0-9]*$@@')/include/libxml2${runtime.prerequisites.ruby.exeSuffix}`,
         ')',
       ])
     } else {

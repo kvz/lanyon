@@ -26,6 +26,7 @@
 
 Released: TBA.
 
+- [x] Remove underscore version from libxml2 on brew osx prefix as `/usr/local/Cellar/libxml2/2.9.4` exists but advertised `/usr/local/Cellar/libxml2/2.9.4_2` does not
 - [x] Add `container:rebuild` to rebuild a container from scratc (`docker build --no-cache`)
 
 ## v0.0.50
