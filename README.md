@@ -191,6 +191,7 @@ These articles where helpful in creating Lanyon
 ## Social Media Discussions
 
 - <https://www.reddit.com/r/webdev/comments/5m5pk9/introducing_lanyon/>
+- <https://www.producthunt.com/posts/lanyon>
 
 ## Authors
 
