@@ -196,6 +196,7 @@ These articles where helpful in creating Lanyon
 ## Authors
 
  - [Kevin van Zonneveld](https://transloadit.com/about/#kevin)
+ - [Artur Paikin](https://github.com/arturi)
 
 ## License
 
