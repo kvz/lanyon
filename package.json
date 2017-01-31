@@ -7,7 +7,8 @@
     "lanyon": "lib/cli.js"
   },
   "scripts": {
-    "build": "babel src --out-dir lib",
+    "build": "babel src --source-maps --out-dir lib",
+    "build:watch": "babel src --watch --source-maps --out-dir lib",
     "commit:es5": "git commit lib -m 'Save transpiled version so we can still run tests on Node 0.12' || true",
     "push": "git push && git push --tags",
     "container:rebuild": "env DOCKER_RESET=1 DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node lib/cli.js postinstall",
@@ -176,6 +177,7 @@
     "resolve-url-loader": "1.6.1",
     "rimraf": "^2.5.4",
     "sass-loader": "4.1.1",
+    "scrolex": "0.0.5",
     "semver": "5.3.0",
     "shelljs": "0.7.5",
     "spawn-sync": "^1.0.15",

@@ -1,17 +1,17 @@
-const utils  = require('./utils')
-const shell  = require('shelljs')
-const fs     = require('fs')
-const globby = require('globby')
+const shell     = require('shelljs')
+const fs        = require('fs')
+const globby    = require('globby')
+const Scrolex = require('scrolex')
 
 module.exports = (runtime, cb) => {
   if (runtime.onTravis) {
     if (runtime.ghPagesEnv.GHPAGES_BOTNAME) {
       console.log('--> Setting up GHPAGES_BOTNAME')
-      utils.passthru(runtime, `git config --global user.name "${runtime.ghPagesEnv.GHPAGES_BOTNAME}"`, { cwd: runtime.contentBuildDir })
+      Scrolex.exe(`git config --global user.name "${runtime.ghPagesEnv.GHPAGES_BOTNAME}"`, { cwd: runtime.contentBuildDir, components: 'lanyon>deploy' })
     }
     if (runtime.ghPagesEnv.GHPAGES_BOTEMAIL) {
       console.log('--> Setting up GHPAGES_BOTNAME')
-      utils.passthru(runtime, `git config --global user.email "${runtime.ghPagesEnv.GHPAGES_BOTEMAIL}"`, { cwd: runtime.contentBuildDir })
+      Scrolex.exe(`git config --global user.email "${runtime.ghPagesEnv.GHPAGES_BOTEMAIL}"`, { cwd: runtime.contentBuildDir, components: 'lanyon>deploy' })
     }
   }
 
@@ -26,16 +26,16 @@ module.exports = (runtime, cb) => {
     return cb(new Error(`I refuse to deploy if while ${runtime.contentBuildDir}/env.sh exists - secure your build first!`))
   }
   if (!shell.test('-d', `${runtime.contentBuildDir}/.git`)) {
-    utils.passthru(runtime, 'git init', { cwd: runtime.contentBuildDir })
+    Scrolex.exe('git init', { cwd: runtime.contentBuildDir, components: 'lanyon>deploy' })
   }
 
   fs.writeFileSync(`${runtime.contentBuildDir}/README.md`, 'This branch is just a deploy target. Do not edit. You changes will be lost.', 'utf-8')
-  utils.passthru(runtime, 'git checkout -B gh-pages', { cwd: runtime.contentBuildDir })
-  utils.passthru(runtime, 'git add --all .', { cwd: runtime.contentBuildDir })
-  utils.passthru(runtime, 'git commit -nm "Update website by $USER" || true', { cwd: runtime.contentBuildDir })
-  utils.passthru(runtime, `git remote add origin ${runtime.ghPagesEnv.GHPAGES_URL} 2> /dev/null || true`, { cwd: runtime.contentBuildDir })
+  Scrolex.exe('git checkout -B gh-pages', { cwd: runtime.contentBuildDir, components: 'lanyon>deploy' })
+  Scrolex.exe('git add --all .', { cwd: runtime.contentBuildDir, components: 'lanyon>deploy' })
+  Scrolex.exe('git commit -nm "Update website by $USER" || true', { cwd: runtime.contentBuildDir, components: 'lanyon>deploy' })
+  Scrolex.exe(`git remote add origin ${runtime.ghPagesEnv.GHPAGES_URL} 2> /dev/null || true`, { cwd: runtime.contentBuildDir, components: 'lanyon>deploy' })
   // required to update the token:
-  utils.passthru(runtime, `git remote set-url origin ${runtime.ghPagesEnv.GHPAGES_URL}`, { cwd: runtime.contentBuildDir })
-  utils.passthru(runtime, 'git push origin gh-pages:refs/heads/gh-pages 2> /dev/null || git push origin gh-pages:refs/heads/gh-pages --force > /dev/null', { cwd: runtime.contentBuildDir })
+  Scrolex.exe(`git remote set-url origin ${runtime.ghPagesEnv.GHPAGES_URL}`, { cwd: runtime.contentBuildDir, components: 'lanyon>deploy' })
+  Scrolex.exe('git push origin gh-pages:refs/heads/gh-pages 2> /dev/null || git push origin gh-pages:refs/heads/gh-pages --force > /dev/null', { cwd: runtime.contentBuildDir, components: 'lanyon>deploy' })
   cb(null)
 }

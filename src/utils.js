@@ -1,8 +1,9 @@
 const semver = require('semver')
 const chalk = require('chalk')
 const fs = require('fs')
-const _ = require('lodash')
+// const _ = require('lodash')
 const path = require('path')
+// const Scrolex = require('scrolex')
 const yaml = require('js-yaml')
 const shell = require('shelljs')
 const no = chalk.red('✗ ')
@@ -121,45 +122,6 @@ module.exports.writeConfig = cfg => {
     gBuf         += `gem '${name}', '${version}'\n`
   }
   fs.writeFileSync(path.join(cfg.runtime.cacheDir, 'Gemfile'), gBuf, 'utf-8')
-}
-
-module.exports.passthru = ({cacheDir}, cmd, opts) => {
-  if (_.isArray(cmd)) {
-    cmd = cmd.join(' ')
-  }
-
-  opts = _.defaults(opts, {
-    'stdio': 'inherit', // ignore
-    'cwd'  : cacheDir,
-  })
-
-  const p = spawnSync('sh', ['-c', cmd], opts)
-  if (p.error || p.status !== 0) {
-    console.error(`Error while executing "${cmd}". `)
-    process.exit(1)
-  }
-}
-
-module.exports.fatalExe = cmd => {
-  if (_.isArray(cmd)) {
-    cmd = cmd.join(' ')
-  }
-  const opts = { 'silent': true }
-
-  process.stdout.write(`--> Executing: ${cmd} ... `)
-
-  const p = shell.exec(cmd, opts)
-  if (p.code !== 0) {
-    console.log(no)
-    console.error(`Failed to execute: ${cmd}`)
-    console.error(p.stdout)
-    console.error(p.stderr)
-    shell.exit(1)
-  }
-
-  console.log(yes)
-
-  return p.stdout.trim()
 }
 
 module.exports.satisfied = ({prerequisites, rubyProvidersSkip}, app, cmd, checkOn) => {
