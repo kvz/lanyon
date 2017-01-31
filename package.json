@@ -1,6 +1,6 @@
 {
   "name": "lanyon",
-  "version": "0.0.49",
+  "version": "0.0.51",
   "description": "dr. Jekyll has turned into mr. Hyde. Lanyon to the rescue!",
   "main": "lib/config.js",
   "bin": {
@@ -11,15 +11,17 @@
     "build:watch": "babel src --watch --source-maps --out-dir lib",
     "commit:es5": "git commit lib -m 'Save transpiled version so we can still run tests on Node 0.12' || true",
     "push": "git push && git push --tags",
+    "container:rebuild": "env DOCKER_RESET=1 DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node lib/cli.js postinstall",
     "container:build": "env DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node lib/cli.js postinstall",
-    "container:connect": "node lib/cli.js connect",
+    "container:connect": "node lib/cli.js container:connect",
     "fix": "eslint . --fix",
     "install": "[ \"${LANYON_NOINSTALL:-0}\" != \"1\" ] && node lib/cli.js postinstall || true",
     "lint": "eslint .",
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
     "release:patch": "env SEMANTIC=patch npm run release",
-    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all build commit:es5 container:build push publish",
+    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all build commit:es5 container:build push npublish",
+    "npublish": "npm publish",
     "test": "env NODE_ENV=test ava lib/**/*.test.js",
     "test:acceptance": "./scripts/test-acceptance.sh",
     "test:watcher": "npm test -- --watch",
@@ -83,6 +85,7 @@
       "github-pages": "112",
       "jekyll-crosspost-to-medium": "0.1.14",
       "nokogiri": "1.6.8.1",
+      "pkg-config": "1.1.7",
       "stringex": "2.6.0"
     }
   },
@@ -188,6 +191,7 @@
     "webpack-hot-middleware": "^2.13.2",
     "webpack-manifest-plugin": "^1.1.0",
     "webpack-md5-hash": "^0.0.5",
+    "webpack-svgstore-plugin": "^3.0.6",
     "webpack-visualizer-plugin": "^0.1.5"
   }
 }

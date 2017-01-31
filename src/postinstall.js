@@ -50,7 +50,8 @@ module.exports = (runtime, cb) => {
   } else if (utils.satisfied(runtime, 'docker')) {
     rubyProvider = 'docker'
     if (process.env.DOCKER_BUILD === '1') {
-      Scrolex.exe(`cd .lanyon && docker build -t kevinvz/lanyon:${runtime.lanyonVersion} .`, { components: 'lanyon>postinstall>docker>build' })
+      const cache = process.env.DOCKER_RESET === '1' ? ' --no-cache' : ''
+      Scrolex.exe(`cd .lanyon && docker build${cache} -t kevinvz/lanyon:${runtime.lanyonVersion} .`, { components: 'lanyon>postinstall>docker>build' })
       Scrolex.exe(`cd .lanyon && docker push kevinvz/lanyon:${runtime.lanyonVersion}`, { components: 'lanyon>postinstall>docker>push' })
     }
     runtime.prerequisites.sh.exe     = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
@@ -129,7 +130,7 @@ module.exports = (runtime, cb) => {
         runtime.prerequisites.bundler.exe,
         'config build.nokogiri',
         '--use-system-libraries',
-        `--with-xml2-include=$(brew --prefix libxml2)/include/libxml2${runtime.prerequisites.ruby.exeSuffix}`,
+        `--with-xml2-include=$(brew --prefix libxml2 | sed 's@_[0-9]*$@@')/include/libxml2${runtime.prerequisites.ruby.exeSuffix}`,
         ')',
       ].join(' '), { components: 'lanyon>postinstall>bundler>configure' })
     } else {
