@@ -189,6 +189,7 @@
     "webpack-hot-middleware": "^2.13.2",
     "webpack-manifest-plugin": "^1.1.0",
     "webpack-md5-hash": "^0.0.5",
+    "webpack-svgstore-plugin": "^3.0.6",
     "webpack-visualizer-plugin": "^0.1.5"
   }
 }
