@@ -17,14 +17,21 @@
 - [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
 - [ ] Fix bug: Lanyon is lying about being symlinked: `Booting symlinked lanyon v0.0.47` when this is not the case
 - [ ] Consider distributing the Gem lockfile so new installs don't get bumped to incompatible versions like what happened with nokogiri gracefully upgrading from 1.6->1.7 but then requiring ruby 2.0->2.1 wich isn't present on OSX, hence requiring a full 3rd party ruby install that could easily have been avoided
-- [ ] Add a real command line parser for `lib/cli.js` like minimist
 - [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0),  add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling bundle exec gemoji extract assets/images/emoji) 
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building
 - [ ] Windows support. See #1 - See also https://github.com/avajs/ava/blob/master/appveyor.yml
 
-## v0.0.51
+## v0.0.52
 
 Released: TBA.
+
+- [ ] Add a real command line parser for `lib/cli.js` like minimist
+- [ ] Consider not testing each install setup, but just verifying at least one works
+
+## v0.0.51
+
+Released: 2017-01-31.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.50...v0.0.51).
 
 - [x] Add webpack-svgstore-plugin (@arturi, #6)
 - [x] Remove underscore version from libxml2 on brew osx prefix as `/usr/local/Cellar/libxml2/2.9.4` exists but advertised `/usr/local/Cellar/libxml2/2.9.4_2` does not
@@ -33,7 +40,6 @@ Released: TBA.
 ## v0.0.50
 
 Released: 2017-01-06.
-
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.49...v0.0.50).
 
 - [x] Add pkg-config to resolve another Another Nokogiri error https://travis-ci.org/kvz/lanyon/jobs/193744753#L418
@@ -43,7 +49,6 @@ Released: 2017-01-06.
 ## v0.0.49
 
 Released: 2017-01-06.
-
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.48...v0.0.49).
 
 - [x] Add experimental support for optimizing images via `build:images` (from `assets/images` to `assets/build/images`)
@@ -55,7 +60,6 @@ Released: 2017-01-06.
 ## v0.0.48
 
 Released: 2017-01-04.
-
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.47...v0.0.48).
 
 - [x] Upgrade to github pages gem version `v104` -> `v112` (https://github.com/github/pages-gem/compare/v104...v112)
