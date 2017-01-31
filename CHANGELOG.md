@@ -27,6 +27,7 @@ Released: TBA.
 
 - [ ] Add a real command line parser for `lib/cli.js` like minimist
 - [ ] Consider not testing each install setup, but just verifying at least one works
+- [ ] Add scrolling output via `scrolex`
 
 ## v0.0.51
 
