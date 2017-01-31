@@ -299,13 +299,13 @@ const cfg = {
           jQuery: 'jquery',
         }),
         new SvgStoreWebpackPlugin({
-         svgoOptions: {
-           plugins: [
-             { removeTitle: true }
-           ]
-         },
-         prefix: 'icon-'
-       })
+          svgoOptions: {
+            plugins: [
+             { removeTitle: true },
+            ],
+          },
+          prefix: 'icon-',
+        }),
       ]
 
       if (runtime.isDev) {
