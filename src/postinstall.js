@@ -45,8 +45,8 @@ module.exports = (runtime, cb) => {
     runtime.prerequisites.bundler.writeShim = false
   } else if (utils.satisfied(runtime, 'ruby', undefined, 'system')) {
     rubyProvider = 'system'
-    runtime.prerequisites.gem.exe     = shell.which('gem').stdout
-    runtime.prerequisites.bundler.exe = shell.which('bundler').stdout
+    runtime.prerequisites.gem.exe     = shell.which('gem')
+    runtime.prerequisites.bundler.exe = shell.which('bundler')
   } else if (utils.satisfied(runtime, 'docker')) {
     rubyProvider = 'docker'
     if (process.env.DOCKER_BUILD === '1') {
