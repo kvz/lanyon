@@ -49,7 +49,7 @@ runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cw
 
 runtime.npmRoot = utils.upwardDirContaining('package.json', runtime.projectDir, 'lanyon')
 if (!runtime.npmRoot) {
-  scrolex.failure(`Unable to determine non-lanyon npmRoot, falling back to ${runtime.projectDir}`)
+  scrolex.failure(`Unable to determine non-lanyon npmRoot, falling back to ${runtime.projectDir}`, { components: 'lanyon>config' })
   runtime.npmRoot = runtime.projectDir
 }
 runtime.gitRoot = utils.upwardDirContaining('.git', runtime.npmRoot)
@@ -86,7 +86,7 @@ try {
   const buf            = fs.readFileSync(jekyllConfigPath)
   runtime.jekyllConfig = yaml.safeLoad(buf)
 } catch (e) {
-  scrolex.failure(`Unable to load ${jekyllConfigPath}`)
+  scrolex.failure(`Unable to load ${jekyllConfigPath}`, { components: 'lanyon>config' })
 }
 
 runtime.themeDir = false
@@ -94,7 +94,7 @@ if (runtime.jekyllConfig.theme) {
   const cmd = `${path.join(runtime.binDir, 'bundler')} show ${runtime.jekyllConfig.theme}`
   const z   = shell.exec(cmd).stdout
   if (!z) {
-    scrolex.failure(`Unable find defined them "${runtime.jekyllConfig.theme}" via cmd: "${cmd}"`)
+    scrolex.failure(`Unable find defined them "${runtime.jekyllConfig.theme}" via cmd: "${cmd}"`, { components: 'lanyon>config' })
   } else {
     runtime.themeDir = z
   }
@@ -325,10 +325,10 @@ const cfg = {
         plugins.push(function ReportErrors () {
           this.plugin('done', ({compilation}) => {
             for (const asset in compilation.assets) {
-              scrolex.stick(`Wrote ${runtime.assetsBuildDir}/${asset}`)
+              scrolex.stick(`Wrote ${runtime.assetsBuildDir}/${asset}`, { components: 'lanyon>config' })
             }
             if (compilation.errors && compilation.errors.length) {
-              scrolex.failure(compilation.errors)
+              scrolex.failure(compilation.errors, { components: 'lanyon>config' })
               if (!runtime.isDev) {
                 process.exit(1)
               }
@@ -341,25 +341,20 @@ const cfg = {
         plugins.push(new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'common', /* filename= */getFilename('js')))
       }
 
-      if (runtime.statistics) {
-        const fullpathStatistics = `${runtime.assetsBuildDir}/${runtime.statistics}`
-        if (runtime.isDev) {
-          scrolex.stick(`Cannot write statistics to "${fullpathStatistics}" in dev mode. Create a production build via LANYON_ENV=production`)
-        } else {
-          // @todo: Once Vizualizer supports multiple entries, add support for that here
-          // https://github.com/chrisbateman/webpack-visualizer/issues/5
-          // Currently it just shows stats for all entries in one graph
-          plugins.push(new Visualizer({
-            filename: runtime.statistics,
-          }))
-        }
+      if (!runtime.isDev && runtime.statistics) {
+        // @todo: Once Vizualizer supports multiple entries, add support for that here
+        // https://github.com/chrisbateman/webpack-visualizer/issues/5
+        // Currently it just shows stats for all entries in one graph
+        plugins.push(new Visualizer({
+          filename: runtime.statistics,
+        }))
       }
 
       plugins.push(new AssetsPlugin({
         filename: 'jekyll.lanyon_assets.yml',
         path    : runtime.cacheDir,
         processOutput (assets) {
-          scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
+          scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`, { components: 'lanyon>config' })
           return yaml.safeDump({lanyon_assets: assets})
         },
       }))
