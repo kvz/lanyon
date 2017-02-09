@@ -249,7 +249,7 @@ assert@^1.1.1:
   dependencies:
     util "0.10.3"
 
-assets-webpack-plugin@^3.5.0:
+assets-webpack-plugin@3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/assets-webpack-plugin/-/assets-webpack-plugin-3.5.0.tgz#933b16bf679c7510dd3475e4df9ba495d9dc0368"
   dependencies:
@@ -1383,7 +1383,7 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bower-webpack-plugin@^0.1.9:
+bower-webpack-plugin@0.1.9:
   version "0.1.9"
   resolved "https://registry.yarnpkg.com/bower-webpack-plugin/-/bower-webpack-plugin-0.1.9.tgz#17790f551538acde8f94b7018680c145544bb2e1"
   dependencies:
@@ -1827,13 +1827,13 @@ cli-color@1.1.0:
     memoizee "^0.3.9"
     timers-ext "0.1"
 
-cli-cursor@^1.0.1, cli-cursor@^1.0.2:
+cli-cursor@1.0.2, cli-cursor@^1.0.1, cli-cursor@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/cli-cursor/-/cli-cursor-1.0.2.tgz#64da3f7d56a54412e59794bd62dc35295e8f2987"
   dependencies:
     restore-cursor "^1.0.1"
 
-cli-spinners@1.0.0, cli-spinners@^1.0.0:
+cli-spinners@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-1.0.0.tgz#ef987ed3d48391ac3dab9180b406a742180d6e6a"
 
@@ -1841,7 +1841,7 @@ cli-spinners@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/cli-spinners/-/cli-spinners-0.1.2.tgz#bb764d88e185fb9e1e6a2a1f19772318f605e31c"
 
-cli-truncate@0.2.1, cli-truncate@^0.2.0, cli-truncate@^0.2.1:
+cli-truncate@0.2.1, cli-truncate@^0.2.0:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/cli-truncate/-/cli-truncate-0.2.1.tgz#9f15cfbb0705005369216c626ac7d05ab90dd574"
   dependencies:
@@ -1904,7 +1904,7 @@ code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
 
-coffee-loader@^0.7.2:
+coffee-loader@0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/coffee-loader/-/coffee-loader-0.7.2.tgz#4d3699af8a806312db3207385a842f497c1bd6fd"
   dependencies:
@@ -2985,7 +2985,7 @@ eslint-config-standard@6.2.1:
   version "6.2.1"
   resolved "https://registry.yarnpkg.com/eslint-config-standard/-/eslint-config-standard-6.2.1.tgz#d3a68aafc7191639e7ee441e7348739026354292"
 
-eslint-plugin-promise@^3.4.0:
+eslint-plugin-promise@3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-promise/-/eslint-plugin-promise-3.4.0.tgz#6ba9048c2df57be77d036e0c68918bc9b4fc4195"
 
@@ -3194,7 +3194,7 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-exports-loader@^0.6.3:
+exports-loader@0.6.3:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/exports-loader/-/exports-loader-0.6.3.tgz#57dc78917f709b96f247fa91e69b554c855013c8"
   dependencies:
@@ -3351,7 +3351,7 @@ file-entry-cache@^2.0.0:
     flat-cache "^1.2.1"
     object-assign "^4.0.1"
 
-file-loader@^0.9.0:
+file-loader@0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-0.9.0.tgz#1d2daddd424ce6d1b07cfe3f79731bed3617ab42"
   dependencies:
@@ -3464,7 +3464,7 @@ font-awesome-loader@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/font-awesome-loader/-/font-awesome-loader-1.0.1.tgz#881a433fa5e7e82923791fac5c39411614a97bff"
 
-font-awesome@^4.7.0:
+font-awesome@4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
 
@@ -3749,7 +3749,7 @@ globals@^9.0.0, globals@^9.14.0:
   version "9.14.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-9.14.0.tgz#8859936af0038741263053b39d0e76ca241e4034"
 
-globby@6.1.0, globby@^6.0.0, globby@^6.1.0:
+globby@6.1.0, globby@^6.0.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/globby/-/globby-6.1.0.tgz#f5a6d70e8395e21c858fb0489d64df02424d506c"
   dependencies:
@@ -4195,7 +4195,7 @@ image-size@~0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.5.0.tgz#be7aed1c37b5ac3d9ba1d66a24b4c47ff8397651"
 
-imagemin-cli@^3.0.0:
+imagemin-cli@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/imagemin-cli/-/imagemin-cli-3.0.0.tgz#0d71d2529ec5e070b40bfecd6f40aa85edb749c5"
   dependencies:
@@ -4243,7 +4243,7 @@ imagemin-svgo@^5.0.0:
     is-svg "^2.0.0"
     svgo "^0.7.0"
 
-imagemin@^5.0.0, imagemin@^5.2.2:
+imagemin@5.2.2, imagemin@^5.0.0:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/imagemin/-/imagemin-5.2.2.tgz#e14a0f357f8810266875eda38634eeb96f6fbd16"
   dependencies:
@@ -4734,7 +4734,7 @@ js-tokens@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-2.0.0.tgz#79903f5563ee778cc1162e6dcf1a0027c97f9cb5"
 
-js-yaml@^3.4.3, js-yaml@^3.5.1, js-yaml@^3.7.0:
+js-yaml@3.7.0, js-yaml@^3.4.3, js-yaml@^3.5.1:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.7.0.tgz#5c967ddd837a9bfdca5f2de84253abe8a1c03b80"
   dependencies:
@@ -5202,7 +5202,7 @@ log-symbols@1.0.2, log-symbols@^1.0.2:
   dependencies:
     chalk "^1.0.0"
 
-log-update@1.0.2, log-update@^1.0.2:
+log-update@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/log-update/-/log-update-1.0.2.tgz#19929f64c4093d2d2e7075a1dad8af59c296b8d1"
   dependencies:
@@ -5882,7 +5882,7 @@ optimist@0.6.1, optimist@0.6.x, optimist@~0.6.0, optimist@~0.6.1:
     minimist "~0.0.1"
     wordwrap "~0.0.2"
 
-optimize-css-assets-webpack-plugin@^1.3.0:
+optimize-css-assets-webpack-plugin@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/optimize-css-assets-webpack-plugin/-/optimize-css-assets-webpack-plugin-1.3.0.tgz#331b3dc7ac0b2b3597f68d18fd555f5a0c81b15c"
   dependencies:
@@ -5967,7 +5967,7 @@ os-shim@^0.1.2:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/os-shim/-/os-shim-0.1.3.tgz#6b62c3791cf7909ea35ed46e17658bb417cb3917"
 
-os-tmpdir@1.0.2, os-tmpdir@^1.0.0, os-tmpdir@^1.0.1, os-tmpdir@^1.0.2, os-tmpdir@~1.0.1:
+os-tmpdir@1.0.2, os-tmpdir@^1.0.0, os-tmpdir@^1.0.1, os-tmpdir@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
 
@@ -6016,7 +6016,7 @@ pako@~0.2.0:
   version "0.2.9"
   resolved "https://registry.yarnpkg.com/pako/-/pako-0.2.9.tgz#f3f7522f4ef782348da8161bad9ecfd51bf83a75"
 
-parallelshell@^2.0.0:
+parallelshell@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/parallelshell/-/parallelshell-2.0.0.tgz#c94af5d6348526a26da9020faeb5fc724a80600c"
 
@@ -6729,7 +6729,7 @@ punycode@^1.2.4, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
-q@1.1.2:
+q@1.1.2, q@^1.0.1, q@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/q/-/q-1.1.2.tgz#6357e291206701d99f197ab84e57e8ad196f2a89"
 
@@ -6740,10 +6740,6 @@ q@2.0.3:
     asap "^2.0.0"
     pop-iterate "^1.0.1"
     weak-map "^1.0.5"
-
-q@^1.0.1, q@^1.1.2:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/q/-/q-1.4.1.tgz#55705bcd93c5f3673530c2c2cbc0c2b3addc286e"
 
 qs@0.4.x:
   version "0.4.2"
@@ -7222,7 +7218,7 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rimraf@2, rimraf@^2.2.6, rimraf@^2.2.8, rimraf@^2.5.4, rimraf@~2.5.1, rimraf@~2.5.4:
+rimraf@2, rimraf@2.5.4, rimraf@^2.2.6, rimraf@^2.2.8, rimraf@^2.5.4, rimraf@~2.5.1, rimraf@~2.5.4:
   version "2.5.4"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.5.4.tgz#96800093cbf1a0c86bd95b4625467535c29dfa04"
   dependencies:
@@ -8133,7 +8129,7 @@ uglify-to-browserify@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/uglify-to-browserify/-/uglify-to-browserify-1.0.2.tgz#6e0924d6bda6b5afe349e39a6d632850a0f882b7"
 
-uglify@^0.1.5:
+uglify@0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/uglify/-/uglify-0.1.5.tgz#888d57efbd1bfa7fad89e11d069975e9682d54d2"
   dependencies:
@@ -8482,7 +8478,7 @@ webpack-core@~0.6.0:
     source-list-map "~0.1.0"
     source-map "~0.4.1"
 
-webpack-dev-middleware@^1.4.0, webpack-dev-middleware@^1.8.4:
+webpack-dev-middleware@1.8.4, webpack-dev-middleware@^1.4.0:
   version "1.8.4"
   resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-1.8.4.tgz#e8765c9122887ce9e3abd4cc9c3eb31b61e0948d"
   dependencies:
@@ -8509,7 +8505,7 @@ webpack-dev-server@1.16.2:
     supports-color "^3.1.1"
     webpack-dev-middleware "^1.4.0"
 
-webpack-hot-middleware@^2.13.2:
+webpack-hot-middleware@2.13.2:
   version "2.13.2"
   resolved "https://registry.yarnpkg.com/webpack-hot-middleware/-/webpack-hot-middleware-2.13.2.tgz#6500b15e6d4f1a9590f8df708183f4d2ac2c3e9e"
   dependencies:
@@ -8518,14 +8514,14 @@ webpack-hot-middleware@^2.13.2:
     querystring "^0.2.0"
     strip-ansi "^3.0.0"
 
-webpack-manifest-plugin@^1.1.0:
+webpack-manifest-plugin@1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/webpack-manifest-plugin/-/webpack-manifest-plugin-1.1.0.tgz#6b6c718aade8a2537995784b46bd2e9836057caa"
   dependencies:
     fs-extra "^0.30.0"
     lodash ">=3.5 <5"
 
-webpack-md5-hash@^0.0.5:
+webpack-md5-hash@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/webpack-md5-hash/-/webpack-md5-hash-0.0.5.tgz#d9f1899ead664459dd8b6b0c926ac71cfbd7bc7a"
   dependencies:
@@ -8538,7 +8534,7 @@ webpack-sources@^0.1.0:
     source-list-map "~0.1.0"
     source-map "~0.5.3"
 
-webpack-svgstore-plugin@^3.0.6:
+webpack-svgstore-plugin@3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/webpack-svgstore-plugin/-/webpack-svgstore-plugin-3.0.6.tgz#af800a345513a0cf2f93fb0671c10e6fdbe5bfc4"
   dependencies:
@@ -8549,7 +8545,7 @@ webpack-svgstore-plugin@^3.0.6:
     pug "2.0.0-beta6"
     svgo "0.7.1"
 
-webpack-visualizer-plugin@^0.1.5:
+webpack-visualizer-plugin@0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/webpack-visualizer-plugin/-/webpack-visualizer-plugin-0.1.5.tgz#88acdba3a212f7c845f37a086ed23188ab476ea6"
   dependencies:

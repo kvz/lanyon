@@ -14,7 +14,7 @@ if ! type prettier; then
   npm install -g prettier
 fi
 
-declare -a files=(src/cli.js src/config.js src/deploy.js src/encrypt.js src/postinstall.js src/utils.js)
+declare -a files=(src/cli.js src/config.js src/deploy.js src/encrypt.js src/install.js src/utils.js)
 safe=arrow,for-of,for-each,arg-rest,arg-spread,obj-method,obj-shorthand,no-strict,multi-var # ,commonjs,exponent
 unsafe=let,class,template,default-param,destruct-param #,includes
 

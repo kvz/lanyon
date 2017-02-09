@@ -15,7 +15,7 @@
     "serve:production": "LANYON_ENV=production lanyon serve",
     "deploy": "lanyon deploy",
     "encrypt": "lanyon encrypt",
-    "install": "lanyon postinstall",
+    "install": "lanyon install",
     "serve": "lanyon serve",
     "start:production": "npm run build:production && npm run serve:production",
     "start": "lanyon start"

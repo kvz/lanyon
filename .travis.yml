@@ -17,8 +17,8 @@ before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export PATH="${RBENV_ROOT}/bin:${PATH}"; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then eval "$(rbenv init -)"; fi
 
-# We do not want to run `cli.js postinstall` at this point, that's done in the test:acceptance
-# via linking. If we run postscripts we get into a chicken-egg situation where postinstall relies on transpiled
+# We do not want to run `cli.js install` at this point, that's done in the test:acceptance
+# via linking. If we run postscripts we get into a chicken-egg situation where install relies on transpiled
 # scripts, but that relies on install.
 install:
   - type yarn || npm install -g yarn@0.18.1 || true
@@ -87,7 +87,7 @@ before_cache:
 - rm -f ./node_modules/.bin/which
 before_deploy:
 - cd website && npm link lanyon && cd ..
-- env LANYON_PROJECT=./website node ./lib/cli.js postinstall
+- env LANYON_PROJECT=./website node ./lib/cli.js install
 deploy:
   skip_cleanup: true
   provider: script

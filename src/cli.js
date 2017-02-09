@@ -21,7 +21,7 @@ const scripts = {
   'encrypt'                  : require('./encrypt'),
   'help'                     : 'jekyll build --help',
   'list:ghpgems'             : 'bundler exec github-pages versions --gem',
-  'postinstall'              : require('./postinstall'),
+  'install'              : require('./install'),
   'serve'                    : 'browser-sync start --config [cacheDir]/browsersync.config.js',
   'start'                    : '[lanyon] build:assets && [lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
 }
@@ -39,7 +39,7 @@ const cmdName = process.argv[2]
 let cmd = scripts[cmdName]
 
 // Create asset dirs and git ignores
-if (cmdName.match(/^build|postinstall|start/)) {
+if (cmdName.match(/^build|install|start/)) {
   utils.initProject(runtime)
 }
 

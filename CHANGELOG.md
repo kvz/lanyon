@@ -27,6 +27,7 @@ Released: TBA.
 
 - [ ] Add a real command line parser for `lib/cli.js` like minimist
 - [ ] Consider not testing each install setup, but just verifying at least one works
+- [ ] No longer auto install ruby things upon `install`, require an explicit call instead
 - [ ] Add scrolling output via `scrolex`
 
 ## v0.0.51
@@ -269,7 +270,7 @@ Released: 2017-01-04.
 
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.18...v0.0.19).
 
-- [x] Fix bug leading to block postinstall resets
+- [x] Fix bug leading to block install resets
 
 ## v0.0.18
 

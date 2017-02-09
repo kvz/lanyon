@@ -104,7 +104,7 @@ The recommended way to use Lanyon is to add it to your project's npm scripts, in
   }
 },
 "scripts": {
-  "install": "bower install && lanyon postinstall",
+  "install": "bower install && lanyon install",
   "build": "lanyon build",
   "build:emoji": "lanyon build:emoji",
   "build:production": "LANYON_ENV=production lanyon build",
