@@ -1,14 +1,16 @@
-const semver = require('semver')
-const chalk = require('chalk')
-const fs = require('fs')
-// const _ = require('lodash')
-const path = require('path')
-// const Scrolex = require('scrolex')
-const yaml = require('js-yaml')
-const shell = require('shelljs')
-const no = chalk.red('✗ ')
-const yes = chalk.green('✓ ')
-const spawnSync = require('spawn-sync')
+const semver     = require('semver')
+const fs         = require('fs')
+// const _       = require('lodash')
+const path       = require('path')
+const scrolex    = require('scrolex')
+const yaml       = require('js-yaml')
+const shell      = require('shelljs')
+const spawnSync  = require('spawn-sync')
+
+if (require.main === module) {
+  scrolex.failure(`Please only used this module via require`)
+  process.exit(1)
+}
 
 module.exports.preferLocalPackage = (args, filename, appDir, name, entry, version) => {
   let localModulePackage
@@ -22,9 +24,9 @@ module.exports.preferLocalPackage = (args, filename, appDir, name, entry, versio
   } finally {
     if (localModulePackage.version && absoluteEntry) {
       if (filename === absoluteEntry) {
-        console.log(`--> Booting symlinked ${name} v${localModulePackage.version}`)
+        scrolex.stick(`Booting symlinked ${name} v${localModulePackage.version}`)
       } else {
-        console.log(`--> Booting local ${name} v${localModulePackage.version}`)
+        scrolex.stick(`Booting local ${name} v${localModulePackage.version}`)
         const exe = args.shift()
         for (const i in args) {
           // Replace the current entry, e.g. /usr/local/frey/lib/cli.js with the local package
@@ -36,7 +38,7 @@ module.exports.preferLocalPackage = (args, filename, appDir, name, entry, versio
         process.exit(0)
       }
     } else {
-      console.log(`--> Booting local ${name} v${version}`)
+      scrolex.stick(`Booting local ${name} v${version}`)
     }
   }
 }
@@ -132,10 +134,8 @@ module.exports.satisfied = ({prerequisites, rubyProvidersSkip}, app, cmd, checkO
     tag = `${checkOn}/`
   }
 
-  process.stdout.write(`--> Checking: ${tag}${app} '${prerequisites[app].range}' ... `)
-
   if (rubyProvidersSkip.indexOf(checkOn) !== -1) {
-    console.log(`${no} (disabled via LANYON_SKIP)`)
+    scrolex.failure(`${tag}${app} '${prerequisites[app].range} disabled via LANYON_SKIP`)
     return false
   }
 
@@ -144,8 +144,8 @@ module.exports.satisfied = ({prerequisites, rubyProvidersSkip}, app, cmd, checkO
   }
 
   const appVersionFull = shell.exec(cmd, { 'silent': false }).stdout.trim()
-  const parts = appVersionFull.split(/[,p\s-]+/)
-  let appVersion = parts[1]
+  const parts          = appVersionFull.split(/[,p\s-]+/)
+  let appVersion       = parts[1]
 
   if (app === 'node') {
     appVersion = parts[0]
@@ -157,14 +157,14 @@ module.exports.satisfied = ({prerequisites, rubyProvidersSkip}, app, cmd, checkO
 
   try {
     if (semver.satisfies(appVersion, prerequisites[app].range)) {
-      console.log(`${yes + appVersion} (${appVersionFull})`)
+      scrolex.stick(`${tag}${app} '${prerequisites[app].range} available`)
       return true
     }
   } catch (e) {
-    console.log(`${no + cmd} returned: "${appVersionFull}". ${e}`)
+    scrolex.failure(`${tag}${app} '${prerequisites[app].range} unavailable. output: ${appVersionFull}. ${e}`)
     return false
   }
 
-  console.log(`${no + appVersion} (${appVersionFull})`)
+  scrolex.failure(`${tag}${app} '${prerequisites[app].range} unavailable. output: ${appVersionFull}`)
   return false
 }

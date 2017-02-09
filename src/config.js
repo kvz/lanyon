@@ -5,6 +5,7 @@ const shell                   = require('shelljs')
 const fs                      = require('fs')
 const ExtractTextPlugin       = require('extract-text-webpack-plugin')
 const webpack                 = require('webpack')
+const scrolex                 = require('scrolex')
 const webpackDevMiddleware    = require('webpack-dev-middleware')
 const webpackHotMiddleware    = require('webpack-hot-middleware')
 const BowerWebpackPlugin      = require('bower-webpack-plugin')
@@ -14,6 +15,11 @@ const Visualizer              = require('webpack-visualizer-plugin')
 const yaml                    = require('js-yaml')
 const AssetsPlugin            = require('assets-webpack-plugin')
 const WebpackMd5Hash          = require('webpack-md5-hash')
+
+if (require.main === module) {
+  scrolex.failure(`Please only used this module via require, or: src/cli.js ${process.argv[1]}`)
+  process.exit(1)
+}
 
 let runtime = {}
 
@@ -43,7 +49,7 @@ runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cw
 
 runtime.npmRoot = utils.upwardDirContaining('package.json', runtime.projectDir, 'lanyon')
 if (!runtime.npmRoot) {
-  console.error(`--> Unable to determine non-lanyon npmRoot, falling back to ${runtime.projectDir}`)
+  scrolex.failure(`Unable to determine non-lanyon npmRoot, falling back to ${runtime.projectDir}`)
   runtime.npmRoot = runtime.projectDir
 }
 runtime.gitRoot = utils.upwardDirContaining('.git', runtime.npmRoot)
@@ -80,7 +86,7 @@ try {
   const buf            = fs.readFileSync(jekyllConfigPath)
   runtime.jekyllConfig = yaml.safeLoad(buf)
 } catch (e) {
-  console.error(`Unable to load ${jekyllConfigPath}`)
+  scrolex.failure(`Unable to load ${jekyllConfigPath}`)
 }
 
 runtime.themeDir = false
@@ -88,22 +94,9 @@ if (runtime.jekyllConfig.theme) {
   const cmd = `${path.join(runtime.binDir, 'bundler')} show ${runtime.jekyllConfig.theme}`
   const z   = shell.exec(cmd).stdout
   if (!z) {
-    console.error(`Unable find defined them "${runtime.jekyllConfig.theme}" via cmd: "${cmd}"`)
+    scrolex.failure(`Unable find defined them "${runtime.jekyllConfig.theme}" via cmd: "${cmd}"`)
   } else {
     runtime.themeDir = z
-  }
-}
-
-// Set prerequisite defaults
-for (const name in runtime.prerequisites) {
-  if (!runtime.prerequisites[name].exeSuffix) {
-    runtime.prerequisites[name].exeSuffix = ''
-  }
-  if (!runtime.prerequisites[name].exe) {
-    runtime.prerequisites[name].exe = name
-  }
-  if (!runtime.prerequisites[name].versionCheck) {
-    runtime.prerequisites[name].versionCheck = `${runtime.prerequisites[name].exe} -v`
   }
 }
 
@@ -332,10 +325,10 @@ const cfg = {
         plugins.push(function ReportErrors () {
           this.plugin('done', ({compilation}) => {
             for (const asset in compilation.assets) {
-              console.log(`--> Wrote ${runtime.assetsBuildDir}/${asset}`)
+              scrolex.stick(`Wrote ${runtime.assetsBuildDir}/${asset}`)
             }
             if (compilation.errors && compilation.errors.length) {
-              console.error(compilation.errors)
+              scrolex.failure(compilation.errors)
               if (!runtime.isDev) {
                 process.exit(1)
               }
@@ -351,7 +344,7 @@ const cfg = {
       if (runtime.statistics) {
         const fullpathStatistics = `${runtime.assetsBuildDir}/${runtime.statistics}`
         if (runtime.isDev) {
-          console.log(`--> Cannot write statistics to "${fullpathStatistics}" in dev mode. Create a production build via LANYON_ENV=production. `)
+          scrolex.stick(`Cannot write statistics to "${fullpathStatistics}" in dev mode. Create a production build via LANYON_ENV=production. `)
         } else {
           // @todo: Once Vizualizer supports multiple entries, add support for that here
           // https://github.com/chrisbateman/webpack-visualizer/issues/5
@@ -366,7 +359,7 @@ const cfg = {
         filename: 'jekyll.lanyon_assets.yml',
         path    : runtime.cacheDir,
         processOutput (assets) {
-          console.log(`--> Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
+          scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
           return yaml.safeDump({lanyon_assets: assets})
         },
       }))

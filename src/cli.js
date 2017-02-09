@@ -1,12 +1,18 @@
 #!/usr/bin/env node
-const utils     = require('./utils')
+const utils       = require('./utils')
 utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib/cli.js', require('../package.json').version)
-const _         = require('lodash')
-const config    = require('./config')
-const shell     = require('shelljs')
-const Scrolex  = require('scrolex')
-const runtime   = config.runtime
-// var debug = require('depurar')('lanyon')
+const _           = require('lodash')
+const config      = require('./config')
+const shell       = require('shelljs')
+const scrolex     = require('scrolex')
+const runtime     = config.runtime
+// var debug      = require('depurar')('lanyon')
+// const stripIndent = require('common-tags/lib/stripIndent')
+
+if (require.main !== module) {
+  scrolex.failure(`Please only used this module the commandline: node src/cli.js`)
+  process.exit(1)
+}
 
 const scripts = {
   'build:assets'             : 'webpack --config [cacheDir]/webpack.config.js',
@@ -21,14 +27,10 @@ const scripts = {
   'encrypt'                  : require('./encrypt'),
   'help'                     : 'jekyll build --help',
   'list:ghpgems'             : 'bundler exec github-pages versions --gem',
-  'install'              : require('./install'),
+  'install'                  : require('./install'),
   'serve'                    : 'browser-sync start --config [cacheDir]/browsersync.config.js',
   'start'                    : '[lanyon] build:assets && [lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
 }
-
-console.log(`--> cacheDir is "${runtime.cacheDir}". `)
-console.log(`--> gitRoot is "${runtime.gitRoot}". `)
-console.log(`--> npmRoot is "${runtime.npmRoot}". `)
 
 if (runtime.trace) {
   scripts['build:content:incremental'] += ' --trace'
@@ -36,7 +38,22 @@ if (runtime.trace) {
 }
 
 const cmdName = process.argv[2]
-let cmd = scripts[cmdName]
+let cmd       = scripts[cmdName]
+
+scrolex.setOpts({
+  announce             : true,
+  addCommandAsComponent: true,
+  components           : `lanyon>${cmdName}`,
+  env                  : Object.assign({}, process.env, {
+    NODE_ENV      : runtime.lanyonEnv,
+    JEKYLL_ENV    : runtime.lanyonEnv,
+    LANYON_PROJECT: runtime.projectDir, // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
+  }),
+})
+
+scrolex.stick(`cacheDir is "${runtime.cacheDir}". `)
+scrolex.stick(`gitRoot is "${runtime.gitRoot}". `)
+scrolex.stick(`npmRoot is "${runtime.npmRoot}". `)
 
 // Create asset dirs and git ignores
 if (cmdName.match(/^build|install|start/)) {
@@ -53,26 +70,28 @@ if (cmdName.match(/^build:(assets|content)/)) {
         if (_.isArray(runtime[hook])) {
           squashedHooks = runtime[hook].join(' && ')
         }
-        Scrolex.exe(squashedHooks, { cwd: runtime.projectDir, components: `lanyon>build>${hook}` })
-        // console.log(`--> ${hook} done. `)
+        scrolex.exe(squashedHooks, {
+          cwd: runtime.projectDir,
+        })
+        // scrolex.stick(`${hook} done. `)
       }
     }
   })
 }
 
 // Write all config files to cacheDir
-console.log('--> Writing configs. ')
+scrolex.stick('Writing configs. ')
 utils.writeConfig(config)
 
 // Run cmd arg
 if (_.isFunction(cmd)) {
-  console.log(`--> Running ${cmdName} function. `)
+  scrolex.stick(`Running ${cmdName} function. `)
   cmd(runtime, err => {
     if (err) {
-      console.error(`${cmdName} function exited with error ${err}`)
+      scrolex.failure(`${cmdName} function exited with error ${err}`)
       process.exit(1)
     }
-    console.log(`--> ${cmdName} done. `)
+    scrolex.stick(`${cmdName} done. `)
   })
 } else if (_.isString(cmd)) {
   cmd = cmd.replace(/\[lanyon]/g, `node ${__filename}`) // eslint-disable-line no-path-concat
@@ -101,7 +120,7 @@ if (_.isFunction(cmd)) {
     tests.forEach(test => {
       if (shell.test('-f', test)) {
         npmBins[name] = test
-        found = true
+        found         = true
       }
     })
 
@@ -115,19 +134,10 @@ if (_.isFunction(cmd)) {
   cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, `$1${runtime.binDir}/jekyll$2`)
   cmd = cmd.replace(/(\s|^)bundler(\s|$)/, `$1${runtime.binDir}/bundler$2`)
 
-  var env = process.env
-  env.NODE_ENV       = runtime.lanyonEnv
-  env.JEKYLL_ENV     = runtime.lanyonEnv
-  env.LANYON_PROJECT = runtime.projectDir // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
-
-  console.log(`--> Running ${cmdName} shell cmd: "${cmd}"`)
-  Scrolex.exe(cmd, {
-    mode      : cmdName === 'start' ? 'singlescroll' : 'passthru',
-    env       : env,
-    cwd       : runtime.cacheDir,
-    components: `lanyon>${cmdName}`,
+  scrolex.exe(cmd, {
+    mode: cmdName === 'start' ? 'singlescroll' : 'passthru',
+    cwd : runtime.cacheDir,
   })
-  console.log(`--> ${cmdName} done. `)
 } else {
-  console.error(`--> "${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)
+  scrolex.failure(`"${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)
 }

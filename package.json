@@ -143,6 +143,7 @@
     "cli-truncate": "0.2.1",
     "coffee-loader": "0.7.2",
     "coffee-script": "1.12.2",
+    "common-tags": "^1.4.0",
     "css-loader": "0.26.1",
     "depurar": "0.3.0",
     "exports-loader": "0.6.3",

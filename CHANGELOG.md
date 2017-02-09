@@ -29,6 +29,7 @@ Released: TBA.
 - [ ] Consider not testing each install setup, but just verifying at least one works
 - [ ] No longer auto install ruby things upon `install`, require an explicit call instead
 - [ ] Add scrolling output via `scrolex`
+- [x] Rename `postinstall` to `install`
 
 ## v0.0.51
 
