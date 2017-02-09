@@ -174,7 +174,7 @@ module.exports = (runtime, cb) => {
           ${deps.ruby.exeSuffix}
         ||
         deps.bundler.exe update
-          ${deps.ruby.exeSuffix}
+        ${deps.ruby.exeSuffix}
       )
     `)
   }
