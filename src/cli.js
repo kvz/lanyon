@@ -1,13 +1,12 @@
 #!/usr/bin/env node
-const utils       = require('./utils')
-utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib/cli.js', require('../package.json').version)
-const _           = require('lodash')
-const config      = require('./config')
-const shell       = require('shelljs')
-const scrolex     = require('scrolex')
-const runtime     = config.runtime
-// var debug      = require('depurar')('lanyon')
-// const stripIndent = require('common-tags/lib/stripIndent')
+const utils        = require('./utils')
+const whichPackage = utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib/cli.js', require('../package.json').version)
+const _            = require('lodash')
+const config       = require('./config')
+const shell        = require('shelljs')
+const scrolex      = require('scrolex')
+const runtime      = config.runtime
+// var debug         = require('depurar')('lanyon')
 
 if (require.main !== module) {
   scrolex.failure(`Please only used this module the commandline: node src/cli.js`)
@@ -40,7 +39,7 @@ if (runtime.trace) {
 const cmdName = process.argv[2]
 let cmd       = scripts[cmdName]
 
-scrolex.setOpts({
+scrolex.persistOpts({
   announce             : true,
   addCommandAsComponent: true,
   components           : `lanyon>${cmdName}`,
@@ -51,9 +50,10 @@ scrolex.setOpts({
   }),
 })
 
-scrolex.stick(`cacheDir is "${runtime.cacheDir}". `)
-scrolex.stick(`gitRoot is "${runtime.gitRoot}". `)
-scrolex.stick(`npmRoot is "${runtime.npmRoot}". `)
+scrolex.stick(`Booting ${whichPackage.type} Lanyon->${cmdName}. Version: ${whichPackage.version} on PID: ${process.pid} from: ${__filename}`)
+scrolex.stick(`Detected cacheDir as "${runtime.cacheDir}"`)
+scrolex.stick(`Detected gitRoot as "${runtime.gitRoot}"`)
+scrolex.stick(`Detected npmRoot as "${runtime.npmRoot}"`)
 
 // Create asset dirs and git ignores
 if (cmdName.match(/^build|install|start/)) {
@@ -73,7 +73,7 @@ if (cmdName.match(/^build:(assets|content)/)) {
         scrolex.exe(squashedHooks, {
           cwd: runtime.projectDir,
         })
-        // scrolex.stick(`${hook} done. `)
+        // scrolex.stick(`${hook} done`)
       }
     }
   })
@@ -85,13 +85,13 @@ utils.writeConfig(config)
 
 // Run cmd arg
 if (_.isFunction(cmd)) {
-  scrolex.stick(`Running ${cmdName} function. `)
+  scrolex.stick(`Running ${cmdName} function`)
   cmd(runtime, err => {
     if (err) {
       scrolex.failure(`${cmdName} function exited with error ${err}`)
       process.exit(1)
     }
-    scrolex.stick(`${cmdName} done. `)
+    scrolex.stick(`${cmdName} done`)
   })
 } else if (_.isString(cmd)) {
   cmd = cmd.replace(/\[lanyon]/g, `node ${__filename}`) // eslint-disable-line no-path-concat
@@ -135,7 +135,7 @@ if (_.isFunction(cmd)) {
   cmd = cmd.replace(/(\s|^)bundler(\s|$)/, `$1${runtime.binDir}/bundler$2`)
 
   scrolex.exe(cmd, {
-    mode: cmdName === 'start' ? 'singlescroll' : 'passthru',
+    mode: cmd.indexOf(__filename) === -1 ? 'singlescroll' : 'passthru',
     cwd : runtime.cacheDir,
   })
 } else {

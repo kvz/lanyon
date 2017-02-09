@@ -10,7 +10,7 @@ const _           = require('lodash')
 const oneLine     = require('common-tags/lib/oneLine')
 const stripIndent = require('common-tags/lib/stripIndent')
 
-scrolex.setOpts({
+scrolex.persistOpts({
   announce             : true,
   addCommandAsComponent: true,
   components           : `lanyon>install`,
@@ -175,7 +175,7 @@ module.exports = async (runtime, cb) => {
           --path='vendor/bundler'
           ${deps.ruby.exeSuffix}
         ||
-        deps.bundler.exe update
+        ${deps.bundler.exe} update
         ${deps.ruby.exeSuffix}
       )
     `)
@@ -191,12 +191,12 @@ module.exports = async (runtime, cb) => {
       }
       var shimPath = path.join(runtime.binDir, name)
       fs.writeFileSync(shimPath, shim, { 'encoding': 'utf-8', 'mode': '755' })
-      scrolex.stick(`Installed: ${name} shim to: ${shimPath} ... `)
+      scrolex.stick(`Installed: ${name} shim to: ${shimPath} ..`)
     }
   }
 
   shimPath = path.join(runtime.binDir, 'deploy')
-  scrolex.stick(`Installed: deploy shim to: ${shimPath} ... `)
+  scrolex.stick(`Installed: deploy shim to: ${shimPath} ..`)
   fs.writeFileSync(shimPath, stripIndent`
     #!/bin/sh -ex
     cd "${runtime.projectDir}"

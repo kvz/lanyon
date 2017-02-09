@@ -21,25 +21,26 @@ module.exports.preferLocalPackage = (args, filename, appDir, name, entry, versio
   } catch (e) {
     localModulePackage = {}
     absoluteEntry      = false
-  } finally {
-    if (localModulePackage.version && absoluteEntry) {
-      if (filename === absoluteEntry) {
-        scrolex.stick(`Booting symlinked ${name} v${localModulePackage.version}`)
-      } else {
-        scrolex.stick(`Booting local ${name} v${localModulePackage.version}`)
-        const exe = args.shift()
-        for (const i in args) {
-          // Replace the current entry, e.g. /usr/local/frey/lib/cli.js with the local package
-          if (args[i] === filename) {
-            args[i] = absoluteEntry
-          }
-        }
-        spawnSync(exe, args, { stdio: 'inherit' })
-        process.exit(0)
-      }
+  }
+
+  if (localModulePackage.version && absoluteEntry) {
+    if (filename === absoluteEntry) {
+      return { type: 'symlinked', version: localModulePackage.version }
     } else {
-      scrolex.stick(`Booting local ${name} v${version}`)
+      // We're entering globally and replacing this with a local instance
+      const exe = args.shift()
+      for (const i in args) {
+        // Replace the current entry, e.g. /usr/local/frey/lib/cli.js with the local package
+        if (args[i] === filename) {
+          args[i] = absoluteEntry
+        }
+      }
+      spawnSync(exe, args, { stdio: 'inherit' })
+      process.exit(0)
+      // return { type: 'local', version: localModulePackage.version }
     }
+  } else {
+    return { type: 'local', version: version }
   }
 }
 
@@ -143,7 +144,7 @@ module.exports.satisfied = ({prerequisites, rubyProvidersSkip}, app, cmd, checkO
     cmd = `${app} -v`
   }
 
-  const appVersionFull = shell.exec(cmd, { 'silent': false }).stdout.trim()
+  const appVersionFull = shell.exec(cmd, { 'silent': true }).stdout.trim()
   const parts          = appVersionFull.split(/[,p\s-]+/)
   let appVersion       = parts[1]
 
