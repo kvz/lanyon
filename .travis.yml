@@ -22,7 +22,7 @@ before_install:
 # scripts, but that relies on install.
 install:
   - type yarn || npm install -g yarn@0.18.1 || true
-  - travis_wait 50 env LANYON_NOINSTALL=1 yarn || npm install
+  - yarn || npm install
 
 script:
   # eslint does not work on old nodes
