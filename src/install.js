@@ -1,12 +1,14 @@
-const path    = require('path')
-const utils   = require('./utils')
-const shell   = require('shelljs')
-const os      = require('os')
-const fs      = require('fs')
-// var debug  = require('depurar')('lanyon')
-const scrolex = require('scrolex')
-const _       = require('lodash')
-const oneLine = require('common-tags/lib/oneLine')
+require('babel-polyfill')
+const path        = require('path')
+const utils       = require('./utils')
+const shell       = require('shelljs')
+const os          = require('os')
+const fs          = require('fs')
+// var debug      = require('depurar')('lanyon')
+const scrolex     = require('scrolex')
+const _           = require('lodash')
+const oneLine     = require('common-tags/lib/oneLine')
+const stripIndent = require('common-tags/lib/stripIndent')
 
 scrolex.setOpts({
   announce             : true,
@@ -19,7 +21,7 @@ if (require.main === module) {
   process.exit(1)
 }
 
-module.exports = (runtime, cb) => {
+module.exports = async (runtime, cb) => {
   // Set prerequisite defaults
   let deps = _.cloneDeep(runtime.prerequisites)
   for (const name in deps) {
@@ -75,8 +77,8 @@ module.exports = (runtime, cb) => {
     rubyProvider = 'docker'
     if (process.env.DOCKER_BUILD === '1') {
       const cache = process.env.DOCKER_RESET === '1' ? ' --no-cache' : ''
-      scrolex.exe(`cd .lanyon && docker build${cache} -t kevinvz/lanyon:${runtime.lanyonVersion} .`)
-      scrolex.exe(`cd .lanyon && docker push kevinvz/lanyon:${runtime.lanyonVersion}`)
+      await scrolex.exe(`cd .lanyon && docker build${cache} -t kevinvz/lanyon:${runtime.lanyonVersion} .`)
+      await scrolex.exe(`cd .lanyon && docker push kevinvz/lanyon:${runtime.lanyonVersion}`)
     }
     deps.sh.exe     = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
     deps.ruby.exe   = utils.dockerCmd(runtime, 'ruby')
@@ -84,13 +86,13 @@ module.exports = (runtime, cb) => {
   } else if (utils.satisfied(runtime, 'rbenv') && shell.exec('rbenv install --help', { 'silent': false }).code === 0) {
     // rbenv does not offer installing of rubies by default, it will also require the install plugin --^
     rubyProvider = 'rbenv'
-    scrolex.exe(`bash -c "rbenv install --skip-existing '${deps.ruby.preferred}'"`)
+    await scrolex.exe(`bash -c "rbenv install --skip-existing '${deps.ruby.preferred}'"`)
     deps.ruby.exe          = `bash -c "eval $(rbenv init -) && rbenv shell '${deps.ruby.preferred}' &&`
     deps.ruby.exeSuffix    = '"'
     deps.ruby.versionCheck = `${deps.ruby.exe}ruby -v${deps.ruby.exeSuffix}`
   } else if (utils.satisfied(runtime, 'rvm')) {
     rubyProvider = 'rvm'
-    scrolex.exe(`bash -c "rvm install '${deps.ruby.preferred}'"`)
+    await scrolex.exe(`bash -c "rvm install '${deps.ruby.preferred}'"`)
     deps.ruby.exe          = `bash -c "rvm '${deps.ruby.preferred}' exec`
     deps.ruby.exeSuffix    = '"'
     deps.ruby.versionCheck = `${deps.ruby.exe} ruby -v${deps.ruby.exeSuffix}`
@@ -114,7 +116,7 @@ module.exports = (runtime, cb) => {
         localGemArgs = `--binDir='${runtime.binDir}' --install-dir='vendor/gem_home'`
       }
 
-      scrolex.exe(oneLine`
+      await scrolex.exe(oneLine`
         cd "${runtime.cacheDir}" && (
           ${deps.ruby.exe} ${deps.gem.exe} install ${localGemArgs}
             --no-rdoc
@@ -144,7 +146,7 @@ module.exports = (runtime, cb) => {
 
     // Configure Bundler (nokogiri)
     if (os.platform() === 'darwin' && shell.exec('brew -v', { 'silent': true }).code === 0) {
-      scrolex.exe(oneLine`
+      await scrolex.exe(oneLine`
         cd "${runtime.cacheDir}" && (
           brew install libxml2;
           ${deps.bundler.exe} config build.nokogiri
@@ -154,10 +156,10 @@ module.exports = (runtime, cb) => {
         )
       `)
     } else {
-      scrolex.exe(oneLine`
+      await scrolex.exe(oneLine`
         cd "${runtime.cacheDir}" && (
           ${deps.bundler.exe} config build.nokogiri
-          --use-system-libraries
+            --use-system-libraries
           ${deps.ruby.exeSuffix}
         )
       `)
@@ -166,7 +168,7 @@ module.exports = (runtime, cb) => {
     deps.jekyll.exe = `${deps.bundler.exe} exec jekyll`
 
     // Install Gems from Gemfile bundle
-    scrolex.exe(oneLine`
+    await scrolex.exe(oneLine`
       cd "${runtime.cacheDir}" && (
         ${deps.bundler.exe} install
           --binstubs='${runtime.binDir}'
@@ -195,7 +197,11 @@ module.exports = (runtime, cb) => {
 
   shimPath = path.join(runtime.binDir, 'deploy')
   scrolex.stick(`Installed: deploy shim to: ${shimPath} ... `)
-  fs.writeFileSync(shimPath, `#!/bin/sh -ex\ncd "${runtime.projectDir}"\n(npm run build:production || npm run web:build:production) && (npm run deploy || npm run web:deploy)`, { 'encoding': 'utf-8', 'mode': '755' })
+  fs.writeFileSync(shimPath, stripIndent`
+    #!/bin/sh -ex
+    cd "${runtime.projectDir}"
+    (npm run build:production || npm run web:build:production) && (npm run deploy || npm run web:deploy)
+  `, { 'encoding': 'utf-8', 'mode': '755' })
 
   cb(null)
 }

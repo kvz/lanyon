@@ -27,8 +27,9 @@ Released: TBA.
 
 - [ ] Add a real command line parser for `lib/cli.js` like minimist
 - [ ] Consider not testing each install setup, but just verifying at least one works
-- [ ] No longer auto install ruby things upon `install`, require an explicit call instead
-- [ ] Add scrolling output via `scrolex`
+- [x] No longer auto install ruby things upon `install`, require an explicit call to `cli.js install` instead
+- [x] Introduce async/await for internal use (install)
+- [x] Add scrolling output via `scrolex`
 - [x] Rename `postinstall` to `install`
 
 ## v0.0.51

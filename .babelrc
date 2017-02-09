@@ -1,4 +1,10 @@
 {
   "presets": ["es2015-loose"],
-  "plugins": ["add-module-exports", "transform-object-assign", "es6-promise", "react-hot-loader/babel"]
+  "plugins": [
+    "add-module-exports",
+    "es6-promise",
+    "react-hot-loader/babel",
+    "transform-async-to-generator",
+    "transform-object-assign"
+  ]
 }
