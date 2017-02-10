@@ -24,5 +24,5 @@ env DEBUG=*:* LANYON_RESET="1" LANYON_ONLY="rvm" LANYON_PROJECT=$HOME/code/conte
 env DEBUG=*:* LANYON_RESET="1" LANYON_ONLY="docker" LANYON_PROJECT=$HOME/code/content node lib/cli.js install
 env DEBUG=*:* LANYON_RESET="1" LANYON_ONLY="docker" LANYON_PROJECT=$HOME/code/content node lib/cli.js build:content
 
-env DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY="docker" LANYON_PROJECT=$HOME/code/content node lib/cli.js install
-env DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY="docker" LANYON_PROJECT=$HOME/code/content node lib/cli.js build:content
+env DOCKER_BUILD=1 DOCKER_RESET=1 DEBUG=*:* LANYON_ONLY="docker" LANYON_PROJECT=$HOME/code/content node lib/cli.js install
+env DOCKER_BUILD=1 DOCKER_RESET=1 DEBUG=*:* LANYON_ONLY="docker" LANYON_PROJECT=$HOME/code/content node lib/cli.js build:content
