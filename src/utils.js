@@ -82,15 +82,15 @@ module.exports.upwardDirContaining = (find, cwd, not) => {
 module.exports.initProject = ({assetsBuildDir, gitRoot, cacheDir, binDir}) => {
   if (!shell.test('-d', assetsBuildDir)) {
     shell.mkdir('-p', assetsBuildDir)
-    shell.exec(`cd ${path.dirname(gitRoot)} && git ignore ${path.relative(gitRoot, assetsBuildDir)}`)
+    shell.exec(`cd "${path.dirname(gitRoot)}" && git ignore "${path.relative(gitRoot, assetsBuildDir)}"`)
   }
   if (!shell.test('-d', cacheDir)) {
     shell.mkdir('-p', cacheDir)
-    shell.exec(`cd ${path.dirname(gitRoot)} && git ignore ${path.relative(gitRoot, cacheDir)}`)
+    shell.exec(`cd "${path.dirname(gitRoot)}" && git ignore "${path.relative(gitRoot, cacheDir)}"`)
   }
   if (!shell.test('-d', binDir)) {
     shell.mkdir('-p', binDir)
-    shell.exec(`cd ${path.dirname(gitRoot)} && git ignore ${path.relative(gitRoot, binDir)}`)
+    shell.exec(`cd "${path.dirname(gitRoot)}" && git ignore "${path.relative(gitRoot, binDir)}"`)
   }
 }
 
@@ -144,7 +144,8 @@ module.exports.satisfied = ({prerequisites, rubyProvidersSkip}, app, cmd, checkO
     cmd = `${app} -v`
   }
 
-  const appVersionFull = shell.exec(cmd, { 'silent': true }).stdout.trim()
+  const p              = shell.exec(cmd, { 'silent': true })
+  const appVersionFull = p.stdout.trim() || p.stderr.trim()
   const parts          = appVersionFull.split(/[,p\s-]+/)
   let appVersion       = parts[1]
 

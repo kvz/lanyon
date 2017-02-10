@@ -80,7 +80,7 @@ if (cmdName.match(/^build:(assets|content)/)) {
 }
 
 // Write all config files to cacheDir
-scrolex.stick('Writing configs. ')
+scrolex.stick('Writing configs')
 utils.writeConfig(config)
 
 // Run cmd arg
@@ -135,8 +135,9 @@ if (_.isFunction(cmd)) {
   cmd = cmd.replace(/(\s|^)bundler(\s|$)/, `$1${runtime.binDir}/bundler$2`)
 
   scrolex.exe(cmd, {
-    mode: cmd.indexOf(__filename) === -1 ? 'singlescroll' : 'passthru',
-    cwd : runtime.cacheDir,
+    mode : cmd.indexOf(__filename) === -1 && !cmdName.match(/^container:/) ? 'singlescroll' : 'passthru',
+    cwd  : runtime.cacheDir,
+    stdio: cmdName.match(/^container:/) ? 'inherit' : 'pipe',
   })
 } else {
   scrolex.failure(`"${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)

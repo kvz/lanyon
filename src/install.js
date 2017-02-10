@@ -83,7 +83,7 @@ module.exports = async (runtime, cb) => {
     deps.sh.exe     = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
     deps.ruby.exe   = utils.dockerCmd(runtime, 'ruby')
     deps.jekyll.exe = utils.dockerCmd(runtime, 'bundler exec jekyll')
-  } else if (utils.satisfied(runtime, 'rbenv') && shell.exec('rbenv install --help', { 'silent': false }).code === 0) {
+  } else if (utils.satisfied(runtime, 'rbenv') && shell.exec('rbenv install --help', { 'silent': true }).code === 0) {
     // rbenv does not offer installing of rubies by default, it will also require the install plugin --^
     rubyProvider = 'rbenv'
     await scrolex.exe(`bash -c "rbenv install --skip-existing '${deps.ruby.preferred}'"`)
