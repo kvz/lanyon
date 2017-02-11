@@ -112,6 +112,7 @@ EOF
   popd
   echo "--> Importing lanyon link (like an npm install, but with local sources)"
   npm link lanyon
+  npm install
 
   for shim in "jekyll" "bundler" "ruby"; do
     echo "--> Showing shim ${shim} contents:"
