@@ -5,12 +5,10 @@ const shell       = require('shelljs')
 const os          = require('os')
 const fs          = require('fs')
 // var debug      = require('depurar')('lanyon')
-const scrolex     = require('scrolex')
 const _           = require('lodash')
 const oneLine     = require('common-tags/lib/oneLine')
 const stripIndent = require('common-tags/lib/stripIndent')
-
-scrolex.persistOpts({
+const scrolex     = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
   components           : `lanyon>install`,

@@ -5,7 +5,6 @@ const shell                   = require('shelljs')
 const fs                      = require('fs')
 const ExtractTextPlugin       = require('extract-text-webpack-plugin')
 const webpack                 = require('webpack')
-const scrolex                 = require('scrolex')
 const webpackDevMiddleware    = require('webpack-dev-middleware')
 const webpackHotMiddleware    = require('webpack-hot-middleware')
 const BowerWebpackPlugin      = require('bower-webpack-plugin')
@@ -15,6 +14,11 @@ const Visualizer              = require('webpack-visualizer-plugin')
 const yaml                    = require('js-yaml')
 const AssetsPlugin            = require('assets-webpack-plugin')
 const WebpackMd5Hash          = require('webpack-md5-hash')
+const scrolex                 = require('scrolex').persistOpts({
+  announce             : true,
+  addCommandAsComponent: true,
+  components           : `lanyon>config`,
+})
 
 if (require.main === module) {
   scrolex.failure(`Please only used this module via require, or: src/cli.js ${process.argv[1]}`)
@@ -50,7 +54,7 @@ runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cw
 
 runtime.npmRoot = utils.upwardDirContaining('package.json', runtime.projectDir, 'lanyon')
 if (!runtime.npmRoot) {
-  scrolex.failure(`Unable to determine non-lanyon npmRoot, falling back to ${runtime.projectDir}`, { components: 'lanyon>config' })
+  scrolex.failure(`Unable to determine non-lanyon npmRoot, falling back to ${runtime.projectDir}`)
   runtime.npmRoot = runtime.projectDir
 }
 runtime.gitRoot = utils.upwardDirContaining('.git', runtime.npmRoot)
@@ -87,7 +91,7 @@ try {
   const buf            = fs.readFileSync(jekyllConfigPath)
   runtime.jekyllConfig = yaml.safeLoad(buf)
 } catch (e) {
-  scrolex.failure(`Unable to load ${jekyllConfigPath}`, { components: 'lanyon>config' })
+  scrolex.failure(`Unable to load ${jekyllConfigPath}`)
 }
 
 runtime.themeDir = false
@@ -95,7 +99,7 @@ if (runtime.jekyllConfig.theme) {
   const cmd = `${path.join(runtime.binDir, 'bundler')} show ${runtime.jekyllConfig.theme}`
   const z   = shell.exec(cmd).stdout
   if (!z) {
-    scrolex.failure(`Unable find defined them "${runtime.jekyllConfig.theme}" via cmd: "${cmd}"`, { components: 'lanyon>config' })
+    scrolex.failure(`Unable find defined them "${runtime.jekyllConfig.theme}" via cmd: "${cmd}"`)
   } else {
     runtime.themeDir = z
   }
@@ -326,10 +330,10 @@ const cfg = {
         plugins.push(function ReportErrors () {
           this.plugin('done', ({compilation}) => {
             for (const asset in compilation.assets) {
-              scrolex.stick(`Wrote ${runtime.assetsBuildDir}/${asset}`, { components: 'lanyon>config' })
+              scrolex.stick(`Wrote ${runtime.assetsBuildDir}/${asset}`)
             }
             if (compilation.errors && compilation.errors.length) {
-              scrolex.failure(compilation.errors, { components: 'lanyon>config' })
+              scrolex.failure(compilation.errors)
               if (!runtime.isDev) {
                 process.exit(1)
               }
@@ -355,7 +359,7 @@ const cfg = {
         filename: 'jekyll.lanyon_assets.yml',
         path    : runtime.cacheDir,
         processOutput (assets) {
-          scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`, { components: 'lanyon>config' })
+          scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
           return yaml.safeDump({lanyon_assets: assets})
         },
       }))

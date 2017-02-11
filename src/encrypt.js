@@ -1,5 +1,9 @@
 // const utils = require('./utils')
-const scrolex = require('scrolex')
+const scrolex = require('scrolex').persistOpts({
+  announce             : true,
+  addCommandAsComponent: true,
+  components           : `lanyon>encrypt`,
+})
 
 if (require.main === module) {
   scrolex.failure(`Please only used this module via require, or: src/cli.js ${process.argv[1]}`)

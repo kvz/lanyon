@@ -27,7 +27,8 @@ Released: TBA.
 
 - [ ] Add a real command line parser for `lib/cli.js` like minimist
 - [ ] Consider not testing each install setup, but just verifying at least one works
-- [x] Distribute the `Gemfile.lock` as well
+- [x] Only run acceptance test on all platforms. Rest of the tests on Node 6 only
+- [x] Distribute the `Gemfile.lock` as well, allow updates via `LANYON_UPDATE_GEM_LOCKFILE=1`
 - [x] Switch from ava -> jest
 - [x] Fix bug: `the input device is not a TTY`
 - [x] No longer auto install ruby things upon `install`, require an explicit call to `cli.js install` instead

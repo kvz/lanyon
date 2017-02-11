@@ -8,11 +8,6 @@ const scrolex      = require('scrolex')
 const runtime      = config.runtime
 // var debug         = require('depurar')('lanyon')
 
-if (require.main !== module) {
-  scrolex.failure(`Please only used this module the commandline: node src/cli.js`)
-  process.exit(1)
-}
-
 const scripts = {
   'build:assets'             : 'webpack --config [cacheDir]/webpack.config.js',
   'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
@@ -49,6 +44,11 @@ scrolex.persistOpts({
     LANYON_PROJECT: runtime.projectDir, // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
   }),
 })
+
+if (require.main !== module) {
+  scrolex.failure(`Please only used this module the commandline: node src/cli.js`)
+  process.exit(1)
+}
 
 scrolex.stick(`Booting ${whichPackage.type} Lanyon->${cmdName}. Version: ${whichPackage.version} on PID: ${process.pid} from: ${__filename}`)
 scrolex.stick(`Detected cacheDir as "${runtime.cacheDir}"`)

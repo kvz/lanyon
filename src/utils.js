@@ -2,12 +2,15 @@ const semver      = require('semver')
 const fs          = require('fs')
 // const _        = require('lodash')
 const path        = require('path')
-const scrolex     = require('scrolex')
 const yaml        = require('js-yaml')
 const shell       = require('shelljs')
 const spawnSync   = require('spawn-sync')
 const oneLine     = require('common-tags/lib/oneLine')
 const stripIndent = require('common-tags/lib/stripIndent')
+const scrolex     = require('scrolex').persistOpts({
+  announce             : true,
+  addCommandAsComponent: true,
+})
 
 if (require.main === module) {
   scrolex.failure(`Please only used this module via require`)
