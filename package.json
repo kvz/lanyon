@@ -21,9 +21,11 @@
     "release:patch": "env SEMANTIC=patch npm run release",
     "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all build commit:es5 container:build push npublish",
     "npublish": "npm publish",
-    "test": "env NODE_ENV=test ava lib/**/*.test.js",
-    "test:acceptance": "./scripts/test-acceptance.sh",
+    "jest:update": "env DEBUG=scrolex:* NODE_ENV=test jest --updateSnapshot",
+    "jest": "env DEBUG=scrolex:* NODE_ENV=test jest",
+    "test:update": "npm-run-all build jest:update",
     "test:watcher": "npm test -- --watch",
+    "test": "npm-run-all build jest",
     "upgrade:modules": "next-update --keep true --tldr",
     "web:install": "cd website && npm run install",
     "web:start": "cd website && npm run start"
@@ -111,7 +113,6 @@
     }
   },
   "devDependencies": {
-    "ava": "0.17.0",
     "babel-cli": "6.11.4",
     "babel-eslint": "6.1.2",
     "babel-plugin-add-module-exports": "0.2.1",
@@ -124,6 +125,7 @@
     "eslint-config-standard": "6.2.1",
     "eslint-plugin-promise": "3.4.0",
     "eslint-plugin-standard": "2.0.1",
+    "jest": "18.1.0",
     "next-update": "1.5.1"
   },
   "dependencies": {
