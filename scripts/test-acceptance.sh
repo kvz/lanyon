@@ -73,6 +73,7 @@ EOF
   "name": "my-website",
   "scripts": {
     "build": "lanyon build",
+    "install": "lanyon install",
     "build:production": "LANYON_ENV=production lanyon build"
   }
 }
