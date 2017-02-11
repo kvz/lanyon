@@ -4,10 +4,7 @@
 
 - [ ] jRuby support https://spin.atomicobject.com/2013/04/24/bundler-jruby-complete/
 - [ ] Consider shipping all of Lanyon inside a Docker container
-- [ ] Utilize `passthru` more (vs `spawnSync`)
 - [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
-- [ ] Add image optimizer from `assets/images` -> `assets/build/images`
-- [ ] Brush up terminal output (less verbose jekyll etc, instruct the user to "please wait on browsersync->webpack, assets will automatically load")
 - [ ] Throw an error if we find legacy Jekyll residue such as `./vendors` or `.bundle`
 - [ ] Maybe add https://github.com/btford/write-good
 - [ ] Consider https://www.npmjs.com/package/webpack-svgstore-plugin
@@ -15,18 +12,22 @@
 - [ ] Hooks are ran with every build, but not when doing HMR. We might be able to write a `CallHooksPlugin` to work around this that calls the hook for assets, while lib/cli.js calls it for content
 - [ ] Consider sourcemaps like https://github.com/rstacruz/webpack-tricks#source-maps
 - [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
-- [ ] Fix bug: Lanyon is lying about being symlinked: `Booting symlinked lanyon v0.0.47` when this is not the case
-- [ ] Consider distributing the Gem lockfile so new installs don't get bumped to incompatible versions like what happened with nokogiri gracefully upgrading from 1.6->1.7 but then requiring ruby 2.0->2.1 wich isn't present on OSX, hence requiring a full 3rd party ruby install that could easily have been avoided
-- [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0),  add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling bundle exec gemoji extract assets/images/emoji) 
-- [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building
+- [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0), add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling bundle exec gemoji extract assets/images/emoji) 
+- [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
 - [ ] Windows support. See #1 - See also https://github.com/avajs/ava/blob/master/appveyor.yml
 
-## v0.0.52
+## v0.0.53
 
 Released: TBA.
 
-- [ ] Add a real command line parser for `lib/cli.js` like minimist
-- [ ] Consider not testing each install setup, but just verifying at least one works
+- [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
+- [ ] Refactor `install` so that we can try several install approaches until one succeeds
+
+## v0.0.52
+
+Released: 2017-02-11.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.51...v0.0.52).
+
 - [x] Localize `GEM_HOME` and `GEM_PATH` in container
 - [x] Only run acceptance test on all platforms. Rest of the tests on Node 6 only
 - [x] Distribute the `Gemfile.lock` as well, allow updates via `LANYON_UPDATE_GEM_LOCKFILE=1`
