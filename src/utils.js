@@ -1,11 +1,13 @@
-const semver     = require('semver')
-const fs         = require('fs')
-// const _       = require('lodash')
-const path       = require('path')
-const scrolex    = require('scrolex')
-const yaml       = require('js-yaml')
-const shell      = require('shelljs')
-const spawnSync  = require('spawn-sync')
+const semver      = require('semver')
+const fs          = require('fs')
+// const _        = require('lodash')
+const path        = require('path')
+const scrolex     = require('scrolex')
+const yaml        = require('js-yaml')
+const shell       = require('shelljs')
+const spawnSync   = require('spawn-sync')
+const oneLine     = require('common-tags/lib/oneLine')
+const stripIndent = require('common-tags/lib/stripIndent')
 
 if (require.main === module) {
   scrolex.failure(`Please only used this module via require`)
@@ -48,17 +50,17 @@ module.exports.dockerCmd = ({cacheDir, projectDir, lanyonVersion}, cmd, flags) =
   if (!flags) {
     flags = ''
   }
-  return [
-    'docker run',
-    ` ${flags}`,
-    ' --rm',
-    ` --workdir ${cacheDir}`,
-    ' --user $(id -u)',
-    ` --volume ${cacheDir}:${cacheDir}`,
-    ` --volume ${projectDir}:${projectDir}`,
-    ` kevinvz/lanyon:${lanyonVersion}`,
-    ` ${cmd}`,
-  ].join('')
+  return oneLine`
+    docker run
+      ${flags}
+      --rm
+      --workdir ${cacheDir}
+      --user $(id -u)
+      --volume ${cacheDir}:${cacheDir}
+      --volume ${projectDir}:${projectDir}
+    kevinvz/lanyon:${lanyonVersion}
+    ${cmd}
+  `
 }
 
 module.exports.upwardDirContaining = (find, cwd, not) => {
@@ -105,24 +107,24 @@ module.exports.writeConfig = cfg => {
   fs.writeFileSync(`${cfg.runtime.cacheDir}/webpack.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/lib/config.js").webpack`, 'utf-8')
   fs.writeFileSync(cfg.runtime.recordsPath, JSON.stringify({}, null, '  '), 'utf-8')
 
-  let dBuf = ''
-  dBuf    += 'FROM ruby:2.3.3-alpine\n'
-  dBuf    += 'RUN mkdir -p /jekyll\n'
-  dBuf    += 'WORKDIR /jekyll\n'
-  dBuf    += 'COPY Gemfile /jekyll/\n'
-  dBuf    += 'RUN true \\\n'
-  dBuf    += '  && apk --update add make gcc g++ \\\n'
-  dBuf    += '  && bundler install --path /jekyll/vendor/bundler \\\n'
-  dBuf    += '  && bundler update \\\n'
-  dBuf    += '  && apk del make gcc g++ \\\n'
-  dBuf    += '  && rm -rf /var/cache/apk/* \\\n'
-  dBuf    += '  && true\n'
+  let dBuf = stripIndent`
+    FROM ruby:2.3.3-alpine
+    RUN mkdir -p /jekyll
+    WORKDIR /jekyll
+    COPY Gemfile /jekyll/
+    RUN true \\
+      && apk --update add make gcc g++ \\
+      && bundler install --path /jekyll/vendor/bundler \\
+      && bundler update \\
+      && apk del make gcc g++ \\
+      && rm -rf /var/cache/apk/* \\
+      && true
+  `
   fs.writeFileSync(`${cfg.runtime.cacheDir}/Dockerfile`, dBuf, 'utf-8')
 
-  let gBuf = 'source \'https://rubygems.org\'\n'
-  for (const name in cfg.runtime.gems) {
-    const version = cfg.runtime.gems[name]
-    gBuf         += `gem '${name}', '${version}'\n`
+  let gBuf = `source 'https://rubygems.org'\n`
+  for (let name in cfg.runtime.gems) {
+    gBuf += `gem '${name}', '${cfg.runtime.gems[name]}'\n`
   }
   fs.writeFileSync(path.join(cfg.runtime.cacheDir, 'Gemfile'), gBuf, 'utf-8')
 }

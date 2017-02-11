@@ -27,7 +27,7 @@ Released: TBA.
 
 - [ ] Add a real command line parser for `lib/cli.js` like minimist
 - [ ] Consider not testing each install setup, but just verifying at least one works
-- [ ] Fix bug: the input device is not a TTY
+- [ ] Fix bug: `the input device is not a TTY`
 - [x] No longer auto install ruby things upon `install`, require an explicit call to `cli.js install` instead
 - [x] Introduce async/await for internal use (install)
 - [x] Add scrolling output via `scrolex`

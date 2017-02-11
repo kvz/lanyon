@@ -135,9 +135,11 @@ if (_.isFunction(cmd)) {
   cmd = cmd.replace(/(\s|^)bundler(\s|$)/, `$1${runtime.binDir}/bundler$2`)
 
   scrolex.exe(cmd, {
-    mode : cmd.indexOf(__filename) === -1 && !cmdName.match(/^container:/) ? 'singlescroll' : 'passthru',
     cwd  : runtime.cacheDir,
     stdio: cmdName.match(/^container:/) ? 'inherit' : 'pipe',
+    mode : cmd.indexOf(__filename) === -1 && !cmdName.match(/^container:/)
+      ? (process.env.SCROLEX_MODE || 'singlescroll')
+      : 'passthru',
   })
 } else {
   scrolex.failure(`"${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)
