@@ -17,11 +17,11 @@ const scripts = {
   'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
   'build'                    : '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
   'container:connect'        : utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
-  'deploy'                   : require('./deploy'),
-  'encrypt'                  : require('./encrypt'),
+  'deploy'                   : require(`${__dirname}/deploy`),
+  'encrypt'                  : require(`${__dirname}/encrypt`),
   'help'                     : 'jekyll build --help',
   'list:ghpgems'             : 'bundler exec github-pages versions --gem',
-  'install'                  : require('./install'),
+  'install'                  : require(`${__dirname}/install`),
   'serve'                    : 'browser-sync start --config [cacheDir]/browsersync.config.js',
   'start'                    : '[lanyon] build:assets && [lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
 }
