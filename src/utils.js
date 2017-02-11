@@ -121,11 +121,13 @@ module.exports.writeConfig = (cfg) => {
     FROM ruby:2.3.3-alpine
     RUN mkdir -p /jekyll
     WORKDIR /jekyll
+    ENV GEM_HOME /jekyll/vendor/gem_home
+    ENV GEM_PATH /jekyll/vendor/gem_home
     COPY Gemfile /jekyll/
     COPY Gemfile.lock /jekyll/
     RUN true \\
       && apk --update add make gcc g++ \\
-      && (bundler install --path /jekyll/vendor/bundler || bundler update) \\
+      && (bundler install --force --path /jekyll/vendor/bundler || bundler update) \\
       && apk del make gcc g++ \\
       && rm -rf /var/cache/apk/* \\
       && true
