@@ -24,6 +24,7 @@
     "jest:update": "env DEBUG=scrolex:* NODE_ENV=test jest --updateSnapshot",
     "jest": "env DEBUG=scrolex:* NODE_ENV=test jest",
     "test:update": "npm-run-all build jest:update",
+    "test:acceptance": "./scripts/test-acceptance.sh",
     "test:watcher": "npm test -- --watch",
     "test": "npm-run-all build jest",
     "upgrade:modules": "next-update --keep true --tldr",
