@@ -27,6 +27,7 @@ Released: TBA.
 
 - [ ] Add a real command line parser for `lib/cli.js` like minimist
 - [ ] Consider not testing each install setup, but just verifying at least one works
+- [x] Localize `GEM_HOME` and `GEM_PATH` in container
 - [x] Only run acceptance test on all platforms. Rest of the tests on Node 6 only
 - [x] Distribute the `Gemfile.lock` as well, allow updates via `LANYON_UPDATE_GEM_LOCKFILE=1`
 - [x] Switch from ava -> jest
