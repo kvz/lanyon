@@ -14,6 +14,8 @@ if (require.main === module) {
   process.exit(1)
 }
 
+const utils = module.exports
+
 module.exports.preferLocalPackage = (args, filename, appDir, name, entry, version) => {
   let localModulePackage
   let absoluteEntry
@@ -96,10 +98,15 @@ module.exports.initProject = ({assetsBuildDir, gitRoot, cacheDir, binDir}) => {
   }
 }
 
-module.exports.writeConfig = cfg => {
+module.exports.fsCopySync = (src, dst, { mode = '644', encoding = 'utf-8' } = {}) => {
+  fs.writeFileSync(`${dst}`, fs.readFileSync(`${src}`, 'utf-8'), { mode, encoding })
+}
+
+module.exports.writeConfig = (cfg) => {
   if (!shell.test('-f', `${cfg.runtime.cacheDir}/jekyll.lanyon_assets.yml`)) {
     fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.lanyon_assets.yml`, '# this file should be overwritten by the Webpack AssetsPlugin', 'utf-8')
   }
+  utils.fsCopySync(`${cfg.runtime.lanyonDir}/Gemfile.lock`, `${cfg.runtime.cacheDir}/Gemfile.lock`)
   fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.config.yml`, yaml.safeDump(cfg.jekyll), 'utf-8')
   fs.writeFileSync(`${cfg.runtime.cacheDir}/nodemon.config.json`, JSON.stringify(cfg.nodemon, null, '  '), 'utf-8')
   fs.writeFileSync(`${cfg.runtime.cacheDir}/full-config-dump.json`, JSON.stringify(cfg, null, '  '), 'utf-8')
@@ -112,10 +119,10 @@ module.exports.writeConfig = cfg => {
     RUN mkdir -p /jekyll
     WORKDIR /jekyll
     COPY Gemfile /jekyll/
+    COPY Gemfile.lock /jekyll/
     RUN true \\
       && apk --update add make gcc g++ \\
-      && bundler install --path /jekyll/vendor/bundler \\
-      && bundler update \\
+      && (bundler install --path /jekyll/vendor/bundler || bundler update) \\
       && apk del make gcc g++ \\
       && rm -rf /var/cache/apk/* \\
       && true
