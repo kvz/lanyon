@@ -3,6 +3,9 @@
   "version": "0.0.52",
   "description": "dr. Jekyll has turned into mr. Hyde. Lanyon to the rescue!",
   "main": "lib/config.js",
+  "engines" : {
+    "node" : ">=0.12.18"
+  },
   "jest": {
     "verbose": true,
     "testPathDirs": [
