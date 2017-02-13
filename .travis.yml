@@ -4,6 +4,11 @@ cache:
   directories:
     - /usr/local/Cellar/
 
+addons:
+  apt:
+    sources:
+    - bc
+
 before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
@@ -29,7 +34,7 @@ script:
   - 'if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 4")" -eq 1 ]; then npm run lint; fi'
   # babel compile does not work on flat npm structure
   # - 'if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 4")" -eq 1 ]; then npm run build; fi'
-  - npm run build
+  - nvm use 6 && npm run build && nvm use ${TRAVIS_NODE_VERSION}
   - 'if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 6")" -eq 1 ]; then npm run test; fi'
   # OSX rvm build needs more than 10m no-output-travis-time
   - travis_wait 50 npm run test:acceptance
