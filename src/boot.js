@@ -1,12 +1,11 @@
 require('babel-polyfill')
-module.exports = async function boot () {
-  const utils        = require('./utils')
-  const whichPackage = utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib/cli.js', require('../package.json').version)
-  const _            = require('lodash')
-  const config       = require('./config')
-  const shell        = require('shelljs')
-  const scrolex      = require('scrolex')
-  const runtime      = config.runtime
+module.exports = async function boot (whichPackage) {
+  const _       = require('lodash')
+  const config  = require('./config')
+  const utils   = require('./utils')
+  const shell   = require('shelljs')
+  const scrolex = require('scrolex')
+  const runtime = config.runtime
 
   const scripts = {
     'build:assets'             : 'webpack --config [cacheDir]/webpack.config.js',
