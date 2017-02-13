@@ -14,7 +14,7 @@ const scripts = {
   'build:content:watch'      : 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"',
   'build:content'            : 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
   // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
-  'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
+  // 'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
   'build'                    : '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
   'container:connect'        : utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
   'deploy'                   : require(`${__dirname}/deploy`),
@@ -103,7 +103,7 @@ if (_.isFunction(cmd)) {
   const npmBins = {
     'browser-sync' : '/node_modules/browser-sync/bin/browser-sync.js',
     'webpack'      : '/node_modules/webpack/bin/webpack.js',
-    'imagemin'     : '/node_modules/imagemin-cli/cli.js',
+    // 'imagemin'     : '/node_modules/imagemin-cli/cli.js',
     'nodemon'      : '/node_modules/nodemon/bin/nodemon.js',
     'npm-run-all'  : '/node_modules/npm-run-all/bin/npm-run-all/index.js',
     'parallelshell': '/node_modules/parallelshell/index.js',
