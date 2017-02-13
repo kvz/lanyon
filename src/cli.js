@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 require('babel-polyfill')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
