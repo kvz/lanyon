@@ -13,4 +13,4 @@ if (require.main !== module) {
   process.exit(1)
 }
 
-require('./boot')(whichPackage)
+require(`${__dirname}/boot`)(whichPackage)
