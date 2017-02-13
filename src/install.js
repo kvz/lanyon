@@ -44,6 +44,7 @@ module.exports = async (runtime, cb) => {
   }
 
   if (!utils.satisfied(runtime, 'node')) {
+    scrolex.failure('No satisfying node found')
     shell.exit(1)
   }
 
@@ -75,8 +76,8 @@ module.exports = async (runtime, cb) => {
     rubyProvider = 'docker'
     if (process.env.DOCKER_BUILD === '1') {
       const cache = process.env.DOCKER_RESET === '1' ? ' --no-cache' : ''
-      await scrolex.exe(`cd .lanyon && docker build${cache} -t kevinvz/lanyon:${runtime.lanyonVersion} .`)
-      await scrolex.exe(`cd .lanyon && docker push kevinvz/lanyon:${runtime.lanyonVersion}`)
+      await scrolex.exe(`cd "${runtime.cacheDir}" && docker build${cache} -t kevinvz/lanyon:${runtime.lanyonVersion} .`)
+      await scrolex.exe(`cd "${runtime.cacheDir}" && docker push kevinvz/lanyon:${runtime.lanyonVersion}`)
     }
     deps.sh.exe     = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
     deps.ruby.exe   = utils.dockerCmd(runtime, 'ruby')

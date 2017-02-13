@@ -1,3 +1,4 @@
+require('babel-polyfill')
 // const utils = require('./utils')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
@@ -10,8 +11,8 @@ if (require.main === module) {
   process.exit(1)
 }
 
-module.exports = (runtime, cb) => {
-  scrolex.exe('[ -f env.sh ] || (touch env.sh && chmod 600 env.sh && git ignore env.sh)', { cwd: runtime.gitRoot, components: 'lanyon>encrypt' })
+module.exports = async (runtime, cb) => {
+  await scrolex.exe('[ -f env.sh ] || (touch env.sh && chmod 600 env.sh && git ignore env.sh)', { cwd: runtime.gitRoot, components: 'lanyon>encrypt' })
 
   if (!runtime.ghPagesEnv.GHPAGES_URL) {
     return cb(new Error('GHPAGES_URL was not set. Did you source env.sh first?'))
@@ -19,7 +20,7 @@ module.exports = (runtime, cb) => {
 
   for (const key in runtime.ghPagesEnv) {
     if (runtime.ghPagesEnv[key]) {
-      scrolex.exe(`travis encrypt --skip-version-check --add env.global ${key}=$${key}`, { cwd: runtime.gitRoot, components: 'lanyon>encrypt' })
+      await scrolex.exe(`travis encrypt --skip-version-check --add env.global ${key}=$${key}`, { cwd: runtime.gitRoot, components: 'lanyon>encrypt' })
     }
   }
 

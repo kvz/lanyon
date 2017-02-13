@@ -9,8 +9,8 @@ __scriptsdir="$(cd "$(dirname "${__dirname}")" && pwd)"
 __rootdir="$(cd "$(dirname "${__scriptsdir}")" && pwd)"
 
 pushd "${__dirname}"
+  # --no-cache \
   docker build . \
-    --no-cache \
     --tag lanyon-base:0.12
 
   # --rm \
