@@ -4,10 +4,11 @@ cache:
   directories:
     - /usr/local/Cellar/
 
-addons:
-  apt:
-    sources:
-    - bc
+apt:
+  sources:
+  - ubuntu-toolchain-r-test
+  packages:
+  - bc
 
 before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload; fi
