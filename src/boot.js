@@ -16,11 +16,11 @@ module.exports = async function boot (whichPackage) {
     // 'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
     'build'                    : '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
     'container:connect'        : utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
-    'deploy'                   : require(`${__dirname}/deploy`),
-    'encrypt'                  : require(`${__dirname}/encrypt`),
+    'deploy'                   : require(`./deploy`),
+    'encrypt'                  : require(`./encrypt`),
     'help'                     : 'jekyll build --help',
     'list:ghpgems'             : 'bundler exec github-pages versions --gem',
-    'install'                  : require(`${__dirname}/install`),
+    'install'                  : require(`./install`),
     'serve'                    : 'browser-sync start --config [cacheDir]/browsersync.config.js',
     'start'                    : '[lanyon] build:assets && [lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
   }
@@ -93,7 +93,7 @@ module.exports = async function boot (whichPackage) {
       scrolex.stick(`${cmdName} done`)
     })
   } else if (_.isString(cmd)) {
-    cmd = cmd.replace(/\[lanyon]/g, `node ${__filename}`) // eslint-disable-line no-path-concat
+    cmd = cmd.replace(/\[lanyon]/g, `node ${__dirname}/cli.js`) // eslint-disable-line no-path-concat
     cmd = cmd.replace(/\[lanyonDir]/g, runtime.lanyonDir)
     cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
     cmd = cmd.replace(/\[projectDir]/g, runtime.projectDir)
@@ -136,7 +136,7 @@ module.exports = async function boot (whichPackage) {
     await scrolex.exe(cmd, {
       cwd  : runtime.cacheDir,
       stdio: cmdName.match(/^container:/) ? 'inherit' : 'pipe',
-      mode : cmd.indexOf(__filename) === -1 && !cmdName.match(/^container:/)
+      mode : cmd.indexOf(__dirname) === -1 && !cmdName.match(/^container:/)
         ? (process.env.SCROLEX_MODE || 'singlescroll')
         : 'passthru',
     })
