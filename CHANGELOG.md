@@ -6,15 +6,14 @@
 - [ ] Consider shipping all of Lanyon inside a Docker container
 - [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Throw an error if we find legacy Jekyll residue such as `./vendors` or `.bundle`
-- [ ] Maybe add https://github.com/btford/write-good
-- [ ] Consider https://www.npmjs.com/package/webpack-svgstore-plugin
+- [ ] Maybe add https://github.com/btford/write-good and or text-lint (#8)
 - [ ] Consider postcss
 - [ ] Hooks are ran with every build, but not when doing HMR. We might be able to write a `CallHooksPlugin` to work around this that calls the hook for assets, while lib/cli.js calls it for content
 - [ ] Consider sourcemaps like https://github.com/rstacruz/webpack-tricks#source-maps
 - [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
 - [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0), add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling bundle exec gemoji extract assets/images/emoji) 
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
-- [ ] Windows support. See #1 - See also https://github.com/avajs/ava/blob/master/appveyor.yml
+- [ ] Windows support (consider: https://github.com/avajs/ava/blob/master/appveyor.yml) (#1)
 
 ## v0.0.53
 
@@ -30,6 +29,7 @@ Released: TBA.
 Released: 2017-02-14.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.52...v0.0.53).
 
+- [x] Remove `lib` from Git again now that we can build on older nodes now that the es2015-loose problem is solved
 - [x] Also run `lanyon install` in the Travis deploy shim, so that we can opt to not install lanyon in unrelated branches
 - [x] Switch from `es2015-loose` to `es2015` babel preset to resolve build issues on Travis
 - [x] Add Dockerfile for testing building on node 0.12 locally

@@ -18,7 +18,6 @@
   "scripts": {
     "build": "babel src --source-maps --out-dir lib",
     "build:watch": "babel src --watch --source-maps --out-dir lib",
-    "commit:es5": "git commit lib -m 'Save transpiled version so we can still run tests on Node 0.12' || true",
     "commit:gemlockfile": "git commit Gemfile.lock -m 'Save updated Gemfile.lock' || true",
     "push": "git push && git push --tags",
     "container:rebuild": "env LANYON_UPDATE_GEM_LOCKFILE=1 DOCKER_RESET=1 DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node lib/cli.js install",
@@ -29,7 +28,7 @@
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
     "release:patch": "env SEMANTIC=patch npm run release",
-    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all build commit:es5 container:build commit:gemlockfile push npublish",
+    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all build container:build commit:gemlockfile push npublish",
     "npublish": "npm publish",
     "jest:update": "env DEBUG=scrolex:* NODE_ENV=test jest --updateSnapshot",
     "jest": "env DEBUG=scrolex:* NODE_ENV=test jest",

@@ -96,11 +96,14 @@ matrix:
       env: SCROLEX_MODE=passthru LANYON_ONLY="system" OSDIST="xcode8"
       language: node_js
       node_js: "7"
+
 before_cache:
 - rm -f ./node_modules/.bin/which
+
 before_deploy:
 - cd website && npm link lanyon && cd ..
 - env LANYON_PROJECT=./website node ./lib/cli.js install
+
 deploy:
   skip_cleanup: true
   provider: script
