@@ -112,7 +112,7 @@ module.exports = async (runtime, cb) => {
     if (!utils.satisfied(runtime, 'bundler', `${deps.bundler.exe} -v${deps.ruby.exeSuffix}`)) {
       let localGemArgs = ''
       if (rubyProvider === 'system') {
-        localGemArgs = `--binDir='${runtime.binDir}' --install-dir='vendor/gem_home'`
+        localGemArgs = `--binDir='${runtime.binDir}' --install-dir='${runtime.cacheDir}/vendor/gem_home'`
       }
 
       await scrolex.exe(oneLine`
@@ -127,8 +127,8 @@ module.exports = async (runtime, cb) => {
 
       if (rubyProvider === 'system') {
         deps.bundler.exe = `${runtime.binDir}/bundler`
-        passEnv.GEM_HOME = 'vendor/gem_home'
-        passEnv.GEM_PATH = 'vendor/gem_home'
+        passEnv.GEM_HOME = `${runtime.cacheDir}/vendor/gem_home`
+        passEnv.GEM_PATH = `${runtime.cacheDir}/vendor/gem_home`
 
         if (Object.keys(passEnv).length > 0) {
           const vals = []

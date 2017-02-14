@@ -11,11 +11,6 @@ addons:
     packages:
     - bc
 
-matrix:
-  allow_failures:
-  - node_js: '0.12'
-    os     : 'osx' # @todo: Fix rvm issue: https://travis-ci.org/kvz/lanyon/jobs/201449241#L4811
-
 before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
@@ -62,6 +57,9 @@ language: node_js
 # OSDIST is ignored, but added to easily identify builds in Travis CI's build index, which displays
 # env vars in a table, but not os/dists
 matrix:
+  allow_failures:
+    - node_js: '0.12'
+      os     : 'osx' # @todo: Fix rvm issue: https://travis-ci.org/kvz/lanyon/jobs/201449241#L4811
   include:
     - os: linux
       dist: precise
@@ -82,8 +80,8 @@ matrix:
       language: node_js
       node_js: "6"
     - os: osx
-      osx_image: beta-xcode6.1
-      env: SCROLEX_MODE=passthru LANYON_ONLY="rvm" OSDIST="beta-xcode6.1"
+      osx_image: xcode6.4
+      env: SCROLEX_MODE=passthru LANYON_ONLY="rvm" OSDIST="xcode6.4"
       language: node_js
       node_js: "0.12"
     - os: osx
