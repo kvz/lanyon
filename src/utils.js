@@ -132,7 +132,7 @@ module.exports.writeConfig = (cfg) => {
   `
   fs.writeFileSync(`${cfg.runtime.cacheDir}/Dockerfile`, dBuf, 'utf-8')
 
-  let gBuf = `source 'https://rubygems.org'\n`
+  let gBuf = `source 'http://rubygems.org'\n`
   for (let name in cfg.runtime.gems) {
     gBuf += `gem '${name}', '${cfg.runtime.gems[name]}'\n`
   }

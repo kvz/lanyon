@@ -11,6 +11,11 @@ addons:
     packages:
     - bc
 
+matrix:
+  allow_failures:
+  - node_js: '0.12'
+    os     : 'osx' # @todo: Fix rvm issue: https://travis-ci.org/kvz/lanyon/jobs/201449241#L4811
+
 before_install:
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
