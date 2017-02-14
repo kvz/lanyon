@@ -120,7 +120,7 @@ module.exports = async (runtime, cb) => {
           ${deps.ruby.exe} ${deps.gem.exe} install ${localGemArgs}
             --no-rdoc
             --no-ri
-          bundler -v '${deps.bundler.preferred}'${deps.ruby.exeSuffix}
+          bundler -v '${deps.bundler.preferred}'
           ${deps.ruby.exeSuffix}
         )
       `)
