@@ -199,6 +199,7 @@ module.exports = async (runtime, cb) => {
   fs.writeFileSync(shimPath, stripIndent`
     #!/bin/sh -ex
     cd "${runtime.projectDir}"
+    ./node_modules/.bin/lanyon install
     (npm run build:production || npm run web:build:production) && (npm run deploy || npm run web:deploy)
   `, { 'encoding': 'utf-8', 'mode': '755' })
 

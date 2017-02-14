@@ -6,14 +6,14 @@ cache:
   yarn: true
   directories:
   - .lanyon
-install: npm install # <-- yarn still messes up nested bins: https://github.com/yarnpkg/yarn/issues/760  
+install: npm install # <-- yarn still messes up nested bins: https://github.com/yarnpkg/yarn/issues/760
 before_cache:
   - rm -f ./node_modules/.bin/which # <-- workaround for https://github.com/travis-ci/travis-ci/issues/5092
 before_deploy: node_modules/.bin/lanyon install # <-- unless you already run lanyon install some other way (e.g. via npm scripts/install)
 deploy:
   skip_cleanup: true
   provider: script
-  script: .lanyon/bin/deploy # <-- this calls 'npm run build:production && npm run deploy'. Travis does not allow commands, only files here..
+  script: .lanyon/bin/deploy # Just calls `(web:)build:production` and `(web:)deploy` on the main project
   on:
     branch: master
     condition: $TRAVIS_OS_NAME = linux

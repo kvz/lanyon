@@ -104,7 +104,7 @@ before_deploy:
 deploy:
   skip_cleanup: true
   provider: script
-  script: website/.lanyon/bin/deploy
+  script: website/.lanyon/bin/deploy # Just calls `(web:)build:production` and `(web:)deploy` on the main project
   on:
     branch: master
     node: 6
