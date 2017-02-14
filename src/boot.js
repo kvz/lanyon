@@ -3,7 +3,7 @@ module.exports = async function boot (whichPackage) {
   const _       = require('lodash')
   const config  = require('./config')
   const utils   = require('./utils')
-  const shell   = require('shelljs')
+  const fs      = require('fs')
   const scrolex = require('scrolex')
   const runtime = config.runtime
 
@@ -117,7 +117,7 @@ module.exports = async function boot (whichPackage) {
 
       let found = false
       tests.forEach(test => {
-        if (shell.test('-f', test)) {
+        if (fs.existsSync(test)) {
           npmBins[name] = test
           found         = true
         }

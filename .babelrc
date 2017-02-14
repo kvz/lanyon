@@ -1,5 +1,7 @@
 {
-  "presets": ["es2015-loose"],
+  "presets": [
+    "es2015-loose"
+  ],
   "plugins": [
     "add-module-exports",
     "es6-promise",

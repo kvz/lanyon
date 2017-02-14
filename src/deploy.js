@@ -1,5 +1,4 @@
 require('babel-polyfill')
-const shell   = require('shelljs')
 const fs      = require('fs')
 const globby  = require('globby')
 const scrolex = require('scrolex').persistOpts({
@@ -32,10 +31,10 @@ module.exports = async (runtime, cb) => {
   if (!globby.sync(`${runtime.contentBuildDir}/assets/build/app*.js`).length) {
     return cb(new Error(`I refuse to deploy if there is no ${runtime.contentBuildDir}/assets/build/app*.js - build:production first!`))
   }
-  if (shell.test('-f', `${runtime.contentBuildDir}/env.sh`)) {
+  if (fs.existsSync(`${runtime.contentBuildDir}/env.sh`)) {
     return cb(new Error(`I refuse to deploy if while ${runtime.contentBuildDir}/env.sh exists - secure your build first!`))
   }
-  if (!shell.test('-d', `${runtime.contentBuildDir}/.git`)) {
+  if (!fs.existsSync(`${runtime.contentBuildDir}/.git`)) {
     await scrolex.exe('git init', { cwd: runtime.contentBuildDir })
   }
 

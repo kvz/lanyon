@@ -76,7 +76,7 @@ module.exports.upwardDirContaining = (find, cwd, not) => {
   while (parts.length) {
     const newParts = parts
     const ppath = `${newParts.join('/')}/${find}`
-    if (shell.test('-f', ppath) || shell.test('-d', ppath)) {
+    if (fs.existsSync(ppath)) {
       if (not === undefined || not !== path.basename(path.dirname(ppath))) {
         return path.dirname(ppath)
       }
@@ -87,15 +87,15 @@ module.exports.upwardDirContaining = (find, cwd, not) => {
 }
 
 module.exports.initProject = ({assetsBuildDir, gitRoot, cacheDir, binDir}) => {
-  if (!shell.test('-d', assetsBuildDir)) {
+  if (!fs.existsSync(assetsBuildDir)) {
     shell.mkdir('-p', assetsBuildDir)
     shell.exec(`cd "${path.dirname(gitRoot)}" && git ignore "${path.relative(gitRoot, assetsBuildDir)}"`)
   }
-  if (!shell.test('-d', cacheDir)) {
+  if (!fs.existsSync(cacheDir)) {
     shell.mkdir('-p', cacheDir)
     shell.exec(`cd "${path.dirname(gitRoot)}" && git ignore "${path.relative(gitRoot, cacheDir)}"`)
   }
-  if (!shell.test('-d', binDir)) {
+  if (!fs.existsSync(binDir)) {
     shell.mkdir('-p', binDir)
     shell.exec(`cd "${path.dirname(gitRoot)}" && git ignore "${path.relative(gitRoot, binDir)}"`)
   }
@@ -106,7 +106,7 @@ module.exports.fsCopySync = (src, dst, { mode = '644', encoding = 'utf-8' } = {}
 }
 
 module.exports.writeConfig = (cfg) => {
-  if (!shell.test('-f', `${cfg.runtime.cacheDir}/jekyll.lanyon_assets.yml`)) {
+  if (!fs.existsSync(`${cfg.runtime.cacheDir}/jekyll.lanyon_assets.yml`)) {
     fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.lanyon_assets.yml`, '# this file should be overwritten by the Webpack AssetsPlugin', 'utf-8')
   }
   utils.fsCopySync(`${cfg.runtime.lanyonDir}/Gemfile.lock`, `${cfg.runtime.cacheDir}/Gemfile.lock`)

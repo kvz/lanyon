@@ -1,7 +1,6 @@
 require('babel-polyfill')
 const path        = require('path')
 const utils       = require('./utils')
-const shell       = require('shelljs')
 const os          = require('os')
 const fs          = require('fs')
 // var debug      = require('depurar')('lanyon')
@@ -40,12 +39,12 @@ module.exports = async (runtime, cb) => {
 
   if (runtime.lanyonReset) {
     scrolex.stick('Removing existing shims')
-    shell.rm('-f', `${runtime.binDir}/*`)
+    await scrolex.exe(`${runtime.binDir}/*`)
   }
 
   if (!utils.satisfied(runtime, 'node')) {
     scrolex.failure('No satisfying node found')
-    shell.exit(1)
+    process.exit(1)
   }
 
   // Detmine optimal rubyProvider and adjust shim configuration

@@ -22,6 +22,7 @@ Released: TBA.
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
+- [ ] Remove `shelljs` completely
 - [x] Add Dockerfile for testing building on node 0.12 locally
 - [x] Remove imagemin so long as we're not using it and it's causing build problems (gifsicle: Assertion failed: 0 (../deps/uv/src/uv-common.c: uv_err_name: 143))
 
