@@ -36,7 +36,7 @@ script:
   - 'if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 4")" -eq 1 ]; then npm run lint; fi'
   # babel compile does not work on flat npm structure
   # - 'if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 4")" -eq 1 ]; then npm run build; fi'
-  - 'if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 4")" -eq 1 ]; then npm run build; else nvm install 6 && nvm use 6 && npm install && npm run build && nvm use ${TRAVIS_NODE_VERSION} && npm install; fi'
+  - 'if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 4")" -eq 1 ]; then npm run build; else nvm install 6 && nvm use 6 && rm -rf node_modules && mkdir node_modules && npm install && npm run build && nvm use ${TRAVIS_NODE_VERSION} && rm -rf node_modules && mkdir node_modules && npm install; fi'
   - 'if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 6")" -eq 1 ]; then npm run test; fi'
   # OSX rvm build needs more than 10m no-output-travis-time
   - travis_wait 50 npm run test:acceptance
