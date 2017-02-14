@@ -23,6 +23,7 @@ Released: TBA.
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
 - [ ] Remove `shelljs` completely
+- [ ] Fix bug where Spinner keeps adding new lines when testing in bash3boilerplate via a regular `make start`
 - [x] Make gem-paths absolute
 
 ## v0.0.53
