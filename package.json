@@ -1,7 +1,7 @@
 {
   "name": "lanyon",
   "version": "0.0.53",
-  "description": "dr. Jekyll has turned into mr. Hyde. Lanyon to the rescue!",
+  "description": "Jekyll without the Hassle",
   "main": "lib/config.js",
   "engines": {
     "node": ">=0.12.18"
@@ -12,6 +12,14 @@
       "lib/"
     ]
   },
+  "files": [
+    "example",
+    "Gemfile.lock",
+    "lib",
+    "Makefile",
+    "scripts",
+    "src"
+  ],
   "bin": {
     "lanyon": "lib/cli.js"
   },

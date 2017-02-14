@@ -15,16 +15,24 @@
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
 - [ ] Windows support (consider: https://github.com/avajs/ava/blob/master/appveyor.yml) (#1)
 
-## v0.0.54
+## v0.0.55
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.53...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.54...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
 - [ ] Remove `shelljs` completely
 - [ ] Fix bug where Spinner keeps adding new lines when testing in bash3boilerplate via a regular `make start`
+- [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
+
+## v0.0.54
+
+Released: 2017-02-14.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.53...v0.0.54).
+
 - [x] Make gem-paths absolute
+- [x] Use npm `files`
 
 ## v0.0.53
 
