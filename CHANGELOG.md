@@ -15,7 +15,7 @@
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
 - [ ] Windows support (consider: https://github.com/avajs/ava/blob/master/appveyor.yml) (#1)
 
-## v0.0.55
+## v0.0.56
 
 Released: TBA.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.54...master).
@@ -25,6 +25,14 @@ Released: TBA.
 - [ ] Remove `shelljs` completely
 - [ ] Fix bug where Spinner keeps adding new lines when testing in bash3boilerplate via a regular `make start`
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
+- [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
+
+## v0.0.55
+
+Released: 2017-02-15.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.54...v0.0.55).
+
+- [x] Find `node_modules/.bin/lanyon` in `npmRoot` vs `projectDir`
 
 ## v0.0.54
 
