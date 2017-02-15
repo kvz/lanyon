@@ -10,11 +10,11 @@ module.exports = async function boot (whichPackage) {
   const scripts = {
     'build:assets'             : 'webpack --config [cacheDir]/webpack.config.js',
     'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
-    'build:content:watch'      : 'nodemon --config [cacheDir]/nodemon.config.json --exec "[lanyon] build:content:incremental' + '"',
+    'build:content:watch'      : 'nodemon --config [cacheDir]/nodemon.config.json --exec "lanyon build:content:incremental' + '"',
     'build:content'            : 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
     // 'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
-    'build'                    : '[lanyon] build:assets && [lanyon] build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
+    'build'                    : 'lanyon build:assets && lanyon build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
     'container:connect'        : utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
     'deploy'                   : require(`./deploy`),
     'encrypt'                  : require(`./encrypt`),
@@ -22,7 +22,7 @@ module.exports = async function boot (whichPackage) {
     'list:ghpgems'             : 'bundler exec github-pages versions --gem',
     'install'                  : require(`./install`),
     'serve'                    : 'browser-sync start --config [cacheDir]/browsersync.config.js',
-    'start'                    : '[lanyon] build:assets && [lanyon] build:content:incremental && parallelshell "[lanyon] build:content:watch" "[lanyon] serve"',
+    'start'                    : 'lanyon build:assets && lanyon build:content:incremental && parallelshell "lanyon build:content:watch" "lanyon serve"',
   }
 
   if (runtime.trace) {
@@ -93,26 +93,28 @@ module.exports = async function boot (whichPackage) {
       scrolex.stick(`${cmdName} done`)
     })
   } else if (_.isString(cmd)) {
-    cmd = cmd.replace(/\[lanyon]/g, `node ${__dirname}/cli.js`) // eslint-disable-line no-path-concat
+    // Replace dirs
     cmd = cmd.replace(/\[lanyonDir]/g, runtime.lanyonDir)
     cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
     cmd = cmd.replace(/\[projectDir]/g, runtime.projectDir)
     cmd = cmd.replace(/\[cacheDir]/g, runtime.cacheDir)
 
+    // Replace all npms with their first-found full-path executables
     const npmBins = {
-      'browser-sync' : '/node_modules/browser-sync/bin/browser-sync.js',
-      'webpack'      : '/node_modules/webpack/bin/webpack.js',
-      // 'imagemin'     : '/node_modules/imagemin-cli/cli.js',
-      'nodemon'      : '/node_modules/nodemon/bin/nodemon.js',
-      'npm-run-all'  : '/node_modules/npm-run-all/bin/npm-run-all/index.js',
-      'parallelshell': '/node_modules/parallelshell/index.js',
+      'browser-sync' : 'node_modules/browser-sync/bin/browser-sync.js',
+      'lanyon'       : 'node_modules/lanyon/lib/cli.js',
+      'nodemon'      : 'node_modules/nodemon/bin/nodemon.js',
+      'npm-run-all'  : 'node_modules/npm-run-all/bin/npm-run-all/index.js',
+      'parallelshell': 'node_modules/parallelshell/index.js',
+      'webpack'      : 'node_modules/webpack/bin/webpack.js',
+      // 'imagemin'     : 'node_modules/imagemin-cli/cli.js',
     }
     for (const name in npmBins) {
       const tests = [
-        runtime.lanyonDir + npmBins[name],
-        runtime.gitRoot + npmBins[name],
-        runtime.projectDir + npmBins[name],
-        `${runtime.projectDir}/..${npmBins[name]}`,
+        `${runtime.npmRoot}/${npmBins[name]}`,
+        `${runtime.projectDir}/${npmBins[name]}`,
+        `${runtime.lanyonDir}/${npmBins[name]}`,
+        `${runtime.gitRoot}/${npmBins[name]}`,
       ]
 
       let found = false
@@ -120,6 +122,7 @@ module.exports = async function boot (whichPackage) {
         if (fs.existsSync(test)) {
           npmBins[name] = test
           found         = true
+          return false // Stop looking on first hit
         }
       })
 
@@ -130,6 +133,7 @@ module.exports = async function boot (whichPackage) {
       cmd = cmd.replace(pat, `$1node ${npmBins[name]}$2`)
     }
 
+    // Replace shims
     cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, `$1${runtime.binDir}/jekyll$2`)
     cmd = cmd.replace(/(\s|^)bundler(\s|$)/, `$1${runtime.binDir}/bundler$2`)
 
