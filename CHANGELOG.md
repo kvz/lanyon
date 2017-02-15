@@ -33,6 +33,7 @@ Released: 2017-02-15.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.56...v0.0.57).
 
 - [x] Fix rvm homebrew lock on Travis
+- [x] Add support for `postbuild` hooks
 
 ## v0.0.56
 

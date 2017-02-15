@@ -2,6 +2,7 @@ const semver      = require('semver')
 const fs          = require('fs')
 // const _        = require('lodash')
 const path        = require('path')
+const _           = require('lodash')
 const yaml        = require('js-yaml')
 const shell       = require('shelljs')
 const spawnSync   = require('spawn-sync')
@@ -66,6 +67,30 @@ module.exports.dockerCmd = ({cacheDir, projectDir, lanyonVersion}, cmd, flags) =
     kevinvz/lanyon:${lanyonVersion}
     ${cmd}
   `
+}
+
+module.exports.runhooks = async (order, cmdName, runtime) => {
+  let arr = []
+
+  if (cmdName.match(/^build:(assets|content)/)) {
+    arr = [`${order}build`, `${order}build:production`, `${order}build:development`]
+  }
+
+  arr.forEach(async (hook) => {
+    if (runtime[hook]) {
+      const needEnv = hook.split(':')[1]
+      if (!needEnv || runtime.lanyonEnv === needEnv) {
+        let squashedHooks = runtime[hook]
+        if (_.isArray(runtime[hook])) {
+          squashedHooks = runtime[hook].join(' && ')
+        }
+        await scrolex.exe(squashedHooks, {
+          cwd : runtime.projectDir,
+          mode: (process.env.SCROLEX_MODE || 'singlescroll'),
+        })
+      }
+    }
+  })
 }
 
 module.exports.upwardDirContaining = (find, cwd, not) => {
