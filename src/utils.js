@@ -1,3 +1,4 @@
+require('babel-polyfill')
 const semver      = require('semver')
 const fs          = require('fs')
 // const _        = require('lodash')
