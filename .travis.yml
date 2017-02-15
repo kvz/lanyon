@@ -12,6 +12,7 @@ addons:
     - bc
 
 before_install:
+  - if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then rm -rf /usr/local/var/homebrew/locks || true; fi
   - if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
   - if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install --force readline; fi
   - if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then ln -nfs /usr/local/opt/readline/lib/libreadline.dylib /usr/local/opt/readline/lib/libreadline.7.dylib; fi
