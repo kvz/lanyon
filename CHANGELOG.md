@@ -27,6 +27,13 @@ Released: TBA.
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
 
+## v0.0.58
+
+Released: 2017-02-15.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.57...v0.0.58).
+
+- [x] Fix bug that prevented resetting of shims
+
 ## v0.0.57
 
 Released: 2017-02-15.

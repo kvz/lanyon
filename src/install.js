@@ -40,7 +40,7 @@ module.exports = async (runtime, cb) => {
 
   if (runtime.lanyonReset) {
     scrolex.stick('Removing existing shims')
-    await scrolex.exe(`${runtime.binDir}/*`)
+    await scrolex.exe(`rm -f ${runtime.binDir}/*`)
   }
 
   if (!utils.satisfied(runtime, 'node')) {
