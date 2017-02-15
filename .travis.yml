@@ -14,6 +14,7 @@ addons:
 before_install:
   - if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
   - if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install --force readline; fi
+  - if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then ln -nfs /usr/local/opt/readline/lib/libreadline.dylib /usr/local/opt/readline/lib/libreadline.7.dylib; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
   - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install ruby-build; fi
