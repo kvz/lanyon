@@ -70,7 +70,8 @@ module.exports = async function boot (whichPackage) {
             squashedHooks = runtime[hook].join(' && ')
           }
           await scrolex.exe(squashedHooks, {
-            cwd: runtime.projectDir,
+            cwd : runtime.projectDir,
+            mode: 'passthru',
           })
           // scrolex.stick(`${hook} done`)
         }
@@ -133,16 +134,23 @@ module.exports = async function boot (whichPackage) {
       cmd = cmd.replace(pat, `$1node ${npmBins[name]}$2`)
     }
 
+    let stdio           = 'pipe'
+    let mode            = 'passthru'
+    if (cmdName === 'start') {
+      mode  = (process.env.SCROLEX_MODE || 'singlescroll')
+    }
+    if (cmdName === 'container:connect') {
+      stdio = 'inherit'
+    }
+
     // Replace shims
     cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, `$1${runtime.binDir}/jekyll$2`)
     cmd = cmd.replace(/(\s|^)bundler(\s|$)/, `$1${runtime.binDir}/bundler$2`)
 
     await scrolex.exe(cmd, {
       cwd  : runtime.cacheDir,
-      stdio: cmdName.match(/^container:/) ? 'inherit' : 'pipe',
-      mode : cmd.indexOf(__dirname) === -1 && !cmdName.match(/^container:/)
-        ? (process.env.SCROLEX_MODE || 'singlescroll')
-        : 'passthru',
+      stdio: stdio,
+      mode : mode,
     })
   } else {
     scrolex.failure(`"${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)
