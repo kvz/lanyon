@@ -1,6 +1,6 @@
 {
   "name": "lanyon",
-  "version": "0.0.55",
+  "version": "0.0.56",
   "description": "Jekyll without the Hassle",
   "main": "lib/config.js",
   "engines": {
