@@ -91,7 +91,7 @@ module.exports = async (runtime, cb) => {
     deps.ruby.versionCheck = `${deps.ruby.exe}ruby -v${deps.ruby.exeSuffix}`
   } else if (utils.satisfied(runtime, 'rvm')) {
     rubyProvider = 'rvm'
-    await scrolex.exe(`bash -c "rvm install '${deps.ruby.preferred}' --binary"`)
+    await scrolex.exe(`bash -c "rvm install '${deps.ruby.preferred}'"`)
     deps.ruby.exe          = `bash -c "rvm '${deps.ruby.preferred}' exec`
     deps.ruby.exeSuffix    = '"'
     deps.ruby.versionCheck = `${deps.ruby.exe} ruby -v${deps.ruby.exeSuffix}`
