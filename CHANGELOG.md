@@ -15,10 +15,10 @@
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
 - [ ] Windows support (consider: https://github.com/avajs/ava/blob/master/appveyor.yml) (#1)
 
-## v0.0.56
+## v0.0.57
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.54...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.56...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -26,6 +26,13 @@ Released: TBA.
 - [ ] Fix bug where Spinner keeps adding new lines when testing in bash3boilerplate via a regular `make start`
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
+
+## v0.0.56
+
+Released: 2017-02-15.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.55...v0.0.56).
+
+- [x] Only use singlescroll on `start`
 - [x] In boot, treat `lanyon` like any other `npmBin`
 - [x] Switch to using rvm `--binary` to avoid compile issues (https://travis-ci.org/kvz/lanyon/jobs/201786728#L1679)
 
