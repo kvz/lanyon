@@ -14,6 +14,7 @@
 - [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0), add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling bundle exec gemoji extract assets/images/emoji) 
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
 - [ ] Windows support (consider: https://github.com/avajs/ava/blob/master/appveyor.yml) (#1)
+- [ ] Add a `lanyon init` that a globally installed lanyon could use to `npm install --save` itself into a local project and run the lanyon installer there. Make sure the globally installed lanyon propery does a  `preferLocalPackage` when you type `lanyon start` in said local project
 
 ## master
 
