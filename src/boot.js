@@ -119,25 +119,23 @@ module.exports = async function boot (whichPackage) {
       cmd = cmd.replace(pat, `$1node ${npmBins[name]}$2`)
     }
 
-    let stdio           = 'pipe'
-    let mode            = 'passthru'
-    if (cmdName === 'start') {
-      mode = (process.env.SCROLEX_MODE || 'singlescroll')
+    const scrolexOpts = {
+      stdio: 'pipe',
+      cwd  : runtime.cacheDir,
+      fatal: true,
+    }
+    if (cmdName !== 'start') {
+      scrolexOpts.mode = 'passthru'
     }
     if (cmdName === 'container:connect') {
-      stdio = 'inherit'
+      scrolexOpts.stdio = 'inherit'
     }
 
     // Replace shims
     cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, `$1${runtime.binDir}/jekyll$2`)
     cmd = cmd.replace(/(\s|^)bundler(\s|$)/, `$1${runtime.binDir}/bundler$2`)
 
-    scrolex.exe(cmd, {
-      cwd  : runtime.cacheDir,
-      stdio: stdio,
-      mode : mode,
-      fatal: true,
-    }, async (err, out) => { // eslint-disable-line handle-callback-err
+    scrolex.exe(cmd, scrolexOpts, async (err, out) => { // eslint-disable-line handle-callback-err
       // Run Post-Hooks
       await utils.runhooks('post', cmdName, runtime)
     })
