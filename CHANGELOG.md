@@ -14,6 +14,7 @@
 - [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0), add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling bundle exec gemoji extract assets/images/emoji) 
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
 - [ ] Windows support (consider: https://github.com/avajs/ava/blob/master/appveyor.yml) (#1)
+- [ ] Go over all `process.env.*` and make sure they are only at the head of `config.js`
 - [ ] Add a `lanyon init` that a globally installed lanyon could use to `npm install --save` itself into a local project and run the lanyon installer there. Make sure the globally installed lanyon propery does a  `preferLocalPackage` when you type `lanyon start` in said local project
 
 ## master
@@ -27,6 +28,8 @@ Released: TBA.
 - [ ] Fix bug where Spinner keeps adding new lines when testing in bash3boilerplate via a regular `make start`
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
+- [x] Add support for e.g. `LANYON_EXCLUDE=_posts,_demos` env var, allowing you to temporarily not build content
+- [x] Instead of overwriting a project's `exclude`, add to it.
 - [x] Upgrade to resolve-url >2.0, fixing a bug where leading to broken font-awesome icons in chrome in dev mode
 - [x] Upgrade minor & patch level dependencies 
 
