@@ -20,7 +20,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.59...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.60...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -28,6 +28,12 @@ Released: TBA.
 - [ ] Fix bug where Spinner keeps adding new lines when testing in bash3boilerplate via a regular `make start`
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
+
+## v0.0.60
+
+Released: 2017-02-17.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.59...v0.0.60).
+
 - [x] Add support for e.g. `LANYON_EXCLUDE=_posts,_demos` env var, allowing you to temporarily not build content
 - [x] Instead of overwriting a project's `exclude`, add to it.
 - [x] Upgrade to resolve-url >2.0, fixing a bug where leading to broken font-awesome icons in chrome in dev mode
@@ -36,7 +42,7 @@ Released: TBA.
 ## v0.0.59
 
 Released: 2017-02-15.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.57...v0.0.59).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.58...v0.0.59).
 
 - [x] Upgrade to `scrolex@0.0.26` which will default to `passthru` `mode` on Travis CI and non-TTY environments
 
