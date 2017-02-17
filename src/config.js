@@ -223,18 +223,21 @@ const cfg = {
 
         if (runtime.isDev) {
           loaders.push({
-            test  : /\.css$/,
-            loader: `style!css?sourceMap!resolve-url?root=${runtime.projectDir}`,
+            test   : /\.css$/,
+            loaders: ['style-loader', 'css-loader', 'resolve-url'],
+            // loader: `style!css?sourceMap!resolve-url?root=${runtime.projectDir}`,
           })
           loaders.push({
-            test  : /\.scss$/,
-            loader: `style!css?sourceMap!sass?sourceMap!resolve-url?root=${runtime.projectDir}`,
+            test   : /\.scss$/,
+            loaders: ['style-loader', 'css-loader', 'sass-loader?sourceMap', 'resolve-url'],
+            // loader: `style!css?sourceMap!resolve-url?root=${runtime.projectDir}!sass?sourceMap`,
           })
           loaders.push({
-            test  : /\.less$/,
+            test   : /\.less$/,
+            loaders: ['style-loader', 'css-loader', 'less-loader?sourceMap', 'resolve-url'],
             // @todo Had to disable resolve-url-loader for less as less currently produces invalid css (in its eyes)
             // see: https://travis-ci.org/tus/tus.io/builds/183913229#L1206
-            loader: 'style!css?sourceMap!less?sourceMap',
+            // loader: 'style!css?sourceMap!less?sourceMap',
           })
           loaders.push({
             test  : /\.(js|jsx)$/,
