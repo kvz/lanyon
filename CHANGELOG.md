@@ -27,6 +27,7 @@ Released: TBA.
 - [ ] Remove `shelljs` completely
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
+- [x] Upgrade node-sass to address peerInvalid: https://travis-ci.org/kvz/lanyon/jobs/202922768#L455
 
 ## v0.0.61
 

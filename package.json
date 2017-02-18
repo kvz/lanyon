@@ -180,7 +180,7 @@
     "log-symbols": "1.0.2",
     "log-update": "1.0.2",
     "node-libs-browser": "2.0.0",
-    "node-sass": "3.14.0-0",
+    "node-sass": "4.5.0",
     "nodemon": "1.11.0",
     "npm-check-updates": "2.10.2",
     "npm-run-all": "4.0.1",
