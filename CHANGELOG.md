@@ -27,6 +27,12 @@ Released: TBA.
 - [ ] Remove `shelljs` completely
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
+
+## v0.0.61
+
+Released: 2017-02-18.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.60...v0.0.61).
+
 - [x] Fix bug: Do not add empty items to `exclude` (or everything gets excluded)
 
 ## v0.0.60
