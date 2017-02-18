@@ -436,24 +436,24 @@ cfg.browsersync = {
 
 cfg.jekyll = {
   exclude: (function excludes () {
-    let excludes = []
-    excludes = excludes.concat([
+    let list = [
       'node_modules',
       'env.sh',
       'env.*.sh',
       '.env.sh',
       '.env.*.sh',
       '.lanyon',
-    ])
+    ]
+
     if (runtime.jekyllConfig.exclude) {
-      excludes = excludes.concat(runtime.jekyllConfig.exclude)
+      list = list.concat(runtime.jekyllConfig.exclude)
     }
 
     if (process.env.LANYON_EXCLUDE) {
-      excludes = process.env.LANYON_EXCLUDE.split(/\s*,\s*/)
+      list = list.concat(process.env.LANYON_EXCLUDE.split(/\s*,\s*/))
     }
 
-    return excludes
+    return list
   }()),
 }
 
