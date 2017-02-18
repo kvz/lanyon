@@ -131,6 +131,7 @@
     }
   },
   "devDependencies": {
+    "es6-promise": "^4.0.5",
     "eslint": "3.15.0",
     "eslint-config-standard": "6.2.1",
     "eslint-plugin-promise": "3.4.2",
@@ -145,7 +146,7 @@
     "babel-eslint": "6.1.2",
     "babel-loader": "6.3.2",
     "babel-plugin-add-module-exports": "0.2.1",
-    "babel-plugin-es6-promise": "1.1.1",
+    "babel-plugin-es6-promise": "^1.1.1",
     "babel-plugin-transform-async-to-generator": "6.22.0",
     "babel-plugin-transform-object-assign": "6.22.0",
     "babel-plugin-transform-proto-to-assign": "6.23.0",
