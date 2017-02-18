@@ -435,14 +435,26 @@ cfg.browsersync = {
 }
 
 cfg.jekyll = {
-  exclude: (runtime.jekyllConfig.exclude || []).concat([
-    'node_modules',
-    'env.sh',
-    'env.*.sh',
-    '.env.sh',
-    '.env.*.sh',
-    '.lanyon',
-  ], (process.env.LANYON_EXCLUDE || '').split(/\s*,\s*/)),
+  exclude: (function excludes () {
+    let excludes = []
+    excludes = excludes.concat([
+      'node_modules',
+      'env.sh',
+      'env.*.sh',
+      '.env.sh',
+      '.env.*.sh',
+      '.lanyon',
+    ])
+    if (runtime.jekyllConfig.exclude) {
+      excludes = excludes.concat(runtime.jekyllConfig.exclude)
+    }
+
+    if (process.env.LANYON_EXCLUDE) {
+      excludes = process.env.LANYON_EXCLUDE.split(/\s*,\s*/)
+    }
+
+    return excludes
+  }()),
 }
 
 cfg.nodemon = {

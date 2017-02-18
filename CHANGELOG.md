@@ -11,7 +11,7 @@
 - [ ] Hooks are ran with every build, but not when doing HMR. We might be able to write a `CallHooksPlugin` to work around this that calls the hook for assets, while lib/cli.js calls it for content
 - [ ] Consider sourcemaps like https://github.com/rstacruz/webpack-tricks#source-maps
 - [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
-- [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0), add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling bundle exec gemoji extract assets/images/emoji) 
+- [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0), add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling `bundle exec gemoji extract assets/images/emoji`) 
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
 - [ ] Windows support (consider: https://github.com/avajs/ava/blob/master/appveyor.yml) (#1)
 - [ ] Go over all `process.env.*` and make sure they are only at the head of `config.js`
@@ -25,9 +25,9 @@ Released: TBA.
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
 - [ ] Remove `shelljs` completely
-- [ ] Fix bug where Spinner keeps adding new lines when testing in bash3boilerplate via a regular `make start`
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
+- [x] Fix bug: Do not add empty items to `exclude` (or everything gets excluded)
 
 ## v0.0.60
 
