@@ -160,7 +160,7 @@ body.background-4 #header-overlay {
 }
 
 #content {
-  padding: 100px 0;
+  padding: 100px 15px;
   max-width: 650px;
   margin: 0 auto;
 }
