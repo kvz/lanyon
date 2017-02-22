@@ -195,7 +195,7 @@
     "resolve-url-loader": "2.0.0",
     "rimraf": "2.5.4",
     "sass-loader": "4.1.1",
-    "scrolex": "0.0.26",
+    "scrolex": "0.0.27",
     "semver": "5.3.0",
     "shelljs": "0.7.6",
     "spawn-sync": "1.0.15",
