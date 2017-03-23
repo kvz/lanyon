@@ -28,6 +28,8 @@ Released: TBA.
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
+- [x] Upgrade GitHub pages from 112 to 129
+- [x] Remove `jekyll-crosspost-to-medium` as built in gem
 - [x] Downgrade `css-loader` to 0.14.5 to address superslow HMR builds https://github.com/webpack-contrib/css-loader/issues/124
 - [x] Pass down `DEBUG` env var
 - [x] Upgrade `scrolex@0.0.27`

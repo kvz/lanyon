@@ -101,7 +101,7 @@
       "content": 4000
     },
     "gems": {
-      "github-pages": "112",
+      "github-pages": "129",
       "nokogiri": "1.6.8.1",
       "pkg-config": "1.1.7",
       "stringex": "2.6.0"
