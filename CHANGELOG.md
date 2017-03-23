@@ -28,6 +28,13 @@ Released: TBA.
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
+
+## v0.0.63
+
+Released: 2017-03-23.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.62...v0.0.63).
+
+- [x] Switch from `eval-cheap-source-map` to `inline-eval-cheap-source-map` for presumably faster builds https://github.com/erikras/react-redux-universal-hot-example/issues/616
 - [x] Upgrade GitHub pages from 112 to 129
 - [x] Remove `jekyll-crosspost-to-medium` as built in gem
 - [x] Downgrade `css-loader` to 0.14.5 to address superslow HMR builds https://github.com/webpack-contrib/css-loader/issues/124

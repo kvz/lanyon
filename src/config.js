@@ -168,7 +168,8 @@ const cfg = {
       chunkFilename: getFilename('js', true),
       cssFilename  : getFilename('css'),
     },
-    devtool: 'eval-cheap-source-map',
+    // devtool: 'eval-cheap-source-map',
+    devtool: 'inline-eval-cheap-source-map',
     // devtool: 'source-map',
     bail   : false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
     module : {
