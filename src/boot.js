@@ -38,6 +38,7 @@ module.exports = async function boot (whichPackage) {
     addCommandAsComponent: true,
     components           : `lanyon>${cmdName}`,
     env                  : Object.assign({}, process.env, {
+      DEBUG         : process.env.DEBUG,
       NODE_ENV      : runtime.lanyonEnv,
       JEKYLL_ENV    : runtime.lanyonEnv,
       LANYON_PROJECT: runtime.projectDir, // <-- to preserve the cwd over multiple nested executes, if it wasn't initially set
