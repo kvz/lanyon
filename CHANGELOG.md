@@ -33,6 +33,7 @@ Released: TBA.
 Released: 2017-03-23.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.62...v0.0.63).
 
+- [x] Teach Lanyon about zero leading version numbers such as `Docker version 17.03.0-ce`
 - [x] Now that jemoji relies on `gemoji` 3.0+ (vs ~2.0), add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling `bundle exec gemoji extract assets/images/emoji`)
 - [x] Switch from `eval-cheap-source-map` to `inline-eval-cheap-source-map` for presumably faster builds https://github.com/erikras/react-redux-universal-hot-example/issues/616
 - [x] Upgrade GitHub pages from 112 to 129

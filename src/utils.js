@@ -184,7 +184,7 @@ module.exports.satisfied = ({prerequisites, rubyProvidersSkip}, app, cmd, checkO
 
   const p              = shell.exec(cmd, { 'silent': true })
   const appVersionFull = p.stdout.trim() || p.stderr.trim()
-  const parts          = appVersionFull.split(/[,p\s-]+/)
+  const parts          = appVersionFull.replace(/0+(\d)/g, '$1').split(/[,p\s-]+/)
   let appVersion       = parts[1]
 
   if (app === 'node') {
