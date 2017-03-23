@@ -11,7 +11,6 @@
 - [ ] Hooks are ran with every build, but not when doing HMR. We might be able to write a `CallHooksPlugin` to work around this that calls the hook for assets, while lib/cli.js calls it for content
 - [ ] Consider sourcemaps like https://github.com/rstacruz/webpack-tricks#source-maps
 - [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
-- [ ] Once jemoji relies on `gemoji` 3.0+ (vs ~2.0), add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling `bundle exec gemoji extract assets/images/emoji`) 
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
 - [ ] Windows support (consider: https://github.com/avajs/ava/blob/master/appveyor.yml) (#1)
 - [ ] Go over all `process.env.*` and make sure they are only at the head of `config.js`
@@ -20,7 +19,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.60...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.63...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -34,6 +33,7 @@ Released: TBA.
 Released: 2017-03-23.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.62...v0.0.63).
 
+- [x] Now that jemoji relies on `gemoji` 3.0+ (vs ~2.0), add cli command to generate emoji into `assets/images/emoji` (`build:emoji` calling `bundle exec gemoji extract assets/images/emoji`)
 - [x] Switch from `eval-cheap-source-map` to `inline-eval-cheap-source-map` for presumably faster builds https://github.com/erikras/react-redux-universal-hot-example/issues/616
 - [x] Upgrade GitHub pages from 112 to 129
 - [x] Remove `jekyll-crosspost-to-medium` as built in gem

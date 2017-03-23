@@ -8,9 +8,10 @@ module.exports = async function boot (whichPackage) {
   const runtime = config.runtime
 
   const scripts = {
+    'build:emoji'              : 'bundler exec gemoji extract assets/images/emoji',
     'build:assets'             : 'webpack --config [cacheDir]/webpack.config.js',
     'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
-    'build:content:watch'      : 'nodemon --config [cacheDir]/nodemon.config.json --exec "lanyon build:content:incremental' + '"',
+    'build:content:watch'      : 'nodemon --config [cacheDir]/nodemon.config.json --exec "lanyon build:content:incremental"',
     'build:content'            : 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
     // 'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
