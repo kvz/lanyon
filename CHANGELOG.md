@@ -19,7 +19,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.63...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.65...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -28,7 +28,14 @@ Released: TBA.
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 
-## v0.0.63
+## v0.0.65
+
+Released: 2017-03-23.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.64...v0.0.65).
+
+- [x] Support for `LANYON_DISABLE_GEMS=jekyll-feed,jekyll-sitemap` allowing you to temporarily disable time consuming plugins
+
+## v0.0.64
 
 Released: 2017-03-23.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.62...v0.0.63).
@@ -41,6 +48,10 @@ Released: 2017-03-23.
 - [x] Downgrade `css-loader` to 0.14.5 to address superslow HMR builds https://github.com/webpack-contrib/css-loader/issues/124
 - [x] Pass down `DEBUG` env var
 - [x] Upgrade `scrolex@0.0.27`
+
+## v0.0.63
+
+The release that wasn't
 
 ## v0.0.62
 

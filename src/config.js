@@ -436,6 +436,23 @@ cfg.browsersync = {
 }
 
 cfg.jekyll = {
+  gems: (function excludes () {
+    let list = []
+
+    if (process.env.LANYON_DISABLE_GEMS) {
+      const disabled = process.env.LANYON_DISABLE_GEMS.split(/\s*,\s*/)
+      for (let i in runtime.jekyllConfig.gems) {
+        let isEnabled = disabled.indexOf(runtime.jekyllConfig.gems[i]) === -1
+        if (!isEnabled) {
+          scrolex.stick(`Disabling ${runtime.jekyllConfig.gems[i]} as per LANYON_DISABLE_GEMS`)
+        } else {
+          list.push(runtime.jekyllConfig.gems[i])
+        }
+      }
+    }
+
+    return list
+  }()),
   exclude: (function excludes () {
     let list = [
       'node_modules',
