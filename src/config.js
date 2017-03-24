@@ -173,123 +173,284 @@ const cfg = {
     // devtool: 'source-map',
     bail   : false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
     module : {
-      loaders: (function plugins () {
-        const loaders = [
+      rules: (function rules () {
+        const rules = [
           {
-            test  : /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=application/font-woff',
+            test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+            use : [
+              {
+                loader : 'url-loader',
+                options: {
+                  limit   : 10000,
+                  mimetype: 'application/font-woff',
+                },
+              },
+            ],
           }, {
-            test  : /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=application/font-woff',
+            test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+            use : [
+              {
+                loader : 'url-loader',
+                options: {
+                  limit   : 10000,
+                  mimetype: 'application/font-woff',
+                },
+              },
+            ],
           }, {
-            test  : /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=application/octet-stream',
+            test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+            use : [
+              {
+                loader : 'url-loader',
+                options: {
+                  limit   : 10000,
+                  mimetype: 'application/octet-stream',
+                },
+              },
+            ],
           }, {
-            test  : /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'file',
+            test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+            use : [
+              {
+                loader: 'file-loader',
+              },
+            ],
           }, {
-            test  : /\.cur(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'file',
+            test: /\.cur(\?v=\d+\.\d+\.\d+)?$/,
+            use : [
+              {
+                loader: 'file-loader',
+              },
+            ],
           }, {
-            test  : /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-            loader: 'url?limit=10000&mimetype=image/svg+xml',
+            test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+            use : [
+              {
+                loader : 'url-loader',
+                options: {
+                  limit   : 10000,
+                  mimetype: 'image/svg+xml',
+                },
+              },
+            ],
           },
           {
-            test  : /\.coffee$/,
-            loader: 'coffee',
+            test: /\.coffee$/,
+            use : [
+              {
+                loader: 'coffee-loader',
+              },
+            ],
           },
           {
-            test  : /\.(png|gif|jpe?g)$/,
-            loader: 'url?limit=8096',
+            test: /\.(png|gif|jpe?g)$/,
+            use : [
+              {
+                loader : 'url-loader',
+                options: {
+                  limit   : 8096,
+                  mimetype: 'application/octet-stream',
+                },
+              },
+            ],
           },
           {
             // https://github.com/webpack/webpack/issues/512
-            test  : /[\\/](bower_components)[\\/]modernizr[\\/]modernizr\.js$/,
-            loader: 'imports?this=>window!exports?window.Modernizr',
+            test: /[\\/](bower_components)[\\/]modernizr[\\/]modernizr\.js$/,
+            use : [
+              // loader: 'imports?this=>window!exports?window.Modernizr',
+              {
+                loader : 'imports-loader',
+                options: {
+                  this: 'window',
+                },
+              },
+              {
+                loader : 'exports-loader',
+                options: {
+                  'window.Modernizr': true,
+                },
+              },
+            ],
           },
           {
-            test  : /[\\/](bower_components)[\\/]svgeezy[\\/]svgeezy\.js$/,
-            loader: 'imports?this=>window!exports?svgeezy',
+            test: /[\\/](bower_components)[\\/]svgeezy[\\/]svgeezy\.js$/,
+            use : [
+              // loader: 'imports?this=>window!exports?svgeezy',
+              {
+                loader : 'imports-loader',
+                options: {
+                  this: 'window',
+                },
+              },
+              {
+                loader : 'exports-loader',
+                options: {
+                  'svgeezy': true,
+                },
+              },
+            ],
           },
           {
             // https://www.techchorus.net/blog/using-sass-version-of-bootstrap-with-webpack/
-            test  : /[\\/](bower_components)[\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]/,
-            loader: 'imports?jQuery=jquery,$=jquery,this=>window',
+            test: /[\\/](bower_components)[\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]/,
+            use : [
+              // loader: 'imports?jQuery=jquery,$=jquery,this=>window',
+              {
+                loader : 'imports-loader',
+                options: {
+                  jQuery: 'jquery',
+                  $     : 'jquery',
+                  this  : 'window',
+                },
+              },
+            ],
           },
           {
-            test  : /[\\/]jquery\..*\.js$/,
-            loader: 'imports?jQuery=jquery,$=jquery,this=>window',
+            test: /[\\/]jquery\..*\.js$/,
+            use : [
+              // loader: 'imports?jQuery=jquery,$=jquery,this=>window',
+              {
+                loader : 'imports-loader',
+                options: {
+                  jQuery: 'jquery',
+                  $     : 'jquery',
+                  this  : 'window',
+                },
+              },
+            ],
           },
         ]
 
         if (runtime.isDev) {
-          loaders.push({
-            test   : /\.css$/,
-            loaders: ['style-loader', 'css-loader', 'resolve-url'],
-            // loader: `style!css?sourceMap!resolve-url?root=${runtime.projectDir}`,
+          rules.push({
+            test: /\.css$/,
+            use : [
+              {
+                loader: 'style-loader',
+              },
+              {
+                loader: 'css-loader',
+              },
+              {
+                loader: 'resolve-url-loader',
+              },
+            ],
           })
-          loaders.push({
-            test   : /\.scss$/,
-            loaders: ['style-loader', 'css-loader', 'sass-loader?sourceMap', 'resolve-url'],
-            // loader: `style!css?sourceMap!resolve-url?root=${runtime.projectDir}!sass?sourceMap`,
+          rules.push({
+            test: /\.scss$/,
+            use : [
+              {
+                loader: 'style-loader',
+              },
+              {
+                loader: 'css-loader',
+              },
+              {
+                loader: 'sass-loader?sourceMap',
+              },
+              {
+                loader: 'resolve-url-loader',
+              },
+            ],
           })
-          loaders.push({
-            test   : /\.less$/,
-            loaders: ['style-loader', 'css-loader', 'less-loader?sourceMap', 'resolve-url'],
-            // @todo Had to disable resolve-url-loader for less as less currently produces invalid css (in its eyes)
-            // see: https://travis-ci.org/tus/tus.io/builds/183913229#L1206
-            // loader: 'style!css?sourceMap!less?sourceMap',
+          rules.push({
+            test: /\.less$/,
+            use : [
+              {
+                loader: 'style-loader',
+              },
+              {
+                loader: 'css-loader',
+              },
+              {
+                loader: 'less-loader?sourceMap',
+              },
+              {
+                loader: 'resolve-url-loader',
+              },
+            ],
           })
-          loaders.push({
-            test  : /\.(js|jsx)$/,
-            loader: 'babel',
-            query : {
-              babelrc: false,
-              // If we ever want multiple loaders on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
-              presets: [
-                require.resolve('babel-preset-es2015'),
-                require.resolve('babel-preset-react'),
-                require.resolve('babel-preset-stage-0'),
-              ],
-              sourceRoot    : `${runtime.projectDir}`,
-              cacheDirectory: `${runtime.cacheDir}/babelCache`,
-            },
+          rules.push({
+            test   : /\.(js|jsx)$/,
             exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
+            use    : [
+              {
+                loader : 'babel-loader',
+                options: {
+                  babelrc: false,
+                  // If we ever want multiple rules on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
+                  presets: [
+                    require.resolve('babel-preset-es2015'),
+                    require.resolve('babel-preset-react'),
+                    require.resolve('babel-preset-stage-0'),
+                  ],
+                  sourceRoot    : `${runtime.projectDir}`,
+                  cacheDirectory: `${runtime.cacheDir}/babelCache`,
+                },
+              },
+            ],
           })
         } else {
-          loaders.push({
-            test  : /\.css$/,
-            loader: ExtractTextPlugin.extract(`css?sourceMap!resolve-url?root=${runtime.projectDir}`),
+          rules.push({
+            test: /\.css$/,
+            use : [
+              {
+                // use: 'css-loader',?sourceMap!resolve-url?root=${runtime.projectDir}`}),
+                use: ExtractTextPlugin.extract({
+                  fallback: 'style-loader',
+                  use     : ['css-loader', 'resolve-url-loader'],
+                }),
+              },
+            ],
           })
-          loaders.push({
-            test  : /\.scss$/,
-            loader: ExtractTextPlugin.extract(`css?sourceMap!sass?sourceMap!resolve-url?root=${runtime.projectDir}`),
+          rules.push({
+            test: /\.scss$/,
+            use : [
+              {
+                // use: 'css-loader',?sourceMap!sass?sourceMap!resolve-url?root=${runtime.projectDir}`}),
+                use: ExtractTextPlugin.extract({
+                  fallback: 'style-loader',
+                  use     : ['css-loader', 'sass-loader', 'resolve-url-loader'],
+                }),
+              },
+            ],
           })
-          loaders.push({
-            test  : /\.less$/,
-            // @todo Had to disable resolve-url-loader for less as less currently produces invalid css (in its eyes)
-            // see: https://travis-ci.org/tus/tus.io/builds/183913229#L1206
-            loader: ExtractTextPlugin.extract('css?sourceMap!less?sourceMap'),
+          rules.push({
+            test: /\.less$/,
+            use : [
+              {
+                // use: 'css-loader',?sourceMap!less?sourceMap'}),
+                use: ExtractTextPlugin.extract({
+                  fallback: 'style-loader',
+                  use     : ['css-loader', 'less-loader', 'resolve-url-loader'],
+                }),
+              },
+            ],
           })
-          loaders.push({
-            test  : /\.(js|jsx)$/,
-            loader: 'babel',
-            query : {
-              babelrc: false,
-              // If we ever want multiple loaders on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
-              presets: [
-                require.resolve('babel-preset-es2015'),
-                require.resolve('babel-preset-react'),
-                require.resolve('babel-preset-stage-0'),
-              ],
-              sourceRoot    : `${runtime.projectDir}`,
-              cacheDirectory: `${runtime.cacheDir}/babelCache`,
-            },
+          rules.push({
+            test   : /\.(js|jsx)$/,
             exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
+            use    : [
+              {
+                loader : 'babel-loader',
+                options: {
+                  babelrc: false,
+                  // If we ever want multiple rules on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
+                  presets: [
+                    require.resolve('babel-preset-es2015'),
+                    require.resolve('babel-preset-react'),
+                    require.resolve('babel-preset-stage-0'),
+                  ],
+                  sourceRoot    : `${runtime.projectDir}`,
+                  cacheDirectory: `${runtime.cacheDir}/babelCache`,
+                },
+              },
+            ],
           })
         }
 
-        return loaders
+        return rules
       }()),
     },
     plugins: (function plugins () {
@@ -313,7 +474,8 @@ const cfg = {
       if (runtime.isDev) {
         plugins.push(new webpack.HotModuleReplacementPlugin())
       } else {
-        plugins.push(new ExtractTextPlugin(getFilename('css'), {
+        plugins.push(new ExtractTextPlugin({
+          filename : getFilename('css'),
           allChunks: true,
         }))
         plugins.push(new webpack.optimize.UglifyJsPlugin({
@@ -327,8 +489,6 @@ const cfg = {
 
         // plugins.push(new webpack.NoErrorsPlugin())
         plugins.push(new OptimizeCssAssetsPlugin())
-        plugins.push(new webpack.optimize.OccurrenceOrderPlugin())
-        plugins.push(new webpack.optimize.DedupePlugin())
         plugins.push(new webpack.optimize.LimitChunkCountPlugin({maxChunks: 15}))
         plugins.push(new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000}))
         plugins.push(function ReportErrors () {
@@ -380,7 +540,7 @@ const cfg = {
     },
     recordsPath: runtime.recordsPath,
     resolve    : {
-      root: [
+      modules: [
         path.resolve(runtime.assetsSourceDir),
         `${path.resolve(runtime.assetsSourceDir)}/bower_components`,
         `${path.resolve(runtime.projectDir)}/node_modules`,
