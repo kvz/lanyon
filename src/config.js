@@ -473,6 +473,19 @@ cfg.jekyll = {
 
     return list
   }()),
+  include: (function includes () {
+    let list = []
+
+    if (runtime.jekyllConfig.include) {
+      list = list.concat(runtime.jekyllConfig.include)
+    }
+
+    if (process.env.LANYON_INCLUDE) {
+      list = list.concat(process.env.LANYON_INCLUDE.split(/\s*,\s*/))
+    }
+
+    return list
+  }()),
 }
 
 cfg.nodemon = {
