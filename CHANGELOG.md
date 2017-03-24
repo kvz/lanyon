@@ -28,6 +28,13 @@ Released: TBA.
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 
+## v0.0.66
+
+Released: 2017-03-23.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.65...v0.0.66).
+
+- [x] Upgrade from webpack `1` -> `2.3.1` (BowerWebpackPlugin don't work yet)
+
 ## v0.0.65
 
 Released: 2017-03-23.

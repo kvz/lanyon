@@ -7,7 +7,7 @@ const ExtractTextPlugin       = require('extract-text-webpack-plugin')
 const webpack                 = require('webpack')
 const webpackDevMiddleware    = require('webpack-dev-middleware')
 const webpackHotMiddleware    = require('webpack-hot-middleware')
-const BowerWebpackPlugin      = require('bower-webpack-plugin')
+// const BowerWebpackPlugin      = require('bower-webpack-plugin')
 const SvgStoreWebpackPlugin   = require('webpack-svgstore-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const Visualizer              = require('webpack-visualizer-plugin')
@@ -139,7 +139,7 @@ function getFilename (extension, isChunk, isContent) {
 
 const cfg = {
   webpack: {
-    entry: (function entries () {
+    entry: (function dynamicEntries () {
       var entries = {}
       runtime.entries.forEach(entry => {
         entries[entry] = [ path.join(runtime.assetsSourceDir, `${entry}.js`) ]
@@ -166,15 +166,15 @@ const cfg = {
       path         : runtime.assetsBuildDir,
       filename     : getFilename('js'),
       chunkFilename: getFilename('js', true),
-      cssFilename  : getFilename('css'),
+      // cssFilename  : getFilename('css'),
     },
     // devtool: 'eval-cheap-source-map',
     devtool: 'inline-eval-cheap-source-map',
     // devtool: 'source-map',
     bail   : false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
     module : {
-      rules: (function rules () {
-        const rules = [
+      rules: (function dynamicRules () {
+        let rules = [
           {
             test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
             use : [
@@ -262,7 +262,7 @@ const cfg = {
               {
                 loader : 'imports-loader',
                 options: {
-                  this: 'window',
+                  this: '>window',
                 },
               },
               {
@@ -280,7 +280,7 @@ const cfg = {
               {
                 loader : 'imports-loader',
                 options: {
-                  this: 'window',
+                  this: '>window',
                 },
               },
               {
@@ -301,7 +301,7 @@ const cfg = {
                 options: {
                   jQuery: 'jquery',
                   $     : 'jquery',
-                  this  : 'window',
+                  this  : '>window',
                 },
               },
             ],
@@ -315,7 +315,7 @@ const cfg = {
                 options: {
                   jQuery: 'jquery',
                   $     : 'jquery',
-                  this  : 'window',
+                  this  : '>window',
                 },
               },
             ],
@@ -347,7 +347,10 @@ const cfg = {
                 loader: 'css-loader',
               },
               {
-                loader: 'sass-loader?sourceMap',
+                loader : 'sass-loader',
+                options: {
+                  sourceMap: true,
+                },
               },
               {
                 loader: 'resolve-url-loader',
@@ -364,7 +367,10 @@ const cfg = {
                 loader: 'css-loader',
               },
               {
-                loader: 'less-loader?sourceMap',
+                loader : 'less-loader',
+                options: {
+                  sourceMap: true,
+                },
               },
               {
                 loader: 'resolve-url-loader',
@@ -453,9 +459,9 @@ const cfg = {
         return rules
       }()),
     },
-    plugins: (function plugins () {
-      var plugins = [
-        new BowerWebpackPlugin(),
+    plugins: (function dynamicPlugins () {
+      let plugins = [
+        // new BowerWebpackPlugin(),
         new webpack.ProvidePlugin({
           _     : 'lodash',
           $     : 'jquery',
@@ -468,6 +474,10 @@ const cfg = {
             ],
           },
           prefix: 'icon-',
+        }),
+        // Until loaders are updated one can use the LoaderOptionsPlugin to switch loaders into debug mode:
+        new webpack.LoaderOptionsPlugin({
+          debug: runtime.isDev,
         }),
       ]
 
@@ -507,7 +517,10 @@ const cfg = {
       }
 
       if (runtime.common) {
-        plugins.push(new webpack.optimize.CommonsChunkPlugin(/* chunkName= */'common', /* filename= */getFilename('js')))
+        plugins.push(new webpack.optimize.CommonsChunkPlugin({
+          name    : 'common',
+          filename: 'common.js', //getFilename('js'),
+        }))
       }
 
       if (!runtime.isDev && runtime.statistics) {
@@ -528,12 +541,11 @@ const cfg = {
         },
       }))
       plugins.push(new WebpackMd5Hash())
-      plugins.push(new webpack.optimize.OccurenceOrderPlugin())
 
       return plugins
     }()),
     resolveLoader: {
-      root: [
+      modules: [
         path.join(runtime.lanyonDir, 'node_modules'),
         path.join(runtime.projectDir, 'node_modules'),
       ],
@@ -547,7 +559,6 @@ const cfg = {
         `${path.resolve(runtime.lanyonDir)}/node_modules`,
       ],
     },
-    debug: runtime.isDev,
   },
 }
 
@@ -559,7 +570,7 @@ cfg.browsersync = {
   server: {
     port      : runtime.ports.content,
     baseDir   : runtime.contentBuildDir,
-    middleware: (function middlewares () {
+    middleware: (function dynamicMiddlewares () {
       var middlewares = []
 
       if (runtime.isHotLoading) {
@@ -596,7 +607,7 @@ cfg.browsersync = {
 }
 
 cfg.jekyll = {
-  gems: (function excludes () {
+  gems: (function dynamicGems () {
     let list = []
 
     if (process.env.LANYON_DISABLE_GEMS) {
@@ -613,7 +624,7 @@ cfg.jekyll = {
 
     return list
   }()),
-  exclude: (function excludes () {
+  exclude: (function dynamicExcludes () {
     let list = [
       'node_modules',
       'env.sh',
