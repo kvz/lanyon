@@ -484,6 +484,10 @@ cfg.jekyll = {
       list = list.concat(process.env.LANYON_INCLUDE.split(/\s*,\s*/))
     }
 
+    if (list.length < 1) {
+      return null
+    }
+
     return list
   }()),
 }
