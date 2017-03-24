@@ -364,7 +364,12 @@ const cfg = {
         path    : runtime.cacheDir,
         processOutput (assets) {
           scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
-          return yaml.safeDump({lanyon_assets: assets})
+          try {
+            return yaml.safeDump({lanyon_assets: assets})
+          } catch (e) {
+            console.log(assets)
+            throw new Error(`Unable to encode above config to YAML. ${e.message}`)
+          }
         },
       }))
       plugins.push(new WebpackMd5Hash())
@@ -451,6 +456,10 @@ cfg.jekyll = {
       list = runtime.jekyllConfig.gems
     }
 
+    if (list.length < 1) {
+      return null
+    }
+
     return list
   }()),
   exclude: (function excludes () {
@@ -469,6 +478,10 @@ cfg.jekyll = {
 
     if ('LANYON_EXCLUDE' in process.env && process.env.LANYON_EXCLUDE !== '') {
       list = list.concat(process.env.LANYON_EXCLUDE.split(/\s*,\s*/))
+    }
+
+    if (list.length < 1) {
+      return null
     }
 
     return list
