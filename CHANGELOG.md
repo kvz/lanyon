@@ -19,7 +19,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.66...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.67...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -27,6 +27,13 @@ Released: TBA.
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
+
+## v0.0.67
+
+Released: 2017-03-24.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.66...v0.0.67).
+
+- [x] Fix issue where empty `LANYON_DISABLE_GEMS` list results in no gems being enabled
 
 ## v0.0.66
 

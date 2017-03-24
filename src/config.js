@@ -447,6 +447,8 @@ cfg.jekyll = {
           list.push(runtime.jekyllConfig.gems[i])
         }
       }
+    } else {
+      list = runtime.jekyllConfig.gems
     }
 
     return list
