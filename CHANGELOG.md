@@ -33,6 +33,7 @@ Released: TBA.
 Released: 2017-03-24.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.66...v0.0.67).
 
+- [x] Fix issue where production builds reported bad sourcemaps
 - [x] Fix issue where empty `LANYON_DISABLE_GEMS` list results in no gems being enabled
 
 ## v0.0.66

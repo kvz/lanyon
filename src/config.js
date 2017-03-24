@@ -263,13 +263,13 @@ const cfg = {
           })
           loaders.push({
             test  : /\.scss$/,
-            loader: ExtractTextPlugin.extract(`css?sourceMap!sass?sourceMap!resolve-url?root=${runtime.projectDir}`),
+            loader: ExtractTextPlugin.extract(`css!sass?sourceMap!resolve-url?root=${runtime.projectDir}`),
           })
           loaders.push({
             test  : /\.less$/,
             // @todo Had to disable resolve-url-loader for less as less currently produces invalid css (in its eyes)
             // see: https://travis-ci.org/tus/tus.io/builds/183913229#L1206
-            loader: ExtractTextPlugin.extract('css?sourceMap!less?sourceMap'),
+            loader: ExtractTextPlugin.extract('css!less?sourceMap'),
           })
           loaders.push({
             test  : /\.(js|jsx)$/,
