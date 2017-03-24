@@ -47,8 +47,10 @@ runtime.ghPagesEnv              = {
   GHPAGES_BOTNAME : process.env.GHPAGES_BOTNAME,
   GHPAGES_BOTEMAIL: process.env.GHPAGES_BOTEMAIL,
 }
-runtime.isDev        = runtime.lanyonEnv === 'development'
-runtime.isHotLoading = runtime.isDev && ['serve', 'start'].indexOf(process.argv[2]) !== -1
+runtime.isDev     = runtime.lanyonEnv === 'development'
+runtime.attachHMR = runtime.isDev && process.argv[1].indexOf('browser-sync') !== -1 && process.argv[2] === 'start'
+
+console.log({attachHMR: runtime.attachHMR, argv: process.argv, isDev: runtime.isDev})
 
 runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cwd() // <-- symlinked npm will mess up process.cwd() and point to ~/code/lanyon
 
@@ -391,7 +393,7 @@ const cfg = {
   },
 }
 
-if (runtime.isHotLoading) {
+if (runtime.attachHMR) {
   var bundler = webpack(cfg.webpack)
 }
 
@@ -402,7 +404,7 @@ cfg.browsersync = {
     middleware: (function middlewares () {
       var middlewares = []
 
-      if (runtime.isHotLoading) {
+      if (runtime.attachHMR) {
         middlewares.push(webpackDevMiddleware(bundler, {
           publicPath: runtime.publicPath,
           hot       : true,
@@ -443,9 +445,7 @@ cfg.jekyll = {
       const disabled = process.env.LANYON_DISABLE_GEMS.split(/\s*,\s*/)
       for (let i in runtime.jekyllConfig.gems) {
         let isEnabled = disabled.indexOf(runtime.jekyllConfig.gems[i]) === -1
-        if (!isEnabled) {
-          scrolex.stick(`Disabling ${runtime.jekyllConfig.gems[i]} as per LANYON_DISABLE_GEMS`)
-        } else {
+        if (isEnabled) {
           list.push(runtime.jekyllConfig.gems[i])
         }
       }
