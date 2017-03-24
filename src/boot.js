@@ -7,23 +7,26 @@ module.exports = async function boot (whichPackage) {
   const scrolex = require('scrolex')
   const runtime = config.runtime
 
+  // 'start'                    : 'parallelshell "lanyon build:content:watch" "lanyon build:assets:watch" "lanyon serve"',
   const scripts = {
-    'build:emoji'              : 'bundler exec gemoji extract assets/images/emoji',
+    // assets:watch is typically handled via browsersync middleware, so this is more for debugging purposes:
+    'build:assets:watch'       : 'webpack --watch --config [cacheDir]/webpack.config.js',
     'build:assets'             : 'webpack --config [cacheDir]/webpack.config.js',
     'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     'build:content:watch'      : 'nodemon --config [cacheDir]/nodemon.config.json --exec "lanyon build:content:incremental"',
     'build:content'            : 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
-    // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
     // 'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
+    // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
+    'build:emoji'              : 'bundler exec gemoji extract assets/images/emoji',
     'build'                    : 'lanyon build:assets && lanyon build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
     'container:connect'        : utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
     'deploy'                   : require(`./deploy`),
     'encrypt'                  : require(`./encrypt`),
     'help'                     : 'jekyll build --help',
-    'list:ghpgems'             : 'bundler exec github-pages versions --gem',
     'install'                  : require(`./install`),
+    'list:ghpgems'             : 'bundler exec github-pages versions --gem',
     'serve'                    : 'browser-sync start --config [cacheDir]/browsersync.config.js',
-    'start'                    : 'lanyon build:assets && lanyon build:content:incremental && parallelshell "lanyon build:content:watch" "lanyon serve"',
+    'start'                    : 'parallelshell "lanyon build:content:watch" "lanyon serve"',
   }
 
   if (runtime.trace) {
@@ -56,6 +59,13 @@ module.exports = async function boot (whichPackage) {
   scrolex.stick(`Detected cacheDir as "${runtime.cacheDir}"`)
   scrolex.stick(`Detected gitRoot as "${runtime.gitRoot}"`)
   scrolex.stick(`Detected npmRoot as "${runtime.npmRoot}"`)
+
+  if (process.env.LANYON_DISABLE_GEMS) {
+    scrolex.stick(`Disabled gems ${process.env.LANYON_DISABLE_GEMS} as per LANYON_DISABLE_GEMS`)
+  }
+  if (process.env.LANYON_EXCLUDE) {
+    scrolex.stick(`Disabled building of ${process.env.LANYON_EXCLUDE} as per LANYON_EXCLUDE`)
+  }
 
   // Create asset dirs and git ignores
   if (cmdName.match(/^build|install|start/)) {
