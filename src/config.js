@@ -50,8 +50,6 @@ runtime.ghPagesEnv              = {
 runtime.isDev     = runtime.lanyonEnv === 'development'
 runtime.attachHMR = runtime.isDev && process.argv[1].indexOf('browser-sync') !== -1 && process.argv[2] === 'start'
 
-console.log({attachHMR: runtime.attachHMR, argv: process.argv, isDev: runtime.isDev})
-
 runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cwd() // <-- symlinked npm will mess up process.cwd() and point to ~/code/lanyon
 
 runtime.npmRoot = utils.upwardDirContaining('package.json', runtime.projectDir, 'lanyon')

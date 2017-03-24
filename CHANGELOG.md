@@ -19,7 +19,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.65...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.66...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -27,13 +27,14 @@ Released: TBA.
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
+- [x] Upgrade from webpack `1.14.0` -> `2.3.1` (BowerWebpackPlugin don't work yet)
 
 ## v0.0.66
 
-Released: 2017-03-23.
+Released: 2017-03-24.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.65...v0.0.66).
 
-- [x] Upgrade from webpack `1.14.0` -> `2.3.1` (BowerWebpackPlugin don't work yet)
+- [x] Fix issue where multiple webpack instances where running
 
 ## v0.0.65
 
