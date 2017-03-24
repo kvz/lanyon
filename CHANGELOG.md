@@ -33,7 +33,7 @@ Released: TBA.
 Released: 2017-03-23.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.65...v0.0.66).
 
-- [x] Upgrade from webpack `1` -> `2.3.1` (BowerWebpackPlugin don't work yet)
+- [x] Upgrade from webpack `1.14.0` -> `2.3.1` (BowerWebpackPlugin don't work yet)
 
 ## v0.0.65
 
