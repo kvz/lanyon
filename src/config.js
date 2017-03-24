@@ -457,7 +457,7 @@ cfg.jekyll = {
       list = runtime.jekyllConfig.gems
     }
 
-    if (list.length < 1) {
+    if (!list || list.length < 1) {
       return null
     }
 
@@ -481,7 +481,7 @@ cfg.jekyll = {
       list = list.concat(process.env.LANYON_EXCLUDE.split(/\s*,\s*/))
     }
 
-    if (list.length < 1) {
+    if (!list || list.length < 1) {
       return null
     }
 
@@ -498,7 +498,7 @@ cfg.jekyll = {
       list = list.concat(process.env.LANYON_INCLUDE.split(/\s*,\s*/))
     }
 
-    if (list.length < 1) {
+    if (!list || list.length < 1) {
       return null
     }
 
