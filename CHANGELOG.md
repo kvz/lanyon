@@ -15,6 +15,7 @@
 - [ ] Windows support (consider: https://github.com/avajs/ava/blob/master/appveyor.yml) (#1)
 - [ ] Go over all `process.env.*` and make sure they are only at the head of `config.js`
 - [ ] Add a `lanyon init` that a globally installed lanyon could use to `npm install --save` itself into a local project and run the lanyon installer there. Make sure the globally installed lanyon propery does a  `preferLocalPackage` when you type `lanyon start` in said local project
+- [ ] Add http://cssnano.co/
 
 ## master
 
