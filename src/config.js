@@ -463,11 +463,11 @@ cfg.jekyll = {
       '.lanyon',
     ]
 
-    if (runtime.jekyllConfig.exclude) {
+    if (_.get(runtime, 'jekyllConfig.exclude.length') > 0) {
       list = list.concat(runtime.jekyllConfig.exclude)
     }
 
-    if (process.env.LANYON_EXCLUDE) {
+    if ('LANYON_EXCLUDE' in process.env && process.env.LANYON_EXCLUDE !== '') {
       list = list.concat(process.env.LANYON_EXCLUDE.split(/\s*,\s*/))
     }
 
@@ -476,11 +476,11 @@ cfg.jekyll = {
   include: (function includes () {
     let list = []
 
-    if (runtime.jekyllConfig.include) {
+    if (_.get(runtime, 'jekyllConfig.include.length') > 0) {
       list = list.concat(runtime.jekyllConfig.include)
     }
 
-    if (process.env.LANYON_INCLUDE) {
+    if ('LANYON_INCLUDE' in process.env && process.env.LANYON_INCLUDE !== '') {
       list = list.concat(process.env.LANYON_INCLUDE.split(/\s*,\s*/))
     }
 

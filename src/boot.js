@@ -66,6 +66,9 @@ module.exports = async function boot (whichPackage) {
   if (process.env.LANYON_EXCLUDE) {
     scrolex.stick(`Disabled building of ${process.env.LANYON_EXCLUDE} as per LANYON_EXCLUDE`)
   }
+  if (process.env.LANYON_INCLUDE) {
+    scrolex.stick(`Explicitly enabling building of ${process.env.LANYON_INCLUDE} as per LANYON_INCLUDE`)
+  }
 
   // Create asset dirs and git ignores
   if (cmdName.match(/^build|install|start/)) {
