@@ -33,6 +33,7 @@ runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 const lanyonPackage       = require(runtime.lanyonPackageFile)
 runtime.lanyonVersion     = lanyonPackage.version
 
+runtime.profile    = process.env.LANYON_PROFILE === '1' || !('LANYON_PROFILE' in process.env)
 runtime.trace      = process.env.LANYON_TRACE === '1'
 runtime.publicPath = '/assets/build/'
 

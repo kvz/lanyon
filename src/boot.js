@@ -34,6 +34,11 @@ module.exports = async function boot (whichPackage) {
     scripts['build:content']             += ' --trace'
   }
 
+  if (runtime.profile) {
+    scripts['build:content:incremental'] += ' --profile'
+    scripts['build:content']             += ' --profile'
+  }
+
   const cmdName = process.argv[2]
   let cmd       = scripts[cmdName]
 
