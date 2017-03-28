@@ -403,8 +403,14 @@ if (runtime.attachHMR) {
 
 cfg.browsersync = {
   server: {
-    port      : runtime.ports.content,
-    baseDir   : runtime.contentBuildDir,
+    port   : runtime.ports.content,
+    baseDir: (function webRoots () {
+      var webRoots = [ runtime.contentBuildDir ]
+      if (runtime.extraWebroots) {
+        webRoots = webRoots.concat(runtime.extraWebroots)
+      }
+      return webRoots
+    }()),
     middleware: (function middlewares () {
       var middlewares = []
 
