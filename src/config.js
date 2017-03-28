@@ -409,6 +409,14 @@ cfg.browsersync = {
       if (runtime.extraWebroots) {
         webRoots = webRoots.concat(runtime.extraWebroots)
       }
+
+      // Turn into absolute paths (e.g. `crmdummy` -> `/Users/kvz/code/content/_site/crmdummy` )
+      for (let i in webRoots) {
+        if (webRoots[i].substr(0, 1) !== '/' && webRoots[i].substr(0, 1) !== '~') {
+          webRoots[i] = `${runtime.contentBuildDir}/${webRoots[i]}`
+        }
+      }
+
       return webRoots
     }()),
     middleware: (function middlewares () {
