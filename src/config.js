@@ -33,6 +33,7 @@ runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 const lanyonPackage       = require(runtime.lanyonPackageFile)
 runtime.lanyonVersion     = lanyonPackage.version
 
+runtime.profile    = process.env.LANYON_PROFILE === '1' || !('LANYON_PROFILE' in process.env)
 runtime.trace      = process.env.LANYON_TRACE === '1'
 runtime.publicPath = '/assets/build/'
 
@@ -537,7 +538,12 @@ const cfg = {
         path    : runtime.cacheDir,
         processOutput (assets) {
           scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
-          return yaml.safeDump({lanyon_assets: assets})
+          try {
+            return yaml.safeDump({lanyon_assets: assets})
+          } catch (e) {
+            console.log(assets)
+            throw new Error(`Unable to encode above config to YAML. ${e.message}`)
+          }
         },
       }))
       plugins.push(new WebpackMd5Hash())
@@ -568,8 +574,22 @@ if (runtime.attachHMR) {
 
 cfg.browsersync = {
   server: {
-    port      : runtime.ports.content,
-    baseDir   : runtime.contentBuildDir,
+    port   : runtime.ports.content,
+    baseDir: (function dynamicWebRoots () {
+      var webRoots = [ runtime.contentBuildDir ]
+      if (runtime.extraWebroots) {
+        webRoots = webRoots.concat(runtime.extraWebroots)
+      }
+
+      // Turn into absolute paths (e.g. `crmdummy` -> `/Users/kvz/code/content/_site/crmdummy` )
+      for (let i in webRoots) {
+        if (webRoots[i].substr(0, 1) !== '/' && webRoots[i].substr(0, 1) !== '~') {
+          webRoots[i] = `${runtime.contentBuildDir}/${webRoots[i]}`
+        }
+      }
+
+      return webRoots
+    }()),
     middleware: (function dynamicMiddlewares () {
       var middlewares = []
 
@@ -618,6 +638,12 @@ cfg.jekyll = {
           list.push(runtime.jekyllConfig.gems[i])
         }
       }
+    } else {
+      list = runtime.jekyllConfig.gems
+    }
+
+    if (!list || list.length < 1) {
+      return null
     }
 
     return list
@@ -632,12 +658,33 @@ cfg.jekyll = {
       '.lanyon',
     ]
 
-    if (runtime.jekyllConfig.exclude) {
+    if (_.get(runtime, 'jekyllConfig.exclude.length') > 0) {
       list = list.concat(runtime.jekyllConfig.exclude)
     }
 
-    if (process.env.LANYON_EXCLUDE) {
+    if ('LANYON_EXCLUDE' in process.env && process.env.LANYON_EXCLUDE !== '') {
       list = list.concat(process.env.LANYON_EXCLUDE.split(/\s*,\s*/))
+    }
+
+    if (!list || list.length < 1) {
+      return null
+    }
+
+    return list
+  }()),
+  include: (function dynamicIncludes () {
+    let list = []
+
+    if (_.get(runtime, 'jekyllConfig.include.length') > 0) {
+      list = list.concat(runtime.jekyllConfig.include)
+    }
+
+    if ('LANYON_INCLUDE' in process.env && process.env.LANYON_INCLUDE !== '') {
+      list = list.concat(process.env.LANYON_INCLUDE.split(/\s*,\s*/))
+    }
+
+    if (!list || list.length < 1) {
+      return null
     }
 
     return list

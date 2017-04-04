@@ -2,49 +2,54 @@ cache:
   apt: true
   yarn: true
   directories:
-    - /usr/local/Cellar/
-
+  - /usr/local/Cellar/
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
     - bc
-
 before_install:
-  - if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then rm -rf /usr/local/var/homebrew/locks || true; fi
-  - if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
-  - if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install --force readline; fi
-  - if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then ln -nfs /usr/local/opt/readline/lib/libreadline.dylib /usr/local/opt/readline/lib/libreadline.7.dylib; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew update; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install ruby-build; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew link ruby-build; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew install rbenv; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew link rbenv; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then __rvm_unload; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then curl -sSL https://raw.github.com/fesplugas/rbenv-installer/22cc96aa45d06faca5958b1aa1688596198407a3/bin/rbenv-installer | bash; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export RBENV_ROOT="${HOME}/.rbenv"; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export PATH="${RBENV_ROOT}/bin:${PATH}"; fi
-  - if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then eval "$(rbenv init -)"; fi
-
-# We do not want to run `cli.js install` at this point, that's done in the test:acceptance
-# via linking. If we run postscripts we get into a chicken-egg situation where install relies on transpiled
-# scripts, but that relies on install.
+- if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then rm -rf
+  /usr/local/var/homebrew/locks || true; fi
+- if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
+  update; fi
+- if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
+  install --force readline; fi
+- if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then ln -nfs
+  /usr/local/opt/readline/lib/libreadline.dylib /usr/local/opt/readline/lib/libreadline.7.dylib;
+  fi
+- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload;
+  fi
+- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
+  update; fi
+- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
+  install ruby-build; fi
+- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
+  link ruby-build; fi
+- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
+  install rbenv; fi
+- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
+  link rbenv; fi
+- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then __rvm_unload;
+  fi
+- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then curl
+  -sSL https://raw.github.com/fesplugas/rbenv-installer/22cc96aa45d06faca5958b1aa1688596198407a3/bin/rbenv-installer
+  | bash; fi
+- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export
+  RBENV_ROOT="${HOME}/.rbenv"; fi
+- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export
+  PATH="${RBENV_ROOT}/bin:${PATH}"; fi
+- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then eval
+  "$(rbenv init -)"; fi
 install:
-  - type yarn || npm install -g yarn@0.18.1 || true
-  - yarn || npm install
-
+- type yarn || npm install -g yarn@0.18.1 || true
+- yarn || npm install
 script:
-  # eslint does not work on old nodes
-  - 'if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 4")" -eq 1 ]; then npm run lint; fi'
-  # babel compile does not work on flat npm structure
-  - npm run build
-  # - 'if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 4")" -eq 1 ]; then npm run build; else nvm install 6 && nvm use 6 && rm -rf node_modules && mkdir node_modules && npm install && npm run build && nvm use ${TRAVIS_NODE_VERSION} && rm -rf node_modules && mkdir node_modules && npm install; fi'
-  - 'if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 6")" -eq 1 ]; then npm run test; fi'
-  # OSX rvm build needs more than 10m no-output-travis-time
-  - travis_wait 50 npm run test:acceptance
-
+- if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 4")" -eq 1 ]; then npm run lint; fi
+- npm run build
+- if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 6")" -eq 1 ]; then npm run test; fi
+- travis_wait 50 npm run test:acceptance
 os: linux
 dist: precise
 sudo: false
@@ -57,60 +62,57 @@ env:
   - secure: XuJgkSTVR/wF2USjCrlVqZiP35R+i8VcslkCS3wK9GfRayuD1r2tpXUqtKMzpLNpLufmZqYTJ/2+B8brMAF8H68lC084kybTXygqC4/mphqJ5ingZAMIfLrTqH4PT4ATLzwg4ecc2C9M1ytjaa0TQv8mKq5mEMT0JeUIz5ddrm5fabZQga/EbuTWr+mTXJ2j+5fy1Y71nXM6tNAwAhYmfbNmOpDN4G+OYc7u7U4vUNXkv8FUOlJeflGFfH64wWE7qtHpO52b+SeWezLf1MYo7VO9+b8xQmRudWzxNM5u5vSjk1g7eCxcXGNxRLHLCtEcyp4AmSRVoO7Tr8XHndY5B69dB3NEql3mlEkAqpgW3OY2fIK2KwOydpv/IOsewafG8qVgAtw7iANxkKPkjg52EedfTJ943hILfzkXpRmCvX5qxSUbHrsNad9u7V7QaKF+kX4No1qAE3GpGXsPKpGQv2UOiFMbBYeZEzQYmHj0vKM9+QE8n7BA95kkm4XqrfDSmRB2V+hBK13F/EWpV21+xNBYbBK8+iGCk4hI/AQo8y5Xo4dEKb4rllMC+P4hv9qBNVVXzsetlWgf89H7ubFIxbl9rzD5q9eMBI6/Vhoy9/wjHUrUkvpZAyol/1M7w3WA6PXuL90US6ObFffa6RxpMCGNL3VH4541vJL60eJ1O/A=
 node_js: '6'
 language: node_js
-
-# OSDIST is ignored, but added to easily identify builds in Travis CI's build index, which displays
-# env vars in a table, but not os/dists
 matrix:
   allow_failures:
-    - node_js: '0.12'
-      os     : 'osx' # @todo: Fix rvm issue: https://travis-ci.org/kvz/lanyon/jobs/201449241#L4811
+  - node_js: '0.12'
+    os: osx
   include:
-    - os: linux
-      dist: precise
-      sudo: false
-      env: LANYON_ONLY="rbenv" OSDIST="precise"
-      language: node_js
-      node_js: "0.12"
-    - os: linux
-      dist: trusty
-      sudo: required
-      env: LANYON_ONLY="system" OSDIST="trusty"
-      language: node_js
-      node_js: "4"
-    - os: linux
-      dist: trusty
-      sudo: required
-      env: LANYON_ONLY="docker" OSDIST="trusty"
-      language: node_js
-      node_js: "6"
-    - os: osx
-      osx_image: xcode6.4
-      env: LANYON_ONLY="rvm" OSDIST="xcode6.4"
-      language: node_js
-      node_js: "0.12"
-    - os: osx
-      osx_image: xcode7.2
-      env: LANYON_ONLY="rbenv" OSDIST="xcode7.2"
-      language: node_js
-      node_js: "4"
-    - os: osx
-      osx_image: xcode8
-      env: LANYON_ONLY="system" OSDIST="xcode8"
-      language: node_js
-      node_js: "7"
-
+  - os: linux
+    dist: precise
+    sudo: false
+    env: LANYON_ONLY="rbenv" OSDIST="precise"
+    language: node_js
+    node_js: '0.12'
+  - os: linux
+    dist: trusty
+    sudo: required
+    env: LANYON_ONLY="system" OSDIST="trusty"
+    language: node_js
+    node_js: '4'
+  - os: linux
+    dist: trusty
+    sudo: required
+    env: LANYON_ONLY="docker" OSDIST="trusty"
+    language: node_js
+    node_js: '6'
+  - os: osx
+    osx_image: xcode6.4
+    env: LANYON_ONLY="rvm" OSDIST="xcode6.4"
+    language: node_js
+    node_js: '0.12'
+  - os: osx
+    osx_image: xcode7.2
+    env: LANYON_ONLY="rbenv" OSDIST="xcode7.2"
+    language: node_js
+    node_js: '4'
+  - os: osx
+    osx_image: xcode8
+    env: LANYON_ONLY="system" OSDIST="xcode8"
+    language: node_js
+    node_js: '7'
 before_cache:
 - rm -f ./node_modules/.bin/which
-
 before_deploy:
 - cd website && npm link lanyon && cd ..
 - env LANYON_PROJECT=./website node ./lib/cli.js install
-
 deploy:
   skip_cleanup: true
   provider: script
-  script: website/.lanyon/bin/deploy # Just calls `(web:)build:production` and `(web:)deploy` on the main project
+  script: website/.lanyon/bin/deploy
   on:
     branch: master
     node: 6
     condition: $LANYON_ONLY = docker
+notifications:
+  slack:
+    secure: M9XSZl576OPn25wZn5KQBQZHc2aEoUxYfhB3LBWaUwamw5cgi6Xu7/KRxI+2dFMcCbtjawfZm2yCY856SsVAPU19gT2QNzEdFkVyrEU/jFGH/6RlNh5Oh0vVC+aQUZm3bR50RDIihRuAvcZZpvllDrwlDyqS+Uz/1impFIG2XNzQBP1OqwmJJURqTspYsSKD2DP0Ieom7pZHtEAmujr+d028sOL7uEnMBnC2i78x6SsvL0gXwPEq2W2HX9w8+FTIlVRqTOZ4deNoYwhFyohfK76dsCB0FudjG1bLEctl6DZJvNZTKpemI76em9qtuXU81GGnSmV4p9lgXk0V8CTtAHQKFFVe4H+rk9ZsZamKPVMOIOjCBda1DKwiyAk361Lp4BoQCectZfTSor61MnqQ+4uC0dSfXMm+kBZ5VdPOGgtkfxUl6FaPz62vdkjyWar1yrzaqkCwQk8NxqDOKqJX7N9TtEXWE9eRGMpzWcRlZsX+wNT7oFs6Ql7GbEH5Gw4mYB5BzHAx506yy5xfXEIm1ApJPnQUL2l3bZ7fi6DY56SU+9Eed+19/PWI8PJx1Jlv5AOcKCGdr56btBlR9VIY6PexbDwbUH4OtNTtgP2QYcvMwow6S8sEk0OZgTYeHMAamWHyWOPODkfTdMnEPvvZ8Wzb2L9gGerqS4xH+gGQ5nE=
