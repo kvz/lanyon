@@ -159,7 +159,8 @@ const cfg = {
       return entries
     }()),
     node: {
-      fs: 'empty',
+      fs    : 'empty',
+      module: 'empty',
     },
     target: 'web',
     output: {
@@ -392,44 +393,96 @@ const cfg = {
             test: /\.css$/,
             use : ExtractTextPlugin.extract({
               fallback: 'style-loader',
-              use     : ['css-loader', 'resolve-url-loader'],
+              use     : [
+                {
+                  loader : 'css-loader',
+                  options: {
+                    sourceMap: true,
+                  },
+                },
+                {
+                  loader : 'resolve-url-loader',
+                  options: {
+                    sourceMap: true,
+                  },
+                },
+              ],
             }),
           })
           rules.push({
             test: /\.scss$/,
             use : ExtractTextPlugin.extract({
               fallback: 'style-loader',
-              use     : ['css-loader', 'sass-loader', 'resolve-url-loader'],
+              use     : [
+                {
+                  loader : 'css-loader',
+                  options: {
+                    sourceMap: true,
+                  },
+                },
+                {
+                  loader : 'resolve-url-loader',
+                  options: {
+                    sourceMap: true,
+                  },
+                },
+                {
+                  loader : 'sass-loader',
+                  options: {
+                    sourceMap: true,
+                  },
+                },
+              ],
             }),
           })
           rules.push({
             test: /\.less$/,
             use : ExtractTextPlugin.extract({
               fallback: 'style-loader',
-              use     : ['css-loader', 'less-loader', 'resolve-url-loader'],
+              use     : [
+                {
+                  loader : 'css-loader',
+                  options: {
+                    sourceMap: true,
+                  },
+                },
+                {
+                  loader : 'resolve-url-loader',
+                  options: {
+                    sourceMap: true,
+                  },
+                },
+                {
+                  loader : 'less-loader',
+                  options: {
+                    sourceMap: true,
+                  },
+                },
+              ],
             }),
           })
         }
 
         rules.push({
           test   : /\.(js|jsx)$/,
-          exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
-          use    : [
-            {
-              loader : 'babel-loader',
-              options: {
-                babelrc: false,
-                // If we ever want multiple rules on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
-                presets: [
-                  require.resolve('babel-preset-es2015'),
-                  require.resolve('babel-preset-react'),
-                  require.resolve('babel-preset-stage-0'),
-                ],
-                sourceRoot    : `${runtime.projectDir}`,
-                cacheDirectory: `${runtime.cacheDir}/babelCache`,
-              },
-            },
+          include: [
+            `${runtime.assetsSourceDir}`,
           ],
+          exclude: [
+            `${runtime.assetsSourceDir}/bower_components`,
+            /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
+          ],
+          loader : 'babel-loader',
+          options: {
+            babelrc: false,
+            presets: [
+              'babel-preset-es2015',
+              'babel-preset-react',
+              'babel-preset-stage-0',
+            ],
+            // sourceRoot    : `${runtime.projectDir}`,
+            cacheDirectory: `${runtime.cacheDir}/babelCache`,
+          },
         })
         return rules
       }()),
@@ -452,8 +505,23 @@ const cfg = {
         }),
         // Until loaders are updated one can use the LoaderOptionsPlugin to switch loaders into debug mode:
         new webpack.LoaderOptionsPlugin({
-          debug: runtime.isDev,
+          debug  : runtime.isDev,
+          context: runtime.projectDir,
         }),
+        new AssetsPlugin({
+          filename: 'jekyll.lanyon_assets.yml',
+          path    : runtime.cacheDir,
+          processOutput (assets) {
+            scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
+            try {
+              return yaml.safeDump({lanyon_assets: assets})
+            } catch (e) {
+              console.log(assets)
+              throw new Error(`Unable to encode above config to YAML. ${e.message}`)
+            }
+          },
+        }),
+        new WebpackMd5Hash(),
       ]
 
       if (runtime.isDev) {
@@ -468,7 +536,7 @@ const cfg = {
             warnings: true,
           },
           mangle   : true,
-          sourceMap: true,
+          sourceMap: runtime.isDev,
           exclude  : /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
         }))
 
@@ -507,21 +575,6 @@ const cfg = {
         }))
       }
 
-      plugins.push(new AssetsPlugin({
-        filename: 'jekyll.lanyon_assets.yml',
-        path    : runtime.cacheDir,
-        processOutput (assets) {
-          scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
-          try {
-            return yaml.safeDump({lanyon_assets: assets})
-          } catch (e) {
-            console.log(assets)
-            throw new Error(`Unable to encode above config to YAML. ${e.message}`)
-          }
-        },
-      }))
-      plugins.push(new WebpackMd5Hash())
-
       return plugins
     }()),
     resolveLoader: {
@@ -533,48 +586,41 @@ const cfg = {
     recordsPath: runtime.recordsPath,
     resolve    : {
       modules: [
-        path.resolve(runtime.assetsSourceDir),
+        `${path.resolve(runtime.assetsSourceDir)}`,
         `${path.resolve(runtime.assetsSourceDir)}/bower_components`,
         `${path.resolve(runtime.projectDir)}/node_modules`,
         `${path.resolve(runtime.lanyonDir)}/node_modules`,
       ],
 
-      // modules: [path.resolve(__dirname, "app"), "node_modules"]
-      // (was split into `root`, `modulesDirectories` and `fallback` in the old options)
-      // In which folders the resolver look for modules
-      // relative paths are looked up in every parent folder (like node_modules)
-      // absolute paths are looked up directly
-      // the order is respected
-
-      descriptionFiles: ['package.json', 'bower.json'],
+      // Enable Bower
       // These JSON files are read in directories
+      descriptionFiles: ['package.json', 'bower.json'],
 
-      mainFields: ['main', 'browser'],
       // These fields in the description files are looked up when trying to resolve the package directory
+      mainFields: ['main', 'browser'],
 
-      mainFiles: ['index'],
       // These files are tried when trying to resolve a directory
+      mainFiles: ['index'],
 
-      aliasFields: ['browser'],
       // These fields in the description files offer aliasing in this package
       // The content of these fields is an object where requests to a key are mapped to the corresponding value
+      aliasFields: ['browser'],
 
-      extensions: ['.js', '.json'],
       // These extensions are tried when resolving a file
+      extensions: ['.js', '.json'],
 
-      enforceExtension: false,
       // If false it will also try to use no extension from above
+      enforceExtension: false,
 
-      moduleExtensions: ['-loader'],
       // These extensions are tried when resolving a module
+      moduleExtensions: ['-loader'],
 
-      enforceModuleExtension: false,
       // If false it's also try to use no module extension from above
-
+      enforceModuleExtension: false,
+      // These aliasing is used when trying to resolve a module
       // alias: {
       //   jquery: path.resolve(__dirname, 'vendor/jquery-2.0.0.js'),
       // },
-      // These aliasing is used when trying to resolve a module
     },
   },
 }
