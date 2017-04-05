@@ -7,7 +7,7 @@ const fs          = require('fs')
 // var debug      = require('depurar')('lanyon')
 const _           = require('lodash')
 const oneLine     = require('common-tags/lib/oneLine')
-const stripIndent = require('common-tags/lib/stripIndent')
+// const stripIndent = require('common-tags/lib/stripIndent')
 const scrolex     = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
