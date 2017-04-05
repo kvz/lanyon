@@ -387,85 +387,50 @@ const cfg = {
               },
             ],
           })
-          rules.push({
-            test   : /\.(js|jsx)$/,
-            exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
-            use    : [
-              {
-                loader : 'babel-loader',
-                options: {
-                  babelrc: false,
-                  // If we ever want multiple rules on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
-                  presets: [
-                    require.resolve('babel-preset-es2015'),
-                    require.resolve('babel-preset-react'),
-                    require.resolve('babel-preset-stage-0'),
-                  ],
-                  sourceRoot    : `${runtime.projectDir}`,
-                  cacheDirectory: `${runtime.cacheDir}/babelCache`,
-                },
-              },
-            ],
-          })
         } else {
           rules.push({
             test: /\.css$/,
-            use : [
-              {
-                // use: 'css-loader',?sourceMap!resolve-url?root=${runtime.projectDir}`}),
-                use: ExtractTextPlugin.extract({
-                  fallback: 'style-loader',
-                  use     : ['css-loader', 'resolve-url-loader'],
-                }),
-              },
-            ],
+            use : ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use     : ['css-loader', 'resolve-url-loader'],
+            }),
           })
           rules.push({
             test: /\.scss$/,
-            use : [
-              {
-                // use: 'css-loader',?sourceMap!sass?sourceMap!resolve-url?root=${runtime.projectDir}`}),
-                use: ExtractTextPlugin.extract({
-                  fallback: 'style-loader',
-                  use     : ['css-loader', 'sass-loader', 'resolve-url-loader'],
-                }),
-              },
-            ],
+            use : ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use     : ['css-loader', 'sass-loader', 'resolve-url-loader'],
+            }),
           })
           rules.push({
             test: /\.less$/,
-            use : [
-              {
-                // use: 'css-loader',?sourceMap!less?sourceMap'}),
-                use: ExtractTextPlugin.extract({
-                  fallback: 'style-loader',
-                  use     : ['css-loader', 'less-loader', 'resolve-url-loader'],
-                }),
-              },
-            ],
-          })
-          rules.push({
-            test   : /\.(js|jsx)$/,
-            exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
-            use    : [
-              {
-                loader : 'babel-loader',
-                options: {
-                  babelrc: false,
-                  // If we ever want multiple rules on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
-                  presets: [
-                    require.resolve('babel-preset-es2015'),
-                    require.resolve('babel-preset-react'),
-                    require.resolve('babel-preset-stage-0'),
-                  ],
-                  sourceRoot    : `${runtime.projectDir}`,
-                  cacheDirectory: `${runtime.cacheDir}/babelCache`,
-                },
-              },
-            ],
+            use : ExtractTextPlugin.extract({
+              fallback: 'style-loader',
+              use     : ['css-loader', 'less-loader', 'resolve-url-loader'],
+            }),
           })
         }
 
+        rules.push({
+          test   : /\.(js|jsx)$/,
+          exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
+          use    : [
+            {
+              loader : 'babel-loader',
+              options: {
+                babelrc: false,
+                // If we ever want multiple rules on this test: https://github.com/babel/babel-loader/issues/166#issuecomment-170054444
+                presets: [
+                  require.resolve('babel-preset-es2015'),
+                  require.resolve('babel-preset-react'),
+                  require.resolve('babel-preset-stage-0'),
+                ],
+                sourceRoot    : `${runtime.projectDir}`,
+                cacheDirectory: `${runtime.cacheDir}/babelCache`,
+              },
+            },
+          ],
+        })
         return rules
       }()),
     },
@@ -573,6 +538,43 @@ const cfg = {
         `${path.resolve(runtime.projectDir)}/node_modules`,
         `${path.resolve(runtime.lanyonDir)}/node_modules`,
       ],
+
+      // modules: [path.resolve(__dirname, "app"), "node_modules"]
+      // (was split into `root`, `modulesDirectories` and `fallback` in the old options)
+      // In which folders the resolver look for modules
+      // relative paths are looked up in every parent folder (like node_modules)
+      // absolute paths are looked up directly
+      // the order is respected
+
+      descriptionFiles: ['package.json', 'bower.json'],
+      // These JSON files are read in directories
+
+      mainFields: ['main', 'browser'],
+      // These fields in the description files are looked up when trying to resolve the package directory
+
+      mainFiles: ['index'],
+      // These files are tried when trying to resolve a directory
+
+      aliasFields: ['browser'],
+      // These fields in the description files offer aliasing in this package
+      // The content of these fields is an object where requests to a key are mapped to the corresponding value
+
+      extensions: ['.js', '.json'],
+      // These extensions are tried when resolving a file
+
+      enforceExtension: false,
+      // If false it will also try to use no extension from above
+
+      moduleExtensions: ['-loader'],
+      // These extensions are tried when resolving a module
+
+      enforceModuleExtension: false,
+      // If false it's also try to use no module extension from above
+
+      // alias: {
+      //   jquery: path.resolve(__dirname, 'vendor/jquery-2.0.0.js'),
+      // },
+      // These aliasing is used when trying to resolve a module
     },
   },
 }
