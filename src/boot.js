@@ -158,7 +158,7 @@ module.exports = async function boot (whichPackage) {
     cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, `$1${runtime.binDir}/jekyll$2`)
     cmd = cmd.replace(/(\s|^)bundler(\s|$)/, `$1${runtime.binDir}/bundler$2`)
 
-    if (cmdName.match(/(^start|^deploy)/)) {
+    if (cmdName.match(/(^start|^deploy|^build$)/)) {
       // Show versions
       let versionMapping = {
         webpack: `node ${npmBins.webpack} -v`,
@@ -166,10 +166,14 @@ module.exports = async function boot (whichPackage) {
         jekyll : `${runtime.binDir}/jekyll -v`,
         bundler: `${runtime.binDir}/bundler -v`,
       }
-      for (let app in versionMapping) {
-        let stdout = await scrolex.exe(versionMapping[app], { mode: 'silent' })
-        let version = stdout.split(/\s+/).pop()
-        scrolex.stick(`${app} version: ${version}`)
+      try {
+        for (let app in versionMapping) {
+          let stdout = await scrolex.exe(versionMapping[app], { mode: 'silent', cwd: runtime.cacheDir })
+          let version = stdout.split(/\s+/).pop()
+          scrolex.stick(`${app} version: ${version}`)
+        }
+      } catch (e) {
+        console.error(e)
       }
     } else {
       scrolex.stick(`cmdName: ${cmdName}`)
