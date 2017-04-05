@@ -345,12 +345,15 @@ const cfg = {
                 loader: 'style-loader',
               },
               {
-                loader: 'css-loader',
+                loader : 'css-loader',
+                options: {
+                  sourceMap: true,
+                },
               },
               {
                 loader : 'sass-loader',
                 options: {
-                  // sourceMap: true,
+                  sourceMap: true,
                 },
               },
               {
@@ -365,12 +368,15 @@ const cfg = {
                 loader: 'style-loader',
               },
               {
-                loader: 'css-loader',
+                loader : 'css-loader',
+                options: {
+                  sourceMap: true,
+                },
               },
               {
                 loader : 'less-loader',
                 options: {
-                  // sourceMap: true,
+                  sourceMap: true,
                 },
               },
               {
