@@ -34,6 +34,7 @@ Released: TBA.
 Released: 2017-04-05.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.74...v0.0.75).
 
+- [x] Fix less error by moving resolve-url-loader after less parsing (loaders are used from right to left) `( WARNING in /Users/kvz/code/lanyon/~/css-loader?{}!/Users/kvz/code/lanyon/~/less-loader/dist?{}!/Users/kvz/code/lanyon/~/resolve-url-loader!../assets/stylesheets/app.css.less (Emitted value instead of an instance of Error)   resolve-url-loader cannot operate: CSS error /Users/kvz/code/tus.io/assets/stylesheets/app.css.less:21:1: missing '{')`
 - [x] Enable Bower via https://github.com/lpiepiora/bower-webpack-plugin/issues/39#issuecomment-291114301 vs `BowerWebpackPlugin`
 
 ## v0.0.74

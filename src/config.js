@@ -355,13 +355,13 @@ const cfg = {
                 },
               },
               {
+                loader: 'resolve-url-loader',
+              },
+              {
                 loader : 'sass-loader',
                 options: {
                   // sourceMap: true,
                 },
-              },
-              {
-                loader: 'resolve-url-loader',
               },
             ],
           })
@@ -378,13 +378,13 @@ const cfg = {
                 },
               },
               {
+                loader: 'resolve-url-loader',
+              },
+              {
                 loader : 'less-loader',
                 options: {
                   // sourceMap: true,
                 },
-              },
-              {
-                loader: 'resolve-url-loader',
               },
             ],
           })

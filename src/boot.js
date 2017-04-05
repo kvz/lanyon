@@ -60,20 +60,18 @@ module.exports = async function boot (whichPackage) {
     process.exit(1)
   }
 
-  await
-
   scrolex.stick(`Booting ${whichPackage.type} Lanyon->${cmdName}. Version: ${whichPackage.version} on PID: ${process.pid} from: ${__filename}`)
   scrolex.stick(`Detected cacheDir as "${runtime.cacheDir}"`)
   scrolex.stick(`Detected gitRoot as "${runtime.gitRoot}"`)
   scrolex.stick(`Detected npmRoot as "${runtime.npmRoot}"`)
 
-  if (process.env.LANYON_DISABLE_GEMS) {
+  if ('LANYON_DISABLE_GEMS' in process.env && process.env.LANYON_DISABLE_GEMS) {
     scrolex.stick(`Disabled gems ${process.env.LANYON_DISABLE_GEMS} as per LANYON_DISABLE_GEMS`)
   }
-  if (process.env.LANYON_EXCLUDE) {
+  if ('LANYON_EXCLUDE' in process.env && process.env.LANYON_EXCLUDE) {
     scrolex.stick(`Disabled building of ${process.env.LANYON_EXCLUDE} as per LANYON_EXCLUDE`)
   }
-  if (process.env.LANYON_INCLUDE) {
+  if ('LANYON_INCLUDE' in process.env && process.env.LANYON_INCLUDE) {
     scrolex.stick(`Explicitly enabling building of ${process.env.LANYON_INCLUDE} as per LANYON_INCLUDE`)
   }
 
