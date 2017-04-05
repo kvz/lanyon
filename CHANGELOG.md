@@ -20,7 +20,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.69...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.70...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -29,6 +29,13 @@ Released: TBA.
 - [ ] Ship a `deploy` executable for Travis instead of generating one, which relies on `lanyon install`, which is not a file, resulting in more complicated `.travis.yml` files
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
+
+## v0.0.70
+
+Released: 2017-04-05.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.69...v0.0.70).
+
+- [x] Upgrade from webpack `1.14.0` -> `2.3.1` (BowerWebpackPlugin don't work yet)
 
 ## v0.0.69
 
