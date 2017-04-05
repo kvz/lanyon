@@ -16,15 +16,15 @@ for dir in ~/code/invig ~/code/content ~/code/kvz.io ~/code/legal ~/code/lanyon/
   pushd "${dir}"
     npm unlink lanyon || true
 
-    gsed -i _scripts/postinstall.sh -e 's/lanyon postinstall/lanyon install/g' || true
-    git add _scripts/postinstall.sh || true
-    gsed -i .travis.yml -e 's/lanyon postinstall/lanyon install/g' || true
-    git add .travis.yml || true
-    gsed -i package.json -e 's/lanyon postinstall/lanyon install/g' || true
-    git add package.json || true
+    # gsed -i _scripts/postinstall.sh -e 's/lanyon postinstall/lanyon install/g' || true
+    # git add _scripts/postinstall.sh || true
+    # gsed -i .travis.yml -e 's/lanyon postinstall/lanyon install/g' || true
+    # git add .travis.yml || true
+    # gsed -i package.json -e 's/lanyon postinstall/lanyon install/g' || true
+    # git add package.json || true
 
     yarn add lanyon@${version}
-    git add yarn.lock || true
+    git add yarn.lock package.json || true
     env LANYON_RESET=1 node "${__dir}/../lib/cli.js" install
 
     git commit -m "Upgrade Lanyon to v${version}" || true
