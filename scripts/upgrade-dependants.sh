@@ -18,7 +18,8 @@ for dir in ~/code/invig ~/code/content ~/code/kvz.io ~/code/legal ~/code/lanyon/
 
     # gsed -i _scripts/postinstall.sh -e 's/lanyon postinstall/lanyon install/g' || true
     # git add _scripts/postinstall.sh || true
-    gsed -i .travis.yml -e 's@node_modules/.bin/lanyon install@.lanyon/bin/install@g' || true
+    gsed -i .travis.yml -e 's@before_deploy: .lanyon/bin/install@@g' || true
+    gsed -i .travis.yml -e 's@.lanyon/bin/deploy@./node_modules/lanyon/scripts/ci-deploy.sh@g' || true
     git add .travis.yml || true
     # gsed -i package.json -e 's/lanyon postinstall/lanyon install/g' || true
     # git add package.json || true
