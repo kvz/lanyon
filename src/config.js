@@ -476,9 +476,9 @@ const cfg = {
           options: {
             babelrc: false,
             presets: [
-              'babel-preset-es2015',
-              'babel-preset-react',
-              'babel-preset-stage-0',
+              require.resolve('babel-preset-es2015'),
+              require.resolve('babel-preset-react'),
+              require.resolve('babel-preset-stage-0'),
             ],
             // sourceRoot    : `${runtime.projectDir}`,
             cacheDirectory: `${runtime.cacheDir}/babelCache`,
