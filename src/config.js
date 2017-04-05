@@ -332,6 +332,9 @@ const cfg = {
               },
               {
                 loader: 'css-loader',
+                options: {
+                  // sourceMap: true,
+                },
               },
               {
                 loader: 'resolve-url-loader',
@@ -347,13 +350,13 @@ const cfg = {
               {
                 loader : 'css-loader',
                 options: {
-                  sourceMap: true,
+                  // sourceMap: true,
                 },
               },
               {
                 loader : 'sass-loader',
                 options: {
-                  sourceMap: true,
+                  // sourceMap: true,
                 },
               },
               {
@@ -370,13 +373,13 @@ const cfg = {
               {
                 loader : 'css-loader',
                 options: {
-                  sourceMap: true,
+                  // sourceMap: true,
                 },
               },
               {
                 loader : 'less-loader',
                 options: {
-                  sourceMap: true,
+                  // sourceMap: true,
                 },
               },
               {
