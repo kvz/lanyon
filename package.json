@@ -130,7 +130,7 @@
     }
   },
   "devDependencies": {
-    "es6-promise": "^4.1.0",
+    "es6-promise": "4",
     "eslint": "3.19.0",
     "eslint-config-standard": "7.1.0",
     "eslint-plugin-promise": "3.5.0",
@@ -197,6 +197,7 @@
     "scrolex": "0.0.27",
     "semver": "5.3.0",
     "shelljs": "0.7.7",
+    "sinon": "1",
     "spawn-sync": "1.0.15",
     "style-loader": "0.16.1",
     "uglify": "0.1.5",
