@@ -202,6 +202,14 @@ module.exports = async (runtime, cb) => {
     (npm run build:production || npm run web:build:production) && (npm run deploy || npm run web:deploy)
   `, { 'encoding': 'utf-8', 'mode': '755' })
 
+  shimPath = path.join(runtime.binDir, 'install')
+  scrolex.stick(`Installed: install shim to: ${shimPath} ..`)
+  fs.writeFileSync(shimPath, stripIndent`
+    #!/bin/sh -ex
+    cd "${runtime.npmRoot}"
+    node_modules/.bin/lanyon install
+  `, { 'encoding': 'utf-8', 'mode': '755' })
+
   if (runtime.lanyonUpdateGemLockfile === true) {
     utils.fsCopySync(`${runtime.cacheDir}/Gemfile.lock`, `${runtime.lanyonDir}/Gemfile.lock`)
   }

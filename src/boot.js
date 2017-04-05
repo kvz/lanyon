@@ -60,6 +60,8 @@ module.exports = async function boot (whichPackage) {
     process.exit(1)
   }
 
+  await
+
   scrolex.stick(`Booting ${whichPackage.type} Lanyon->${cmdName}. Version: ${whichPackage.version} on PID: ${process.pid} from: ${__filename}`)
   scrolex.stick(`Detected cacheDir as "${runtime.cacheDir}"`)
   scrolex.stick(`Detected gitRoot as "${runtime.gitRoot}"`)
@@ -155,6 +157,23 @@ module.exports = async function boot (whichPackage) {
     // Replace shims
     cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, `$1${runtime.binDir}/jekyll$2`)
     cmd = cmd.replace(/(\s|^)bundler(\s|$)/, `$1${runtime.binDir}/bundler$2`)
+
+    if (cmdName.match(/(^start|^deploy)/)) {
+      // Show versions
+      let versionMapping = {
+        webpack: `node ${npmBins.webpack} -v`,
+        nodemon: `node ${npmBins.nodemon} -v`,
+        jekyll : `${runtime.binDir}/jekyll -v`,
+        bundler: `${runtime.binDir}/bundler -v`,
+      }
+      for (let app in versionMapping) {
+        let stdout = await scrolex.exe(versionMapping[app], { mode: 'silent' })
+        let version = stdout.split(/\s+/).pop()
+        scrolex.stick(`${app} version: ${version}`)
+      }
+    } else {
+      scrolex.stick(`cmdName: ${cmdName}`)
+    }
 
     scrolex.exe(cmd, scrolexOpts, async (err, out) => { // eslint-disable-line handle-callback-err
       // Run Post-Hooks
