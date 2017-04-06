@@ -13,7 +13,7 @@ before_cache:
 deploy:
   skip_cleanup: true
   provider: script
-  script: ./node_modules/lanyon/scripts/ci-deploy.sh # Just calls `(web:)build:production` and `(web:)deploy` on the main project
+  script: ./node_modules/lanyon/scripts/ci-deploy.sh # installs if needed and calls `(web:)build:production` and `(web:)deploy` on the main project
   on:
     branch: master
     condition: $TRAVIS_OS_NAME = linux
