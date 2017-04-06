@@ -516,7 +516,7 @@ const cfg = {
             try {
               return yaml.safeDump({lanyon_assets: assets})
             } catch (e) {
-              console.log(assets)
+              console.error({assets})
               throw new Error(`Unable to encode above config to YAML. ${e.message}`)
             }
           },

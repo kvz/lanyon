@@ -73,25 +73,40 @@ module.exports.dockerCmd = ({cacheDir, projectDir, lanyonVersion}, cmd, flags) =
 module.exports.runhooks = async (order, cmdName, runtime) => {
   let arr = []
 
-  if (cmdName.match(/^build:(assets|content)/)) {
-    arr = [`${order}build`, `${order}build:production`, `${order}build:development`]
-  }
+  arr = [
+    `${order}${cmdName}`,
+    `${order}${cmdName}:production`,
+    `${order}${cmdName}:development`,
+  ]
 
-  arr.forEach(async (hook) => {
+  const collectStdout = {}
+  for (let i in arr) {
+    let hook = arr[i]
     if (runtime[hook]) {
-      const needEnv = hook.split(':')[1]
-      if (!needEnv || runtime.lanyonEnv === needEnv) {
+      const lastPart = hook.split(':').pop()
+      let needEnv    = 'both'
+
+      if (lastPart === 'production') {
+        needEnv = lastPart
+      }
+      if (lastPart === 'development') {
+        needEnv = lastPart
+      }
+
+      if (needEnv === 'both' || runtime.lanyonEnv === needEnv) {
         let squashedHooks = runtime[hook]
         if (_.isArray(runtime[hook])) {
           squashedHooks = runtime[hook].join(' && ')
         }
-        await scrolex.exe(squashedHooks, {
+        collectStdout[hook] = await scrolex.exe(squashedHooks, {
           cwd : runtime.projectDir,
           mode: (process.env.SCROLEX_MODE || 'singlescroll'),
         })
       }
     }
-  })
+  }
+
+  return collectStdout
 }
 
 module.exports.upwardDirContaining = (find, cwd, not) => {
@@ -139,7 +154,7 @@ module.exports.writeConfig = (cfg) => {
   try {
     fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.config.yml`, yaml.safeDump(cfg.jekyll), 'utf-8')
   } catch (e) {
-    console.log(cfg.jekyll)
+    console.error({jekyll: cfg.jekyll})
     throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/jekyll.config.yml. ${e.message}`)
   }
   fs.writeFileSync(`${cfg.runtime.cacheDir}/nodemon.config.json`, JSON.stringify(cfg.nodemon, null, '  '), 'utf-8')

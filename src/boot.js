@@ -1,11 +1,13 @@
 require('babel-polyfill')
 module.exports = async function boot (whichPackage) {
-  const _       = require('lodash')
-  const config  = require('./config')
-  const utils   = require('./utils')
-  const fs      = require('fs')
-  const scrolex = require('scrolex')
-  const runtime = config.runtime
+  const _              = require('lodash')
+  const config         = require('./config')
+  const utils          = require('./utils')
+  const fs             = require('fs')
+  const asyncMapValues = require('async/mapValues')
+  const scrolex        = require('scrolex')
+  const pad            = require('pad')
+  const runtime        = config.runtime
 
   // 'start'                    : 'parallelshell "lanyon build:content:watch" "lanyon build:assets:watch" "lanyon serve"',
   const scripts = {
@@ -165,16 +167,20 @@ module.exports = async function boot (whichPackage) {
         bundler: `${runtime.binDir}/bundler -v`,
       }
       try {
-        for (let app in versionMapping) {
-          let stdout = await scrolex.exe(versionMapping[app], { mode: 'silent', cwd: runtime.cacheDir })
-          let version = stdout.split(/\s+/).pop()
-          scrolex.stick(`${app} version: ${version}`)
-        }
+        asyncMapValues(versionMapping, function (cmd, key, callback) {
+          scrolex.exe(cmd, { mode: 'silent', cwd: runtime.cacheDir }, callback)
+        }, (err, stdouts) => {
+          if (err) {
+            return scrolex.failure(err)
+          }
+          for (let app in stdouts) {
+            let version = stdouts[app].split(/\s+/).pop()
+            scrolex.stick(`On ${pad(app, 7)}: v${version}`)
+          }
+        })
       } catch (e) {
-        console.error(e)
+        return scrolex.failure(e)
       }
-    } else {
-      scrolex.stick(`cmdName: ${cmdName}`)
     }
 
     scrolex.exe(cmd, scrolexOpts, async (err, out) => { // eslint-disable-line handle-callback-err
