@@ -83,9 +83,7 @@ module.exports = async function boot (whichPackage) {
   }
 
   // Run Pre-Hooks
-  if (cmdName.match(/^build:(assets|content)/)) {
-    await utils.runhooks('pre', cmdName, runtime)
-  }
+  await utils.runhooks('pre', cmdName, runtime)
 
   // Write all config files to cacheDir
   scrolex.stick('Writing configs')
