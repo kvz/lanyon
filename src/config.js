@@ -472,7 +472,7 @@ const cfg = {
             `${runtime.assetsSourceDir}/bower_components`,
             /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
           ],
-          loader : require.resolve('babel-loader'),
+          loader : 'babel-loader',
           options: {
             babelrc: false,
             presets: [
@@ -588,6 +588,7 @@ const cfg = {
       modules: [
         `${path.resolve(runtime.assetsSourceDir)}`,
         `${path.resolve(runtime.assetsSourceDir)}/bower_components`,
+        `${path.resolve(runtime.npmRoot)}/node_modules`,
         `${path.resolve(runtime.projectDir)}/node_modules`,
         `${path.resolve(runtime.lanyonDir)}/node_modules`,
       ],
