@@ -472,7 +472,7 @@ const cfg = {
             `${runtime.assetsSourceDir}/bower_components`,
             /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
           ],
-          loader : 'babel-loader',
+          loader : require.resolve('babel-loader'),
           options: {
             babelrc: false,
             presets: [
