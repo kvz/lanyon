@@ -580,17 +580,18 @@ const cfg = {
     resolveLoader: {
       modules: [
         path.join(runtime.lanyonDir, 'node_modules'),
+        path.join(runtime.npmRoot, 'node_modules'),
         path.join(runtime.projectDir, 'node_modules'),
       ],
     },
     recordsPath: runtime.recordsPath,
     resolve    : {
       modules: [
-        `${path.resolve(runtime.assetsSourceDir)}`,
-        `${path.resolve(runtime.assetsSourceDir)}/bower_components`,
-        `${path.resolve(runtime.npmRoot)}/node_modules`,
-        `${path.resolve(runtime.projectDir)}/node_modules`,
-        `${path.resolve(runtime.lanyonDir)}/node_modules`,
+        runtime.assetsSourceDir,
+        path.join(runtime.assetsSourceDir, 'bower_components'),
+        path.join(runtime.projectDir, 'node_modules'),
+        path.join(runtime.npmRoot, 'node_modules'),
+        path.join(runtime.lanyonDir, 'node_modules'),
       ],
 
       // Enable Bower
