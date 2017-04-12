@@ -106,7 +106,7 @@ before_cache:
 deploy:
   skip_cleanup: true
   provider: script
-  script: website/node_modules/lanyon/scripts/ci-deploy.sh
+  script: scripts/ci-deploy.sh
   on:
     branch: master
     node: 6
