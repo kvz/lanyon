@@ -2,10 +2,20 @@
 echo "--> LANYON_USE_LINKED=${LANYON_USE_LINKED:-}"
 echo " --> in $(pwd)"
 
-if egrep '"lanyon": "\d+\.\d+\.\d+"' package.json; then
+if gegrep '"lanyon": "[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+"' package.json; then
+  # This is for GNU egrep regex matching
   cd .
   echo " --> in $(pwd)"
+elif egrep '"lanyon": "\d+\.\d+\.\d+"' package.json; then
+  # This is for BSD egrep regex matching
+  cd .
+  echo " --> in $(pwd)"
+elif gegrep '"lanyon": "[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+"' website/package.json; then
+  # This is for GNU egrep regex matching
+  cd website
+  echo " --> in $(pwd)"
 elif egrep '"lanyon": "\d+\.\d+\.\d+"' website/package.json; then
+  # This is for BSD egrep regex matching
   cd website
   echo " --> in $(pwd)"
 else
