@@ -9,6 +9,7 @@ elif egrep '"lanyon": "\d+\.\d+\.\d+"' website/package.json; then
   cd website
   echo " --> in $(pwd)"
 else
+  ls -al
   echo "==> unable to locate lanyon dependency in package.json or website/package.json"
   exit 1
 fi
