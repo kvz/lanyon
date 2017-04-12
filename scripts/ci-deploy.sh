@@ -1,5 +1,6 @@
 #!/bin/sh -ex
 echo "--> LANYON_USE_LINKED=${LANYON_USE_LINKED:-}"
+echo " --> in $(pwd)"
 
 if egrep '"lanyon": "\d+\.\d+\.\d+"' package.json; then
   cd .
