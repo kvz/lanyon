@@ -174,6 +174,8 @@ Please see the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
 
 These articles where helpful in creating Lanyon
 
+- Check for recent `github-pages` versions at <https://rubygems.org/gems/github-pages/versions>
+- Check for recent Jekyll versions at <https://github.com/jekyll/jekyll/releases>
 - <https://github.com/petehunt/webpack-howto/blob/master/README.md#8-optimizing-common-code>
 - <https://www.jonathan-petitcolas.com/2016/08/12/plugging-webpack-to-jekyll-powered-pages.html>
 - <https://webpack.github.io/docs/configuration.html#resolve-alias>
