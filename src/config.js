@@ -619,9 +619,6 @@ const cfg = {
       // If false it will also try to use no extension from above
       enforceExtension: false,
 
-      // These extensions are tried when resolving a module
-      moduleExtensions: ['-loader'],
-
       // If false it's also try to use no module extension from above
       enforceModuleExtension: false,
       // These aliasing is used when trying to resolve a module
