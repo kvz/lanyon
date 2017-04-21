@@ -604,7 +604,7 @@ const cfg = {
       descriptionFiles: ['package.json', 'bower.json'],
 
       // These fields in the description files are looked up when trying to resolve the package directory
-      mainFields: ['main', 'browser'],
+      mainFields: ['browser', 'main'],
 
       // These files are tried when trying to resolve a directory
       mainFiles: ['index'],
@@ -618,9 +618,6 @@ const cfg = {
 
       // If false it will also try to use no extension from above
       enforceExtension: false,
-
-      // These extensions are tried when resolving a module
-      moduleExtensions: ['-loader'],
 
       // If false it's also try to use no module extension from above
       enforceModuleExtension: false,
