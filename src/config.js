@@ -477,17 +477,30 @@ const cfg = {
             `${runtime.assetsSourceDir}/bower_components`,
             /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
           ],
-          loader : 'babel-loader',
-          options: {
-            babelrc: false,
-            presets: [
-              require.resolve('babel-preset-es2015'),
-              require.resolve('babel-preset-react'),
-              require.resolve('babel-preset-stage-0'),
-            ],
-            // sourceRoot    : `${runtime.projectDir}`,
-            cacheDirectory: `${runtime.cacheDir}/babelCache`,
-          },
+          use: [
+            // {
+            //   loader : 'react-hot-loader',
+            //   options: {
+            //
+            //   },
+            // },
+            {
+              loader : 'babel-loader',
+              options: {
+                babelrc: false,
+                presets: [
+                  require.resolve('babel-preset-es2015'),
+                  require.resolve('babel-preset-react'),
+                  require.resolve('babel-preset-stage-0'),
+                ],
+                plugins: [
+                  require.resolve('babel-plugin-transform-class-properties'),
+                ],
+                // sourceRoot    : `${runtime.projectDir}`,
+                cacheDirectory: `${runtime.cacheDir}/babelCache`,
+              },
+            },
+          ],
         })
         return rules
       }()),
