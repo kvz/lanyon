@@ -549,6 +549,16 @@ const cfg = {
           filename : getFilename('css'),
           allChunks: true,
         }))
+        // Avoid warning:
+        // Warning: It looks like you're using a minified copy of the development build of React.
+        // When deploying React apps to production, make sure to use the production build which
+        // skips development warnings and is faster. See https://fb.me/react-minification for more details.
+        // https://facebook.github.io/react/docs/optimizing-performance.html#use-the-production-build
+        plugins.push(new webpack.DefinePlugin({
+          'process.env': {
+            NODE_ENV: JSON.stringify('production'),
+          },
+        }))
         plugins.push(new webpack.optimize.UglifyJsPlugin({
           compress: {
             warnings: true,
