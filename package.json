@@ -91,7 +91,7 @@
         "writeShim": true
       },
       "jekyll": {
-        "preferred": "3.3.0",
+        "preferred": "3.4.3",
         "range": ">=3",
         "writeShim": true
       }
@@ -101,7 +101,7 @@
       "content": 4000
     },
     "gems": {
-      "github-pages": "129",
+      "github-pages": "134",
       "nokogiri": "1.6.8.1",
       "pkg-config": "1.1.7",
       "stringex": "2.6.0"
