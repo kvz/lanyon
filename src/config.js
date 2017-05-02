@@ -590,7 +590,7 @@ const cfg = {
       if (runtime.common) {
         plugins.push(new webpack.optimize.CommonsChunkPlugin({
           name    : 'common',
-          filename: 'common.js', //getFilename('js'),
+          filename: getFilename('js'),
         }))
       }
 

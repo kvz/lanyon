@@ -29,6 +29,13 @@ Released: TBA.
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
 
+## v0.0.87
+
+Released: 2017-05-92.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.85...v0.0.87).
+
+- [x] Make common bundles use a hash in their filenames as it might resolve behavior reported in https://github.com/webpack/webpack/issues/959
+
 ## v0.0.86
 
 Released: 2017-04-29.
