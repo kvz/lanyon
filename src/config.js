@@ -710,70 +710,83 @@ cfg.browsersync = {
   files      : runtime.contentBuildDir,
 }
 
-cfg.jekyll = {
-  gems: (function dynamicGems () {
-    let list = []
+cfg.jekyll = {}
 
-    if (process.env.LANYON_DISABLE_GEMS) {
-      const disabled = process.env.LANYON_DISABLE_GEMS.split(/\s*,\s*/)
-      for (let i in runtime.jekyllConfig.gems) {
-        let isEnabled = disabled.indexOf(runtime.jekyllConfig.gems[i]) === -1
-        if (isEnabled) {
-          list.push(runtime.jekyllConfig.gems[i])
-        }
-      }
-    } else {
-      list = runtime.jekyllConfig.gems
-    }
-
-    if (!list || list.length < 1) {
-      return null
-    }
-
-    return list
-  }()),
-  exclude: (function dynamicExcludes () {
-    let list = [
-      'node_modules',
-      'env.sh',
-      'env.*.sh',
-      '.env.sh',
-      '.env.*.sh',
-      '.lanyon',
-    ]
-
-    if (_.get(runtime, 'jekyllConfig.exclude.length') > 0) {
-      list = list.concat(runtime.jekyllConfig.exclude)
-    }
-
-    if ('LANYON_EXCLUDE' in process.env && process.env.LANYON_EXCLUDE !== '') {
-      list = list.concat(process.env.LANYON_EXCLUDE.split(/\s*,\s*/))
-    }
-
-    if (!list || list.length < 1) {
-      return null
-    }
-
-    return list
-  }()),
-  include: (function dynamicIncludes () {
-    let list = []
-
-    if (_.get(runtime, 'jekyllConfig.include.length') > 0) {
-      list = list.concat(runtime.jekyllConfig.include)
-    }
-
-    if ('LANYON_INCLUDE' in process.env && process.env.LANYON_INCLUDE !== '') {
-      list = list.concat(process.env.LANYON_INCLUDE.split(/\s*,\s*/))
-    }
-
-    if (!list || list.length < 1) {
-      return null
-    }
-
-    return list
-  }()),
+const jekyllDevConfigPath = `${runtime.projectDir}/_config.develop.yml`
+if (runtime.isDev && fs.existsSync(jekyllDevConfigPath)) {
+  try {
+    const buf  = fs.readFileSync(jekyllDevConfigPath)
+    cfg.jekyll = yaml.safeLoad(buf)
+  } catch (e) {
+    scrolex.failure(`Unable to load ${jekyllDevConfigPath}`)
+  }
 }
+
+cfg.jekyll.gems = (function dynamicGems () {
+  let list = []
+
+  if (process.env.LANYON_DISABLE_GEMS) {
+    const disabled = process.env.LANYON_DISABLE_GEMS.split(/\s*,\s*/)
+    for (let i in runtime.jekyllConfig.gems) {
+      let isEnabled = disabled.indexOf(runtime.jekyllConfig.gems[i]) === -1
+      if (isEnabled) {
+        list.push(runtime.jekyllConfig.gems[i])
+      }
+    }
+  } else {
+    list = runtime.jekyllConfig.gems
+  }
+
+  if (!list || list.length < 1) {
+    return null
+  }
+
+  return list
+}())
+
+cfg.jekyll.exclude = (function dynamicExcludes () {
+  let list = [
+    'node_modules',
+    'env.sh',
+    'env.*.sh',
+    '.env.sh',
+    '.env.*.sh',
+    '.lanyon',
+  ]
+
+  if (_.get(runtime, 'jekyllConfig.exclude.length') > 0) {
+    list = list.concat(runtime.jekyllConfig.exclude)
+  }
+
+  if ('LANYON_EXCLUDE' in process.env && process.env.LANYON_EXCLUDE !== '') {
+    list = list.concat(process.env.LANYON_EXCLUDE.split(/\s*,\s*/))
+  }
+
+  if (!list || list.length < 1) {
+    return null
+  }
+
+  return list
+}())
+
+cfg.jekyll.include = (function dynamicIncludes () {
+  let list = []
+
+  if (_.get(runtime, 'jekyllConfig.include.length') > 0) {
+    list = list.concat(runtime.jekyllConfig.include)
+  }
+
+  if ('LANYON_INCLUDE' in process.env && process.env.LANYON_INCLUDE !== '') {
+    list = list.concat(process.env.LANYON_INCLUDE.split(/\s*,\s*/))
+  }
+
+  if (!list || list.length < 1) {
+    return null
+  }
+
+  return list
+}())
+
 
 cfg.nodemon = {
   onChangeOnly: true,

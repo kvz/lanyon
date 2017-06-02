@@ -20,7 +20,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.86...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.88...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -29,10 +29,17 @@ Released: TBA.
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
 
+## v0.0.88
+
+Released: 2017-06-02.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.87...v0.0.88).
+
+- [x] Add support for `_config.develop.yml`. If it exists, it will be merged over `_config.yml` but "under" magic keys: `gems`, `exclude`, `include` that can be influenced via `LANYON_DISABLE_GEMS` `LANYON_EXCLUDE` `LANYON_INCLUDE` env vars
+
 ## v0.0.87
 
-Released: 2017-05-92.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.85...v0.0.87).
+Released: 2017-05-29.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.86...v0.0.87).
 
 - [x] Make common bundles use a hash in their filenames as it might resolve behavior reported in https://github.com/webpack/webpack/issues/959
 
