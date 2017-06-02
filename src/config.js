@@ -787,7 +787,6 @@ cfg.jekyll.include = (function dynamicIncludes () {
   return list
 }())
 
-
 cfg.nodemon = {
   onChangeOnly: true,
   verbose     : true,
