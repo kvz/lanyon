@@ -487,7 +487,7 @@ const cfg = {
             {
               loader : 'babel-loader',
               options: {
-                babelrc: false,
+                babelrc: true,
                 presets: [
                   require.resolve('babel-preset-es2015'),
                   require.resolve('babel-preset-react'),
