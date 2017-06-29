@@ -563,8 +563,7 @@ const cfg = {
           compress: {
             warnings: true,
           },
-          mangle   : true,
-          sourceMap: runtime.isDev,
+          sourceMap: true,
           exclude  : /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
         }))
 
