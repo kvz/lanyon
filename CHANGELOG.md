@@ -34,7 +34,7 @@ Released: TBA.
 Released: 2017-06-29.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.91...v0.0.92).
 
-- [x] Fix js sourcemaps when UglifyJsPlugin was enabled
+- [x] Fix js sourcemaps when UglifyJsPlugin was enabled (now adding `//# sourceMappingURL=app.6fce32551585c35c4b80.js.map` again)
 
 ## v0.0.91
 
