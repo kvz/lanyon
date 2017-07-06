@@ -12,7 +12,7 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 version=$(node -e 'console.log(require("./package.json").version)')
 
-for dir in ~/code/invig ~/code/content ~/code/kvz.io ~/code/legal ~/code/lanyon/example ~/code/lanyon/website ~/code/transloadify ~/code/tus.io ~/code/frey-website ~/code/bash3boilerplate; do
+for dir in ~/code/employee-internals ~/code/invig ~/code/content ~/code/kvz.io ~/code/legal ~/code/lanyon/example ~/code/lanyon/website ~/code/transloadify ~/code/tus.io ~/code/frey-website ~/code/bash3boilerplate; do
   pushd "${dir}"
     npm unlink lanyon || true
 
