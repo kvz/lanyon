@@ -34,6 +34,7 @@ Released: TBA.
 Released: 2017-07-10.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.92...v0.0.93).
 
+- [x] Upgrade github-pages, nokogiri, and minimum required ruby to 2.1.0
 - [x] Reset shims while rebuilding container
 - [x] Respect docker while verifying Ruby
 
