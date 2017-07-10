@@ -124,6 +124,10 @@ module.exports = async function boot (whichPackage) {
         `${runtime.gitRoot}/${npmBins[name]}`,
       ]
 
+      if (name === 'lanyon') {
+        tests.push(`${__dirname}/cli.js`)
+      }
+
       let found = false
       tests.forEach(test => {
         if (fs.existsSync(test)) {
