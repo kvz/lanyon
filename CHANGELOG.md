@@ -37,6 +37,7 @@ Released: 2017-07-10.
 - [x] Upgrade github-pages, nokogiri, and minimum required ruby to 2.1.0
 - [x] Reset shims while rebuilding container
 - [x] Respect docker while verifying Ruby
+- [x] Ship "jekyll-lunr-js-search": "3.3.0"
 
 ## v0.0.92
 
