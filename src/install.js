@@ -79,9 +79,10 @@ module.exports = async (runtime, cb) => {
       await scrolex.exe(`cd "${runtime.cacheDir}" && docker build${cache} -t kevinvz/lanyon:${runtime.lanyonVersion} .`)
       await scrolex.exe(`cd "${runtime.cacheDir}" && docker push kevinvz/lanyon:${runtime.lanyonVersion}`)
     }
-    deps.sh.exe     = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
-    deps.ruby.exe   = utils.dockerCmd(runtime, 'ruby')
-    deps.jekyll.exe = utils.dockerCmd(runtime, 'bundler exec jekyll')
+    deps.sh.exe            = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
+    deps.ruby.exe          = utils.dockerCmd(runtime, 'ruby')
+    deps.ruby.versionCheck = utils.dockerCmd(runtime, `ruby -v${deps.ruby.exeSuffix}`)
+    deps.jekyll.exe        = utils.dockerCmd(runtime, 'bundler exec jekyll')
   } else if (utils.satisfied(runtime, 'rbenv') && shell.exec('rbenv install --help', { 'silent': true }).code === 0) {
     // rbenv does not offer installing of rubies by default, it will also require the install plugin --^
     rubyProvider = 'rbenv'
@@ -101,6 +102,7 @@ module.exports = async (runtime, cb) => {
   }
 
   // Verify Ruby
+  scrolex.stick(`Checking for ruby via: ${deps.ruby.versionCheck}`)
   if (!utils.satisfied(runtime, 'ruby', deps.ruby.versionCheck, 'verify')) {
     scrolex.failure('Ruby should have been installed but still not satisfied')
     process.exit(1)
