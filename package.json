@@ -1,6 +1,6 @@
 {
   "name": "lanyon",
-  "version": "0.0.92",
+  "version": "0.0.93",
   "description": "Jekyll without the Hassle",
   "main": "lib/config.js",
   "engines": {
@@ -104,7 +104,7 @@
       "github-pages": "141",
       "nokogiri": "1.8.0",
       "pkg-config": "1.1.7",
-      "jekyll-lunr-js-search": "3.3.0",      
+      "jekyll-lunr-js-search": "3.3.0",
       "stringex": "2.6.0"
     }
   },
