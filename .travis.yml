@@ -98,8 +98,8 @@ matrix:
     language: node_js
     node_js: '4'
   - os: osx
-    osx_image: xcode8
-    env: LANYON_ONLY="system" OSDIST="xcode8"
+    osx_image: xcode9
+    env: LANYON_ONLY="system" OSDIST="xcode9"
     language: node_js
     node_js: '7'
 before_cache:
