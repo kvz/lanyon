@@ -84,6 +84,7 @@ module.exports = async (runtime, cb) => {
       deps.ruby.exe          = utils.dockerCmd(runtime, 'ruby')
       deps.ruby.versionCheck = utils.dockerCmd(runtime, `ruby -v${deps.ruby.exeSuffix}`)
       deps.jekyll.exe        = utils.dockerCmd(runtime, 'bundler exec jekyll')
+      deps.bundler.exe       = utils.dockerCmd(runtime, 'bundler')
     } else if (utils.satisfied(runtime, 'rbenv') && shell.exec('rbenv install --help', { 'silent': true }).code === 0) {
       // rbenv does not offer installing of rubies by default, it will also require the install plugin --^
       rubyProvider = 'rbenv'
@@ -109,7 +110,20 @@ module.exports = async (runtime, cb) => {
       process.exit(1)
     }
 
-    if (rubyProvider !== 'docker') {
+    if (rubyProvider === 'docker') {
+      // Install Gems from Gemfile bundle
+      await scrolex.exe(oneLine`
+        cd "${runtime.cacheDir}" && (
+          ${deps.bundler.exe} install
+            --binstubs='${runtime.binDir}'
+            --path='vendor/bundler'
+            ${deps.ruby.exeSuffix}
+          ||
+          ${deps.bundler.exe} update
+          ${deps.ruby.exeSuffix}
+        )
+      `)
+    } else {
       // Install Bundler
       deps.bundler.exe = `${deps.ruby.exe} ${deps.bundler.exe}`
       if (!utils.satisfied(runtime, 'bundler', `${deps.bundler.exe} -v${deps.ruby.exeSuffix}`)) {

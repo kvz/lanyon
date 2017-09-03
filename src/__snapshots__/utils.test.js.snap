@@ -1,1 +1,1 @@
-exports[`utils dockerCmd should add custom flags 1`] = `"docker run FLAGS --rm --workdir CACHEDIR --user $(id -u) --volume CACHEDIR:CACHEDIR --volume PROJECTDIR:PROJECTDIR kevinvz/lanyon:LANYONVERSION CMD"`;
+exports[`utils dockerCmd should add custom flags 1`] = `"docker run FLAGS --workdir CACHEDIR --volume CACHEDIR:CACHEDIR --volume PROJECTDIR:PROJECTDIR kevinvz/lanyon:LANYONVERSION CMD"`;

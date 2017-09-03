@@ -60,9 +60,7 @@ module.exports.dockerCmd = ({cacheDir, projectDir, lanyonVersion}, cmd, flags) =
   return oneLine`
     docker run
       ${flags}
-      --rm
       --workdir ${cacheDir}
-      --user $(id -u)
       --volume ${cacheDir}:${cacheDir}
       --volume ${projectDir}:${projectDir}
     kevinvz/lanyon:${lanyonVersion}
@@ -172,7 +170,6 @@ module.exports.writeConfig = (cfg) => {
     RUN true \\
       && apk --update add make gcc g++ \\
       && (bundler install --force --path /jekyll/vendor/bundler || bundler update) \\
-      && apk del make gcc g++ \\
       && rm -rf /var/cache/apk/* \\
       && true
   `
