@@ -60,6 +60,7 @@ module.exports.dockerCmd = ({cacheDir, projectDir, lanyonVersion}, cmd, flags) =
   return oneLine`
     docker run
       ${flags}
+      --user $(id -u)
       --workdir ${cacheDir}
       --volume ${cacheDir}:${cacheDir}
       --volume ${projectDir}:${projectDir}
@@ -165,12 +166,19 @@ module.exports.writeConfig = (cfg) => {
     FROM ruby:2.3.3-alpine
     RUN mkdir -p /jekyll
     WORKDIR /jekyll
+    ENV BUNDLE_APP_CONFIG /jekyll
+    RUN { \\
+      echo '---'; \\
+      echo 'BUNDLE_PATH: "/jekyll/vendor/bundler"'; \\
+      echo 'BUNDLE_DISABLE_SHARED_GEMS: "true"'; \\
+    } >> /jekyll/config
     COPY Gemfile /jekyll/
     COPY Gemfile.lock /jekyll/
     RUN true \\
       && apk --update add make gcc g++ \\
       && (bundler install --force --path /jekyll/vendor/bundler || bundler update) \\
       && rm -rf /var/cache/apk/* \\
+      && chmod 777 /jekyll/config \\
       && true
   `
   fs.writeFileSync(`${cfg.runtime.cacheDir}/Dockerfile`, dBuf, 'utf-8')
