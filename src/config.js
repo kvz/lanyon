@@ -67,8 +67,10 @@ try {
   projectPackage = {}
 }
 
-runtime.gems = _.defaults(_.get(projectPackage, 'lanyon.gems') || {}, _.get(lanyonPackage, 'lanyon.gems'))
-runtime      = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
+runtime.projectGems = _.get(projectPackage, 'lanyon.gems') || {}
+runtime.lanyonGems  = _.get(lanyonPackage, 'lanyon.gems') || {}
+runtime.gems        = _.defaults(runtime.projectGems, runtime.lanyonGems)
+runtime             = _.defaults(projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
 
 try {
   runtime.projectDir = fs.realpathSync(runtime.projectDir)

@@ -112,17 +112,21 @@ module.exports = async (runtime, cb) => {
 
     if (rubyProvider === 'docker') {
       // Install Gems from Gemfile bundle
-      await scrolex.exe(oneLine`
-        cd "${runtime.cacheDir}" && (
-          ${deps.bundler.exe} install
+      let customGemList = Object.keys(runtime.projectGems)
+      if (customGemList.length > 0) {
+        scrolex.stick(`Rebuilding docker container to accomodate project's custom gems: ${customGemList.join(', ')} ..`)
+        await scrolex.exe(oneLine`
+          cd "${runtime.cacheDir}" && (
+            ${deps.bundler.exe} install
             --binstubs='${runtime.binDir}'
             --path='vendor/bundler'
             ${deps.ruby.exeSuffix}
-          ||
-          ${deps.bundler.exe} update
-          ${deps.ruby.exeSuffix}
-        )
-      `)
+            ||
+            ${deps.bundler.exe} update
+            ${deps.ruby.exeSuffix}
+          )
+        `)
+      }
     } else {
       // Install Bundler
       deps.bundler.exe = `${deps.ruby.exe} ${deps.bundler.exe}`
