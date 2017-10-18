@@ -115,7 +115,8 @@ EOF
   npm install
 
   set -x
-  env DEBUG=*:* SCROLEX_MODE=passthru ./node_modules/.bin/lanyon install
+  cat ./node_modules/.bin/lanyon
+  env DEBUG=*:* SCROLEX_MODE=passthru node ./node_modules/.bin/lanyon install
   set +x
 
   for shim in "jekyll" "bundler" "ruby"; do
