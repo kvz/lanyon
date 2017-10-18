@@ -101,7 +101,7 @@
       "content": 4000
     },
     "gems": {
-      "github-pages": "157",
+      "github-pages": "164",
       "nokogiri": "1.8.0",
       "pkg-config": "1.1.7",
       "jekyll-lunr-js-search": "3.3.0",

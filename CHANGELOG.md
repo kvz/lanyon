@@ -34,6 +34,7 @@ Released: TBA.
 Released: 2017-10-18.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.100...v0.0.101).
 
+- [x] Upgrade `github-pages` to `164` (and thereby `jekyll` to `3.6`)
 - [x] Add Scope Hoisting
 - [x] Upgrade to Webpack v3
 
