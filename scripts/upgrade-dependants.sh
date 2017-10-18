@@ -14,7 +14,7 @@ version=$(node -e 'console.log(require("./package.json").version)')
 
 for dir in ~/code/employee-internals ~/code/invig ~/code/content ~/code/kvz.io ~/code/legal ~/code/lanyon/example ~/code/lanyon/website ~/code/transloadify ~/code/tus.io ~/code/frey-website ~/code/bash3boilerplate; do
   pushd "${dir}"
-    npm unlink lanyon || true
+    yarn unlink lanyon || npm unlink lanyon || true
 
     # gsed -i _scripts/postinstall.sh -e 's/lanyon postinstall/lanyon install/g' || true
     # git add _scripts/postinstall.sh || true
