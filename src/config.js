@@ -40,6 +40,8 @@ runtime.publicPath = '/assets/build/'
 runtime.rubyProvidersOnly = (process.env.LANYON_ONLY || '')
 runtime.rubyProvidersSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
 
+runtime.jekyllDisablePlugins = process.env.LANYON_DISABLE_JEKYLL_PLUGINS || process.env.LANYON_DISABLE_GEMS
+
 runtime.lanyonUpdateGemLockfile = process.env.LANYON_UPDATE_GEM_LOCKFILE === '1'
 runtime.lanyonReset             = process.env.LANYON_RESET               === '1'
 runtime.onTravis                = process.env.TRAVIS                     === 'true'
@@ -67,8 +69,8 @@ try {
   projectPackage = {}
 }
 
-runtime.projectGems = _.get(projectPackage, 'lanyon.gems') || {}
-runtime.lanyonGems  = _.get(lanyonPackage, 'lanyon.gems') || {}
+runtime.projectGems = _.get(projectPackage, 'lanyon.jekyllPlugins') || _.get(projectPackage, 'lanyon.gems') || {}
+runtime.lanyonGems  = _.get(projectPackage, 'lanyon.jekyllPlugins') || _.get(lanyonPackage, 'lanyon.gems') || {}
 runtime.gems        = _.defaults({}, runtime.projectGems, runtime.lanyonGems)
 runtime             = _.defaults({}, projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
 
@@ -518,7 +520,7 @@ const cfg = {
         new SvgStoreWebpackPlugin({
           svgoOptions: {
             plugins: [
-             { removeTitle: true },
+              { removeTitle: true },
             ],
           },
           prefix: 'icon-',
@@ -543,6 +545,8 @@ const cfg = {
         }),
         new WebpackMd5Hash(),
       ]
+
+      plugins.push(new webpack.optimize.ModuleConcatenationPlugin())
 
       if (runtime.isDev) {
         plugins.push(new webpack.HotModuleReplacementPlugin())
@@ -723,11 +727,11 @@ if (runtime.isDev && fs.existsSync(jekyllDevConfigPath)) {
   }
 }
 
-cfg.jekyll.gems = (function dynamicGems () {
+cfg.jekyll.plugins = (function dynamicGems () {
   let list = []
 
-  if (process.env.LANYON_DISABLE_GEMS) {
-    const disabled = process.env.LANYON_DISABLE_GEMS.split(/\s*,\s*/)
+  if (runtime.jekyllDisablePlugins) {
+    const disabled = runtime.jekyllDisablePlugins.split(/\s*,\s*/)
     for (let i in runtime.jekyllConfig.gems) {
       let isEnabled = disabled.indexOf(runtime.jekyllConfig.gems[i]) === -1
       if (isEnabled) {

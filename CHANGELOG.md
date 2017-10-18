@@ -20,7 +20,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.100...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.101...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -28,6 +28,17 @@ Released: TBA.
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
+
+## v0.0.101
+
+Released: 2017-10-18.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.100...v0.0.101).
+
+- [x] Make Jest run on `./src`
+- [x] Rename `gems` -> `plugins` to avoid deprecation notice: `Deprecation: The 'gems' configuration option has been renamed to 'plugins'. Please update your config file accordingly.`
+- [x] Upgrade `github-pages` to `164` (and thereby `jekyll` to `3.6`)
+- [x] Add Scope Hoisting
+- [x] Upgrade to Webpack v3
 
 ## v0.0.100
 

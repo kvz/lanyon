@@ -1,4 +1,4 @@
 title: My Website
 
-gems:
+plugins:
   - jekyll-redirect-from

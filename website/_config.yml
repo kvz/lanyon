@@ -1,6 +1,6 @@
 title: Lanyon
 
-gems:
+plugins:
   - jemoji
   - jekyll-feed
   - jekyll-sitemap
