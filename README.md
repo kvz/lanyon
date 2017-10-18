@@ -83,6 +83,7 @@ If, however, there happens to be an overlap with your use case and you can live 
 
 ```bash
 npm install lanyon --save 
+./node_modules/.bin/lanyon install
 ```
 
 ## Use
