@@ -73,7 +73,7 @@ sudo -HE apt-get -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--f
 Plainly speaking, Lanyon should _just work_. Just in case it doesn't, here are some tips:
 
 - OSX / Linux (& Bash)
-- Node.js 0.12+ (& npm)
+- Node.js 6+ (& npm)
 - Docker or Rvm or Rbenv or Brew
 
 ## How do I walk the Docker route on macOS?
@@ -115,13 +115,6 @@ To install Node.js 6 on Ubuntu Trusty, either use a new release from NodeSource:
 ```bash
 curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
 sudo apt-get install -y nodejs
-node -v
-```
-
-Or: if you prefer not to have 3rd party sources, Lanyon (still) supports 0.12, so you might prefer a legacy Node.js version instead:
-
-```bash
-sudo apt-get install nodejs-legacy npm
 node -v
 ```
 
