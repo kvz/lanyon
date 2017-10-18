@@ -12,8 +12,8 @@ module.exports = async function boot (whichPackage) {
   // 'start'                    : 'parallelshell "lanyon build:content:watch" "lanyon build:assets:watch" "lanyon serve"',
   const scripts = {
     // assets:watch is typically handled via browsersync middleware, so this is more for debugging purposes:
-    'build:assets:watch'       : 'webpack --watch --config [cacheDir]/webpack.config.js',
-    'build:assets'             : 'webpack --config [cacheDir]/webpack.config.js',
+    'build:assets:watch'       : 'webpack --display-optimization-bailout --watch --config [cacheDir]/webpack.config.js',
+    'build:assets'             : 'webpack --display-optimization-bailout --config [cacheDir]/webpack.config.js',
     'build:content:incremental': 'jekyll build --incremental --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     'build:content:watch'      : 'nodemon --config [cacheDir]/nodemon.config.json --exec "lanyon build:content:incremental"',
     'build:content'            : 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',

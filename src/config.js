@@ -544,6 +544,8 @@ const cfg = {
         new WebpackMd5Hash(),
       ]
 
+      plugins.push(new webpack.optimize.ModuleConcatenationPlugin())
+
       if (runtime.isDev) {
         plugins.push(new webpack.HotModuleReplacementPlugin())
       } else {
