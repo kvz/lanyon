@@ -24,7 +24,7 @@ for dir in ~/code/employee-internals ~/code/invig ~/code/content ~/code/kvz.io ~
     # gsed -i package.json -e 's/lanyon postinstall/lanyon install/g' || true
     # git add package.json || true
 
-    yarn add lanyon@${version}
+    yarn add lanyon@${version} || yarn add lanyon@${version}
     git add yarn.lock package.json || true
     env LANYON_RESET=1 node "${__dir}/../lib/cli.js" install
 
