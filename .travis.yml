@@ -49,7 +49,7 @@ script:
 - if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 4")" -eq 1 ]; then npm run lint; fi
 - npm run build
 - if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 6")" -eq 1 ]; then npm run test; fi
-- travis_wait 50 npm run test:acceptance
+- travis_wait 300 npm run test:acceptance
 os: linux
 dist: precise
 sudo: false
