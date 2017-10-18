@@ -518,7 +518,7 @@ const cfg = {
         new SvgStoreWebpackPlugin({
           svgoOptions: {
             plugins: [
-             { removeTitle: true },
+              { removeTitle: true },
             ],
           },
           prefix: 'icon-',
