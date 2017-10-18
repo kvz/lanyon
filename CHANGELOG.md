@@ -28,6 +28,7 @@ Released: TBA.
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
+- [x] Switch from `babel-preset-2015` to `babel-preset-env`
 - [x] Deprecate Node 0.12 and v4 support (now v6+)
 
 ## v0.0.103
