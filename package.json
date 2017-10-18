@@ -61,7 +61,7 @@
       },
       "node": {
         "preferred": "4.6.1",
-        "range": ">=0.10"
+        "range": ">=6"
       },
       "docker": {
         "preferred": "1.12.3",

@@ -49,11 +49,11 @@ module.exports = async function boot (whichPackage) {
     addCommandAsComponent: true,
     components           : `lanyon>${cmdName}`,
     env                  : Object.assign({}, process.env, {
-      DEBUG              : process.env.DEBUG,
-      LANYON_DISABLE_GEMS: process.env.LANYON_DISABLE_GEMS,
-      NODE_ENV           : runtime.lanyonEnv,
-      JEKYLL_ENV         : runtime.lanyonEnv,
-      LANYON_PROJECT     : runtime.projectDir, // <-- to preserve the cwd over multiple nested executes, if it wasn't initially setly set
+      DEBUG                        : process.env.DEBUG,
+      LANYON_DISABLE_JEKYLL_PLUGINS: process.env.LANYON_DISABLE_GEMS,
+      NODE_ENV                     : runtime.lanyonEnv,
+      JEKYLL_ENV                   : runtime.lanyonEnv,
+      LANYON_PROJECT               : runtime.projectDir, // <-- to preserve the cwd over multiple nested executes, if it wasn't initially setly set
     }),
   })
 
@@ -67,13 +67,13 @@ module.exports = async function boot (whichPackage) {
   scrolex.stick(`Detected gitRoot as "${runtime.gitRoot}"`)
   scrolex.stick(`Detected npmRoot as "${runtime.npmRoot}"`)
 
-  if ('LANYON_DISABLE_GEMS' in process.env && process.env.LANYON_DISABLE_GEMS) {
-    scrolex.stick(`Disabled gems ${process.env.LANYON_DISABLE_GEMS} as per LANYON_DISABLE_GEMS`)
+  if (runtime.jekyllDisablePlugins) {
+    scrolex.stick(`Disabled gems ${runtime.jekyllDisablePlugins} as per LANYON_DISABLE_JEKYLL_PLUGINS`)
   }
-  if ('LANYON_EXCLUDE' in process.env && process.env.LANYON_EXCLUDE) {
+  if (('LANYON_EXCLUDE' in process.env) && process.env.LANYON_EXCLUDE) {
     scrolex.stick(`Disabled building of ${process.env.LANYON_EXCLUDE} as per LANYON_EXCLUDE`)
   }
-  if ('LANYON_INCLUDE' in process.env && process.env.LANYON_INCLUDE) {
+  if (('LANYON_INCLUDE' in process.env) && process.env.LANYON_INCLUDE) {
     scrolex.stick(`Explicitly enabling building of ${process.env.LANYON_INCLUDE} as per LANYON_INCLUDE`)
   }
 
