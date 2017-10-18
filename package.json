@@ -9,7 +9,7 @@
   "jest": {
     "verbose": true,
     "roots": [
-      "lib/"
+      "src/"
     ]
   },
   "files": [
@@ -43,7 +43,7 @@
     "test:update": "npm-run-all build jest:update",
     "test:acceptance": "./scripts/test-acceptance.sh",
     "test:watcher": "npm test -- --watch",
-    "test": "npm-run-all build jest",
+    "test": "npm-run-all jest",
     "upgrade:modules": "npm-check-updates -u --semverLevel major && yarn",
     "web:install": "cd website && npm run install",
     "web:start": "cd website && npm run start"
