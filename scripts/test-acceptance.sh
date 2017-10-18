@@ -113,7 +113,10 @@ EOF
   echo "--> Importing lanyon link (like an npm install, but with local sources)"
   npm link lanyon
   npm install
-  ./node_modules/.bin/lanyon install
+
+  set -x
+  env DEBUG=*:* SCROLEX_MODE=passthru ./node_modules/.bin/lanyon install
+  set +x
 
   for shim in "jekyll" "bundler" "ruby"; do
     echo "--> Showing shim ${shim} contents:"
