@@ -34,6 +34,7 @@ Released: TBA.
 Released: 2017-10-18.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.101...v0.0.102).
 
+- [x] Add minimal-mistakes-jekyll
 - [x] Downgrade less
 
 ## v0.0.101
