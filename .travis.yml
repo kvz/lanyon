@@ -91,7 +91,7 @@ matrix:
   #   osx_image: xcode6.4
   #   env: LANYON_ONLY="rvm" OSDIST="xcode6.4"
   #   language: node_js
-    node_js: '0.12'
+  #   node_js: '0.12'
   - os: osx
     osx_image: xcode7.2
     env: LANYON_ONLY="rbenv" OSDIST="xcode7.2"
