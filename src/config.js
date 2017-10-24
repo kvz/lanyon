@@ -711,8 +711,10 @@ cfg.browsersync = {
       '.lanyon',
     ],
   },
-  reloadDelay: 200,
-  files      : runtime.contentBuildDir,
+  reloadDelay   : 100, // Time, in milliseconds, to wait before instructing the browser to reload/inject following a file change event
+  reloadDebounce: 300, // Wait for a specified window of event-silence before sending any reload events.
+  reloadThrottle: 300, // Emit only the first event during sequential time windows of a specified duration.
+  files         : runtime.contentBuildDir,
 }
 
 cfg.jekyll = {}

@@ -28,7 +28,8 @@ Released: TBA.
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
-- [ ] Introduce a nodemon delay of 600ms
+- [x] Introduce a browsersync reloadDelay reloadDebounce reloadThrottle
+- [x] Introduce a nodemon delay of 600ms
 
 ## v0.0.105
 
