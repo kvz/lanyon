@@ -743,7 +743,7 @@ cfg.jekyll.plugins = (function dynamicGems () {
   }
 
   if (!list || list.length < 1) {
-    return null
+    return []
   }
 
   return list

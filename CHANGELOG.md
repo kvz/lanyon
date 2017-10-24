@@ -20,7 +20,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.104...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.105...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -28,6 +28,13 @@ Released: TBA.
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
+
+## v0.0.105
+
+Released: 2017-10-24.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.104...v0.0.105).
+
+- [x] Fix the disabling of setting no plugins via e.g. `env LANYON_DISABLE_GEMS=jemoji,jekyll-redirect-from,jekyll-feed,jekyll-sitemap LANYON_EXCLUDE=** LANYON_INCLUDE=home.html,_layouts/default.html lanyon start`
 
 ## v0.0.104
 

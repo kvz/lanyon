@@ -24,7 +24,7 @@
     "lanyon": "lib/cli.js"
   },
   "scripts": {
-    "build": "babel src --source-maps --out-dir lib",
+    "build": "babel src --source-maps --out-dir lib && chmod 755 ./lib/cli.js",
     "build:watch": "babel src --watch --source-maps --out-dir lib",
     "commit:gemlockfile": "git commit Gemfile.lock -m 'Save updated Gemfile.lock' || true",
     "push": "git push && git push --tags",
