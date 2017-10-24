@@ -795,6 +795,7 @@ cfg.jekyll.include = (function dynamicIncludes () {
 cfg.nodemon = {
   onChangeOnly: true,
   verbose     : true,
+  delay       : 600,
   watch       : runtime.contentScandir,
   ignore      : [
     '_site/**',
