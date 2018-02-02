@@ -51,7 +51,7 @@ runtime.ghPagesEnv              = {
   GHPAGES_BOTEMAIL: process.env.GHPAGES_BOTEMAIL,
 }
 runtime.isDev     = runtime.lanyonEnv === 'development'
-runtime.attachHMR = runtime.isDev && process.argv[1].indexOf('browser-sync') !== -1 && process.argv[2] === 'start'
+runtime.attachHMR = runtime.isDev && process.argv[1].indexOf('browser-sync') !== -1 && ['start', 'start:crm', 'start:crm2'].indexOf(process.argv[2]) !== -1
 
 runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cwd() // <-- symlinked npm will mess up process.cwd() and point to ~/code/lanyon
 
@@ -80,6 +80,10 @@ try {
   runtime.projectDir = fs.realpathSync(`${runtime.gitRoot}/${runtime.projectDir}`)
 }
 
+if ('LANYON_BS_EXTRA' in process.env) {
+  runtime.extraBrowserSync = path.join(runtime.projectDir, process.env.LANYON_BS_EXTRA)
+}
+
 runtime.cacheDir        = path.join(runtime.projectDir, '.lanyon')
 runtime.binDir          = path.join(runtime.cacheDir, 'bin')
 runtime.recordsPath     = path.join(runtime.cacheDir, 'records.json')
@@ -88,6 +92,15 @@ runtime.assetsBuildDir  = path.join(runtime.assetsSourceDir, 'build')
 runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
 runtime.contentScandir  = path.join(runtime.projectDir, runtime.contentScandir || '.')
 runtime.contentIgnore   = runtime.contentIgnore || []
+
+runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
+if ('LANYON_CONTENT_BUILD_DIR' in process.env) {
+  runtime.contentBuildDir = path.join(runtime.projectDir, process.env.LANYON_CONTENT_BUILD_DIR)
+}
+
+if ('LANYON_POSTBUILD_HOOK' in process.env) {
+  runtime['postbuild'] = path.join(runtime.projectDir, process.env.LANYON_POSTBUILD_HOOK)
+}
 
 // Load project's jekyll _config.yml
 runtime.jekyllConfig   = {}
@@ -715,6 +728,11 @@ cfg.browsersync = {
   reloadDebounce: 300, // Wait for a specified window of event-silence before sending any reload events.
   reloadThrottle: 300, // Emit only the first event during sequential time windows of a specified duration.
   files         : runtime.contentBuildDir,
+}
+
+if (runtime.extraBrowserSync) {
+  const extraBs = require(runtime.extraBrowserSync)
+  cfg.browsersync = Object.assign({}, cfg.browsersync, extraBs)
 }
 
 cfg.jekyll = {}

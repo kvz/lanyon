@@ -53,10 +53,16 @@ module.exports.preferLocalPackage = (args, filename, appDir, name, entry, versio
   }
 }
 
-module.exports.dockerCmd = ({cacheDir, projectDir, lanyonVersion}, cmd, flags) => {
+module.exports.dockerCmd = ({cacheDir, projectDir, contentBuildDir, lanyonVersion}, cmd, flags) => {
   if (!flags) {
     flags = ''
   }
+
+  let extraVolumes = ''
+  if (contentBuildDir.indexOf(projectDir) === -1 ) {
+    extraVolumes = `--volume ${contentBuildDir}:${contentBuildDir}`
+  }
+
   return oneLine`
     docker run
       ${flags}
@@ -64,6 +70,7 @@ module.exports.dockerCmd = ({cacheDir, projectDir, lanyonVersion}, cmd, flags) =
       --workdir ${cacheDir}
       --volume ${cacheDir}:${cacheDir}
       --volume ${projectDir}:${projectDir}
+      ${extraVolumes}
     kevinvz/lanyon:${lanyonVersion}
     ${cmd}
   `

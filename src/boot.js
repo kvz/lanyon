@@ -31,6 +31,11 @@ module.exports = async function boot (whichPackage) {
     'start'                    : 'parallelshell "lanyon build:content:watch" "lanyon serve"',
   }
 
+  if (runtime.extraJekyll) {
+    scripts['build:content:incremental'] += `,[projectDir]/${runtime.extraJekyll}`
+    scripts['build:content'] += `,[projectDir]/${runtime.extraJekyll}`
+  }
+
   if (runtime.trace) {
     scripts['build:content:incremental'] += ' --trace'
     scripts['build:content']             += ' --trace'
