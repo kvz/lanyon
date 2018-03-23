@@ -306,12 +306,10 @@ const cfg = {
             // https://www.techchorus.net/blog/using-sass-version-of-bootstrap-with-webpack/
             test: /[\\/](bower_components)[\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]/,
             use : [
-              // loader: 'imports?jQuery=jquery,$=jquery,this=>window',
+              // loader: 'imports?this=>window',
               {
                 loader : 'imports-loader',
                 options: {
-                  jQuery: 'jquery',
-                  $     : 'jquery',
                   this  : '>window',
                 },
               },
@@ -320,12 +318,10 @@ const cfg = {
           {
             test: /[\\/]jquery\..*\.js$/,
             use : [
-              // loader: 'imports?jQuery=jquery,$=jquery,this=>window',
+              // loader: 'imports?this=>window',
               {
                 loader : 'imports-loader',
                 options: {
-                  jQuery: 'jquery',
-                  $     : 'jquery',
                   this  : '>window',
                 },
               },
@@ -514,8 +510,6 @@ const cfg = {
         // new BowerWebpackPlugin(),
         new webpack.ProvidePlugin({
           _     : 'lodash',
-          $     : 'jquery',
-          jQuery: 'jquery',
         }),
         new SvgStoreWebpackPlugin({
           svgoOptions: {
