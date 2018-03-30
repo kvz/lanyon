@@ -5,9 +5,9 @@ const path        = require('path')
 const _           = require('lodash')
 const yaml        = require('js-yaml')
 const shell       = require('shelljs')
-const spawnSync   = require('spawn-sync')
+// const spawnSync   = require('spawn-sync')
 const oneLine     = require('common-tags/lib/oneLine')
-const stripIndent = require('common-tags/lib/stripIndent')
+// const stripIndent = require('common-tags/lib/stripIndent')
 const scrolex     = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
@@ -16,40 +16,6 @@ const scrolex     = require('scrolex').persistOpts({
 if (require.main === module) {
   scrolex.failure(`Please only used this module via require`)
   process.exit(1)
-}
-
-const utils = module.exports
-
-module.exports.preferLocalPackage = (args, filename, appDir, name, entry, version) => {
-  let localModulePackage
-  let absoluteEntry
-  try {
-    localModulePackage = require(`${appDir}/node_modules/${name}/package.json`)
-    absoluteEntry = fs.realpathSync(`${appDir}/node_modules/${name}/${entry}`)
-  } catch (e) {
-    localModulePackage = {}
-    absoluteEntry = false
-  }
-
-  if (localModulePackage.version && absoluteEntry) {
-    if (filename === absoluteEntry) {
-      return { type: 'symlinked', version: localModulePackage.version }
-    } else {
-      // We're entering globally and replacing this with a local instance
-      const exe = args.shift()
-      for (const i in args) {
-        // Replace the current entry, e.g. /usr/local/frey/src/cli.js with the local package
-        if (args[i] === filename) {
-          args[i] = absoluteEntry
-        }
-      }
-      spawnSync(exe, args, { stdio: 'inherit' })
-      process.exit(0)
-      // return { type: 'local', version: localModulePackage.version }
-    }
-  } else {
-    return { type: 'local', version: version }
-  }
 }
 
 module.exports.dockerCmd = ({cacheDir, projectDir, contentBuildDir, lanyonVersion}, cmd, flags) => {

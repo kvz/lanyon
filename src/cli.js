@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 const utils        = require('./utils')
-const whichPackage = utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'src/cli.js', require('../package.json').version)
 const scrolex      = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
@@ -15,7 +14,7 @@ if (require.main !== module) {
 
 async function cli () {
   try {
-    await require(`./boot`)(whichPackage)
+    await require(`./boot`)()
   } catch (err) {
     console.error(err)
   }

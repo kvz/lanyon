@@ -1,10 +1,11 @@
-module.exports = async function boot (whichPackage) {
+module.exports = async function boot () {
   const _              = require('lodash')
   const config         = require('./config')
   const utils          = require('./utils')
   const fs             = require('fs')
   const asyncMapValues = require('async/mapValues')
   const scrolex        = require('scrolex')
+  const oneLine        = require('common-tags/lib/oneLine')
   const pad            = require('pad')
   const runtime        = config.runtime
 
@@ -62,7 +63,7 @@ module.exports = async function boot (whichPackage) {
     process.exit(1)
   }
 
-  scrolex.stick(`Booting ${whichPackage.type} Lanyon->${cmdName}. Version: ${whichPackage.version} on PID: ${process.pid} from: ${__filename}`)
+  scrolex.stick(`Booting Lanyon->${cmdName}. Version: ${runtime.lanyonVersion} on PID: ${process.pid} from: ${__filename}`)
 
   for (let key of Object.keys(runtime).sort()) {
     scrolex.stick(`Detected ${key} as "${runtime[key]}"`)
