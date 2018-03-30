@@ -54,11 +54,11 @@ module.exports = async (runtime, cb) => {
     await scrolex.exe(`cd "${runtime.cacheDir}" && docker build${cache} -t kevinvz/lanyon:${runtime.lanyonVersion} .`)
     await scrolex.exe(`cd "${runtime.cacheDir}" && docker push kevinvz/lanyon:${runtime.lanyonVersion}`)
   }
-  deps.sh.exe            = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
-  deps.ruby.exe          = utils.dockerCmd(runtime, 'ruby')
+  deps.sh.exe = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
+  deps.ruby.exe = utils.dockerCmd(runtime, 'ruby')
   deps.ruby.versionCheck = utils.dockerCmd(runtime, `ruby -v${deps.ruby.exeSuffix}`)
-  deps.jekyll.exe        = utils.dockerCmd(runtime, 'bundler exec jekyll')
-  deps.bundler.exe       = utils.dockerCmd(runtime, 'bundler')
+  deps.jekyll.exe = utils.dockerCmd(runtime, 'bundler exec jekyll')
+  deps.bundler.exe = utils.dockerCmd(runtime, 'bundler')
 
   // Write shims
   for (const name in deps) {

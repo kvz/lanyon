@@ -25,10 +25,10 @@ module.exports.preferLocalPackage = (args, filename, appDir, name, entry, versio
   let absoluteEntry
   try {
     localModulePackage = require(`${appDir}/node_modules/${name}/package.json`)
-    absoluteEntry      = fs.realpathSync(`${appDir}/node_modules/${name}/${entry}`)
+    absoluteEntry = fs.realpathSync(`${appDir}/node_modules/${name}/${entry}`)
   } catch (e) {
     localModulePackage = {}
-    absoluteEntry      = false
+    absoluteEntry = false
   }
 
   if (localModulePackage.version && absoluteEntry) {
@@ -58,7 +58,7 @@ module.exports.dockerCmd = ({cacheDir, projectDir, contentBuildDir, lanyonVersio
   }
 
   let extraVolumes = ''
-  if (contentBuildDir.indexOf(projectDir) === -1 ) {
+  if (contentBuildDir.indexOf(projectDir) === -1) {
     extraVolumes = `--volume ${contentBuildDir}:${contentBuildDir}`
   }
 

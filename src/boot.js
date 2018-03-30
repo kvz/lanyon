@@ -36,12 +36,12 @@ module.exports = async function boot (whichPackage) {
 
   if (runtime.trace) {
     scripts['build:content:incremental'] += ' --trace'
-    scripts['build:content']             += ' --trace'
+    scripts['build:content'] += ' --trace'
   }
 
   if (runtime.profile) {
     scripts['build:content:incremental'] += ' --profile'
-    scripts['build:content']             += ' --profile'
+    scripts['build:content'] += ' --profile'
   }
 
   const cmdName = process.argv[2]
@@ -66,7 +66,7 @@ module.exports = async function boot (whichPackage) {
   }
 
   scrolex.stick(`Booting ${whichPackage.type} Lanyon->${cmdName}. Version: ${whichPackage.version} on PID: ${process.pid} from: ${__filename}`)
-  
+
   for (let key of Object.keys(runtime).sort()) {
     scrolex.stick(`Detected ${key} as "${runtime[key]}"`)
   }
@@ -138,7 +138,7 @@ module.exports = async function boot (whichPackage) {
       tests.forEach(test => {
         if (fs.existsSync(test)) {
           npmBins[name] = test
-          found         = true
+          found = true
           return false // Stop looking on first hit
         }
       })

@@ -27,14 +27,14 @@ if (require.main === module) {
 
 let runtime = {}
 
-runtime.lanyonDir         = path.join(__dirname, '..')
-runtime.lanyonEnv         = process.env.LANYON_ENV || 'development'
+runtime.lanyonDir = path.join(__dirname, '..')
+runtime.lanyonEnv = process.env.LANYON_ENV || 'development'
 runtime.lanyonPackageFile = path.join(runtime.lanyonDir, 'package.json')
 const lanyonPackage       = require(runtime.lanyonPackageFile)
-runtime.lanyonVersion     = lanyonPackage.version
+runtime.lanyonVersion = lanyonPackage.version
 
-runtime.profile    = process.env.LANYON_PROFILE === '1' || !('LANYON_PROFILE' in process.env)
-runtime.trace      = process.env.LANYON_TRACE === '1'
+runtime.profile = process.env.LANYON_PROFILE === '1' || !('LANYON_PROFILE' in process.env)
+runtime.trace = process.env.LANYON_TRACE === '1'
 runtime.publicPath = '/assets/build/'
 
 runtime.rubyProvidersOnly = (process.env.LANYON_ONLY || '')
@@ -43,14 +43,14 @@ runtime.rubyProvidersSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
 runtime.jekyllDisablePlugins = process.env.LANYON_DISABLE_JEKYLL_PLUGINS || process.env.LANYON_DISABLE_GEMS
 
 runtime.lanyonUpdateGemLockfile = process.env.LANYON_UPDATE_GEM_LOCKFILE === '1'
-runtime.lanyonReset             = process.env.LANYON_RESET               === '1'
-runtime.onTravis                = process.env.TRAVIS                     === 'true'
-runtime.ghPagesEnv              = {
+runtime.lanyonReset = process.env.LANYON_RESET === '1'
+runtime.onTravis = process.env.TRAVIS === 'true'
+runtime.ghPagesEnv = {
   GHPAGES_URL     : process.env.GHPAGES_URL,
   GHPAGES_BOTNAME : process.env.GHPAGES_BOTNAME,
   GHPAGES_BOTEMAIL: process.env.GHPAGES_BOTEMAIL,
 }
-runtime.isDev     = runtime.lanyonEnv === 'development'
+runtime.isDev = runtime.lanyonEnv === 'development'
 runtime.attachHMR = runtime.isDev && process.argv[1].indexOf('browser-sync') !== -1 && ['start', 'start:crm', 'start:crm2'].indexOf(process.argv[2]) !== -1
 
 runtime.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cwd() // <-- symlinked npm will mess up process.cwd() and point to ~/code/lanyon
@@ -70,9 +70,9 @@ try {
 }
 
 runtime.projectGems = _.get(projectPackage, 'lanyon.jekyllPlugins') || _.get(projectPackage, 'lanyon.gems') || {}
-runtime.lanyonGems  = _.get(projectPackage, 'lanyon.jekyllPlugins') || _.get(lanyonPackage, 'lanyon.gems') || {}
-runtime.gems        = _.defaults({}, runtime.projectGems, runtime.lanyonGems)
-runtime             = _.defaults({}, projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
+runtime.lanyonGems = _.get(projectPackage, 'lanyon.jekyllPlugins') || _.get(lanyonPackage, 'lanyon.gems') || {}
+runtime.gems = _.defaults({}, runtime.projectGems, runtime.lanyonGems)
+runtime = _.defaults({}, projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
 
 try {
   runtime.projectDir = fs.realpathSync(runtime.projectDir)
@@ -84,14 +84,14 @@ if ('LANYON_BS_EXTRA' in process.env) {
   runtime.extraBrowserSync = path.join(runtime.projectDir, process.env.LANYON_BS_EXTRA)
 }
 
-runtime.cacheDir        = path.join(runtime.projectDir, '.lanyon')
-runtime.binDir          = path.join(runtime.cacheDir, 'bin')
-runtime.recordsPath     = path.join(runtime.cacheDir, 'records.json')
+runtime.cacheDir = path.join(runtime.projectDir, '.lanyon')
+runtime.binDir = path.join(runtime.cacheDir, 'bin')
+runtime.recordsPath = path.join(runtime.cacheDir, 'records.json')
 runtime.assetsSourceDir = path.join(runtime.projectDir, 'assets')
-runtime.assetsBuildDir  = path.join(runtime.assetsSourceDir, 'build')
+runtime.assetsBuildDir = path.join(runtime.assetsSourceDir, 'build')
 runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
-runtime.contentScandir  = path.join(runtime.projectDir, runtime.contentScandir || '.')
-runtime.contentIgnore   = runtime.contentIgnore || []
+runtime.contentScandir = path.join(runtime.projectDir, runtime.contentScandir || '.')
+runtime.contentIgnore = runtime.contentIgnore || []
 
 runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
 if ('LANYON_CONTENT_BUILD_DIR' in process.env) {
@@ -103,7 +103,7 @@ if ('LANYON_POSTBUILD_HOOK' in process.env) {
 }
 
 // Load project's jekyll _config.yml
-runtime.jekyllConfig   = {}
+runtime.jekyllConfig = {}
 const jekyllConfigPath = path.join(runtime.projectDir, '_config.yml')
 try {
   const buf            = fs.readFileSync(jekyllConfigPath)
@@ -323,7 +323,7 @@ const cfg = {
               {
                 loader : 'imports-loader',
                 options: {
-                  this  : '>window',
+                  this: '>window',
                 },
               },
             ],
@@ -335,7 +335,7 @@ const cfg = {
               {
                 loader : 'imports-loader',
                 options: {
-                  this  : '>window',
+                  this: '>window',
                 },
               },
             ],
@@ -522,7 +522,7 @@ const cfg = {
       let plugins = [
         // new BowerWebpackPlugin(),
         new webpack.ProvidePlugin({
-          _     : 'lodash',
+          _: 'lodash',
         }),
         new SvgStoreWebpackPlugin({
           svgoOptions: {
