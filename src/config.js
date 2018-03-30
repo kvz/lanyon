@@ -37,9 +37,6 @@ runtime.profile = process.env.LANYON_PROFILE === '1' || !('LANYON_PROFILE' in pr
 runtime.trace = process.env.LANYON_TRACE === '1'
 runtime.publicPath = '/assets/build/'
 
-runtime.rubyProvidersOnly = (process.env.LANYON_ONLY || '')
-runtime.rubyProvidersSkip = (process.env.LANYON_SKIP || '').split(/\s+/)
-
 runtime.jekyllDisablePlugins = process.env.LANYON_DISABLE_JEKYLL_PLUGINS || process.env.LANYON_DISABLE_GEMS
 
 runtime.lanyonUpdateGemLockfile = process.env.LANYON_UPDATE_GEM_LOCKFILE === '1'
@@ -121,21 +118,6 @@ if (runtime.jekyllConfig.theme) {
   } else {
     runtime.themeDir = z
   }
-}
-
-// Determine rubyProvider sources to traverse
-const allApps = [ 'system', 'docker', 'rbenv', 'rvm', 'ruby-shim' ]
-if (runtime.rubyProvidersOnly === 'auto-all') {
-  runtime.rubyProvidersOnly = ''
-}
-
-if (runtime.rubyProvidersOnly) {
-  runtime.rubyProvidersSkip = []
-  allApps.forEach(app => {
-    if (app !== runtime.rubyProvidersOnly) {
-      runtime.rubyProvidersSkip.push(app)
-    }
-  })
 }
 
 function getFilename (extension, isChunk, isContent) {

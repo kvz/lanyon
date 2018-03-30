@@ -25,8 +25,8 @@
   "scripts": {
     "commit:gemlockfile": "git commit Gemfile.lock -m 'Save updated Gemfile.lock' || true",
     "push": "git push && git push --tags",
-    "container:rebuild": "env LANYON_RESET=1 LANYON_UPDATE_GEM_LOCKFILE=1 DOCKER_RESET=1 DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node src/container-build.js",
-    "container:build": "env LANYON_RESET=1 LANYON_UPDATE_GEM_LOCKFILE=1 DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node src/container-build.js",
+    "container:rebuild": "env DOCKER_RESET=1 ./container/build.sh",
+    "container:build": " ./container/build.sh",
     "container:connect": "node src/cli.js container:connect",
     "fix": "eslint . --fix",
     "lint": "eslint .",
@@ -63,34 +63,6 @@
       "docker": {
         "preferred": "1.12.3",
         "range": ">=1.12"
-      },
-      "rbenv": {
-        "preferred": "1.0.0",
-        "range": ">=1"
-      },
-      "rvm": {
-        "preferred": "1.27.0",
-        "range": ">=1"
-      },
-      "ruby": {
-        "preferred": "2.3.3",
-        "range": ">=2.1.0",
-        "writeShim": true
-      },
-      "gem": {
-        "preferred": "2.0.14.1",
-        "range": ">=2",
-        "writeShim": true
-      },
-      "bundler": {
-        "preferred": "1.13.0",
-        "range": ">=1",
-        "writeShim": true
-      },
-      "jekyll": {
-        "preferred": "3.4.3",
-        "range": ">=3",
-        "writeShim": true
       }
     },
     "ports": {

@@ -12,7 +12,6 @@
 			"**/yarn.lock": true,
 			"**/package-lock.json": true,
 			"**/yarn-error.log": true,
-			"**/Gemfile.lock": true,
 			"**/.jekyll-metadata": true
 		},
 		"files.exclude": {
@@ -22,7 +21,6 @@
 			"**/yarn.lock": true,
 			"**/package-lock.json": true,
 			"**/yarn-error.log": true,
-			"**/Gemfile.lock": true,
 			"**/.jekyll-metadata": true
 		}		
 	}
