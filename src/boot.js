@@ -166,6 +166,7 @@ module.exports = async function boot () {
         --rm
         -i
         --workdir ${runtime.cacheDir}
+        --volume ${runtime.cacheDir}/srv-jekyll:/srv/jekyll
         --volume ${runtime.cacheDir}:${runtime.cacheDir}
         --volume ${runtime.projectDir}:${runtime.projectDir}
         ${extraVolumes}
