@@ -5,6 +5,7 @@ const scrolex      = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
   components           : `lanyon>cli`,
+  mode                 : 'passthru',
 })
 
 if (require.main !== module) {
@@ -12,4 +13,11 @@ if (require.main !== module) {
   process.exit(1)
 }
 
-require(`./boot`)(whichPackage)
+async function cli () {
+  try {
+    await require(`./boot`)(whichPackage)
+  } catch (err) {
+    console.error(err)
+  }
+}
+cli()

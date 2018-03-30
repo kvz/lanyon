@@ -25,9 +25,9 @@
   "scripts": {
     "commit:gemlockfile": "git commit Gemfile.lock -m 'Save updated Gemfile.lock' || true",
     "push": "git push && git push --tags",
-    "container:rebuild": "env SCROLEX_MODE=passthru LANYON_RESET=1 LANYON_UPDATE_GEM_LOCKFILE=1 DOCKER_RESET=1 DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node src/container-build.js",
-    "container:build": "env SCROLEX_MODE=passthru LANYON_RESET=1 LANYON_UPDATE_GEM_LOCKFILE=1 DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node src/container-build.js",
-    "container:connect": "SCROLEX_MODE=passthru node src/cli.js container:connect",
+    "container:rebuild": "env LANYON_RESET=1 LANYON_UPDATE_GEM_LOCKFILE=1 DOCKER_RESET=1 DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node src/container-build.js",
+    "container:build": "env LANYON_RESET=1 LANYON_UPDATE_GEM_LOCKFILE=1 DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node src/container-build.js",
+    "container:connect": "node src/cli.js container:connect",
     "fix": "eslint . --fix",
     "lint": "eslint .",
     "release:major": "env SEMANTIC=major npm run release",

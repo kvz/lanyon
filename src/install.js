@@ -1,11 +1,11 @@
 const path        = require('path')
 const utils       = require('./utils')
-const os          = require('os')
-const shell       = require('shelljs')
+// const os          = require('os')
+// const shell       = require('shelljs')
 const fs          = require('fs')
 // var debug      = require('depurar')('lanyon')
 const _           = require('lodash')
-const oneLine     = require('common-tags/lib/oneLine')
+// const oneLine     = require('common-tags/lib/oneLine')
 // const stripIndent = require('common-tags/lib/stripIndent')
 const scrolex     = require('scrolex').persistOpts({
   announce             : true,
@@ -18,7 +18,7 @@ if (require.main === module) {
   process.exit(1)
 }
 
-module.exports = async (runtime, cb) => {
+module.exports = async (runtime) => {
   // Set prerequisite defaults
   let deps = _.cloneDeep(runtime.prerequisites)
   for (const name in deps) {

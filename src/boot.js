@@ -93,7 +93,7 @@ module.exports = async function boot (whichPackage) {
   scrolex.stick('Writing configs')
   utils.writeConfig(config)
   scrolex.stick('Writing shims')
-  await require(`./install`)()
+  await require(`./install`)(runtime)
 
   // Run cmd arg
   if (_.isFunction(cmd)) {

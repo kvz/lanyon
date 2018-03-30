@@ -105,7 +105,7 @@ module.exports.runhooks = async (order, cmdName, runtime) => {
         }
         collectStdout[hook] = await scrolex.exe(squashedHooks, {
           cwd : runtime.projectDir,
-          mode: (process.env.SCROLEX_MODE || 'singlescroll'),
+          mode: (process.env.SCROLEX_MODE || 'passthru'),
         })
       }
     }
