@@ -168,17 +168,12 @@ module.exports.writeConfig = (cfg) => {
   fs.writeFileSync(cfg.runtime.recordsPath, JSON.stringify({}, null, '  '), 'utf-8')
 }
 
-module.exports.satisfied = ({prerequisites, rubyProvidersSkip}, app, cmd, checkOn) => {
+module.exports.satisfied = ({prerequisites}, app, cmd, checkOn) => {
   let tag = ''
   if (checkOn === undefined) {
     checkOn = app
   } else {
     tag = `${checkOn}/`
-  }
-
-  if (rubyProvidersSkip.indexOf(checkOn) !== -1) {
-    scrolex.failure(`${tag}${app} '${prerequisites[app].range} disabled via LANYON_SKIP`)
-    return false
   }
 
   if (!cmd) {
@@ -192,8 +187,6 @@ module.exports.satisfied = ({prerequisites, rubyProvidersSkip}, app, cmd, checkO
 
   if (app === 'node') {
     appVersion = parts[0]
-  } else if (app === 'bundler') {
-    appVersion = parts[2]
   } else if (app === 'docker') {
     appVersion = parts[2]
   }

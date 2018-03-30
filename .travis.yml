@@ -16,7 +16,7 @@ dist: trusy
 sudo: required
 env:
   matrix:
-  - LANYON_ONLY="docker" OSDIST="trusty"
+  - OSDIST="trusty"
   global:
   - LANYON_USE_LINKED="1"
   - secure: Du81N+VYszPmbjdb17tMcKHAKBWlarOYr6Z+kN6h41s8VlS+rmLv9yRlEsxU8+P1x9AA31wwN5duIkyFZr+3GD7mGAjzowHnKZD5j1CF7v0cKoowfJW/mbtodh35/n3j28UQuA/C7OWjeYE5BhVtW7cV3h2Pgdgf1/h9P8jRNeOaMbuhvSsKrQj7lZ5ffzi12wJxWyZDnG1geaSP17cIiqG0B3oGesfY7ASYz+2G/YufgdunFtjMxyfPNfQD+06gxOKo5iFqkjfE84Atgsd+G91vVIxam4gBtVVbAi2qmeB1Dpz9N4sR+XV+u29381KBkflT0JeElABFulr2b5rUCW8ACKWGGzDLOALvFyS12iZjcZrvDag/s9bSm4Gjhf5VdE4ygpAxjSXhSpDJcC1sDeO/oUGoGdia01g9FHM99mFtemciZwxbGRsU7X9+JSEjqh51CmANuB+L/avsd/KVXF7RiKuu9CCTc3XGG6MxXNVUDaFE+wCfQZsMcqLeKzX4aLAMdrTT1VV0ZNQIo/DnvVF4oUvdhhwZlUcY74jBpW3tYnn7i+V66Hj15Ej+S01D/ZCJKP6xP5HgYGy1ArQzGx0tF65fHZ1O51GEZzaIcKFvzqhONDkBGEjulyaEWpb6j9ofJFdbUEkLdbwLdzTfJ8goZyyjmYw74/deg38ttzs=
@@ -30,7 +30,7 @@ matrix:
   - os: osx
     node_js: '8'
     osx_image: xcode9
-    env: LANYON_ONLY="docker" OSDIST="xcode9"
+    env: OSDIST="xcode9"
     language: node_js
     node_js: '8'
 before_cache:
@@ -42,7 +42,6 @@ deploy:
   on:
     branch: master
     node: 8
-    condition: $LANYON_ONLY = docker
 notifications:
   slack:
     secure: M9XSZl576OPn25wZn5KQBQZHc2aEoUxYfhB3LBWaUwamw5cgi6Xu7/KRxI+2dFMcCbtjawfZm2yCY856SsVAPU19gT2QNzEdFkVyrEU/jFGH/6RlNh5Oh0vVC+aQUZm3bR50RDIihRuAvcZZpvllDrwlDyqS+Uz/1impFIG2XNzQBP1OqwmJJURqTspYsSKD2DP0Ieom7pZHtEAmujr+d028sOL7uEnMBnC2i78x6SsvL0gXwPEq2W2HX9w8+FTIlVRqTOZ4deNoYwhFyohfK76dsCB0FudjG1bLEctl6DZJvNZTKpemI76em9qtuXU81GGnSmV4p9lgXk0V8CTtAHQKFFVe4H+rk9ZsZamKPVMOIOjCBda1DKwiyAk361Lp4BoQCectZfTSor61MnqQ+4uC0dSfXMm+kBZ5VdPOGgtkfxUl6FaPz62vdkjyWar1yrzaqkCwQk8NxqDOKqJX7N9TtEXWE9eRGMpzWcRlZsX+wNT7oFs6Ql7GbEH5Gw4mYB5BzHAx506yy5xfXEIm1ApJPnQUL2l3bZ7fi6DY56SU+9Eed+19/PWI8PJx1Jlv5AOcKCGdr56btBlR9VIY6PexbDwbUH4OtNTtgP2QYcvMwow6S8sEk0OZgTYeHMAamWHyWOPODkfTdMnEPvvZ8Wzb2L9gGerqS4xH+gGQ5nE=
