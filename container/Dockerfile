@@ -7,6 +7,6 @@ RUN gem install \
     jekyll-feed:0.9.3 \
     jekyll-crosspost-to-medium:0.1.14 \
     jekyll-lunr-js-search:3.3.0 \
-    liquid_pluralize:1 \
+    liquid_pluralize:1.0.3 \
     minimal-mistakes-jekyll:4.5.1 \
   -- --use-system-libraries 
