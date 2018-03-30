@@ -81,7 +81,6 @@ If, however, there happens to be an overlap with your use case and you can live 
 
 ```bash
 npm install lanyon --save 
-./node_modules/.bin/lanyon install
 ```
 
 ## Use
@@ -102,7 +101,6 @@ The recommended way to use Lanyon is to add it to your project's npm scripts, in
   }
 },
 "scripts": {
-  "install": "bower install && lanyon install",
   "build": "lanyon build",
   "build:emoji": "lanyon build:emoji",
   "build:production": "LANYON_ENV=production lanyon build",

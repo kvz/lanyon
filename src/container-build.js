@@ -50,30 +50,9 @@ module.exports = async (runtime, cb) => {
       process.exit(1)
     }
 
-    if (process.env.DOCKER_BUILD === '1') {
-      const cache = process.env.DOCKER_RESET === '1' ? ' --no-cache' : ''
-      await scrolex.exe(`cd "${runtime.cacheDir}" && docker build${cache} -t kevinvz/lanyon:${runtime.lanyonVersion} .`)
-      await scrolex.exe(`cd "${runtime.cacheDir}" && docker push kevinvz/lanyon:${runtime.lanyonVersion}`)
-    }
-    deps.sh.exe            = utils.dockerCmd(runtime, 'sh', '--interactive --tty')
-    deps.ruby.exe          = utils.dockerCmd(runtime, 'ruby')
-    deps.ruby.versionCheck = utils.dockerCmd(runtime, `ruby -v${deps.ruby.exeSuffix}`)
-    deps.jekyll.exe        = utils.dockerCmd(runtime, 'bundler exec jekyll')
-    deps.bundler.exe       = utils.dockerCmd(runtime, 'bundler')
-
-    // Write shims
-    for (const name in deps) {
-      const dep = deps[name]
-      if (dep.writeShim) {
-        let shim = `${envPrefix + dep.exe.trim()} $*${deps.ruby.exeSuffix}\n`
-        if (name === 'dash') {
-          shim = `${envPrefix + dep.exe.trim()} $*${deps.dash.exeSuffix}\n`
-        }
-        var shimPath = path.join(runtime.binDir, name)
-        fs.writeFileSync(shimPath, shim, { 'encoding': 'utf-8', 'mode': '755' })
-        scrolex.stick(`Installed: ${name} shim to: ${shimPath} ..`)
-      }
-    }
+    const cache = process.env.DOCKER_RESET === '1' ? ' --no-cache' : ''
+    await scrolex.exe(`cd "${runtime.cacheDir}" && docker build${cache} -t kevinvz/lanyon:${runtime.lanyonVersion} .`)
+    await scrolex.exe(`cd "${runtime.cacheDir}" && docker push kevinvz/lanyon:${runtime.lanyonVersion}`)
 
     cb(null)
   } catch (e) {

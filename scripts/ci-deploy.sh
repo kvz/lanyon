@@ -32,19 +32,6 @@ if [ ! -f node_modules/.bin/lanyon ]; then
   fi
 fi
 
-if [ ! -f node_modules/.bin/lanyon ]; then
-  if [ -f lib/cli.js ]; then
-    node lib/cli.js install
-  elif [ -f ../lib/cli.js ]; then
-    node ../lib/cli.js install
-  else
-    echo "==> unable to locate lanyon cli in node_modules/.bin/lanyon or lib/cli.js or ../lib/cli.js"
-    exit 1
-  fi
-else
-  node_modules/.bin/lanyon install
-fi
-
 (npm run build:production || npm run web:build:production) && (npm run deploy || npm run web:deploy)
 
 cd -

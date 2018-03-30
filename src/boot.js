@@ -1,4 +1,3 @@
-require('babel-polyfill')
 module.exports = async function boot (whichPackage) {
   const _              = require('lodash')
   const config         = require('./config')
@@ -25,7 +24,6 @@ module.exports = async function boot (whichPackage) {
     'deploy'                   : require(`./deploy`),
     'encrypt'                  : require(`./encrypt`),
     'help'                     : 'jekyll build --help',
-    'install'                  : require(`./install`),
     'list:ghpgems'             : 'bundler exec github-pages versions --gem',
     'serve'                    : 'browser-sync start --config [cacheDir]/browsersync.config.js',
     'start'                    : 'parallelshell "lanyon build:content:watch" "lanyon serve"',
@@ -72,6 +70,10 @@ module.exports = async function boot (whichPackage) {
   scrolex.stick(`Detected gitRoot as "${runtime.gitRoot}"`)
   scrolex.stick(`Detected npmRoot as "${runtime.npmRoot}"`)
 
+  // for (let )
+
+  process.exit(0)
+
   if (runtime.jekyllDisablePlugins) {
     scrolex.stick(`Disabled gems ${runtime.jekyllDisablePlugins} as per LANYON_DISABLE_JEKYLL_PLUGINS`)
   }
@@ -83,7 +85,7 @@ module.exports = async function boot (whichPackage) {
   }
 
   // Create asset dirs and git ignores
-  if (cmdName.match(/^build|install|start/)) {
+  if (cmdName.match(/^build|start/)) {
     utils.initProject(runtime)
   }
 
@@ -93,6 +95,8 @@ module.exports = async function boot (whichPackage) {
   // Write all config files to cacheDir
   scrolex.stick('Writing configs')
   utils.writeConfig(config)
+  scrolex.stick('Writing shims')
+  await require(`./install`)()
 
   // Run cmd arg
   if (_.isFunction(cmd)) {
@@ -114,7 +118,7 @@ module.exports = async function boot (whichPackage) {
     // Replace all npms with their first-found full-path executables
     const npmBins = {
       'browser-sync' : 'node_modules/browser-sync/bin/browser-sync.js',
-      'lanyon'       : 'node_modules/lanyon/lib/cli.js',
+      'lanyon'       : 'node_modules/lanyon/src/cli.js',
       'nodemon'      : 'node_modules/nodemon/bin/nodemon.js',
       'npm-run-all'  : 'node_modules/npm-run-all/bin/npm-run-all/index.js',
       'parallelshell': 'node_modules/parallelshell/index.js',

@@ -6,7 +6,6 @@
 	],
 	"settings": {
 		"search.exclude": {
-			"lib/": true,
 			"**/node_modules/": true,
 			"**/_site/": true,
 			"**/.lanyon/": true,
@@ -17,7 +16,6 @@
 			"**/.jekyll-metadata": true
 		},
 		"files.exclude": {
-			"lib/": true,
 			"**/node_modules/": true,
 			"**/_site/": true,
 			"**/.lanyon/": true,

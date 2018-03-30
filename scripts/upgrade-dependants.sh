@@ -12,7 +12,8 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 version=$(node -e 'console.log(require("./package.json").version)')
 
-for dir in ~/code/employee-internals ~/code/invig ~/code/content ~/code/kvz.io ~/code/legal ~/code/lanyon/example ~/code/lanyon/website ~/code/transloadify ~/code/tus.io ~/code/frey-website ~/code/bash3boilerplate; do
+# for dir in ~/code/employee-internals ~/code/invig ~/code/content ~/code/kvz.io ~/code/legal ~/code/lanyon/example ~/code/lanyon/website ~/code/transloadify ~/code/tus.io ~/code/frey-website ~/code/bash3boilerplate; do
+for dir in ~/code/employee-internals
   pushd "${dir}"
     yarn unlink lanyon || npm unlink lanyon || true
 
@@ -26,7 +27,6 @@ for dir in ~/code/employee-internals ~/code/invig ~/code/content ~/code/kvz.io ~
 
     yarn add lanyon@${version} || yarn add lanyon@${version}
     git add yarn.lock package.json || true
-    env LANYON_RESET=1 node "${__dir}/../lib/cli.js" install
 
     git commit -m "Upgrade Lanyon to v${version}" || true
     git pull && git push

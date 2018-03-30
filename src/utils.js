@@ -1,4 +1,3 @@
-require('babel-polyfill')
 const semver      = require('semver')
 const fs          = require('fs')
 // const _        = require('lodash')
@@ -7,8 +6,8 @@ const _           = require('lodash')
 const yaml        = require('js-yaml')
 const shell       = require('shelljs')
 const spawnSync   = require('spawn-sync')
-const oneLine     = require('common-tags/lib/oneLine')
-const stripIndent = require('common-tags/lib/stripIndent')
+const oneLine     = require('common-tags/src/oneLine')
+const stripIndent = require('common-tags/src/stripIndent')
 const scrolex     = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
@@ -39,7 +38,7 @@ module.exports.preferLocalPackage = (args, filename, appDir, name, entry, versio
       // We're entering globally and replacing this with a local instance
       const exe = args.shift()
       for (const i in args) {
-        // Replace the current entry, e.g. /usr/local/frey/lib/cli.js with the local package
+        // Replace the current entry, e.g. /usr/local/frey/src/cli.js with the local package
         if (args[i] === filename) {
           args[i] = absoluteEntry
         }
@@ -165,8 +164,8 @@ module.exports.writeConfig = (cfg) => {
   }
   fs.writeFileSync(`${cfg.runtime.cacheDir}/nodemon.config.json`, JSON.stringify(cfg.nodemon, null, '  '), 'utf-8')
   fs.writeFileSync(`${cfg.runtime.cacheDir}/full-config-dump.json`, JSON.stringify(cfg, null, '  '), 'utf-8')
-  fs.writeFileSync(`${cfg.runtime.cacheDir}/browsersync.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/lib/config.js").browsersync`, 'utf-8')
-  fs.writeFileSync(`${cfg.runtime.cacheDir}/webpack.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/lib/config.js").webpack`, 'utf-8')
+  fs.writeFileSync(`${cfg.runtime.cacheDir}/browsersync.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/src/config.js").browsersync`, 'utf-8')
+  fs.writeFileSync(`${cfg.runtime.cacheDir}/webpack.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/src/config.js").webpack`, 'utf-8')
   fs.writeFileSync(cfg.runtime.recordsPath, JSON.stringify({}, null, '  '), 'utf-8')
 
   let dBuf = stripIndent`

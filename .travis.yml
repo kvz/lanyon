@@ -1,61 +1,22 @@
 cache:
   apt: true
   yarn: true
-  directories:
-  - /usr/local/Cellar/
 addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
     packages:
     - bc
-before_install:
-- if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then rm -rf
-  /usr/local/var/homebrew/locks || true; fi
-- if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
-  update; fi
-- if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
-  install --force readline; fi
-- if [ "${LANYON_ONLY}" = "rvm" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then ln -nfs
-  /usr/local/opt/readline/lib/libreadline.dylib /usr/local/opt/readline/lib/libreadline.7.dylib;
-  fi
-- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then __rvm_unload;
-  fi
-- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
-  update; fi
-- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
-  install ruby-build; fi
-- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
-  link ruby-build; fi
-- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
-  install rbenv; fi
-- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "osx" ]; then brew
-  link rbenv; fi
-- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then __rvm_unload;
-  fi
-- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then curl
-  -sSL https://raw.github.com/fesplugas/rbenv-installer/22cc96aa45d06faca5958b1aa1688596198407a3/bin/rbenv-installer
-  | bash; fi
-- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export
-  RBENV_ROOT="${HOME}/.rbenv"; fi
-- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then export
-  PATH="${RBENV_ROOT}/bin:${PATH}"; fi
-- if [ "${LANYON_ONLY}" = "rbenv" ]  && [ "${TRAVIS_OS_NAME}" == "linux" ]; then eval
-  "$(rbenv init -)"; fi
-install:
-- type yarn || npm install -g yarn@0.18.1 || true
-- yarn || npm install
 script:
-- if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 6")" -eq 1 ]; then npm run lint; fi
-- npm run build
-- if [ "$(bc <<< "${TRAVIS_NODE_VERSION} >= 8")" -eq 1 ]; then npm run test; fi
+- if [ "$(bc <<< "${TRAVIS_NODE_VERSION} < 8")" -eq 1 ]; then (echo "Only Node 8 are supported"; exit 1); fi
+- npm run test
 - travis_wait 300 npm run test:acceptance
 os: linux
-dist: precise
-sudo: false
+dist: trusy
+sudo: required
 env:
   matrix:
-  - LANYON_ONLY="auto-all" OSDIST="precise"
+  - LANYON_ONLY="docker" OSDIST="trusty"
   global:
   - LANYON_USE_LINKED="1"
   - secure: Du81N+VYszPmbjdb17tMcKHAKBWlarOYr6Z+kN6h41s8VlS+rmLv9yRlEsxU8+P1x9AA31wwN5duIkyFZr+3GD7mGAjzowHnKZD5j1CF7v0cKoowfJW/mbtodh35/n3j28UQuA/C7OWjeYE5BhVtW7cV3h2Pgdgf1/h9P8jRNeOaMbuhvSsKrQj7lZ5ffzi12wJxWyZDnG1geaSP17cIiqG0B3oGesfY7ASYz+2G/YufgdunFtjMxyfPNfQD+06gxOKo5iFqkjfE84Atgsd+G91vVIxam4gBtVVbAi2qmeB1Dpz9N4sR+XV+u29381KBkflT0JeElABFulr2b5rUCW8ACKWGGzDLOALvFyS12iZjcZrvDag/s9bSm4Gjhf5VdE4ygpAxjSXhSpDJcC1sDeO/oUGoGdia01g9FHM99mFtemciZwxbGRsU7X9+JSEjqh51CmANuB+L/avsd/KVXF7RiKuu9CCTc3XGG6MxXNVUDaFE+wCfQZsMcqLeKzX4aLAMdrTT1VV0ZNQIo/DnvVF4oUvdhhwZlUcY74jBpW3tYnn7i+V66Hj15Ej+S01D/ZCJKP6xP5HgYGy1ArQzGx0tF65fHZ1O51GEZzaIcKFvzqhONDkBGEjulyaEWpb6j9ofJFdbUEkLdbwLdzTfJ8goZyyjmYw74/deg38ttzs=
@@ -65,43 +26,13 @@ env:
 node_js: '8'
 language: node_js
 matrix:
-  # allow_failures:
-  # - node_js: '0.12'
-  #   # os: osx
   include:
-  # - os: linux
-  #   dist: precise
-  #   sudo: false
-  #   env: LANYON_ONLY="rbenv" OSDIST="precise"
-  #   language: node_js
-  #   node_js: '0.12'
-  - os: linux
-    dist: trusty
-    sudo: required
-    env: LANYON_ONLY="system" OSDIST="trusty"
-    language: node_js
-    node_js: '6'
-  - os: linux
-    dist: trusty
-    sudo: required
-    env: LANYON_ONLY="docker" OSDIST="trusty"
+  - os: osx
+    node_js: '8'
+    osx_image: xcode9
+    env: LANYON_ONLY="docker" OSDIST="xcode9"
     language: node_js
     node_js: '8'
-  # - os: osx
-  #   osx_image: xcode6.4
-  #   env: LANYON_ONLY="rvm" OSDIST="xcode6.4"
-  #   language: node_js
-  #   node_js: '0.12'
-  - os: osx
-    osx_image: xcode7.2
-    env: LANYON_ONLY="rbenv" OSDIST="xcode7.2"
-    language: node_js
-    node_js: '6'
-  - os: osx
-    osx_image: xcode9
-    env: LANYON_ONLY="system" OSDIST="xcode9"
-    language: node_js
-    node_js: '7'
 before_cache:
 - rm -f ./node_modules/.bin/which
 deploy:

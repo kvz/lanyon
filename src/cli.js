@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-require('babel-polyfill')
 const utils        = require('./utils')
-const whichPackage = utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib/cli.js', require('../package.json').version)
+const whichPackage = utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'src/cli.js', require('../package.json').version)
 const scrolex      = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
