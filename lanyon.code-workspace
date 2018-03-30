@@ -4,5 +4,28 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"search.exclude": {
+			"lib/": true,
+			"**/node_modules/": true,
+			"**/_site/": true,
+			"**/.lanyon/": true,
+			"**/yarn.lock": true,
+			"**/package-lock.json": true,
+			"**/yarn-error.log": true,
+			"**/Gemfile.lock": true,
+			"**/.jekyll-metadata": true
+		},
+		"files.exclude": {
+			"lib/": true,
+			"**/node_modules/": true,
+			"**/_site/": true,
+			"**/.lanyon/": true,
+			"**/yarn.lock": true,
+			"**/package-lock.json": true,
+			"**/yarn-error.log": true,
+			"**/Gemfile.lock": true,
+			"**/.jekyll-metadata": true
+		}		
+	}
 }
