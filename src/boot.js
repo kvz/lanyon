@@ -159,7 +159,6 @@ module.exports = async function boot () {
       docker run
         --workdir ${runtime.cacheDir}
         --volume ${runtime.cacheDir}:${runtime.cacheDir}
-        --volume ${runtime.cacheDir}/vendor/bundle:/usr/local/bundle
         --volume ${runtime.projectDir}:${runtime.projectDir}
       kevinvz/lanyon:${runtime.lanyonVersion}
       jekyll
