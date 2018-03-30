@@ -117,11 +117,6 @@ EOF
   cat ./node_modules/.bin/lanyon
   set +x
 
-  for shim in "jekyll" "bundler" "ruby"; do
-    echo "--> Showing shim ${shim} contents:"
-    cat .lanyon/bin/${shim}
-  done
-
   echo "--> Building site for 'development' in '${projectDir}'"
   npm run build
   echo "--> Showing tree for 'development' in '${projectDir}'"

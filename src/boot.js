@@ -18,12 +18,10 @@ module.exports = async function boot (whichPackage) {
     'build:content'            : 'jekyll build --source [projectDir] --destination [contentBuildDir] --verbose --config [projectDir]/_config.yml,[cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     // 'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
     // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
-    'build:emoji'              : 'bundler exec gemoji extract assets/images/emoji',
     'build'                    : 'lanyon build:assets && lanyon build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
     'deploy'                   : require(`./deploy`),
     'encrypt'                  : require(`./encrypt`),
     'help'                     : 'jekyll build --help',
-    'list:ghpgems'             : 'bundler exec github-pages versions --gem',
     'serve'                    : 'browser-sync start --config [cacheDir]/browsersync.config.js',
     'start'                    : 'parallelshell "lanyon build:content:watch" "lanyon serve"',
   }
@@ -91,8 +89,6 @@ module.exports = async function boot (whichPackage) {
   // Write all config files to cacheDir
   scrolex.stick('Writing configs')
   utils.writeConfig(config)
-  scrolex.stick('Writing shims')
-  await require(`./install`)(runtime)
 
   // Run cmd arg
   if (_.isFunction(cmd)) {
@@ -158,17 +154,25 @@ module.exports = async function boot (whichPackage) {
       scrolexOpts.mode = 'passthru'
     }
 
+    let jekyllBin = oneLine`
+      docker run
+        --workdir ${runtime.cacheDir}
+        --volume ${runtime.cacheDir}:${runtime.cacheDir}
+        --volume ${runtime.cacheDir}/vendor/bundle:/usr/local/bundle
+        --volume ${runtime.projectDir}:${runtime.projectDir}
+      kevinvz/lanyon:${runtime.lanyonVersion}
+      jekyll
+    `
+
     // Replace shims
-    cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, `$1${runtime.binDir}/jekyll$2`)
-    cmd = cmd.replace(/(\s|^)bundler(\s|$)/, `$1${runtime.binDir}/bundler$2`)
+    cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, `$1${jekyllBin}$2`)
 
     if (cmdName.match(/(^start|^deploy|^build$)/)) {
       // Show versions
       let versionMapping = {
         webpack: `node ${npmBins.webpack} -v`,
         nodemon: `node ${npmBins.nodemon} -v`,
-        jekyll : `${runtime.binDir}/jekyll -v`,
-        bundler: `${runtime.binDir}/bundler -v`,
+        jekyll : `${jekyllBin} -v`,
       }
       try {
         asyncMapValues(versionMapping, function (cmd, key, callback) {

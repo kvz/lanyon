@@ -155,7 +155,6 @@ module.exports.writeConfig = (cfg) => {
   if (!fs.existsSync(`${cfg.runtime.cacheDir}/jekyll.lanyon_assets.yml`)) {
     fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.lanyon_assets.yml`, '# this file should be overwritten by the Webpack AssetsPlugin', 'utf-8')
   }
-  utils.fsCopySync(`${cfg.runtime.lanyonDir}/Gemfile.lock`, `${cfg.runtime.cacheDir}/Gemfile.lock`)
   try {
     fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.config.yml`, yaml.safeDump(cfg.jekyll), 'utf-8')
   } catch (e) {
@@ -167,33 +166,6 @@ module.exports.writeConfig = (cfg) => {
   fs.writeFileSync(`${cfg.runtime.cacheDir}/browsersync.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/src/config.js").browsersync`, 'utf-8')
   fs.writeFileSync(`${cfg.runtime.cacheDir}/webpack.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/src/config.js").webpack`, 'utf-8')
   fs.writeFileSync(cfg.runtime.recordsPath, JSON.stringify({}, null, '  '), 'utf-8')
-
-  let dBuf = stripIndent`
-    FROM ruby:2.3.3-alpine
-    RUN mkdir -p /jekyll
-    WORKDIR /jekyll
-    ENV BUNDLE_APP_CONFIG /jekyll
-    RUN { \\
-      echo '---'; \\
-      echo 'BUNDLE_PATH: "/jekyll/vendor/bundler"'; \\
-      echo 'BUNDLE_DISABLE_SHARED_GEMS: "true"'; \\
-    } >> /jekyll/config
-    COPY Gemfile /jekyll/
-    COPY Gemfile.lock /jekyll/
-    RUN true \\
-      && apk --update add make gcc g++ \\
-      && (bundler install --force --path /jekyll/vendor/bundler || bundler update) \\
-      && rm -rf /var/cache/apk/* \\
-      && chmod 777 /jekyll/config \\
-      && true
-  `
-  fs.writeFileSync(`${cfg.runtime.cacheDir}/Dockerfile`, dBuf, 'utf-8')
-
-  let gBuf = `source 'http://rubygems.org'\n`
-  for (let name in cfg.runtime.gems) {
-    gBuf += `gem '${name}', '${cfg.runtime.gems[name]}'\n`
-  }
-  fs.writeFileSync(path.join(cfg.runtime.cacheDir, 'Gemfile'), gBuf, 'utf-8')
 }
 
 module.exports.satisfied = ({prerequisites, rubyProvidersSkip}, app, cmd, checkOn) => {

@@ -41,7 +41,6 @@ example/assets/build/
 example/.lanyon/
 example/.jekyll-metadata
 
-Gemfile
 .lanyon
 .lanyon/bin
 assets/build

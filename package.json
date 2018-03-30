@@ -14,7 +14,7 @@
   },
   "files": [
     "example",
-    "Gemfile.lock",
+    "container/Gemfile.lock",
     "Makefile",
     "scripts",
     "src"
@@ -69,16 +69,6 @@
     "ports": {
       "assets": 3000,
       "content": 4000
-    },
-    "gems": {
-      "github-pages": "164",
-      "nokogiri": "1.8.0",
-      "pkg-config": "1.1.7",
-      "jekyll-lunr-js-search": "3.3.0",
-      "liquid_pluralize": "1.0.3",
-      "jekyll-archives": "2.1.1",
-      "minimal-mistakes-jekyll": "4.5.1",
-      "stringex": "2.6.0"
     }
   },
   "repository": {

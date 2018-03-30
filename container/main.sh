@@ -24,28 +24,34 @@ if [ "${mode}" = "build" ]; then
 
   docker build . ${rm} ${cache} -t "kevinvz/lanyon:${__lanyonVersion}"
 
-
   docker run \
     --volume="$PWD:/srv/jekyll" \
+    --volume="$PWD/vendor/bundle:/usr/local/bundle"
     -it "kevinvz/lanyon:${__lanyonVersion}" \
     bundle update --verbose
 
   docker commit $(docker ps --latest --quiet) "kevinvz/lanyon:${__lanyonVersion}"
 
   docker run \
+    --rm \
     --volume="$PWD:/srv/jekyll" \
+    --volume="$PWD/vendor/bundle:/usr/local/bundle"
     -it "kevinvz/lanyon:${__lanyonVersion}" \
     bundle exec github-pages versions
 
   docker push "kevinvz/lanyon:${__lanyonVersion}"
 elif [ "${mode}" = "versions" ]; then
   docker run \
+    --rm \
     --volume="$PWD:/srv/jekyll" \
+    --volume="$PWD/vendor/bundle:/usr/local/bundle"
     -it "kevinvz/lanyon:${__lanyonVersion}"} \
     bundle exec github-pages versions
 elif [ "${mode}" = "connect" ]; then
   docker run \
+    --rm \
     --volume="$PWD:/srv/jekyll" \
+    --volume="$PWD/vendor/bundle:/usr/local/bundle"
     -it "kevinvz/lanyon:${__lanyonVersion}"} \
     bash
 else

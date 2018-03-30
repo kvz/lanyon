@@ -39,7 +39,6 @@ runtime.publicPath = '/assets/build/'
 
 runtime.jekyllDisablePlugins = process.env.LANYON_DISABLE_JEKYLL_PLUGINS || process.env.LANYON_DISABLE_GEMS
 
-runtime.lanyonUpdateGemLockfile = process.env.LANYON_UPDATE_GEM_LOCKFILE === '1'
 runtime.lanyonReset = process.env.LANYON_RESET === '1'
 runtime.onTravis = process.env.TRAVIS === 'true'
 runtime.ghPagesEnv = {
