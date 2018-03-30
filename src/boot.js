@@ -20,7 +20,6 @@ module.exports = async function boot (whichPackage) {
     // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
     'build:emoji'              : 'bundler exec gemoji extract assets/images/emoji',
     'build'                    : 'lanyon build:assets && lanyon build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
-    'container:connect'        : utils.dockerCmd(runtime, 'sh', '--interactive --tty'),
     'deploy'                   : require(`./deploy`),
     'encrypt'                  : require(`./encrypt`),
     'help'                     : 'jekyll build --help',
@@ -157,9 +156,6 @@ module.exports = async function boot (whichPackage) {
     }
     if (cmdName !== 'start') {
       scrolexOpts.mode = 'passthru'
-    }
-    if (cmdName === 'container:connect') {
-      scrolexOpts.stdio = 'inherit'
     }
 
     // Replace shims

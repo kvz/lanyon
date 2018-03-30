@@ -23,11 +23,12 @@
     "lanyon": "src/cli.js"
   },
   "scripts": {
-    "commit:gemlockfile": "git commit Gemfile.lock -m 'Save updated Gemfile.lock' || true",
+    "commit:gemlockfile": "git commit container/Gemfile.lock -m 'Save updated container/Gemfile.lock' || true",
     "push": "git push && git push --tags",
-    "container:rebuild": "env DOCKER_RESET=1 ./container/build.sh",
-    "container:build": " ./container/build.sh",
-    "container:connect": "node src/cli.js container:connect",
+    "container:build:reset": "env DOCKER_RESET=1 ./container/build.sh",
+    "container:build": " ./container/main.sh build",
+    "container:versions": " ./container/main.sh versions",
+    "container:connect": " ./container/main.sh connect",
     "fix": "eslint . --fix",
     "lint": "eslint .",
     "release:major": "env SEMANTIC=major npm run release",
