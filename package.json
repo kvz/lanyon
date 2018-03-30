@@ -4,7 +4,7 @@
   "description": "Jekyll without the Hassle",
   "main": "src/config.js",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "jest": {
     "verbose": true,
@@ -154,6 +154,7 @@
     "babel-plugin-transform-proto-to-assign": "6.26.0",
     "babel-preset-es2015": "6.24.1",
     "babel-preset-es2015-loose": "8.0.0",
+    "babel-preset-stage-0": "6.24.1",
     "babel-preset-react": "6.24.1",
     "babel-runtime": "6.26.0",
     "bower-webpack-plugin": "0.1.9",

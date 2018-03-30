@@ -6,8 +6,8 @@ const _           = require('lodash')
 const yaml        = require('js-yaml')
 const shell       = require('shelljs')
 const spawnSync   = require('spawn-sync')
-const oneLine     = require('common-tags/src/oneLine')
-const stripIndent = require('common-tags/src/stripIndent')
+const oneLine     = require('common-tags/lib/oneLine')
+const stripIndent = require('common-tags/lib/stripIndent')
 const scrolex     = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,

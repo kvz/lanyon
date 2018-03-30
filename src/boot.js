@@ -66,13 +66,10 @@ module.exports = async function boot (whichPackage) {
   }
 
   scrolex.stick(`Booting ${whichPackage.type} Lanyon->${cmdName}. Version: ${whichPackage.version} on PID: ${process.pid} from: ${__filename}`)
-  scrolex.stick(`Detected cacheDir as "${runtime.cacheDir}"`)
-  scrolex.stick(`Detected gitRoot as "${runtime.gitRoot}"`)
-  scrolex.stick(`Detected npmRoot as "${runtime.npmRoot}"`)
-
-  // for (let )
-
-  process.exit(0)
+  
+  for (let key of Object.keys(runtime).sort()) {
+    scrolex.stick(`Detected ${key} as "${runtime[key]}"`)
+  }
 
   if (runtime.jekyllDisablePlugins) {
     scrolex.stick(`Disabled gems ${runtime.jekyllDisablePlugins} as per LANYON_DISABLE_JEKYLL_PLUGINS`)
