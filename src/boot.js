@@ -166,9 +166,9 @@ module.exports = async function boot () {
         --rm
         -i
         --workdir ${runtime.cacheDir}
-        --volume ${extraVolumes}:${extraVolumes}
         --volume ${runtime.cacheDir}:${runtime.cacheDir}
         --volume ${runtime.projectDir}:${runtime.projectDir}
+        ${extraVolumes}
         kevinvz/lanyon:0.0.109
         jekyll
     `
