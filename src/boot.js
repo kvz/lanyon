@@ -155,13 +155,22 @@ module.exports = async function boot () {
       scrolexOpts.mode = 'passthru'
     }
 
+    let extraVolumes = ''
+    if (runtime.contentBuildDir.indexOf(runtime.projectDir) === -1) {
+      extraVolumes = `--volume ${runtime.contentBuildDir}:${runtime.contentBuildDir}`
+    }
+
+    // cp -f ${runtime.projectDir}/Gemfile ${runtime.cacheDir}/Gemfile &&
     let jekyllBin = oneLine`
       docker run
+        --rm
+        -i
         --workdir ${runtime.cacheDir}
+        --volume ${extraVolumes}:${extraVolumes}
         --volume ${runtime.cacheDir}:${runtime.cacheDir}
         --volume ${runtime.projectDir}:${runtime.projectDir}
-      kevinvz/lanyon:${runtime.lanyonVersion}
-      jekyll
+        kevinvz/lanyon:0.0.109
+        jekyll
     `
 
     // Replace shims

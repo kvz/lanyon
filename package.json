@@ -25,9 +25,8 @@
   "scripts": {
     "commit:gemlockfile": "git commit container/Gemfile.lock -m 'Save updated container/Gemfile.lock' || true",
     "push": "git push && git push --tags",
-    "container:build:reset": "env DOCKER_RESET=1 ./container/build.sh",
+    "container:build:reset": "env DOCKER_RESET=1 ./container/main.sh build",
     "container:build": " ./container/main.sh build",
-    "container:versions": " ./container/main.sh versions",
     "container:connect": " ./container/main.sh connect",
     "fix": "eslint . --fix",
     "lint": "eslint .",

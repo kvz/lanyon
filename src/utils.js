@@ -18,29 +18,6 @@ if (require.main === module) {
   process.exit(1)
 }
 
-module.exports.dockerCmd = ({cacheDir, projectDir, contentBuildDir, lanyonVersion}, cmd, flags) => {
-  if (!flags) {
-    flags = ''
-  }
-
-  let extraVolumes = ''
-  if (contentBuildDir.indexOf(projectDir) === -1) {
-    extraVolumes = `--volume ${contentBuildDir}:${contentBuildDir}`
-  }
-
-  return oneLine`
-    docker run
-      ${flags}
-      --user $(id -u)
-      --workdir ${cacheDir}
-      --volume ${cacheDir}:${cacheDir}
-      --volume ${projectDir}:${projectDir}
-      ${extraVolumes}
-    kevinvz/lanyon:${lanyonVersion}
-    ${cmd}
-  `
-}
-
 module.exports.runhooks = async (order, cmdName, runtime) => {
   let arr = []
 
