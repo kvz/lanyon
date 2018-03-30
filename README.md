@@ -2,6 +2,8 @@
 
 This document is best viewed at <http://lanyon.io/>.
 
+**Disclaimer 2018-03-26:** Lanyon's initial goal was to be a tool for everybody, but since it never really took off and that we have limited time to make this _really_ nice, we've decided to reduce its scope to be useful to just <https://transloadit.com>. We won't be as interested in supported other usecases, so you might want to think twice about adopting it. This is mostly still publicly available for our own convenience, and in the off-chance Lanyon as-is, is still useful to others. In addition, contrary to what you may read below, we've introduced the requirement of Node 8 & Docker installed, in order to cut down on countering with Ruby dependency hells and speed up development without Transpiling.
+
 <!--more-->
 
 Lanyon is a static site generator. It functions as a wrapper around Jekyll, Webpack, and BrowserSync, in an attempt to give you the best of all worlds. Lanyon allows you to build and refresh assets instantly and offers fast and reliable file watching. 
@@ -13,8 +15,6 @@ Whichever the case, Lanyon is certainly okay with embracing any philosophy, as l
 
 Lanyon is currently in pre-alpha. We are still making many changes and – in keeping with SemVer tradition – are allowing ourselves to make breaking ones in `<1`. For that and other reasons, we do not recommend using it for anything serious yet.
 
-## Used by
-
 Lanyon is authored by people at [Transloadit](https://transloadit.com), where it already powers their website and most of their pet-projects:
 
 - <https://transloadit.com>
@@ -23,8 +23,6 @@ Lanyon is authored by people at [Transloadit](https://transloadit.com), where it
 - <http://bash3boilerplate.sh>
 - <http://kvz.io>
 - <http://lanyon.io> :tada: surprise!
-
-If you are an early adopter of Lanyon, [let us know](https://github.com/kvz/lanyon/issues/new) and get listed! :heart:
 
 ## Background
 
