@@ -50,11 +50,10 @@ module.exports = async function boot () {
     addCommandAsComponent: true,
     components           : `lanyon>${cmdName}`,
     env                  : Object.assign({}, process.env, {
-      DEBUG                        : process.env.DEBUG,
-      LANYON_DISABLE_JEKYLL_PLUGINS: process.env.LANYON_DISABLE_JEKYLL_PLUGINS || process.env.LANYON_DISABLE_GEMS,
-      NODE_ENV                     : runtime.lanyonEnv,
-      JEKYLL_ENV                   : runtime.lanyonEnv,
-      LANYON_PROJECT               : runtime.projectDir, // <-- to preserve the cwd over multiple nested executes, if it wasn't initially setly set
+      DEBUG         : process.env.DEBUG,
+      NODE_ENV      : runtime.lanyonEnv,
+      JEKYLL_ENV    : runtime.lanyonEnv,
+      LANYON_PROJECT: runtime.projectDir, // <-- to preserve the cwd over multiple nested executes, if it wasn't initially setly set
     }),
   })
 
@@ -67,16 +66,6 @@ module.exports = async function boot () {
 
   for (let key of Object.keys(runtime).sort()) {
     scrolex.stick(`Detected ${key} as "${runtime[key]}"`)
-  }
-
-  if (runtime.jekyllDisablePlugins) {
-    scrolex.stick(`Disabled gems ${runtime.jekyllDisablePlugins} as per LANYON_DISABLE_JEKYLL_PLUGINS`)
-  }
-  if (('LANYON_EXCLUDE' in process.env) && process.env.LANYON_EXCLUDE) {
-    scrolex.stick(`Disabled building of ${process.env.LANYON_EXCLUDE} as per LANYON_EXCLUDE`)
-  }
-  if (('LANYON_INCLUDE' in process.env) && process.env.LANYON_INCLUDE) {
-    scrolex.stick(`Explicitly enabling building of ${process.env.LANYON_INCLUDE} as per LANYON_INCLUDE`)
   }
 
   // Create asset dirs and git ignores

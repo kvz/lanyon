@@ -136,7 +136,7 @@ function getFilename (extension, isChunk, isContent) {
   return filename
 }
 
-const cfg = {
+let cfg = {
   webpack: {
     entry: (function dynamicEntries () {
       var entries = {}
@@ -816,5 +816,9 @@ cfg.nodemon = {
 }
 
 cfg.runtime = runtime
+
+if (fs.existsSync(`${runtime.projectDir}/lanyonrc.js`)) {
+  cfg = require(`${runtime.projectDir}/lanyonrc.js`)(cfg)
+}
 
 module.exports = cfg
