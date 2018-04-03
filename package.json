@@ -45,31 +45,6 @@
     "web:install": "cd website && npm run install",
     "web:start": "cd website && npm run start"
   },
-  "lanyon": {
-    "statistics": "stats.html",
-    "entries": [
-      "app"
-    ],
-    "prerequisites": {
-      "sh": {
-        "preferred": "0.5.7",
-        "range": ">=0.0.1",
-        "writeShim": true
-      },
-      "node": {
-        "preferred": "4.6.1",
-        "range": ">=6"
-      },
-      "docker": {
-        "preferred": "1.12.3",
-        "range": ">=1.12"
-      }
-    },
-    "ports": {
-      "assets": 3000,
-      "content": 4000
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kvz/lanyon.git"

@@ -37,8 +37,6 @@ runtime.profile = process.env.LANYON_PROFILE === '1' || !('LANYON_PROFILE' in pr
 runtime.trace = process.env.LANYON_TRACE === '1'
 runtime.publicPath = '/assets/build/'
 
-runtime.jekyllDisablePlugins = process.env.LANYON_DISABLE_JEKYLL_PLUGINS || process.env.LANYON_DISABLE_GEMS
-
 runtime.lanyonReset = process.env.LANYON_RESET === '1'
 runtime.onTravis = process.env.TRAVIS === 'true'
 runtime.ghPagesEnv = {
@@ -65,19 +63,42 @@ try {
   projectPackage = {}
 }
 
-runtime.projectGems = _.get(projectPackage, 'lanyon.jekyllPlugins') || _.get(projectPackage, 'lanyon.gems') || {}
-runtime.lanyonGems = _.get(projectPackage, 'lanyon.jekyllPlugins') || _.get(lanyonPackage, 'lanyon.gems') || {}
-runtime.gems = _.defaults({}, runtime.projectGems, runtime.lanyonGems)
-runtime = _.defaults({}, projectPackage.lanyon || {}, lanyonPackage.lanyon, runtime)
+let mods = {
+  head: function (config) { return config },
+  tail: function (config) { return config },
+}
+if (fs.existsSync(`${runtime.projectDir}/lanyonrc.js`)) {
+  mods = require(`${runtime.projectDir}/lanyonrc.js`)
+}
+
+runtime.statistics = 'stats.html'
+runtime.entries = [
+  'app',
+]
+runtime.prerequisites = {
+  'sh': {
+    'preferred': '0.5.7',
+    'range'    : '>=0.0.1',
+    'writeShim': true,
+  },
+  'node': {
+    'preferred': '4.6.1',
+    'range'    : '>=6',
+  },
+  'docker': {
+    'preferred': '1.12.3',
+    'range'    : '>=1.12',
+  },
+}
+runtime.ports = {
+  'assets' : 3000,
+  'content': 4000,
+}
 
 try {
   runtime.projectDir = fs.realpathSync(runtime.projectDir)
 } catch (e) {
   runtime.projectDir = fs.realpathSync(`${runtime.gitRoot}/${runtime.projectDir}`)
-}
-
-if ('LANYON_BS_EXTRA' in process.env) {
-  runtime.extraBrowserSync = path.join(runtime.projectDir, process.env.LANYON_BS_EXTRA)
 }
 
 runtime.cacheDir = path.join(runtime.projectDir, '.lanyon')
@@ -90,34 +111,6 @@ runtime.contentScandir = path.join(runtime.projectDir, runtime.contentScandir ||
 runtime.contentIgnore = runtime.contentIgnore || []
 
 runtime.contentBuildDir = path.join(runtime.projectDir, '_site')
-if ('LANYON_CONTENT_BUILD_DIR' in process.env) {
-  runtime.contentBuildDir = path.join(runtime.projectDir, process.env.LANYON_CONTENT_BUILD_DIR)
-}
-
-if ('LANYON_POSTBUILD_HOOK' in process.env) {
-  runtime['postbuild'] = path.join(runtime.projectDir, process.env.LANYON_POSTBUILD_HOOK)
-}
-
-// Load project's jekyll _config.yml
-runtime.jekyllConfig = {}
-const jekyllConfigPath = path.join(runtime.projectDir, '_config.yml')
-try {
-  const buf            = fs.readFileSync(jekyllConfigPath)
-  runtime.jekyllConfig = yaml.safeLoad(buf)
-} catch (e) {
-  scrolex.failure(`Unable to load ${jekyllConfigPath}`)
-}
-
-runtime.themeDir = false
-if (runtime.jekyllConfig.theme) {
-  const cmd = `${path.join(runtime.binDir, 'bundler')} show ${runtime.jekyllConfig.theme}`
-  const z   = shell.exec(cmd).stdout
-  if (!z) {
-    scrolex.failure(`Unable find defined them "${runtime.jekyllConfig.theme}" via cmd: "${cmd}"`)
-  } else {
-    runtime.themeDir = z
-  }
-}
 
 function getFilename (extension, isChunk, isContent) {
   let filename = `[name].${extension}`
@@ -705,87 +698,26 @@ cfg.browsersync = {
   files         : runtime.contentBuildDir,
 }
 
-if (runtime.extraBrowserSync) {
-  const extraBs = require(runtime.extraBrowserSync)
-  cfg.browsersync = Object.assign({}, cfg.browsersync, extraBs)
-}
-
+// Load project's jekyll _config.yml
 cfg.jekyll = {}
-
-const jekyllDevConfigPath = `${runtime.projectDir}/_config.develop.yml`
-if (runtime.isDev && fs.existsSync(jekyllDevConfigPath)) {
-  try {
-    const buf  = fs.readFileSync(jekyllDevConfigPath)
-    cfg.jekyll = yaml.safeLoad(buf)
-  } catch (e) {
-    scrolex.failure(`Unable to load ${jekyllDevConfigPath}`)
-  }
+const jekyllConfigPath = path.join(runtime.projectDir, '_config.yml')
+try {
+  const buf = fs.readFileSync(jekyllConfigPath)
+  cfg.jekyll = yaml.safeLoad(buf)
+} catch (e) {
+  scrolex.failure(`Unable to load ${jekyllConfigPath}`)
 }
 
-cfg.jekyll.plugins = (function dynamicGems () {
-  let list = []
-
-  if (runtime.jekyllDisablePlugins) {
-    const disabled = runtime.jekyllDisablePlugins.split(/\s*,\s*/)
-    for (let i in runtime.jekyllConfig.gems) {
-      let isEnabled = disabled.indexOf(runtime.jekyllConfig.gems[i]) === -1
-      if (isEnabled) {
-        list.push(runtime.jekyllConfig.gems[i])
-      }
-    }
+runtime.themeDir = false
+if (cfg.jekyll.theme) {
+  const cmd = `${path.join(runtime.binDir, 'bundler')} show ${cfg.jekyll.theme}`
+  const z = shell.exec(cmd).stdout
+  if (!z) {
+    scrolex.failure(`Unable to find defined theme "${cfg.jekyll.theme}" via cmd: "${cmd}"`)
   } else {
-    list = runtime.jekyllConfig.gems
+    runtime.themeDir = z
   }
-
-  if (!list || list.length < 1) {
-    return []
-  }
-
-  return list
-}())
-
-cfg.jekyll.exclude = (function dynamicExcludes () {
-  let list = [
-    'node_modules',
-    'env.sh',
-    'env.*.sh',
-    '.env.sh',
-    '.env.*.sh',
-    '.lanyon',
-  ]
-
-  if (_.get(runtime, 'jekyllConfig.exclude.length') > 0) {
-    list = list.concat(runtime.jekyllConfig.exclude)
-  }
-
-  if ('LANYON_EXCLUDE' in process.env && process.env.LANYON_EXCLUDE !== '') {
-    list = list.concat(process.env.LANYON_EXCLUDE.split(/\s*,\s*/))
-  }
-
-  if (!list || list.length < 1) {
-    return null
-  }
-
-  return list
-}())
-
-cfg.jekyll.include = (function dynamicIncludes () {
-  let list = []
-
-  if (_.get(runtime, 'jekyllConfig.include.length') > 0) {
-    list = list.concat(runtime.jekyllConfig.include)
-  }
-
-  if ('LANYON_INCLUDE' in process.env && process.env.LANYON_INCLUDE !== '') {
-    list = list.concat(process.env.LANYON_INCLUDE.split(/\s*,\s*/))
-  }
-
-  if (!list || list.length < 1) {
-    return null
-  }
-
-  return list
-}())
+}
 
 cfg.nodemon = {
   onChangeOnly: true,
@@ -817,8 +749,4 @@ cfg.nodemon = {
 
 cfg.runtime = runtime
 
-if (fs.existsSync(`${runtime.projectDir}/lanyonrc.js`)) {
-  cfg = require(`${runtime.projectDir}/lanyonrc.js`)(cfg)
-}
-
-module.exports = cfg
+module.exports = mods.tail(cfg)
