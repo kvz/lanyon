@@ -10,9 +10,12 @@ module.exports = async function dispatch () {
   let buildCmd = '[jekyll] build --incremental --verbose --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml'
   let formattedBuildCmd = utils.formatCmd(buildCmd, { runtime, cmdName })
   // console.log(formattedBuildCmd)
+
+  let postBuildContentHooks = utils.gethooks('post', 'build:content', runtime)
+
   const scripts = {
     'build:assets'       : '[webpack] --display-optimization-bailout --config [cacheDir]/webpack.config.js',
-    'build:content:watch': `env DEBUG=nodemon:* [nodemon] --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd}'`,
+    'build:content:watch': `env DEBUG=nodemon:* [nodemon] --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} && ${postBuildContentHooks}'`,
     // 'build:content:watch': '[jekyll] build --watch --incremental --verbose --force_polling --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     'build:content'      : buildCmd,
     // 'build:images'             : '[imagemin] [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
@@ -67,9 +70,6 @@ module.exports = async function dispatch () {
     utils.initProject(runtime)
   }
 
-  // Run Pre-Hooks
-  await utils.runhooks('pre', cmdName, runtime)
-
   // Write all config files to cacheDir
   scrolex.stick('Writing configs')
   utils.writeConfig(config)
@@ -90,9 +90,9 @@ module.exports = async function dispatch () {
 
     cmd.commands.forEach((name) => {
       let realcmd = utils.formatCmd(scripts[name], { runtime, cmdName })
-      methods.push(utils.runString.bind(utils.runString, realcmd, { runtime, cmdName, origCmd: scripts[name] }))
+      methods.push(utils.runString.bind(utils.runString, realcmd, { runtime, cmdName, origCmd: scripts[name], hookName: name.replace(/(:watch|\[\])/, '') }))
     })
-    
+
     async[cmd.mode](methods, (err) => {
       if (err) {
         scrolex.failure(`"${cmdName}" failed with: ${err}.`)
@@ -101,7 +101,7 @@ module.exports = async function dispatch () {
     })
   } else if (_.isString(cmd)) {
     let realcmd = utils.formatCmd(cmd, { runtime, cmdName })
-    utils.runString(realcmd, { runtime, cmdName, origCmd: cmd })
+    utils.runString(realcmd, { runtime, cmdName, origCmd: cmd, hookName: cmdName.replace(/(:watch|\[\])/, '') })
   } else {
     scrolex.failure(`"${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)
     process.exit(1)

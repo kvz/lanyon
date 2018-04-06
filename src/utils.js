@@ -31,9 +31,9 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
 
   // Replace all npms with their first-found full-path executables
   const npmBins = {
-    'browser-sync' : 'node_modules/browser-sync/bin/browser-sync.js',
-    'nodemon'      : 'node_modules/nodemon/bin/nodemon.js',
-    'webpack'      : 'node_modules/webpack/bin/webpack.js',
+    'browser-sync': 'node_modules/browser-sync/bin/browser-sync.js',
+    'nodemon'     : 'node_modules/nodemon/bin/nodemon.js',
+    'webpack'     : 'node_modules/webpack/bin/webpack.js',
     // 'imagemin'     : 'node_modules/imagemin-cli/cli.js',
   }
   for (const name in npmBins) {
@@ -84,7 +84,7 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
 
   return cmd
 }
-module.exports.runString = async function runString (cmd, { runtime, cmdName, origCmd }) {
+module.exports.runString = async function runString (cmd, { runtime, cmdName, origCmd, hookName }) {
   const scrolexOpts = {
     stdio                : 'pipe',
     cwd                  : runtime.cacheDir,
@@ -93,13 +93,32 @@ module.exports.runString = async function runString (cmd, { runtime, cmdName, or
     addCommandAsComponent: false,
   }
 
+  // Run Pre-Hooks
+  scrolex.stick(`Running pre${hookName} hooks (if any)`)
+  await utils.runhooks('pre', hookName, runtime)
+
   scrolex.exe(cmd, scrolexOpts, async (err, out) => { // eslint-disable-line handle-callback-err
     // Run Post-Hooks
-    await utils.runhooks('post', cmdName, runtime)
+    scrolex.stick(`Done. Running post${hookName} hooks (if any)`)
+    await utils.runhooks('post', hookName, runtime)
   })
 }
 
 module.exports.runhooks = async (order, cmdName, runtime) => {
+  let squashedHooks = utils.gethooks(order, cmdName, runtime)
+
+  if (!squashedHooks) {
+    return
+  }
+
+  return scrolex.exe(squashedHooks, {
+    cwd       : runtime.projectDir,
+    mode      : (process.env.SCROLEX_MODE || 'passthru'),
+    components: `lanyon>hooks>${order}${cmdName}`,
+  })
+}
+
+module.exports.gethooks = (order, cmdName, runtime) => {
   let arr = []
 
   arr = [
@@ -114,7 +133,7 @@ module.exports.runhooks = async (order, cmdName, runtime) => {
     `${order}${cmdName}:assets:development`,
   ]
 
-  const collectStdout = {}
+  let squashedHooks = ''
   for (let i in arr) {
     let hook = arr[i]
     if (runtime[hook]) {
@@ -129,20 +148,14 @@ module.exports.runhooks = async (order, cmdName, runtime) => {
       }
 
       if (needEnv === 'both' || runtime.lanyonEnv === needEnv) {
-        let squashedHooks = runtime[hook]
+        squashedHooks = runtime[hook]
         if (_.isArray(runtime[hook])) {
           squashedHooks = runtime[hook].join(' && ')
         }
-        collectStdout[hook] = await scrolex.exe(squashedHooks, {
-          cwd       : runtime.projectDir,
-          mode      : (process.env.SCROLEX_MODE || 'passthru'),
-          components: `lanyon>hooks>${order}${cmdName}`,
-        })
+        return squashedHooks
       }
     }
   }
-
-  return collectStdout
 }
 
 module.exports.upwardDirContaining = (find, cwd, not) => {
