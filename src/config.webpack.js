@@ -34,6 +34,7 @@ module.exports = function ({runtime}) {
   let webpackCfg = {
     entry: (function dynamicEntries () {
       var entries = {}
+
       runtime.entries.forEach(entry => {
         entries[entry] = [path.join(runtime.assetsSourceDir, `${entry}.js`)]
 
@@ -449,7 +450,7 @@ module.exports = function ({runtime}) {
         }))
         plugins.push(new webpack.optimize.UglifyJsPlugin({
           compress: {
-            warnings: true,
+            warnings: false,
           },
           sourceMap: true,
           exclude  : /[\\/](node_modules|bower_components|js-untouched)[\\/]/,

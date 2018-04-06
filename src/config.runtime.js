@@ -68,7 +68,6 @@ module.exports = function () {
   runtimeCfg.recordsPath = path.join(runtimeCfg.cacheDir, 'records.json')
   runtimeCfg.assetsSourceDir = path.join(runtimeCfg.projectDir, 'assets')
   runtimeCfg.assetsBuildDir = path.join(runtimeCfg.assetsSourceDir, 'build')
-  runtimeCfg.contentBuildDir = path.join(runtimeCfg.projectDir, '_site')
   runtimeCfg.contentScandir = path.join(runtimeCfg.projectDir, runtimeCfg.contentScandir || '.')
   runtimeCfg.contentIgnore = runtimeCfg.contentIgnore || []
   runtimeCfg.contentBuildDir = path.join(runtimeCfg.projectDir, '_site')
