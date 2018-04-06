@@ -1,5 +1,5 @@
 module.exports = function ({runtime}) {
-  let nodemon = {
+  let nodemonCfg = {
     onChangeOnly: true,
     verbose     : true,
     delay       : 600,
@@ -27,5 +27,5 @@ module.exports = function ({runtime}) {
     ].join(','),
   }
 
-  return nodemon
+  return nodemonCfg
 }

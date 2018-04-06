@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const SvgStoreWebpackPlugin = require('webpack-svgstore-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
@@ -30,7 +31,7 @@ module.exports = function ({runtime}) {
     return filename
   }
 
-  let webpack = {
+  let webpackCfg = {
     entry: (function dynamicEntries () {
       var entries = {}
       runtime.entries.forEach(entry => {
@@ -537,5 +538,5 @@ module.exports = function ({runtime}) {
     },
   }
 
-  return webpack
+  return webpackCfg
 }

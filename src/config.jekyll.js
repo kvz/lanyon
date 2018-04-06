@@ -11,37 +11,37 @@ const scrolex = require('scrolex').persistOpts({
 
 module.exports = function ({runtime}) {
   const jekyllConfigPath = path.join(runtime.projectDir, '_config.yml')
-  let jekyll = {}
+  let jekyllCfg = {}
   try {
     const buf = fs.readFileSync(jekyllConfigPath)
-    jekyll = yaml.safeLoad(buf)
+    jekyllCfg = yaml.safeLoad(buf)
   } catch (e) {
     scrolex.failure(`Unable to load ${jekyllConfigPath}`)
   }
 
   runtime.themeDir = false
-  if (jekyll.theme) {
-    const cmd = `${path.join(runtime.binDir, 'bundler')} show ${jekyll.theme}`
+  if (jekyllCfg.theme) {
+    const cmd = `${path.join(runtime.binDir, 'bundler')} show ${jekyllCfg.theme}`
     const z = shell.exec(cmd).stdout
     if (!z) {
-      scrolex.failure(`Unable to locate defined theme "${jekyll.theme}" via bundler with cmd: "${cmd}"`)
+      scrolex.failure(`Unable to locate defined theme "${jekyllCfg.theme}" via bundler with cmd: "${cmd}"`)
     } else {
       runtime.themeDir = z
     }
   }
 
-  if (!('incremental' in jekyll)) {
-    jekyll.incremental = true
+  if (!('incremental' in jekyllCfg)) {
+    jekyllCfg.incremental = true
   }
-  if (!('verbose' in jekyll)) {
-    jekyll.verbose = true
+  if (!('verbose' in jekyllCfg)) {
+    jekyllCfg.verbose = true
   }
-  if (!('source' in jekyll)) {
-    jekyll.source = runtime.projectDir
+  if (!('source' in jekyllCfg)) {
+    jekyllCfg.source = runtime.projectDir
   }
-  if (!('destination' in jekyll)) {
-    jekyll.destination = runtime.contentBuildDir
+  if (!('destination' in jekyllCfg)) {
+    jekyllCfg.destination = runtime.contentBuildDir
   }
 
-  return jekyll
+  return jekyllCfg
 }

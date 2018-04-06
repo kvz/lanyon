@@ -7,7 +7,7 @@ module.exports = function ({runtime, webpack}) {
   if (runtime.attachHMR) {
     bundler = require('webpack')(webpack)
   }
-  let browsersync = {
+  let browsersyncCfg = {
     server: {
       port   : runtime.ports.content,
       baseDir: (function dynamicWebRoots () {
@@ -63,5 +63,5 @@ module.exports = function ({runtime, webpack}) {
     files         : runtime.contentBuildDir,
   }
 
-  return browsersync
+  return browsersyncCfg
 }
