@@ -34,7 +34,7 @@ Released: TBA.
 Released: 2018-03-30.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.108...v0.0.109).
 
-- [x] Allow `lanyonrc.js` in projectDir to temper with config
+- [x] Allow `.lanyonrc.js` in projectDir to temper with config
 - [x] Require Node 8+ (and ditch babel)
 - [x] Require Docker (and ditch rbenv, rvm, system support)
 

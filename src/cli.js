@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const utils        = require('./utils')
+// const utils        = require('./utils')
 const scrolex      = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
