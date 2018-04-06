@@ -11,11 +11,9 @@ module.exports = async function boot () {
 
   // 'start'                    : 'parallelshell "lanyon build:content:watch" "lanyon build:assets:watch" "lanyon serve"',
   const scripts = {
-    // assets:watch is typically handled via browsersync middleware, so this is more for debugging purposes:
-    'build:assets:watch' : 'webpack --display-optimization-bailout --watch --config [cacheDir]/webpack.config.js',
     'build:assets'       : 'webpack --display-optimization-bailout --config [cacheDir]/webpack.config.js',
     'build:content:watch': 'nodemon --config [cacheDir]/nodemon.config.json --exec "lanyon build:content"',
-    'build:content'      : 'jekyll build --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
+    'build:content'      : 'jekyll build --verbose --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     // 'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
     // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
     'build'              : 'lanyon build:assets && lanyon build:content', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site

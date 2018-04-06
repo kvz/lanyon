@@ -25,6 +25,12 @@ module.exports.runhooks = async (order, cmdName, runtime) => {
     `${order}${cmdName}`,
     `${order}${cmdName}:production`,
     `${order}${cmdName}:development`,
+    `${order}${cmdName}:content`,
+    `${order}${cmdName}:content:production`,
+    `${order}${cmdName}:content:development`,
+    `${order}${cmdName}:assets`,
+    `${order}${cmdName}:assets:production`,
+    `${order}${cmdName}:assets:development`,
   ]
 
   const collectStdout = {}
@@ -47,8 +53,9 @@ module.exports.runhooks = async (order, cmdName, runtime) => {
           squashedHooks = runtime[hook].join(' && ')
         }
         collectStdout[hook] = await scrolex.exe(squashedHooks, {
-          cwd : runtime.projectDir,
-          mode: (process.env.SCROLEX_MODE || 'passthru'),
+          cwd       : runtime.projectDir,
+          mode      : (process.env.SCROLEX_MODE || 'passthru'),
+          components: `lanyon>hooks>${order}${cmdName}`,
         })
       }
     }

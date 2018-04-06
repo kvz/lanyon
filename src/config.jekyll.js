@@ -33,9 +33,6 @@ module.exports = function ({runtime}) {
   if (!('incremental' in jekyllCfg)) {
     jekyllCfg.incremental = true
   }
-  if (!('verbose' in jekyllCfg)) {
-    jekyllCfg.verbose = true
-  }
   if (!('source' in jekyllCfg)) {
     jekyllCfg.source = runtime.projectDir
   }

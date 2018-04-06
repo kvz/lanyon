@@ -16,7 +16,6 @@ module.exports = function () {
   runtimeCfg.lanyonVersion = lanyonPackage.version
   runtimeCfg.publicPath = '/assets/build/'
 
-  runtimeCfg.lanyonReset = process.env.LANYON_RESET === '1'
   runtimeCfg.onTravis = process.env.TRAVIS === 'true'
   runtimeCfg.ghPagesEnv = {
     GHPAGES_URL     : process.env.GHPAGES_URL,
