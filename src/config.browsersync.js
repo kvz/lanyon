@@ -53,7 +53,7 @@ module.exports = function ({runtime, webpack}) {
         // including full page reloads if HMR won't work
         '*.js',
         '.git',
-        'assets/build',
+        'assets/build/**',
         '.lanyon',
       ],
     },

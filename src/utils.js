@@ -1,28 +1,28 @@
-const semver      = require('semver')
-const fs          = require('fs')
+const semver = require('semver')
+const fs = require('fs')
 // const _        = require('lodash')
-const path        = require('path')
-const _           = require('lodash')
-const yaml        = require('js-yaml')
-const shell       = require('shelljs')
+const path = require('path')
+const _ = require('lodash')
+const yaml = require('js-yaml')
+const shell = require('shelljs')
 // const spawnSync   = require('spawn-sync')
 // const oneLine     = require('common-tags/lib/oneLine')
 // const stripIndent = require('common-tags/lib/stripIndent')
-const scrolex     = require('scrolex').persistOpts({
+const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
 })
 const utils = this
 const oneLine = require('common-tags/lib/oneLine')
-const pad = require('pad')
-const async = require('async')
+// const pad = require('pad')
+// const async = require('async')
 
 if (require.main === module) {
   scrolex.failure(`Please only used this module via require`)
   process.exit(1)
 }
 
-module.exports.runString = async function runString (cmd, { runtime, cmdName }) {
+module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   // Replace dirs
   cmd = cmd.replace(/\[lanyonDir]/g, runtime.lanyonDir)
   cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
@@ -58,17 +58,8 @@ module.exports.runString = async function runString (cmd, { runtime, cmdName }) 
     if (!found) {
       throw new Error(`Cannot find dependency "${name}" in "${tests.join('", "')}"`)
     }
-    const pat = new RegExp(`(\\s|^)${name}(\\s|$)`)
+    const pat = new RegExp(`(\\s|^)\\[${name}\\](\\s|$)`)
     cmd = cmd.replace(pat, `$1node ${npmBins[name]}$2`)
-  }
-
-  const scrolexOpts = {
-    stdio: 'pipe',
-    cwd  : runtime.cacheDir,
-    fatal: true,
-  }
-  if (cmdName !== 'start') {
-    scrolexOpts.mode = 'passthru'
   }
 
   let extraVolumes = ''
@@ -78,43 +69,30 @@ module.exports.runString = async function runString (cmd, { runtime, cmdName }) 
 
   // cp -f ${runtime.projectDir}/Gemfile ${runtime.cacheDir}/Gemfile &&
   let jekyllBin = oneLine`
-      docker run
-        --rm
-        -i
-        --workdir ${runtime.cacheDir}
-        --volume ${runtime.cacheDir}/srv-jekyll:/srv/jekyll
-        --volume ${runtime.cacheDir}:${runtime.cacheDir}
-        --volume ${runtime.projectDir}:${runtime.projectDir}
-        ${extraVolumes}
-        kevinvz/lanyon:0.0.109
-        jekyll
-    `
+    docker run
+      --rm
+      -i
+      --workdir ${runtime.cacheDir}
+      --volume ${runtime.cacheDir}/srv-jekyll:/srv/jekyll
+      --volume ${runtime.cacheDir}:${runtime.cacheDir}
+      --volume ${runtime.projectDir}:${runtime.projectDir}
+      ${extraVolumes}
+      kevinvz/lanyon:0.0.109
+      jekyll
+  `
 
   // Replace shims
-  cmd = cmd.replace(/(\s|^)jekyll(\s|$)/, `$1${jekyllBin}$2`)
+  cmd = cmd.replace(/(\s|^)\[jekyll\](\s|$)/, `$1${jekyllBin}$2`)
 
-  if (cmdName.match(/(^start|^deploy|^build$)/)) {
-    // Show versions
-    let versionMapping = {
-      webpack: `node ${npmBins.webpack} -v`,
-      nodemon: `node ${npmBins.nodemon} -v`,
-      jekyll : `${jekyllBin} -v`,
-    }
-    try {
-      async.mapValues(versionMapping, function (cmd, key, callback) {
-        scrolex.exe(cmd, { mode: 'silent', cwd: runtime.cacheDir }, callback)
-      }, (err, stdouts) => {
-        if (err) {
-          return scrolex.failure(err)
-        }
-        for (let app in stdouts) {
-          let version = stdouts[app].split(/\s+/).pop()
-          scrolex.stick(`On ${pad(app, 7)}: v${version}`)
-        }
-      })
-    } catch (e) {
-      return scrolex.failure(e)
-    }
+  return cmd
+}
+module.exports.runString = async function runString (cmd, { runtime, cmdName, origCmd }) {
+  const scrolexOpts = {
+    stdio                : 'pipe',
+    cwd                  : runtime.cacheDir,
+    fatal                : true,
+    components           : `lanyon>${cmdName}>${origCmd.split('--')[0].trim()}`,
+    addCommandAsComponent: false,
   }
 
   scrolex.exe(cmd, scrolexOpts, async (err, out) => { // eslint-disable-line handle-callback-err
@@ -143,7 +121,7 @@ module.exports.runhooks = async (order, cmdName, runtime) => {
     let hook = arr[i]
     if (runtime[hook]) {
       const lastPart = hook.split(':').pop()
-      let needEnv    = 'both'
+      let needEnv = 'both'
 
       if (lastPart === 'production') {
         needEnv = lastPart
@@ -187,7 +165,7 @@ module.exports.upwardDirContaining = (find, cwd, not) => {
   return false
 }
 
-module.exports.initProject = ({assetsBuildDir, gitRoot, cacheDir, binDir}) => {
+module.exports.initProject = ({ assetsBuildDir, gitRoot, cacheDir, binDir }) => {
   if (!fs.existsSync(assetsBuildDir)) {
     shell.mkdir('-p', assetsBuildDir)
     shell.exec(`cd "${path.dirname(gitRoot)}" && git ignore "${path.relative(gitRoot, assetsBuildDir)}"`)
@@ -213,7 +191,7 @@ module.exports.writeConfig = (cfg) => {
   try {
     fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.config.yml`, yaml.safeDump(cfg.jekyll), 'utf-8')
   } catch (e) {
-    console.error({jekyll: cfg.jekyll})
+    console.error({ jekyll: cfg.jekyll })
     throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/jekyll.config.yml. ${e.message}`)
   }
   fs.writeFileSync(`${cfg.runtime.cacheDir}/nodemon.config.json`, JSON.stringify(cfg.nodemon, null, '  '), 'utf-8')
@@ -223,7 +201,7 @@ module.exports.writeConfig = (cfg) => {
   fs.writeFileSync(cfg.runtime.recordsPath, JSON.stringify({}, null, '  '), 'utf-8')
 }
 
-module.exports.satisfied = ({prerequisites}, app, cmd, checkOn) => {
+module.exports.satisfied = ({ prerequisites }, app, cmd, checkOn) => {
   let tag = ''
   if (checkOn === undefined) {
     checkOn = app
@@ -235,10 +213,10 @@ module.exports.satisfied = ({prerequisites}, app, cmd, checkOn) => {
     cmd = `${app} -v`
   }
 
-  const p              = shell.exec(cmd, { 'silent': true })
+  const p = shell.exec(cmd, { 'silent': true })
   const appVersionFull = p.stdout.trim() || p.stderr.trim()
-  const parts          = appVersionFull.replace(/0+(\d)/g, '$1').split(/[,p\s-]+/)
-  let appVersion       = parts[1]
+  const parts = appVersionFull.replace(/0+(\d)/g, '$1').split(/[,p\s-]+/)
+  let appVersion = parts[1]
 
   if (app === 'node') {
     appVersion = parts[0]

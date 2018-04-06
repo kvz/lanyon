@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // const utils        = require('./utils')
-const scrolex      = require('scrolex').persistOpts({
+const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
   components           : `lanyon>cli`,

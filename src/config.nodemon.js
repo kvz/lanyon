@@ -1,4 +1,4 @@
-module.exports = function ({runtime}) {
+module.exports = function ({runtime, jekyll}) {
   let nodemonCfg = {
     onChangeOnly: true,
     verbose     : true,
@@ -14,7 +14,7 @@ module.exports = function ({runtime}) {
       'env.sh',
       'node_modules/**',
       'vendor/**',
-    ].concat(runtime.contentIgnore),
+    ].concat(jekyll.exclude),
     ext: [
       'htm',
       'html',

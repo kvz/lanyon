@@ -1,17 +1,22 @@
 module.exports = async function dispatch () {
-  const _              = require('lodash')
-  const config         = require('./config')
-  const utils          = require('./utils')
-  const scrolex        = require('scrolex')
-  const async          = require('async')
-  const runtime        = config.runtime
+  const _       = require('lodash')
+  const config  = require('./config')
+  const utils   = require('./utils')
+  const scrolex = require('scrolex')
+  const async   = require('async')
+  const runtime = config.runtime
+  const cmdName = process.argv[2]
 
+  let buildCmd = '[jekyll] build --incremental --verbose --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml'
+  let formattedBuildCmd = utils.formatCmd(buildCmd, { runtime, cmdName })
+  // console.log(formattedBuildCmd)
   // 'start'                    : 'parallelshell "lanyon build:content:watch" "lanyon build:assets:watch" "lanyon serve"',
   const scripts = {
-    'build:assets'       : 'webpack --display-optimization-bailout --config [cacheDir]/webpack.config.js',
-    'build:content:watch': 'nodemon --config [cacheDir]/nodemon.config.json --exec "lanyon build:content"',
-    'build:content'      : 'jekyll build --verbose --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
-    // 'build:images'             : 'imagemin [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
+    'build:assets'       : '[webpack] --display-optimization-bailout --config [cacheDir]/webpack.config.js',
+    'build:content:watch': `env DEBUG=nodemon:* [nodemon] --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd}'`,
+    // 'build:content:watch': '[jekyll] build --watch --incremental --verbose --force_polling --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
+    'build:content'      : buildCmd,
+    // 'build:images'             : '[imagemin] [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
     // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
     'build'              : {
       'mode'    : 'series', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
@@ -22,8 +27,8 @@ module.exports = async function dispatch () {
     },
     'deploy' : require(`./deploy`),
     'encrypt': require(`./encrypt`),
-    'help'   : 'jekyll build --help',
-    'serve'  : 'browser-sync start --config [cacheDir]/browsersync.config.js',
+    'help'   : '[jekyll] build --help',
+    'serve'  : '[browser-sync] start --config [cacheDir]/browsersync.config.js',
     'start'  : {
       'mode'    : 'parallel',
       'commands': [
@@ -33,7 +38,6 @@ module.exports = async function dispatch () {
     },
   }
 
-  const cmdName = process.argv[2]
   let cmd       = scripts[cmdName]
 
   scrolex.persistOpts({
@@ -86,9 +90,10 @@ module.exports = async function dispatch () {
     let methods = []
 
     cmd.commands.forEach((name) => {
-      methods.push(utils.runString.bind(utils.runString, scripts[name], { runtime, cmdName }))
+      let realcmd = utils.formatCmd(scripts[name], { runtime, cmdName })
+      methods.push(utils.runString.bind(utils.runString, realcmd, { runtime, cmdName, origCmd: scripts[name] }))
     })
-
+    
     async[cmd.mode](methods, (err) => {
       if (err) {
         scrolex.failure(`"${cmdName}" failed with: ${err}.`)
@@ -96,7 +101,8 @@ module.exports = async function dispatch () {
       }
     })
   } else if (_.isString(cmd)) {
-    utils.runString(cmd, { runtime, cmdName })
+    let realcmd = utils.formatCmd(cmd, { runtime, cmdName })
+    utils.runString(realcmd, { runtime, cmdName, origCmd: cmd })
   } else {
     scrolex.failure(`"${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)
     process.exit(1)
