@@ -1,4 +1,4 @@
-module.exports = async function boot () {
+module.exports = async function dispatch () {
   const _              = require('lodash')
   const config         = require('./config')
   const utils          = require('./utils')

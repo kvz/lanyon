@@ -14,7 +14,7 @@ if (require.main !== module) {
 
 async function cli () {
   try {
-    await require(`./boot`)()
+    await require(`./dispatch`)()
   } catch (err) {
     console.error(err)
   }
