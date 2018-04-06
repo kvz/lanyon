@@ -34,6 +34,7 @@ Released: TBA.
 Released: 2018-03-30.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.108...v0.0.109).
 
+- [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
 - [x] Split up config over individual files per tool
 - [x] Allow `.lanyonrc.js` in projectDir to temper with config (deprecating many env vars)
 - [x] Require Node 8+ (and ditch babel)
