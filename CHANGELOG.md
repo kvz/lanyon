@@ -35,6 +35,7 @@ Released: 2018-03-30.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.108...v0.0.109).
 
 - [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
+- [x] Move postbuild hook into nodemon
 - [x] Make nodemon respect jekyll exclude, deprecating `contentIgnore`
 - [x] Don't let Lanyon call lanyon
 - [x] Split up config over individual files per tool
