@@ -33,8 +33,6 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   const npmBins = {
     'browser-sync' : 'node_modules/browser-sync/bin/browser-sync.js',
     'nodemon'      : 'node_modules/nodemon/bin/nodemon.js',
-    'npm-run-all'  : 'node_modules/npm-run-all/bin/npm-run-all/index.js',
-    'parallelshell': 'node_modules/parallelshell/index.js',
     'webpack'      : 'node_modules/webpack/bin/webpack.js',
     // 'imagemin'     : 'node_modules/imagemin-cli/cli.js',
   }
@@ -91,7 +89,7 @@ module.exports.runString = async function runString (cmd, { runtime, cmdName, or
     stdio                : 'pipe',
     cwd                  : runtime.cacheDir,
     fatal                : true,
-    components           : `lanyon>${cmdName}>${origCmd.split('--')[0].trim()}`,
+    components           : `lanyon>${cmdName}>${origCmd.split('--')[0].trim().replace('[', '').replace(']', '')}`,
     addCommandAsComponent: false,
   }
 

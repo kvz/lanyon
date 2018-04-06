@@ -10,7 +10,6 @@ module.exports = async function dispatch () {
   let buildCmd = '[jekyll] build --incremental --verbose --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml'
   let formattedBuildCmd = utils.formatCmd(buildCmd, { runtime, cmdName })
   // console.log(formattedBuildCmd)
-  // 'start'                    : 'parallelshell "lanyon build:content:watch" "lanyon build:assets:watch" "lanyon serve"',
   const scripts = {
     'build:assets'       : '[webpack] --display-optimization-bailout --config [cacheDir]/webpack.config.js',
     'build:content:watch': `env DEBUG=nodemon:* [nodemon] --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd}'`,

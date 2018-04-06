@@ -61,6 +61,7 @@ module.exports = function ({runtime, webpack}) {
     reloadDebounce: 300, // Wait for a specified window of event-silence before sending any reload events.
     reloadThrottle: 300, // Emit only the first event during sequential time windows of a specified duration.
     files         : runtime.contentBuildDir,
+    logLevel      : 'debug',
   }
 
   return browsersyncCfg
