@@ -66,12 +66,12 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   }
 
   // cp -f ${runtime.projectDir}/Gemfile ${runtime.cacheDir}/Gemfile &&
+  // --volume ${runtime.cacheDir}/srv-jekyll:/srv/jekyll
   let jekyllBin = oneLine`
     docker run
       --rm
       -i
       --workdir ${runtime.cacheDir}
-      --volume ${runtime.cacheDir}/srv-jekyll:/srv/jekyll
       --volume ${runtime.cacheDir}:${runtime.cacheDir}
       --volume ${runtime.projectDir}:${runtime.projectDir}
       ${extraVolumes}
