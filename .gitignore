@@ -59,3 +59,5 @@ website/contributing.md
 test.js
 container/vendor/
 deps/
+container/package.json
+container/yarn.lock

@@ -40,7 +40,7 @@ module.exports = async function dispatch () {
     },
   }
 
-  let cmd       = scripts[cmdName]
+  let cmd = scripts[cmdName]
 
   scrolex.persistOpts({
     announce             : true,

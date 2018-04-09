@@ -1,6 +1,6 @@
 {
   "name": "lanyon",
-  "version": "0.0.109",
+  "version": "0.0.110",
   "description": "Jekyll without the Hassle",
   "main": "src/config.js",
   "engines": {
@@ -68,7 +68,6 @@
     }
   },
   "devDependencies": {
-    "babel-preset-env": "1.6.1",
     "eslint": "4.13.1",
     "eslint-config-standard": "10.2.1",
     "eslint-plugin-import": "2.8.0",
@@ -86,6 +85,7 @@
     "autoprefixer": "7.2.3",
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.3",
+    "babel-preset-env": "1.6.1",
     "babel-loader": "7.1.2",
     "babel-plugin-es6-promise": "1.1.1",
     "babel-plugin-transform-async-to-generator": "6.24.1",

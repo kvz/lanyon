@@ -23,6 +23,11 @@ if (require.main === module) {
 }
 
 module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
+  let extraVolumes = ''
+  if (runtime.contentBuildDir.indexOf(runtime.projectDir) === -1) {
+    extraVolumes = `--volume ${runtime.contentBuildDir}:${runtime.contentBuildDir}`
+  }
+
   // Replace dirs
   cmd = cmd.replace(/\[lanyonDir]/g, runtime.lanyonDir)
   cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
@@ -38,6 +43,7 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   }
   for (const name in npmBins) {
     const tests = [
+      `/srv/lanyon/${npmBins[name]}`,
       `${runtime.npmRoot}/${npmBins[name]}`,
       `${runtime.projectDir}/${npmBins[name]}`,
       `${runtime.lanyonDir}/${npmBins[name]}`,
@@ -58,32 +64,35 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
     }
     const pat = new RegExp(`(\\s|^)\\[${name}\\](\\s|$)`)
     cmd = cmd.replace(pat, `$1node ${npmBins[name]}$2`)
-  }
 
-  let extraVolumes = ''
-  if (runtime.contentBuildDir.indexOf(runtime.projectDir) === -1) {
-    extraVolumes = `--volume ${runtime.contentBuildDir}:${runtime.contentBuildDir}`
+    // let nodeBin = utils.dockerString('node', { extraArgs: extraVolumes, runtime })
+    // cmd = cmd.replace(pat, `$1${nodeBin} ${npmBins[name]}$2`)
   }
 
   // cp -f ${runtime.projectDir}/Gemfile ${runtime.cacheDir}/Gemfile &&
-  // --volume ${runtime.cacheDir}/srv-jekyll:/srv/jekyll
-  let jekyllBin = oneLine`
-    docker run
-      --rm
-      -i
-      --workdir ${runtime.cacheDir}
-      --volume ${runtime.cacheDir}:${runtime.cacheDir}
-      --volume ${runtime.projectDir}:${runtime.projectDir}
-      ${extraVolumes}
-      kevinvz/lanyon:0.0.109
-      jekyll
-  `
+  let jekyllBin = utils.dockerString('jekyll', { extraArgs: extraVolumes, runtime })
 
   // Replace shims
   cmd = cmd.replace(/(\s|^)\[jekyll\](\s|$)/, `$1${jekyllBin}$2`)
 
   return cmd
 }
+
+module.exports.dockerString = function dockerString (cmd, { extraArgs, runtime }) {
+  return oneLine`
+    docker run
+      --rm
+      -i
+      --workdir ${runtime.cacheDir}
+      --volume ${runtime.cacheDir}:${runtime.cacheDir}
+      --volume ${runtime.projectDir}:${runtime.projectDir}
+      --volume ${runtime.cacheDir}/srv-jekyll:/srv/jekyll
+      ${extraArgs}
+      kevinvz/lanyon:${runtime.lanyonVersion}
+      ${cmd}
+  `
+}
+
 module.exports.runString = async function runString (cmd, { runtime, cmdName, origCmd, hookName }) {
   const scrolexOpts = {
     stdio                : 'pipe',

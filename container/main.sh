@@ -22,6 +22,9 @@ if [ "${mode}" = "build" ]; then
     rm="--rm"
   fi
 
+  # cp -vf ../package.json ./
+  # cp -vf ../yarn.lock ./
+
   docker build . ${rm} ${cache} -t "kevinvz/lanyon:${__lanyonVersion}"
 
   docker push "kevinvz/lanyon:${__lanyonVersion}"

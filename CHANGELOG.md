@@ -28,13 +28,13 @@ Released: TBA.
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
+- [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
 
 ## v0.0.109
 
-Released: 2018-03-30.
+Released: 2018-04-09.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.108...v0.0.109).
 
-- [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
 - [x] Move postbuild hook into nodemon
 - [x] Make nodemon respect jekyll exclude, deprecating `contentIgnore`
 - [x] Don't let Lanyon call lanyon

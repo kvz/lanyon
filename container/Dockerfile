@@ -10,3 +10,6 @@ RUN gem install \
     liquid_pluralize:1.0.3 \
     minimal-mistakes-jekyll:4.5.1 \
   -- --use-system-libraries 
+# COPY package.json /srv/lanyon/package.json
+# COPY yarn.lock /srv/lanyon/yarn.lock
+# RUN cd /srv/lanyon && yarn --production
