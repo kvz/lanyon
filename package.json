@@ -13,7 +13,6 @@
     ]
   },
   "files": [
-    "example",
     "Makefile",
     "scripts",
     "src"
