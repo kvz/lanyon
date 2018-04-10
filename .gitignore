@@ -41,7 +41,6 @@ example/assets/build/
 example/.lanyon/
 example/.jekyll-metadata
 
-Gemfile
 .lanyon
 .lanyon/bin
 assets/build
@@ -57,5 +56,8 @@ website/changelog.md
 website/faq.md
 website/index.md
 website/contributing.md
-lib
 test.js
+container/vendor/
+deps/
+container/package.json
+container/yarn.lock

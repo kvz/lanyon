@@ -1,10 +1,10 @@
 {
   "name": "lanyon",
-  "version": "0.0.108",
+  "version": "0.0.110",
   "description": "Jekyll without the Hassle",
-  "main": "lib/config.js",
+  "main": "src/config.js",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "jest": {
     "verbose": true,
@@ -14,102 +14,36 @@
   },
   "files": [
     "example",
-    "Gemfile.lock",
-    "lib",
+    "container/Gemfile.lock",
     "Makefile",
     "scripts",
     "src"
   ],
   "bin": {
-    "lanyon": "lib/cli.js"
+    "lanyon": "src/cli.js"
   },
   "scripts": {
-    "build": "babel src --source-maps --out-dir lib && chmod 755 ./lib/cli.js",
-    "build:watch": "babel src --watch --source-maps --out-dir lib",
-    "commit:gemlockfile": "git commit Gemfile.lock -m 'Save updated Gemfile.lock' || true",
+    "commit:gemlockfile": "git commit container/Gemfile.lock -m 'Save updated container/Gemfile.lock' || true",
     "push": "git push && git push --tags",
-    "container:rebuild": "env SCROLEX_MODE=passthru LANYON_RESET=1 LANYON_UPDATE_GEM_LOCKFILE=1 DOCKER_RESET=1 DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node lib/cli.js install",
-    "container:build": "env SCROLEX_MODE=passthru LANYON_RESET=1 LANYON_UPDATE_GEM_LOCKFILE=1 DOCKER_BUILD=1 DEBUG=*:* LANYON_ONLY=docker LANYON_PROJECT=$(pwd)/example node lib/cli.js install",
-    "container:connect": "SCROLEX_MODE=passthru node lib/cli.js container:connect",
+    "container:build:reset": "env DOCKER_RESET=1 ./container/main.sh build",
+    "container:build": " ./container/main.sh build",
+    "container:connect": " ./container/main.sh connect",
     "fix": "eslint . --fix",
     "lint": "eslint .",
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
     "release:patch": "env SEMANTIC=patch npm run release",
-    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all build container:build commit:gemlockfile push npublish",
+    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all container:build commit:gemlockfile push npublish",
     "npublish": "npm publish",
     "jest:update": "env DEBUG=scrolex:* NODE_ENV=test jest --updateSnapshot",
     "jest": "env DEBUG=scrolex:* NODE_ENV=test jest",
-    "test:update": "npm-run-all build jest:update",
+    "test:update": "npm-run-all jest:update",
     "test:acceptance": "./scripts/test-acceptance.sh",
     "test:watcher": "npm test -- --watch",
     "test": "npm-run-all jest",
     "upgrade:modules": "npm-check-updates -u --semverLevel major && yarn",
     "web:install": "cd website && npm run install",
     "web:start": "cd website && npm run start"
-  },
-  "lanyon": {
-    "statistics": "stats.html",
-    "entries": [
-      "app"
-    ],
-    "prerequisites": {
-      "sh": {
-        "preferred": "0.5.7",
-        "range": ">=0.0.1",
-        "writeShim": true
-      },
-      "node": {
-        "preferred": "4.6.1",
-        "range": ">=6"
-      },
-      "docker": {
-        "preferred": "1.12.3",
-        "range": ">=1.12"
-      },
-      "rbenv": {
-        "preferred": "1.0.0",
-        "range": ">=1"
-      },
-      "rvm": {
-        "preferred": "1.27.0",
-        "range": ">=1"
-      },
-      "ruby": {
-        "preferred": "2.3.3",
-        "range": ">=2.1.0",
-        "writeShim": true
-      },
-      "gem": {
-        "preferred": "2.0.14.1",
-        "range": ">=2",
-        "writeShim": true
-      },
-      "bundler": {
-        "preferred": "1.13.0",
-        "range": ">=1",
-        "writeShim": true
-      },
-      "jekyll": {
-        "preferred": "3.4.3",
-        "range": ">=3",
-        "writeShim": true
-      }
-    },
-    "ports": {
-      "assets": 3000,
-      "content": 4000
-    },
-    "gems": {
-      "github-pages": "164",
-      "nokogiri": "1.8.0",
-      "pkg-config": "1.1.7",
-      "jekyll-lunr-js-search": "3.3.0",
-      "liquid_pluralize": "1.0.3",
-      "jekyll-archives": "2.1.1",
-      "minimal-mistakes-jekyll": "4.5.1",
-      "stringex": "2.6.0"
-    }
   },
   "repository": {
     "type": "git",
@@ -134,35 +68,34 @@
     }
   },
   "devDependencies": {
-    "babel-preset-env": "1.6.1",
     "eslint": "4.13.1",
     "eslint-config-standard": "10.2.1",
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-node": "5.2.1",
     "eslint-plugin-promise": "3.6.0",
     "eslint-plugin-standard": "3.0.1",
+    "fakefile": "0.0.9",
+    "shelljs": "0.7.8",
+    "npm-check-updates": "2.13.0",
     "jest": "21.2.1"
   },
   "dependencies": {
-    "assets-webpack-plugin": "3.5.1",
     "async": "2.6.0",
+    "assets-webpack-plugin": "3.5.1",
     "autoprefixer": "7.2.3",
-    "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-eslint": "8.0.3",
+    "babel-preset-env": "1.6.1",
     "babel-loader": "7.1.2",
-    "babel-plugin-add-module-exports": "0.2.1",
     "babel-plugin-es6-promise": "1.1.1",
     "babel-plugin-transform-async-to-generator": "6.24.1",
     "babel-plugin-transform-class-properties": "6.24.1",
     "babel-plugin-transform-object-assign": "6.22.0",
     "babel-plugin-transform-proto-to-assign": "6.26.0",
-    "babel-polyfill": "6.26.0",
     "babel-preset-es2015": "6.24.1",
     "babel-preset-es2015-loose": "8.0.0",
-    "babel-preset-react": "6.24.1",
     "babel-preset-stage-0": "6.24.1",
-    "babel-register": "6.26.0",
+    "babel-preset-react": "6.24.1",
     "babel-runtime": "6.26.0",
     "bower-webpack-plugin": "0.1.9",
     "browser-sync": "2.19.0",
@@ -176,7 +109,6 @@
     "es6-promise": "4.1.1",
     "exports-loader": "0.6.4",
     "extract-text-webpack-plugin": "3.0.2",
-    "fakefile": "0.0.9",
     "file-loader": "1.1.6",
     "font-awesome": "4.7.0",
     "font-awesome-loader": "1.0.2",
@@ -192,12 +124,9 @@
     "node-libs-browser": "2.1.0",
     "node-sass": "4.7.2",
     "nodemon": "1.13.3",
-    "npm-check-updates": "2.13.0",
-    "npm-run-all": "4.1.2",
     "optimize-css-assets-webpack-plugin": "3.2.0",
     "os-tmpdir": "1.0.2",
     "pad": "2.0.3",
-    "parallelshell": "3.0.2",
     "postcss-loader": "2.0.9",
     "react": "16.2.0",
     "react-dom": "16.2.0",
@@ -206,8 +135,7 @@
     "rimraf": "2.6.2",
     "sass-loader": "6.0.6",
     "scrolex": "0.0.27",
-    "semver": "5.4.1",
-    "shelljs": "0.7.8",
+    "semver": "5.4.1",    
     "spawn-sync": "1.0.15",
     "style-loader": "0.19.1",
     "uglify": "0.1.5",

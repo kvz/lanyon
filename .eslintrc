@@ -1,24 +1,57 @@
 {
-  "extends": "standard",
+  "extends": [
+    "eslint:recommended",
+    "standard"
+  ],
   "env": {
     "es6": true,
     "jest": true,
     "node": true
   },
+  "globals": {
+  },
+  "plugins": [],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "rules": {
-    "no-multi-spaces": 0,
-    "comma-dangle": ["error", "always-multiline"],
-    "key-spacing": ["error", {
-      "multiLine": {
-        "beforeColon": false,
-        "afterColon": true
-      },
-      "align": {
-        "beforeColon": false,
-        "afterColon": true,
-        "on": "colon",
-        "mode": "strict"
+    "no-console": "off",
+    "no-multi-spaces": [
+      "error",
+      {
+        "exceptions": {
+          "VariableDeclarator": true,
+          "ImportDeclaration": true,
+          "Property": true
+        }
       }
-    }],
+    ],
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "never",
+        "exports": "never",
+        "functions": "never"
+      }
+    ],
+    "key-spacing": [
+      "error",
+      {
+        "multiLine": {
+          "beforeColon": false,
+          "afterColon": true
+        },
+        "align": {
+          "beforeColon": false,
+          "afterColon": true,
+          "on": "colon",
+          "mode": "strict"
+        }
+      }
+    ]
   }
 }

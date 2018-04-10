@@ -1,4 +1,3 @@
-require('babel-polyfill')
 const fs      = require('fs')
 const globby  = require('globby')
 const scrolex = require('scrolex').persistOpts({

@@ -1,4 +1,3 @@
-require('babel-polyfill')
 // const utils = require('./utils')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,

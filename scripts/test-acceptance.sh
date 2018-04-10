@@ -73,7 +73,6 @@ EOF
   "name": "my-website",
   "scripts": {
     "build": "lanyon build",
-    "install": "lanyon install",
     "build:production": "LANYON_ENV=production lanyon build"
   }
 }
@@ -116,13 +115,7 @@ EOF
 
   set -x
   cat ./node_modules/.bin/lanyon
-  env DEBUG=*:* SCROLEX_MODE=passthru node ./node_modules/.bin/lanyon install
   set +x
-
-  for shim in "jekyll" "bundler" "ruby"; do
-    echo "--> Showing shim ${shim} contents:"
-    cat .lanyon/bin/${shim}
-  done
 
   echo "--> Building site for 'development' in '${projectDir}'"
   npm run build

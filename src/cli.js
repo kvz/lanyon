@@ -1,11 +1,10 @@
 #!/usr/bin/env node
-require('babel-polyfill')
-const utils        = require('./utils')
-const whichPackage = utils.preferLocalPackage(process.argv, __filename, process.cwd(), 'lanyon', 'lib/cli.js', require('../package.json').version)
-const scrolex      = require('scrolex').persistOpts({
+// const utils        = require('./utils')
+const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
   components           : `lanyon>cli`,
+  mode                 : 'passthru',
 })
 
 if (require.main !== module) {
@@ -13,4 +12,11 @@ if (require.main !== module) {
   process.exit(1)
 }
 
-require(`./boot`)(whichPackage)
+async function cli () {
+  try {
+    await require(`./dispatch`)()
+  } catch (err) {
+    console.error(err)
+  }
+}
+cli()

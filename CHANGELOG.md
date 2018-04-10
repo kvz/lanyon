@@ -20,7 +20,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.108...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.110...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -28,6 +28,27 @@ Released: TBA.
 - [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
+- [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
+
+## v0.0.110
+
+Released: 2018-04-09.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.109...v0.0.110).
+
+- [ ] Figure out if incremental build is maybe actually working (is non-inc even slower?) investigate docker jekyll disk speedup
+
+## v0.0.109
+
+Released: 2018-04-09.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.108...v0.0.109).
+
+- [x] Move postbuild hook into nodemon
+- [x] Make nodemon respect jekyll exclude, deprecating `contentIgnore`
+- [x] Don't let Lanyon call lanyon
+- [x] Split up config over individual files per tool
+- [x] Allow `.lanyonrc.js` in projectDir to temper with config (deprecating many env vars)
+- [x] Require Node 8+ (and ditch babel)
+- [x] Require Docker (and ditch rbenv, rvm, system support)
 
 ## v0.0.108
 
