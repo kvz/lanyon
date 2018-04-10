@@ -89,6 +89,7 @@ module.exports.dockerString = function dockerString (cmd, { runtime }) {
     docker run
       --rm
       -i
+      --env "JEKYLL_ENV=${runtime.lanyonEnv}"
       --workdir ${runtime.cacheDir}
       --volume ${runtime.projectDir}:${runtime.projectDir}
       ${extraVolumes}

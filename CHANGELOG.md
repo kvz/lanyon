@@ -22,14 +22,15 @@ Released: TBA.
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
 - [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
+- [ ] Make travis tests pass again
+- [ ] Figure out if incremental build is maybe actually working (is non-inc even slower?) investigate docker jekyll disk speedup
 
 ## v0.0.114
 
 Released: 2018-04-10.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.113...v0.0.114).
 
-- [ ] Make travis tests pass again
-- [ ] Figure out if incremental build is maybe actually working (is non-inc even slower?) investigate docker jekyll disk speedup
+- [x] Fix JEKYLL_ENV in Docker
 
 ## v0.0.113
 
