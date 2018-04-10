@@ -119,8 +119,6 @@ module.exports = async function dispatch () {
       }
     })
 
-    console.log({cmd})
-
     await Promise[cmd.mode](methods)
   } else if (_.isString(cmd)) {
     let realcmd = utils.formatCmd(cmd, { runtime, cmdName })
