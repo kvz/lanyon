@@ -24,6 +24,7 @@ Released: TBA.
 - [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
 - [ ] Make travis tests pass again
 - [ ] Figure out if incremental build is maybe actually working (is non-inc even slower?) investigate docker jekyll disk speedup
+- [ ] Consider docker-sync for faster build times on osx https://github.com/EugenMayer/docker-sync/wiki/2.-Configuration
 
 ## v0.0.114
 
