@@ -2,33 +2,33 @@
 
 ## Unplanned
 
-- [ ] jRuby support https://spin.atomicobject.com/2013/04/24/bundler-jruby-complete/
-- [ ] Consider shipping all of Lanyon inside a Docker container
-- [ ] Add `travis` to Gemfile, and run it from our local shims vs from global during `lanyon encrypt`
-- [ ] Throw an error if we find legacy Jekyll residue such as `./vendors` or `.bundle`
+- [ ] Add `travis` to Dockerfile, and run it from our local shims vs from global during `lanyon encrypt`
+- [ ] Throw an error if we find legacy Jekyll residu such as `./vendors` or `.bundle`
 - [ ] Maybe add https://github.com/btford/write-good and or text-lint (#8)
 - [ ] Consider postcss
-- [ ] Hooks are ran with every build, but not when doing HMR. We might be able to write a `CallHooksPlugin` to work around this that calls the hook for assets, while lib/cli.js calls it for content
-- [ ] Consider sourcemaps like https://github.com/rstacruz/webpack-tricks#source-maps
+- [ ] Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content
 - [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
-- [ ] Windows support (consider: https://github.com/avajs/ava/blob/master/appveyor.yml) (#1)
 - [ ] Go over all `process.env.*` and make sure they are only at the head of `config.js`
-- [ ] Add a `lanyon init` that a globally installed lanyon could use to `npm install --save` itself into a local project and run the lanyon installer there. Make sure the globally installed lanyon propery does a  `preferLocalPackage` when you type `lanyon start` in said local project
 - [ ] Add http://cssnano.co/
 
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.112...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.113...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
-- [ ] Refactor `install` so that we can try several install approaches until one succeeds
 - [ ] Remove `shelljs` completely
-- [ ] Fix bug where osx/rvm install won't work via `LANYON_ONLY=rvm ./scripts/test-acceptance.sh`
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
 - [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
+
+## v0.0.113
+
+Released: 2018-04-10.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.109...v0.0.113).
+
+- [ ] Make travis tests pass again
 - [ ] Figure out if incremental build is maybe actually working (is non-inc even slower?) investigate docker jekyll disk speedup
 
 ## v0.0.112
