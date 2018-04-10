@@ -14,7 +14,6 @@
   },
   "files": [
     "example",
-    "container/Gemfile.lock",
     "Makefile",
     "scripts",
     "src"
@@ -23,7 +22,6 @@
     "lanyon": "src/cli.js"
   },
   "scripts": {
-    "commit:gemlockfile": "git commit container/Gemfile.lock -m 'Save updated container/Gemfile.lock' || true",
     "push": "git push && git push --tags",
     "container:build:reset": "env DOCKER_RESET=1 ./container/main.sh build",
     "container:build": " ./container/main.sh build",
@@ -33,7 +31,7 @@
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
     "release:patch": "env SEMANTIC=patch npm run release",
-    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all container:build commit:gemlockfile push npublish",
+    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all container:build push npublish",
     "npublish": "npm publish",
     "jest:update": "env DEBUG=scrolex:* NODE_ENV=test jest --updateSnapshot",
     "jest": "env DEBUG=scrolex:* NODE_ENV=test jest",

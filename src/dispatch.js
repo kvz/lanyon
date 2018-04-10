@@ -7,7 +7,7 @@ module.exports = async function dispatch () {
   const runtime = config.runtime
   const cmdName = process.argv[2]
 
-  let buildCmd = '[jekyll] build --incremental --verbose --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml'
+  let buildCmd = '[jekyll] build --verbose --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml'
   let formattedBuildCmd = utils.formatCmd(buildCmd, { runtime, cmdName })
   // console.log(formattedBuildCmd)
 
@@ -16,7 +16,7 @@ module.exports = async function dispatch () {
   const scripts = {
     'build:assets'       : '[webpack] --display-optimization-bailout --config [cacheDir]/webpack.config.js',
     'build:content:watch': `env DEBUG=nodemon:* [nodemon] --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} && ${postBuildContentHooks}'`,
-    // 'build:content:watch': '[jekyll] build --watch --incremental --verbose --force_polling --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
+    // 'build:content:watch': '[jekyll] build --watch --verbose --force_polling --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     'build:content'      : buildCmd,
     // 'build:images'             : '[imagemin] [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
     // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226

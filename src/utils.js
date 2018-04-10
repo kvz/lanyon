@@ -80,7 +80,7 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
 
 module.exports.dockerString = function dockerString (cmd, { extraArgs, runtime }) {
   let wantVersion = runtime.lanyonVersion
-  wantVersion = '0.0.109'
+  // wantVersion = '0.0.109'
   return oneLine`
     docker run
       --rm

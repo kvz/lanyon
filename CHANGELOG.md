@@ -20,7 +20,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.110...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.112...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Refactor `install` so that we can try several install approaches until one succeeds
@@ -29,13 +29,14 @@ Released: TBA.
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
 - [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
-
-## v0.0.110
-
-Released: 2018-04-09.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.109...v0.0.110).
-
 - [ ] Figure out if incremental build is maybe actually working (is non-inc even slower?) investigate docker jekyll disk speedup
+
+## v0.0.112
+
+Released: 2018-04-10.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.109...v0.0.112).
+
+- [x] Allow to disable incremental
 
 ## v0.0.109
 
