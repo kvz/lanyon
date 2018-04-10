@@ -15,7 +15,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.113...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.114...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Remove `shelljs` completely
@@ -23,13 +23,21 @@ Released: TBA.
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
 - [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
 
+## v0.0.114
+
+Released: 2018-04-10.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.113...v0.0.114).
+
+- [ ] Make travis tests pass again
+- [ ] Figure out if incremental build is maybe actually working (is non-inc even slower?) investigate docker jekyll disk speedup
+
 ## v0.0.113
 
 Released: 2018-04-10.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.109...v0.0.113).
 
-- [ ] Make travis tests pass again
-- [ ] Figure out if incremental build is maybe actually working (is non-inc even slower?) investigate docker jekyll disk speedup
+- [ ] Move `--display-optimization-bailout` cli arg to webpack config instead
+- [x] Simplify docker volumes (and avoid nesting)
 
 ## v0.0.112
 

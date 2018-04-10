@@ -501,7 +501,13 @@ module.exports = function ({runtime}) {
       ],
     },
     recordsPath: runtime.recordsPath,
-    resolve    : {
+    stats      : {
+      // Examine all modules
+      maxModules         : Infinity,
+      // Display bailout reasons
+      optimizationBailout: true,
+    },
+    resolve: {
       modules: [
         runtime.assetsSourceDir,
         path.join(runtime.assetsSourceDir, 'bower_components'),

@@ -14,7 +14,7 @@ module.exports = async function dispatch () {
   let postBuildContentHooks = utils.gethooks('post', 'build:content', runtime)
 
   const scripts = {
-    'build:assets'       : '[webpack] --display-optimization-bailout --config [cacheDir]/webpack.config.js',
+    'build:assets'       : '[webpack] --config [cacheDir]/webpack.config.js',
     'build:content:watch': `env DEBUG=nodemon:* [nodemon] --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} && ${postBuildContentHooks}'`,
     // 'build:content:watch': '[jekyll] build --watch --verbose --force_polling --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     'build:content'      : buildCmd,
