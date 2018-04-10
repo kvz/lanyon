@@ -46,7 +46,7 @@ module.exports = async function dispatch () {
     'help'   : '[jekyll] build --help',
     'serve'  : '[browser-sync] start --config [cacheDir]/browsersync.config.js',
     'start'  : {
-      'mode'    : 'parallel',
+      'mode'    : 'all',
       'commands': [
         'build:content:watch',
         'serve',
@@ -104,13 +104,22 @@ module.exports = async function dispatch () {
 
     cmd.commands.forEach((name) => {
       let realcmd = utils.formatCmd(scripts[name], { runtime, cmdName })
-      methods.push(utils.runString.bind(utils.runString, realcmd, {
+      let method = utils.runString.bind(utils.runString, realcmd, {
         runtime,
         cmdName,
         origCmd : scripts[name],
         hookName: name.replace(/(:watch|\[\])/, ''),
-      }))
+      })
+
+      // Promises.all and our shim Promises.series expect a different input
+      if (cmd.mode === 'all') {
+        methods.push(method())
+      } else {
+        methods.push(method)
+      }
     })
+
+    console.log({cmd})
 
     await Promise[cmd.mode](methods)
   } else if (_.isString(cmd)) {
