@@ -36,7 +36,8 @@ Released: 2018-04-10.
 Released: 2018-04-10.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.109...v0.0.113).
 
-- [ ] Move `--display-optimization-bailout` cli arg to webpack config instead
+- [x] Move `--display-optimization-bailout` cli arg to webpack config instead
+- [x] Make sure webpack does not immediately return
 - [x] Simplify docker volumes (and avoid nesting)
 
 ## v0.0.112

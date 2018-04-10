@@ -17,6 +17,7 @@ async function cli () {
     await require(`./dispatch`)()
   } catch (err) {
     console.error(err)
+    process.exit(1)
   }
 }
 cli()

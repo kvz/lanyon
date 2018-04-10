@@ -1,9 +1,23 @@
+Promise.series = function series (providers) {
+  const ret = Promise.resolve(null)
+  const results = []
+
+  return providers.reduce(function (result, provider, index) {
+    return result.then(function () {
+      return provider().then(function (val) {
+        results[index] = val
+      })
+    })
+  }, ret).then(function () {
+    return results
+  })
+}
+
 module.exports = async function dispatch () {
   const _       = require('lodash')
   const config  = require('./config')
   const utils   = require('./utils')
   const scrolex = require('scrolex')
-  const async   = require('async')
   const runtime = config.runtime
   const cmdName = process.argv[2]
 
@@ -90,20 +104,24 @@ module.exports = async function dispatch () {
 
     cmd.commands.forEach((name) => {
       let realcmd = utils.formatCmd(scripts[name], { runtime, cmdName })
-      methods.push(utils.runString.bind(utils.runString, realcmd, { runtime, cmdName, origCmd: scripts[name], hookName: name.replace(/(:watch|\[\])/, '') }))
+      methods.push(utils.runString.bind(utils.runString, realcmd, {
+        runtime,
+        cmdName,
+        origCmd : scripts[name],
+        hookName: name.replace(/(:watch|\[\])/, ''),
+      }))
     })
 
-    async[cmd.mode](methods, (err) => {
-      if (err) {
-        scrolex.failure(`"${cmdName}" failed with: ${err}.`)
-        process.exit(1)
-      }
-    })
+    await Promise[cmd.mode](methods)
   } else if (_.isString(cmd)) {
     let realcmd = utils.formatCmd(cmd, { runtime, cmdName })
-    utils.runString(realcmd, { runtime, cmdName, origCmd: cmd, hookName: cmdName.replace(/(:watch|\[\])/, '') })
+    utils.runString(realcmd, { runtime, cmdName, origCmd: cmd, hookName: cmdName.replace(/(:watch|\[\])/, '') }, (err) => {
+      if (err) {
+        scrolex.failure(`cmdName "${cmdName}" failed with: ${err}.`)
+      }
+    })
   } else {
-    scrolex.failure(`"${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)
+    scrolex.failure(`cmdName "${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)
     process.exit(1)
   }
 }

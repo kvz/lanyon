@@ -23,11 +23,6 @@ if (require.main === module) {
 }
 
 module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
-  let extraVolumes = ''
-  if (runtime.contentBuildDir.indexOf(runtime.projectDir) === -1) {
-    extraVolumes = `--volume ${runtime.contentBuildDir}:${runtime.contentBuildDir}`
-  }
-
   // Replace dirs
   cmd = cmd.replace(/\[lanyonDir]/g, runtime.lanyonDir)
   cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
@@ -70,7 +65,7 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   }
 
   // cp -f ${runtime.projectDir}/Gemfile ${runtime.cacheDir}/Gemfile &&
-  let jekyllBin = utils.dockerString('jekyll', { extraArgs: extraVolumes, runtime })
+  let jekyllBin = utils.dockerString('jekyll', { runtime })
 
   // Replace shims
   cmd = cmd.replace(/(\s|^)\[jekyll\](\s|$)/, `$1${jekyllBin}$2`)
@@ -78,18 +73,25 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   return cmd
 }
 
-module.exports.dockerString = function dockerString (cmd, { extraArgs, runtime }) {
+module.exports.dockerString = function dockerString (cmd, { runtime }) {
   let wantVersion = runtime.lanyonVersion
   // wantVersion = '0.0.109'
+
+  let extraVolumes = ''
+  if (runtime.contentBuildDir.indexOf(runtime.projectDir) === -1) {
+    extraVolumes += ` --volume ${runtime.contentBuildDir}:${runtime.contentBuildDir}`
+  }
+  if (runtime.cacheDir.indexOf(runtime.projectDir) === -1) {
+    extraVolumes += ` --volume ${runtime.cacheDir}:${runtime.cacheDir}`
+  }
+
   return oneLine`
     docker run
       --rm
       -i
       --workdir ${runtime.cacheDir}
-      --volume ${runtime.cacheDir}:${runtime.cacheDir}
       --volume ${runtime.projectDir}:${runtime.projectDir}
-      --volume ${runtime.cacheDir}/srv-jekyll:/srv/jekyll
-      ${extraArgs}
+      ${extraVolumes}
       kevinvz/lanyon:${wantVersion}
       ${cmd}
   `
@@ -97,9 +99,9 @@ module.exports.dockerString = function dockerString (cmd, { extraArgs, runtime }
 
 module.exports.runString = async function runString (cmd, { runtime, cmdName, origCmd, hookName }) {
   const scrolexOpts = {
-    stdio                : 'pipe',
     cwd                  : runtime.cacheDir,
     fatal                : true,
+    mode                 : 'passthru',
     components           : `lanyon>${cmdName}>${origCmd.split('--')[0].trim().replace('[', '').replace(']', '')}`,
     addCommandAsComponent: false,
   }
@@ -107,12 +109,10 @@ module.exports.runString = async function runString (cmd, { runtime, cmdName, or
   // Run Pre-Hooks
   scrolex.stick(`Running pre${hookName} hooks (if any)`)
   await utils.runhooks('pre', hookName, runtime)
-
-  scrolex.exe(cmd, scrolexOpts, async (err, out) => { // eslint-disable-line handle-callback-err
-    // Run Post-Hooks
-    scrolex.stick(`Done. Running post${hookName} hooks (if any)`)
-    await utils.runhooks('post', hookName, runtime)
-  })
+  await scrolex.exe(cmd, scrolexOpts)
+  scrolex.stick(`Done. Running post${hookName} hooks (if any)`)
+  // Run Post-Hooks
+  await utils.runhooks('post', hookName, runtime)
 }
 
 module.exports.runhooks = async (order, cmdName, runtime) => {
@@ -124,7 +124,7 @@ module.exports.runhooks = async (order, cmdName, runtime) => {
 
   return scrolex.exe(squashedHooks, {
     cwd       : runtime.projectDir,
-    mode      : (process.env.SCROLEX_MODE || 'passthru'),
+    mode      : 'passthru',
     components: `lanyon>hooks>${order}${cmdName}`,
   })
 }
