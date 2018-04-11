@@ -93,8 +93,8 @@ module.exports = async function dispatch () {
   utils.writeConfig(config)
 
   let cleanupCmds = [
-    `killall -m '.*nodemon.*'`,
-    `killall -m '.*browser-sync.*'`,
+    `pkill -f nodemon`,
+    `pkill -f browser-sync`,
   ]
 
   if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
@@ -126,6 +126,7 @@ module.exports = async function dispatch () {
         console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does exist inside container, docker-sync active. `)
         break
       }
+      await scrolex.exe(`sleep 2`, { cwd: runtime.cacheDir, mode: 'silent' })
     }
   }
 
