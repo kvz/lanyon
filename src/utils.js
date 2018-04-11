@@ -107,23 +107,20 @@ module.exports.runString = async function runString (cmd, { runtime, cmdName, or
     addCommandAsComponent: false,
   }
 
-  // Run Pre-Hooks
-  scrolex.stick(`Running pre${hookName} hooks (if any)`)
   await utils.runhooks('pre', hookName, runtime)
   await scrolex.exe(cmd, scrolexOpts)
-  scrolex.stick(`Done. Running post${hookName} hooks (if any)`)
-  // Run Post-Hooks
   await utils.runhooks('post', hookName, runtime)
 }
 
 module.exports.runhooks = async (order, cmdName, runtime) => {
   let squashedHooks = utils.gethooks(order, cmdName, runtime)
-
+  
+  scrolex.stick(`Running ${squashedHooks.length} ${order}${cmdName} hooks`)
   if (!squashedHooks) {
     return
   }
 
-  return scrolex.exe(squashedHooks, {
+  return scrolex.exe(squashedHooks.join(' && '), {
     cwd       : runtime.projectDir,
     mode      : 'passthru',
     components: `lanyon>hooks>${order}${cmdName}`,
@@ -145,7 +142,7 @@ module.exports.gethooks = (order, cmdName, runtime) => {
     `${order}${cmdName}:assets:development`,
   ]
 
-  let squashedHooks = ''
+  let squashedHooks = []
   for (let i in arr) {
     let hook = arr[i]
     if (runtime[hook]) {
@@ -160,14 +157,12 @@ module.exports.gethooks = (order, cmdName, runtime) => {
       }
 
       if (needEnv === 'both' || runtime.lanyonEnv === needEnv) {
-        squashedHooks = runtime[hook]
-        if (_.isArray(runtime[hook])) {
-          squashedHooks = runtime[hook].join(' && ')
-        }
-        return squashedHooks
+        squashedHooks = squashedHooks.concat(runtime[hook])
       }
     }
   }
+
+  return squashedHooks
 }
 
 module.exports.upwardDirContaining = (find, cwd, not) => {

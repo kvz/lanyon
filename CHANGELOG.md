@@ -15,7 +15,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.114...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.115...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Remove `shelljs` completely
@@ -24,7 +24,15 @@ Released: TBA.
 - [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
 - [ ] Make travis tests pass again
 - [ ] Figure out if incremental build is maybe actually working (is non-inc even slower?) investigate docker jekyll disk speedup
+- [ ] Debug browsersync's endless refresh
 - [ ] Consider docker-sync for faster build times on osx https://github.com/EugenMayer/docker-sync/wiki/2.-Configuration
+
+## v0.0.115
+
+Released: 2018-04-11.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.114...v0.0.115).
+
+- [x] Simplify how hooks work
 
 ## v0.0.114
 

@@ -25,7 +25,7 @@ module.exports = async function dispatch () {
   let formattedBuildCmd = utils.formatCmd(buildCmd, { runtime, cmdName })
   // console.log(formattedBuildCmd)
 
-  let postBuildContentHooks = utils.gethooks('post', 'build:content', runtime)
+  let postBuildContentHooks = utils.gethooks('post', 'build:content', runtime).join(' && ')
 
   const scripts = {
     'build:assets'       : '[webpack] --config [cacheDir]/webpack.config.js',
