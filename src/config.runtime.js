@@ -34,6 +34,10 @@ module.exports = function () {
   }
   runtimeCfg.gitRoot = utils.upwardDirContaining('.git', runtimeCfg.npmRoot)
 
+  let wantVersion = runtimeCfg.lanyonVersion
+  // wantVersion = '0.0.109'
+  runtimeCfg.dockerImage = `kevinvz/lanyon:${wantVersion}`
+
   runtimeCfg.statistics = 'stats.html'
   runtimeCfg.entries = [
     'app',

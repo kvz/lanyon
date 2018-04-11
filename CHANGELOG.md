@@ -25,13 +25,13 @@ Released: TBA.
 - [ ] Make travis tests pass again
 - [ ] Figure out if incremental build is maybe actually working (is non-inc even slower?) investigate docker jekyll disk speedup
 - [ ] Debug browsersync's endless refresh
-- [ ] Consider docker-sync for faster build times on osx https://github.com/EugenMayer/docker-sync/wiki/2.-Configuration
 
 ## v0.0.115
 
 Released: 2018-04-11.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.114...v0.0.115).
 
+- [x] Optionally offer docker-sync for faster build times on osx https://github.com/EugenMayer/docker-sync/wiki/2.-Configuration
 - [x] Simplify how hooks work
 
 ## v0.0.114

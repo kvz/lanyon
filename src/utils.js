@@ -1,8 +1,9 @@
 const semver = require('semver')
+const childProcess = require('child_process')
 const fs = require('fs')
 // const _        = require('lodash')
 const path = require('path')
-const _ = require('lodash')
+// const _ = require('lodash')
 const yaml = require('js-yaml')
 const shell = require('shelljs')
 // const spawnSync   = require('spawn-sync')
@@ -73,16 +74,48 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   return cmd
 }
 
-module.exports.dockerString = function dockerString (cmd, { runtime }) {
-  let wantVersion = runtime.lanyonVersion
-  // wantVersion = '0.0.109'
-
-  let extraVolumes = ''
-  if (runtime.contentBuildDir.indexOf(runtime.projectDir) === -1) {
-    extraVolumes += ` --volume ${runtime.contentBuildDir}:${runtime.contentBuildDir}`
+module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal = '', cleanupCmds }) {  
+  if (runtime.dying === true) {
+    return
   }
-  if (runtime.cacheDir.indexOf(runtime.projectDir) === -1) {
-    extraVolumes += ` --volume ${runtime.cacheDir}:${runtime.cacheDir}`
+  runtime.dying = true
+  console.log(`>>> About to exit. code=${code}, signal=${signal}. Cleaning up... `)
+  let opts = {
+    cwd: `${runtime.cacheDir}`,
+  }
+
+  for (let i in cleanupCmds) {
+    let c = cleanupCmds[i]
+    console.error(`Cleanup command: '${c}' ...`)
+    try {
+      childProcess.execSync(`${c}`, opts)
+    } catch (err) {} // eslint-disable-line
+  }
+
+  if (signal === 'SIGINT') {
+    process.exit()
+  }
+}
+
+module.exports.dockerString = function dockerString (cmd, { runtime }) {
+  let volumePaths = utils.volumePaths({ runtime })
+  let listVolumes = []
+  for (let key in volumePaths) {
+    listVolumes.push(`--volume ${key}:${volumePaths[key]}`)
+  }
+
+  if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
+    // -i
+    // --rm
+    // ${cmd}
+    // --workdir=${runtime.cacheDir}
+    // -e "JEKYLL_ENV=${runtime.lanyonEnv}"
+    // docker-sync start && docker-compose up && docker-compose exec
+    return oneLine`
+      docker-compose exec -T 
+        lanyon-container
+      ${cmd}
+    `
   }
 
   return oneLine`
@@ -91,11 +124,25 @@ module.exports.dockerString = function dockerString (cmd, { runtime }) {
       -i
       --env "JEKYLL_ENV=${runtime.lanyonEnv}"
       --workdir ${runtime.cacheDir}
-      --volume ${runtime.projectDir}:${runtime.projectDir}
-      ${extraVolumes}
-      kevinvz/lanyon:${wantVersion}
-      ${cmd}
+      ${listVolumes.join('\n')}
+      ${runtime.dockerImage}
+    ${cmd}
   `
+}
+
+module.exports.volumePaths = function volumePaths ({ runtime }) {
+  let volumePaths = {}
+
+  if (runtime.contentBuildDir.indexOf(runtime.projectDir) === -1) {
+    volumePaths[runtime.contentBuildDir] = runtime.contentBuildDir
+  }
+  if (runtime.cacheDir.indexOf(runtime.projectDir) === -1) {
+    volumePaths[runtime.cacheDir] = runtime.cacheDir
+  }
+
+  volumePaths[runtime.projectDir] = runtime.projectDir
+
+  return volumePaths
 }
 
 module.exports.runString = async function runString (cmd, { runtime, cmdName, origCmd, hookName }) {
@@ -114,9 +161,9 @@ module.exports.runString = async function runString (cmd, { runtime, cmdName, or
 
 module.exports.runhooks = async (order, cmdName, runtime) => {
   let squashedHooks = utils.gethooks(order, cmdName, runtime)
-  
+
   scrolex.stick(`Running ${squashedHooks.length} ${order}${cmdName} hooks`)
-  if (!squashedHooks) {
+  if (!squashedHooks.length) {
     return
   }
 
@@ -212,6 +259,28 @@ module.exports.writeConfig = (cfg) => {
     console.error({ jekyll: cfg.jekyll })
     throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/jekyll.config.yml. ${e.message}`)
   }
+
+  if (cfg.runtime.dockerSync && cfg.runtime.dockerSync.enabled === true) {
+    try {
+      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-sync.yml`, yaml.safeDump(cfg.dockerSync), 'utf-8')
+    } catch (e) {
+      console.error({ dockerSync: cfg.dockerSync })
+      throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/docker-sync.yml. ${e.message}`)
+    }
+    try {
+      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-compose.yml`, yaml.safeDump(cfg.dockerCompose), 'utf-8')
+    } catch (e) {
+      console.error({ dockerCompose: cfg.dockerCompose })
+      throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/docker-compose.yml. ${e.message}`)
+    }
+    try {
+      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-compose-dev.yml`, yaml.safeDump(cfg.dockerComposeDev), 'utf-8')
+    } catch (e) {
+      console.error({ dockerComposeDev: cfg.dockerComposeDev })
+      throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/docker-compose-dev.yml. ${e.message}`)
+    }
+  }
+
   fs.writeFileSync(`${cfg.runtime.cacheDir}/nodemon.config.json`, JSON.stringify(cfg.nodemon, null, '  '), 'utf-8')
   fs.writeFileSync(`${cfg.runtime.cacheDir}/full-config-dump.json`, JSON.stringify(cfg, null, '  '), 'utf-8')
   fs.writeFileSync(`${cfg.runtime.cacheDir}/browsersync.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/src/config.js").browsersync`, 'utf-8')

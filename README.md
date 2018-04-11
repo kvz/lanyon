@@ -2,6 +2,14 @@
 
 **Disclaimer 2018-03-26:** Lanyon's initial goal was to be a tool for everybody, but since it never really took off and that we have limited time to make this _really_ nice, we've decided to reduce its scope to be useful to just <https://transloadit.com>. We won't be as interested in supported other usecases, so you might want to think twice about adopting it. This is mostly still publicly available for our own convenience, and in the off-chance Lanyon as-is, is still useful to others. In addition, we've introduced the requirement of Node 8 & Docker installed, in order to cut down on countering with Ruby dependency hells and speed up development without transpiling.
 
+## Use
+
+If you want to speed up on OSX and set `dockerSync.enabled = true`, first install:
+
+```
+sudo gem install docker-sync
+```
+
 ## Changelog
 
 Please see the [CHANGELOG.md](./CHANGELOG.md) file.

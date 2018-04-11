@@ -25,11 +25,15 @@ module.exports = async function dispatch () {
   let formattedBuildCmd = utils.formatCmd(buildCmd, { runtime, cmdName })
   // console.log(formattedBuildCmd)
 
-  let postBuildContentHooks = utils.gethooks('post', 'build:content', runtime).join(' && ')
+  let postBuildContentHooks = utils.gethooks('post', 'build:content', runtime)
+  let strPostBuildContentHooks = ''
+  if (postBuildContentHooks.length) {
+    strPostBuildContentHooks = `cd "${runtime.projectDir}" && ${postBuildContentHooks.join(' && ')}`
+  }
 
   const scripts = {
     'build:assets'       : '[webpack] --config [cacheDir]/webpack.config.js',
-    'build:content:watch': `env DEBUG=nodemon:* [nodemon] --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} && ${postBuildContentHooks}'`,
+    'build:content:watch': `env DEBUG=nodemon:* [nodemon] --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} ${strPostBuildContentHooks}'`,
     // 'build:content:watch': '[jekyll] build --watch --verbose --force_polling --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     'build:content'      : buildCmd,
     // 'build:images'             : '[imagemin] [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
@@ -87,6 +91,47 @@ module.exports = async function dispatch () {
   // Write all config files to cacheDir
   scrolex.stick('Writing configs')
   utils.writeConfig(config)
+
+  let cleanupCmds = [
+    `killall -m '.*nodemon.*'`,
+    `killall -m '.*browser-sync.*'`,
+  ]
+
+  if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
+    // cleanupCmds = cleanupCmds.concat([
+    //   `docker-sync stop`,
+    //   `docker-compose stop`,
+    // ])
+  }
+
+  process.on('exit', (code) => {
+    utils.trapCleanup({ runtime, code, cleanupCmds })
+  })
+  process.on('SIGINT', function () {
+    utils.trapCleanup({ runtime, signal: 'SIGINT', cleanupCmds })
+  })
+  if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
+    // await scrolex.exe(`(bash -c "docker-compose up &") && sleep 2`, { cwd: runtime.cacheDir })
+    // await scrolex.exe(`(bash -c "docker-sync start &")`, { cwd: runtime.cacheDir })
+    await scrolex.exe(`(bash -c "docker-sync-stack start &") && sleep 15`, { cwd: runtime.cacheDir })
+
+    while (true) {
+      let c = utils.dockerString(`stat ${runtime.cacheDir}/jekyll.config.yml`, { runtime })
+      // let c = utils.dockerString(`lsb_release -a`, { runtime })
+      // (bash -c "docker-sync sync &") &&
+      let gotErr = false
+      try {
+        await scrolex.exe(`${c}`, { cwd: runtime.cacheDir, mode: 'silent' })
+      } catch (err) {
+        gotErr = err
+        console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does not exist yet inside container, waiting on docker-sync ... `)
+      }
+      if (!gotErr) {
+        console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does exist inside container, docker-sync active. `)
+        break
+      }
+    }
+  }
 
   // Run cmd arg
   if (_.isFunction(cmd)) {

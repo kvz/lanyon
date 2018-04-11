@@ -24,6 +24,9 @@ if ('scrolexMode' in runtime) {
 cfg.webpack = require('./config.webpack.js')({runtime})
 cfg.browsersync = require('./config.browsersync.js')({ runtime, webpack: cfg.webpack })
 cfg.jekyll = require('./config.jekyll.js')({runtime})
+cfg.dockerSync = require('./config.dockerSync.js')({ runtime, jekyll: cfg.jekyll })
+cfg.dockerCompose = require('./config.dockerCompose.js')({runtime})
+cfg.dockerComposeDev = require('./config.dockerComposeDev.js')({runtime})
 cfg.nodemon = require('./config.nodemon.js')({runtime, jekyll: cfg.jekyll})
 cfg.runtime = runtime
 
