@@ -111,14 +111,10 @@ module.exports = async function dispatch () {
     utils.trapCleanup({ runtime, signal: 'SIGINT', cleanupCmds })
   })
   if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
-    // await scrolex.exe(`(bash -c "docker-compose up &") && sleep 2`, { cwd: runtime.cacheDir })
-    // await scrolex.exe(`(bash -c "docker-sync start &")`, { cwd: runtime.cacheDir })
-    await scrolex.exe(`(bash -c "docker-sync-stack start &") && sleep 15`, { cwd: runtime.cacheDir })
+    await scrolex.exe(`(bash -c "docker-sync-stack start &")`, { cwd: runtime.cacheDir })
 
     while (true) {
       let c = utils.dockerString(`stat ${runtime.cacheDir}/jekyll.config.yml`, { runtime })
-      // let c = utils.dockerString(`lsb_release -a`, { runtime })
-      // (bash -c "docker-sync sync &") &&
       let gotErr = false
       try {
         await scrolex.exe(`${c}`, { cwd: runtime.cacheDir, mode: 'silent' })
