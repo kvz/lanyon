@@ -1,6 +1,5 @@
 const fs = require('fs')
 const yaml = require('js-yaml')
-const shell = require('shelljs')
 const path = require('path')
 
 const scrolex = require('scrolex').persistOpts({
@@ -17,17 +16,6 @@ module.exports = function ({runtime}) {
     jekyllCfg = yaml.safeLoad(buf)
   } catch (e) {
     scrolex.failure(`Unable to load ${jekyllConfigPath}`)
-  }
-
-  runtime.themeDir = false
-  if (jekyllCfg.theme) {
-    const cmd = `${path.join(runtime.binDir, 'bundler')} show ${jekyllCfg.theme}`
-    const z = shell.exec(cmd).stdout
-    if (!z) {
-      scrolex.failure(`Unable to locate defined theme "${jekyllCfg.theme}" via bundler with cmd: "${cmd}"`)
-    } else {
-      runtime.themeDir = z
-    }
   }
 
   if (!('incremental' in jekyllCfg)) {

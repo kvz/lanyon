@@ -1,11 +1,9 @@
-const semver = require('semver')
 const childProcess = require('child_process')
 const fs = require('fs')
 // const _        = require('lodash')
 const path = require('path')
 // const _ = require('lodash')
 const yaml = require('js-yaml')
-const shell = require('shelljs')
 // const spawnSync   = require('spawn-sync')
 // const oneLine     = require('common-tags/lib/oneLine')
 // const stripIndent = require('common-tags/lib/stripIndent')
@@ -74,7 +72,7 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   return cmd
 }
 
-module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal = '', cleanupCmds }) {  
+module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal = '', cleanupCmds }) {
   if (runtime.dying === true) {
     return
   }
@@ -230,18 +228,23 @@ module.exports.upwardDirContaining = (find, cwd, not) => {
   return false
 }
 
-module.exports.initProject = ({ assetsBuildDir, gitRoot, cacheDir, binDir }) => {
+module.exports.initProject = async ({ assetsBuildDir, gitRoot, cacheDir, binDir }) => {
+  const scrolexOpts = {
+    cwd  : gitRoot,
+    fatal: false,
+    mode : 'passthru',
+  }
   if (!fs.existsSync(assetsBuildDir)) {
-    shell.mkdir('-p', assetsBuildDir)
-    shell.exec(`cd "${path.dirname(gitRoot)}" && git ignore "${path.relative(gitRoot, assetsBuildDir)}"`)
+    let rel = path.relative(gitRoot, assetsBuildDir)
+    await scrolex.exe(`mdkir '${rel}' && git ignore '${rel}'`, scrolexOpts)
   }
   if (!fs.existsSync(cacheDir)) {
-    shell.mkdir('-p', cacheDir)
-    shell.exec(`cd "${path.dirname(gitRoot)}" && git ignore "${path.relative(gitRoot, cacheDir)}"`)
+    let rel = path.relative(gitRoot, cacheDir)
+    await scrolex.exe(`mdkir '${rel}' && git ignore '${rel}'`, scrolexOpts)
   }
   if (!fs.existsSync(binDir)) {
-    shell.mkdir('-p', binDir)
-    shell.exec(`cd "${path.dirname(gitRoot)}" && git ignore "${path.relative(gitRoot, binDir)}"`)
+    let rel = path.relative(gitRoot, binDir)
+    await scrolex.exe(`mdkir '${rel}' && git ignore '${rel}'`, scrolexOpts)
   }
 }
 
@@ -286,41 +289,4 @@ module.exports.writeConfig = (cfg) => {
   fs.writeFileSync(`${cfg.runtime.cacheDir}/browsersync.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/src/config.js").browsersync`, 'utf-8')
   fs.writeFileSync(`${cfg.runtime.cacheDir}/webpack.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/src/config.js").webpack`, 'utf-8')
   fs.writeFileSync(cfg.runtime.recordsPath, JSON.stringify({}, null, '  '), 'utf-8')
-}
-
-module.exports.satisfied = ({ prerequisites }, app, cmd, checkOn) => {
-  let tag = ''
-  if (checkOn === undefined) {
-    checkOn = app
-  } else {
-    tag = `${checkOn}/`
-  }
-
-  if (!cmd) {
-    cmd = `${app} -v`
-  }
-
-  const p = shell.exec(cmd, { 'silent': true })
-  const appVersionFull = p.stdout.trim() || p.stderr.trim()
-  const parts = appVersionFull.replace(/0+(\d)/g, '$1').split(/[,p\s-]+/)
-  let appVersion = parts[1]
-
-  if (app === 'node') {
-    appVersion = parts[0]
-  } else if (app === 'docker') {
-    appVersion = parts[2]
-  }
-
-  try {
-    if (semver.satisfies(appVersion, prerequisites[app].range)) {
-      scrolex.stick(`${tag}${app} '${prerequisites[app].range} available`)
-      return true
-    }
-  } catch (e) {
-    scrolex.failure(`${tag}${app} '${prerequisites[app].range} unavailable. output: ${appVersionFull}. ${e}`)
-    return false
-  }
-
-  scrolex.failure(`${tag}${app} '${prerequisites[app].range} unavailable. output: ${appVersionFull}`)
-  return false
 }

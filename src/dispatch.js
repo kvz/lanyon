@@ -85,7 +85,7 @@ module.exports = async function dispatch () {
 
   // Create asset dirs and git ignores
   if (cmdName.match(/^build|start/)) {
-    utils.initProject(runtime)
+    await utils.initProject(runtime)
   }
 
   // Write all config files to cacheDir
