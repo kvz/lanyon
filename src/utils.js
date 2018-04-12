@@ -247,15 +247,15 @@ module.exports.initProject = async ({ assetsBuildDir, gitRoot, cacheDir, binDir 
   }
   if (!fs.existsSync(assetsBuildDir)) {
     let rel = path.relative(gitRoot, assetsBuildDir)
-    await scrolex.exe(`mdkir '${rel}' && git ignore '${rel}'`, scrolexOpts)
+    await scrolex.exe(`mkdir -p '${rel}' && git ignore '${rel}'`, scrolexOpts)
   }
   if (!fs.existsSync(cacheDir)) {
     let rel = path.relative(gitRoot, cacheDir)
-    await scrolex.exe(`mdkir '${rel}' && git ignore '${rel}'`, scrolexOpts)
+    await scrolex.exe(`mkdir -p '${rel}' && git ignore '${rel}'`, scrolexOpts)
   }
   if (!fs.existsSync(binDir)) {
     let rel = path.relative(gitRoot, binDir)
-    await scrolex.exe(`mdkir '${rel}' && git ignore '${rel}'`, scrolexOpts)
+    await scrolex.exe(`mkdir -p '${rel}' && git ignore '${rel}'`, scrolexOpts)
   }
 }
 
