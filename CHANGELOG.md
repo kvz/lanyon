@@ -23,7 +23,6 @@ Released: TBA.
 - [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
 - [ ] Make travis tests pass again
 - [ ] Debug browsersync's endless refresh
-- [ ] Upgrade Webpack and friends
 
 ## v0.0.116
 
@@ -31,6 +30,7 @@ Released: 2018-04-12.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.115...v0.0.116).
 
 - [x] Remove `shelljs` completely
+- [x] Upgrade Webpack and friends
 - [x] Deprecate magic themeDir handling for now
 - [x] Use pkill instead of killall so it works on both Linux & OSX (thanks @Acconut)
 - [x] Restart lanyon container if it crashes

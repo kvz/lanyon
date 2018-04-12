@@ -86,49 +86,50 @@ module.exports = async function dispatch () {
   // Create asset dirs and git ignores
   if (cmdName.match(/^build|start/)) {
     await utils.initProject(runtime)
+
+    let cleanupCmds = [
+      'pkill -f nodemon',
+      'pkill -f browser-sync',
+    ]
+
+    if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
+      // cleanupCmds = cleanupCmds.concat([
+      //   `docker-sync stop`,
+      //   `docker-compose stop`,
+      // ])
+    }
+
+    process.on('exit', (code) => {
+      utils.trapCleanup({ runtime, code, cleanupCmds })
+    })
+    process.on('SIGINT', function () {
+      utils.trapCleanup({ runtime, signal: 'SIGINT', cleanupCmds })
+    })
+    if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
+      if (!cmdName.match(/assets/)) {
+        await scrolex.exe(`(bash -c "docker-sync-stack start &")`, { cwd: runtime.cacheDir })
+        while (true) {
+          let c = utils.dockerString(`stat ${runtime.cacheDir}/jekyll.config.yml`, { runtime })
+          let gotErr = false
+          try {
+            await scrolex.exe(`${c}`, { cwd: runtime.cacheDir, mode: 'silent' })
+          } catch (err) {
+            gotErr = err
+            console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does not exist yet inside container, waiting on docker-sync ... `)
+          }
+          if (!gotErr) {
+            console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does exist inside container, docker-sync active. `)
+            break
+          }
+          await scrolex.exe(`sleep 2`, { cwd: runtime.cacheDir, mode: 'silent' })
+        }
+      }
+    }
   }
 
   // Write all config files to cacheDir
   scrolex.stick('Writing configs')
   utils.writeConfig(config)
-
-  let cleanupCmds = [
-    'pkill -f nodemon',
-    'pkill -f browser-sync',
-  ]
-
-  if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
-    // cleanupCmds = cleanupCmds.concat([
-    //   `docker-sync stop`,
-    //   `docker-compose stop`,
-    // ])
-  }
-
-  process.on('exit', (code) => {
-    utils.trapCleanup({ runtime, code, cleanupCmds })
-  })
-  process.on('SIGINT', function () {
-    utils.trapCleanup({ runtime, signal: 'SIGINT', cleanupCmds })
-  })
-  if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
-    await scrolex.exe(`(bash -c "docker-sync-stack start &")`, { cwd: runtime.cacheDir })
-
-    while (true) {
-      let c = utils.dockerString(`stat ${runtime.cacheDir}/jekyll.config.yml`, { runtime })
-      let gotErr = false
-      try {
-        await scrolex.exe(`${c}`, { cwd: runtime.cacheDir, mode: 'silent' })
-      } catch (err) {
-        gotErr = err
-        console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does not exist yet inside container, waiting on docker-sync ... `)
-      }
-      if (!gotErr) {
-        console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does exist inside container, docker-sync active. `)
-        break
-      }
-      await scrolex.exe(`sleep 2`, { cwd: runtime.cacheDir, mode: 'silent' })
-    }
-  }
 
   // Run cmd arg
   if (_.isFunction(cmd)) {

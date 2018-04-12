@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const SvgStoreWebpackPlugin = require('webpack-svgstore-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
@@ -32,6 +33,7 @@ module.exports = function ({runtime}) {
   }
 
   let webpackCfg = {
+    mode : runtime.isDev ? 'development' : 'production',
     entry: (function dynamicEntries () {
       var entries = {}
 
@@ -397,9 +399,9 @@ module.exports = function ({runtime}) {
     plugins: (function dynamicPlugins () {
       let plugins = [
         // new BowerWebpackPlugin(),
-        new webpack.ProvidePlugin({
-          _: 'lodash',
-        }),
+        // new webpack.ProvidePlugin({
+        //   _: 'lodash',
+        // }),
         new SvgStoreWebpackPlugin({
           svgoOptions: {
             plugins: [
@@ -429,10 +431,12 @@ module.exports = function ({runtime}) {
         new WebpackMd5Hash(),
       ]
 
-      plugins.push(new webpack.optimize.ModuleConcatenationPlugin())
+      // plugins.push(new webpack.optimize.ModuleConcatenationPlugin())
 
       if (runtime.isDev) {
-        plugins.push(new webpack.HotModuleReplacementPlugin())
+        plugins.push(new webpack.HotModuleReplacementPlugin({
+          multiStep: true,
+        }))
       } else {
         plugins.push(new ExtractTextPlugin({
           filename : getFilename('css'),
@@ -448,18 +452,11 @@ module.exports = function ({runtime}) {
             NODE_ENV: JSON.stringify('production'),
           },
         }))
-        plugins.push(new webpack.optimize.UglifyJsPlugin({
-          compress: {
-            warnings: false,
-          },
-          sourceMap: true,
-          exclude  : /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
-        }))
 
         // plugins.push(new webpack.NoErrorsPlugin())
-        plugins.push(new OptimizeCssAssetsPlugin())
-        plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 15 }))
-        plugins.push(new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 10000 }))
+        // plugins.push(new OptimizeCssAssetsPlugin())
+        // plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 15 }))
+        // plugins.push(new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 10000 }))
         plugins.push(function ReportErrors () {
           this.plugin('done', ({ compilation }) => {
             for (const asset in compilation.assets) {
@@ -475,13 +472,6 @@ module.exports = function ({runtime}) {
         })
       }
 
-      if (runtime.common) {
-        plugins.push(new webpack.optimize.CommonsChunkPlugin({
-          name    : 'common',
-          filename: getFilename('js'),
-        }))
-      }
-
       if (!runtime.isDev && runtime.statistics) {
         // @todo: Once Vizualizer supports multiple entries, add support for that here
         // https://github.com/chrisbateman/webpack-visualizer/issues/5
@@ -492,6 +482,48 @@ module.exports = function ({runtime}) {
       }
 
       return plugins
+    }()),
+    optimization: (function optimizationConfig () {
+      let obj = {}
+
+      if (!runtime.isDev) {
+        // splitChunks: (function splitChunksConfig () {
+        //   let obj = {
+        //     cacheGroups: {
+        //       commons: {
+        //         name     : 'commons',
+        //         chunks   : 'initial',
+        //         minChunks: 2,
+        //       },
+        //     },
+        //   }
+        //   return obj
+        // }()),
+
+        obj.minimizer = [
+          // we specify a custom UglifyJsPlugin here to get source maps in production
+          // plugins.push(new webpack.optimize.UglifyJsPlugin({
+          //   compress: {
+          //     warnings: false,
+          //   },
+          //   sourceMap: true,
+          //   exclude: /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
+          // }))
+
+          new UglifyJsPlugin({
+            cache: true,
+            parallel: true,
+            uglifyOptions: {
+              compress: false,
+              ecma: 6,
+              mangle: true,
+            },
+            sourceMap: true,
+          }),
+        ]
+      }
+ 
+      return obj
     }()),
     resolveLoader: {
       modules: [
