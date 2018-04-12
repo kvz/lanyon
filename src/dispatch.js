@@ -93,8 +93,8 @@ module.exports = async function dispatch () {
   utils.writeConfig(config)
 
   let cleanupCmds = [
-    `pkill -f nodemon`,
-    `pkill -f browser-sync`,
+    'pkill -f nodemon',
+    'pkill -f browser-sync',
   ]
 
   if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
