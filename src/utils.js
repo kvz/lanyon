@@ -239,23 +239,27 @@ module.exports.upwardDirContaining = (find, cwd, not) => {
   return false
 }
 
-module.exports.initProject = async ({ assetsBuildDir, gitRoot, cacheDir, binDir }) => {
+module.exports.initProject = async ({ assetsBuildDir, gitRoot, cacheDir }) => {
   const scrolexOpts = {
     cwd  : gitRoot,
     fatal: false,
     mode : 'passthru',
   }
-  if (!fs.existsSync(assetsBuildDir)) {
-    let rel = path.relative(gitRoot, assetsBuildDir)
-    await scrolex.exe(`mkdir -p '${rel}' && git ignore '${rel}'`, scrolexOpts)
-  }
-  if (!fs.existsSync(cacheDir)) {
-    let rel = path.relative(gitRoot, cacheDir)
-    await scrolex.exe(`mkdir -p '${rel}' && git ignore '${rel}'`, scrolexOpts)
-  }
-  if (!fs.existsSync(binDir)) {
-    let rel = path.relative(gitRoot, binDir)
-    await scrolex.exe(`mkdir -p '${rel}' && git ignore '${rel}'`, scrolexOpts)
+
+  const dirs = [
+    assetsBuildDir,
+    cacheDir,
+  ]
+
+  for (let dir of dirs) {
+    if (!fs.existsSync(dir)) {
+      let rel = path.relative(gitRoot, dir)
+      try {
+        await scrolex.exe(`mkdir -p '${rel}' && git ignore '${rel}'`, scrolexOpts)
+      } catch (error) {
+        console.error(`Could not create dir. rel=${rel} gitRoot=${gitRoot} dir=${dir} err=${err}`)
+      }
+    }
   }
 }
 
