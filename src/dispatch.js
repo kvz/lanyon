@@ -126,6 +126,7 @@ module.exports = async function dispatch () {
         console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does exist inside container, docker-sync active. `)
         break
       }
+      await scrolex.exe(`sleep 2`, { cwd: runtime.cacheDir, mode: 'silent' })
     }
   }
 

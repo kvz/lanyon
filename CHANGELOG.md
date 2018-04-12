@@ -15,7 +15,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.115...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.116...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Remove `shelljs` completely
@@ -25,6 +25,13 @@ Released: TBA.
 - [ ] Make travis tests pass again
 - [ ] Debug browsersync's endless refresh
 - [ ] Upgrade Webpack and friends
+
+## v0.0.116
+
+Released: 2018-04-11.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.115...v0.0.116).
+
+- [x] Cleaner kills for cleanup
 
 ## v0.0.115
 
