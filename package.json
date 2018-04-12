@@ -76,7 +76,6 @@
     "jest": "21.2.1"
   },
   "dependencies": {
-    "async": "2.6.0",
     "assets-webpack-plugin": "3.5.1",
     "autoprefixer": "7.2.3",
     "babel-core": "6.26.0",

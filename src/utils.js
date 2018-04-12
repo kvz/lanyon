@@ -14,7 +14,6 @@ const scrolex = require('scrolex').persistOpts({
 const utils = this
 const oneLine = require('common-tags/lib/oneLine')
 // const pad = require('pad')
-// const async = require('async')
 
 if (require.main === module) {
   scrolex.failure(`Please only used this module via require`)
