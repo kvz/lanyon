@@ -71,26 +71,37 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   return cmd
 }
 
-module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal = '', cleanupCmds }) {
+module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal = '' }) {
   if (runtime.dying === true) {
     return
   }
   runtime.dying = true
-  console.log(`>>> About to exit. code=${code}, signal=${signal}. Cleaning up... `)
-  let opts = {
-    cwd: `${runtime.cacheDir}`,
+
+  let cleanupCmds = [
+    'pkill -f nodemon',
+    'pkill -f browser-sync',
+  ]
+
+  if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
+    cleanupCmds = cleanupCmds.concat([
+      `docker-sync stop`,
+      // `docker-compose stop`,
+    ])
   }
 
+  console.log(`>>> About to exit. code=${code}, signal=${signal}. Cleaning up... `)
   for (let i in cleanupCmds) {
     let c = cleanupCmds[i]
     console.error(`Cleanup command: '${c}' ...`)
     try {
-      childProcess.execSync(`${c}`, opts)
+      childProcess.execSync(`${c}`, {
+        cwd: `${runtime.cacheDir}`,
+      })
     } catch (err) {} // eslint-disable-line
   }
 
   if (signal === 'SIGINT') {
-    process.exit()
+    process.exit(1)
   }
 }
 

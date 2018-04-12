@@ -92,28 +92,10 @@ module.exports = async function dispatch () {
   scrolex.stick('Writing configs')
   utils.writeConfig(config)
 
-  let cleanupCmds = [
-    'pkill -f nodemon',
-    'pkill -f browser-sync',
-  ]
-
   if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
-    // cleanupCmds = cleanupCmds.concat([
-    //   `docker-sync stop`,
-    //   `docker-compose stop`,
-    // ])
-  }
-
-  process.on('exit', (code) => {
-    utils.trapCleanup({ runtime, code, cleanupCmds })
-  })
-  process.on('SIGINT', function () {
-    utils.trapCleanup({ runtime, signal: 'SIGINT', cleanupCmds })
-  })
-  if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
-    await scrolex.exe(`(bash -c "docker-sync-stack start &")`, { cwd: runtime.cacheDir })
-
+    let runs = 0
     while (true) {
+      runs++
       let c = utils.dockerString(`stat ${runtime.cacheDir}/jekyll.config.yml`, { runtime })
       let gotErr = false
       try {
@@ -121,14 +103,28 @@ module.exports = async function dispatch () {
       } catch (err) {
         gotErr = err
         console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does not exist yet inside container, waiting on docker-sync ... `)
+        if (runs === 1) {
+          await scrolex.exe(`(docker-sync-stack clean; docker-sync stop; docker-compose stop; bash -c "docker-sync-stack start &") && sleep 5`, {
+            cwd                  : runtime.cacheDir,
+            addCommandAsComponent: false,
+            components           : `lanyon>${cmdName}>docker-sync-stack`,
+          })
+        }
       }
       if (!gotErr) {
-        console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does exist inside container, docker-sync active. `)
+        console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does exist inside container, docker-sync active ✅`)
         break
       }
       await scrolex.exe(`sleep 2`, { cwd: runtime.cacheDir, mode: 'silent' })
     }
   }
+
+  process.on('exit', (code) => {
+    utils.trapCleanup({ runtime, code })
+  })
+  process.on('SIGINT', function () {
+    utils.trapCleanup({ runtime, signal: 'SIGINT' })
+  })
 
   // Run cmd arg
   if (_.isFunction(cmd)) {
@@ -139,6 +135,7 @@ module.exports = async function dispatch () {
         process.exit(1)
       }
       scrolex.stick(`${cmdName} done`)
+      process.exit(0)
     })
   } else if (_.isObject(cmd)) {
     // Execute multiple commands, in paralel or serial
@@ -162,12 +159,15 @@ module.exports = async function dispatch () {
     })
 
     await Promise[cmd.mode](methods)
+    process.exit(0)
   } else if (_.isString(cmd)) {
     let realcmd = utils.formatCmd(cmd, { runtime, cmdName })
     utils.runString(realcmd, { runtime, cmdName, origCmd: cmd, hookName: cmdName.replace(/(:watch|\[\])/, '') }, (err) => {
       if (err) {
         scrolex.failure(`cmdName "${cmdName}" failed with: ${err}.`)
+        process.exit(1)
       }
+      process.exit(0)
     })
   } else {
     scrolex.failure(`cmdName "${cmdName}" is not a valid Lanyon command. Pick from: ${Object.keys(scripts).join(', ')}.`)
