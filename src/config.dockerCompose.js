@@ -8,11 +8,13 @@ module.exports = function ({runtime}) {
         'restart'    : 'on-failure',
         'environment': [
           `JEKYLL_ENV=${runtime.lanyonEnv}"`,
+          `TERM=xterm`,
         ],
         'image'  : `${runtime.dockerImage}`,
         // We need this container to remain online, that `exec` can tap into, so all the synced
         // files will still be there. Hence we run a dummy Jekyll command that never finished:
         'command': [
+          'watch',
           'jekyll',
           'build',
           '--watch',
