@@ -5,6 +5,7 @@ module.exports = function ({runtime}) {
       'lanyon-container': {
         'tty'        : false,
         'stdin_open' : false,
+        'restart'    : 'always',
         'environment': [
           `JEKYLL_ENV=${runtime.lanyonEnv}"`,
         ],

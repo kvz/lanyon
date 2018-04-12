@@ -31,6 +31,7 @@ Released: TBA.
 Released: 2018-04-11.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.115...v0.0.116).
 
+- [x] Use pkill instead of killall so it works on both Linux & OSX (thanks @Acconut)
 - [x] Cleaner kills for cleanup
 
 ## v0.0.115
