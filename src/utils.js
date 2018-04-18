@@ -99,7 +99,7 @@ module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal =
       })
     } catch (err) {} // eslint-disable-line
   }
-  
+
   if (signal === 'SIGINT') {
     console.log(`>>> Process aborted`)
     process.exit(1)

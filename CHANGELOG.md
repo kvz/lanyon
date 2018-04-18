@@ -15,7 +15,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.120...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.121...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -24,6 +24,13 @@ Released: TBA.
 - [ ] Make travis tests pass again
 - [ ] Debug browsersync's endless refresh
 - [ ] Upgrade Webpack and friends
+
+## v0.0.121
+
+Released: 2018-04-18.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.120...v0.0.121).
+
+- [x] Pass a toolkit to lanyonrc with functions like dockerString
 
 ## v0.0.120
 
