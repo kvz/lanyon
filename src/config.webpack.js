@@ -312,6 +312,7 @@ module.exports = function ({runtime}) {
                   // sourceMap: true,
                 },
               },
+              postCssLoader,
               {
                 loader: 'resolve-url-loader',
               },
@@ -332,9 +333,11 @@ module.exports = function ({runtime}) {
                 {
                   loader : 'css-loader',
                   options: {
-                    sourceMap: true,
+                    sourceMap    : true,
+                    importLoaders: 1,
                   },
                 },
+                postCssLoaderProduction,
                 {
                   loader : 'resolve-url-loader',
                   options: {
@@ -352,9 +355,11 @@ module.exports = function ({runtime}) {
                 {
                   loader : 'css-loader',
                   options: {
-                    sourceMap: true,
+                    importLoaders: 1,
+                    sourceMap    : true,
                   },
                 },
+                postCssLoaderProduction,
                 {
                   loader : 'resolve-url-loader',
                   options: {
@@ -381,6 +386,7 @@ module.exports = function ({runtime}) {
                     sourceMap: true,
                   },
                 },
+                postCssLoaderProduction,
                 {
                   loader : 'resolve-url-loader',
                   options: {
