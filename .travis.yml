@@ -14,6 +14,7 @@ script:
 os: linux
 dist: trusy
 sudo: required
+services: [ docker ]
 env:
   matrix:
   - OSDIST="trusty"
