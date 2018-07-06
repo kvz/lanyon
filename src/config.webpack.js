@@ -13,6 +13,44 @@ const scrolex = require('scrolex').persistOpts({
   components           : `lanyon>config>webpack`,
 })
 
+const postCssLoader = {
+  loader : 'postcss-loader',
+  options: {
+    sourceMap: true,
+    ident    : 'postcss',
+    plugins  : (loader) => [
+      require('autoprefixer')({
+        browsers: [
+          '> 1%',
+          'ie 10',
+          'ie 8',
+          'safari 4',
+        ],
+      }),
+      // require('cssnano')(),
+    ],
+  },
+}
+
+const postCssLoaderProduction = {
+  loader : 'postcss-loader',
+  options: {
+    sourceMap: true,
+    ident    : 'postcss',
+    plugins  : (loader) => [
+      require('autoprefixer')({
+        browsers: [
+          '> 1%',
+          'ie 10',
+          'ie 8',
+          'safari 4',
+        ],
+      }),
+      // require('cssnano')(),
+    ],
+  },
+}
+
 module.exports = function ({runtime}) {
   function getFilename (extension, isChunk, isContent) {
     let filename = `[name].${extension}`
@@ -229,8 +267,10 @@ module.exports = function ({runtime}) {
                 loader : 'css-loader',
                 options: {
                   // sourceMap: true,
+                  // { importLoaders: 1 }
                 },
               },
+              postCssLoader,
               {
                 loader: 'resolve-url-loader',
               },
@@ -248,6 +288,7 @@ module.exports = function ({runtime}) {
                   // sourceMap: true,
                 },
               },
+              postCssLoader,
               {
                 loader: 'resolve-url-loader',
               },
@@ -271,6 +312,7 @@ module.exports = function ({runtime}) {
                   // sourceMap: true,
                 },
               },
+              postCssLoader,
               {
                 loader: 'resolve-url-loader',
               },
@@ -291,9 +333,11 @@ module.exports = function ({runtime}) {
                 {
                   loader : 'css-loader',
                   options: {
-                    sourceMap: true,
+                    sourceMap    : true,
+                    importLoaders: 1,
                   },
                 },
+                postCssLoaderProduction,
                 {
                   loader : 'resolve-url-loader',
                   options: {
@@ -311,9 +355,11 @@ module.exports = function ({runtime}) {
                 {
                   loader : 'css-loader',
                   options: {
-                    sourceMap: true,
+                    importLoaders: 1,
+                    sourceMap    : true,
                   },
                 },
+                postCssLoaderProduction,
                 {
                   loader : 'resolve-url-loader',
                   options: {
@@ -340,6 +386,7 @@ module.exports = function ({runtime}) {
                     sourceMap: true,
                   },
                 },
+                postCssLoaderProduction,
                 {
                   loader : 'resolve-url-loader',
                   options: {
