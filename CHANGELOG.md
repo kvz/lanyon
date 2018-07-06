@@ -5,7 +5,6 @@
 - [ ] Add `travis` to Dockerfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Throw an error if we find legacy Jekyll residu such as `./vendors` or `.bundle`
 - [ ] Maybe add https://github.com/btford/write-good and or text-lint (#8)
-- [ ] Consider postcss
 - [ ] Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content
 - [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
@@ -15,7 +14,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.121...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.123...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -24,6 +23,20 @@ Released: TBA.
 - [ ] Make travis tests pass again
 - [ ] Debug browsersync's endless refresh
 - [ ] Upgrade Webpack and friends
+
+## v0.0.123
+
+Released: 2018-07-06.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.122...v0.0.123).
+
+- [x] More consistent override methods
+
+## v0.0.122
+
+Released: 2018-07-06.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.121...v0.0.122).
+
+- [x] Add support for PostCSS
 
 ## v0.0.121
 

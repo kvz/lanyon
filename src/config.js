@@ -3,8 +3,8 @@ const scrolex = require('scrolex')
 const utils   = require('./utils')
 
 let mods = {
-  overrideRuntime: function (config) { return config },
-  overrideConfig : function (config) { return config },
+  overrideRuntime: function ({ runtime, toolkit }) { return runtime },
+  overrideConfig : function ({ config, toolkit }) { return config },
 }
 
 let cfg = {}
@@ -36,4 +36,4 @@ cfg.dockerComposeDev = require('./config.dockerComposeDev.js')({ runtime, toolki
 cfg.nodemon = require('./config.nodemon.js')({ runtime, jekyll: cfg.jekyll, toolkit })
 cfg.runtime = runtime
 
-module.exports = mods.overrideConfig(cfg)
+module.exports = mods.overrideConfig({config: cfg, toolkit})
