@@ -14,7 +14,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.123...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.124...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -23,6 +23,13 @@ Released: TBA.
 - [ ] Make travis tests pass again
 - [ ] Debug browsersync's endless refresh
 - [ ] Upgrade Webpack and friends
+
+## v0.0.124
+
+Released: 2018-07-13.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.123...v0.0.124).
+
+- [x] Drop support for: Modernizr, Svgeezy, Bower
 
 ## v0.0.123
 

@@ -193,45 +193,8 @@ module.exports = function ({runtime}) {
             ],
           },
           {
-            // https://github.com/webpack/webpack/issues/512
-            test: /[\\/](bower_components)[\\/]modernizr[\\/]modernizr\.js$/,
-            use : [
-              // loader: 'imports?this=>window!exports?window.Modernizr',
-              {
-                loader : 'imports-loader',
-                options: {
-                  this: '>window',
-                },
-              },
-              {
-                loader : 'exports-loader',
-                options: {
-                  'window.Modernizr': true,
-                },
-              },
-            ],
-          },
-          {
-            test: /[\\/](bower_components)[\\/]svgeezy[\\/]svgeezy\.js$/,
-            use : [
-              // loader: 'imports?this=>window!exports?svgeezy',
-              {
-                loader : 'imports-loader',
-                options: {
-                  this: '>window',
-                },
-              },
-              {
-                loader : 'exports-loader',
-                options: {
-                  'svgeezy': true,
-                },
-              },
-            ],
-          },
-          {
             // https://www.techchorus.net/blog/using-sass-version-of-bootstrap-with-webpack/
-            test: /[\\/](bower_components)[\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]/,
+            test: /[\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]/,
             use : [
               // loader: 'imports?this=>window',
               {
@@ -410,8 +373,7 @@ module.exports = function ({runtime}) {
             `${runtime.assetsSourceDir}`,
           ],
           exclude: [
-            `${runtime.assetsSourceDir}/bower_components`,
-            /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
+            /[\\/](node_modules|js-untouched)[\\/]/,
           ],
           use: [
             // {
@@ -443,7 +405,6 @@ module.exports = function ({runtime}) {
     },
     plugins: (function dynamicPlugins () {
       let plugins = [
-        // new BowerWebpackPlugin(),
         new webpack.ProvidePlugin({
           _: 'lodash',
         }),
@@ -500,7 +461,7 @@ module.exports = function ({runtime}) {
             warnings: false,
           },
           sourceMap: true,
-          exclude  : /[\\/](node_modules|bower_components|js-untouched)[\\/]/,
+          exclude  : /[\\/](node_modules|js-untouched)[\\/]/,
         }))
 
         // plugins.push(new webpack.NoErrorsPlugin())
@@ -557,15 +518,13 @@ module.exports = function ({runtime}) {
     resolve: {
       modules: [
         runtime.assetsSourceDir,
-        path.join(runtime.assetsSourceDir, 'bower_components'),
         path.join(runtime.projectDir, 'node_modules'),
         path.join(runtime.npmRoot, 'node_modules'),
         path.join(runtime.lanyonDir, 'node_modules'),
       ],
 
-      // Enable Bower
       // These JSON files are read in directories
-      descriptionFiles: ['package.json', 'bower.json'],
+      descriptionFiles: ['package.json'],
 
       // These fields in the description files are looked up when trying to resolve the package directory
       mainFields: ['browser', 'main'],
