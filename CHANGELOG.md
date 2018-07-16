@@ -14,7 +14,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.124...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.125...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -23,6 +23,13 @@ Released: TBA.
 - [ ] Make travis tests pass again
 - [ ] Debug browsersync's endless refresh
 - [ ] Upgrade Webpack and friends
+
+## v0.0.125
+
+Released: 2018-07-16.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.124...v0.0.125).
+
+- [x] Upgrade gems and Jekyll from 3.7 -> 3.8 (which includes "Two massive performance improvements for large sites" - https://github.com/jekyll/jekyll/blob/master/History.markdown#380--2018-04-19)
 
 ## v0.0.124
 
