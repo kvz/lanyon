@@ -14,7 +14,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.125...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.126...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -23,6 +23,13 @@ Released: TBA.
 - [ ] Make travis tests pass again
 - [ ] Debug browsersync's endless refresh
 - [ ] Upgrade Webpack and friends
+
+## v0.0.126
+
+Released: 2018-08-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.125...v0.0.126).
+
+- [x] Remove coffeescript support /thx @Acconut
 
 ## v0.0.125
 

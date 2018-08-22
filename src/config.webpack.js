@@ -173,14 +173,6 @@ module.exports = function ({runtime}) {
             ],
           },
           {
-            test: /\.coffee$/,
-            use : [
-              {
-                loader: 'coffee-loader',
-              },
-            ],
-          },
-          {
             test: /\.(png|gif|jpe?g)$/,
             use : [
               {
