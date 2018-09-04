@@ -144,10 +144,6 @@ module.exports = async function dispatch () {
     cmd.commands.forEach(async (name) => {
       let realcmd = utils.formatCmd(scripts[name], { runtime, cmdName })
 
-      if (realcmd.indexOf('docker run') !== -1) {
-        await utils.setupContainer({ runtime })
-      }
-
       let method = utils.runString.bind(utils.runString, realcmd, {
         runtime,
         cmdName,
@@ -167,10 +163,6 @@ module.exports = async function dispatch () {
     process.exit(0)
   } else if (_.isString(cmd)) {
     let realcmd = utils.formatCmd(cmd, { runtime, cmdName })
-
-    if (realcmd.indexOf('docker run') !== -1) {
-      await utils.setupContainer({ runtime })
-    }
 
     utils.runString(realcmd, { runtime, cmdName, origCmd: cmd, hookName: cmdName.replace(/(:watch|\[\])/, '') }, (err) => {
       if (err) {

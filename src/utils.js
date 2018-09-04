@@ -120,7 +120,7 @@ module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal =
   }
 }
 
-module.exports.dockerString = function dockerString (cmd, { opts = {}, runtime }) {
+module.exports.dockerString = function dockerString (cmd, { opts = {}, runtime } = {}) {
   let volumePaths = utils.volumePaths({ runtime })
   let listVolumes = []
   for (let key in volumePaths) {
@@ -146,11 +146,11 @@ module.exports.dockerString = function dockerString (cmd, { opts = {}, runtime }
   }
 
   // https://github.com/envygeeks/jekyll-docker/issues/223
+  // --env "JEKYLL_GID=${os.userInfo().gid}" // <-- runs the risk of: groupmod: GID '20' already exists
   let userstr = ''
   if (opts.priviliged === false) {
     userstr = oneLine`
       --env "JEKYLL_UID=${os.userInfo().uid}"
-      --env "JEKYLL_GID=${os.userInfo().gid}"
     `
   }
 
@@ -290,16 +290,6 @@ module.exports.initProject = async ({ assetsBuildDir, gitRoot, cacheDir }) => {
       }
     }
   }
-}
-
-module.exports.setupContainer = async ({runtime}) => {
-  // // Chown jekyll parent directories to avoid: `Permission denied @ dir_s_mkdir - /Users/`...
-  // let dirlist = utils.splitDir(runtime.contentBuildDir).map((i) => `'${i}'`).join(' ')
-  // preBuilds.push(`cd '${runtime.cacheDir}' && ${toolkit.dockerString(`bash -c "chown jekyll.jekyll ${dirlist}" || true`, { runtime })}`)
-
-  let scrolexOpts = {}
-  let cmd = utils.dockerString('ls', { runtime })
-  return scrolex.exe(cmd, scrolexOpts)
 }
 
 module.exports.fsCopySync = (src, dst, { mode = '644', encoding = 'utf-8' } = {}) => {

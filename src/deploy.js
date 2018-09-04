@@ -16,11 +16,11 @@ module.exports = async (runtime, cb) => {
     if (runtime.onTravis) {
       if (runtime.ghPagesEnv.GHPAGES_BOTNAME) {
         scrolex.stick('Setting up GHPAGES_BOTNAME')
-        await scrolex.exe(`git config --global user.name "${runtime.ghPagesEnv.GHPAGES_BOTNAME}" || true`, { cwd: runtime.contentBuildDir })
+        await scrolex.exe(`git config --global user.name "${runtime.ghPagesEnv.GHPAGES_BOTNAME}"`, { cwd: runtime.contentBuildDir })
       }
       if (runtime.ghPagesEnv.GHPAGES_BOTEMAIL) {
         scrolex.stick('Setting up GHPAGES_BOTEMAIL')
-        await scrolex.exe(`git config --global user.email "${runtime.ghPagesEnv.GHPAGES_BOTEMAIL}" || true`, { cwd: runtime.contentBuildDir })
+        await scrolex.exe(`git config --global user.email "${runtime.ghPagesEnv.GHPAGES_BOTEMAIL}"`, { cwd: runtime.contentBuildDir })
       }
     }
 
@@ -45,7 +45,7 @@ module.exports = async (runtime, cb) => {
     await scrolex.exe(`git remote add origin ${runtime.ghPagesEnv.GHPAGES_URL} 2> /dev/null || true`, { cwd: runtime.contentBuildDir })
     // required to update the token:
     await scrolex.exe(`git remote set-url origin ${runtime.ghPagesEnv.GHPAGES_URL}`, { cwd: runtime.contentBuildDir })
-    await scrolex.exe('git push origin gh-pages:refs/heads/gh-pages 2> /dev/null || git push origin gh-pages:refs/heads/gh-pages --force > /dev/null', { cwd: runtime.contentBuildDir })    
+    await scrolex.exe('git push origin gh-pages:refs/heads/gh-pages 2> /dev/null || git push origin gh-pages:refs/heads/gh-pages --force > /dev/null', { cwd: runtime.contentBuildDir })
     cb(null)
   } catch (err) {
     cb(err)

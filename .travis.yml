@@ -5,10 +5,7 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    packages:
-    - bc
 script:
-- if [ "$(bc <<< "${TRAVIS_NODE_VERSION} < 8")" -eq 1 ]; then (echo "Only Node 8 are supported"; exit 1); fi
 - npm run test
 - travis_wait 300 npm run test:acceptance
 os: linux
