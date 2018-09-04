@@ -178,6 +178,7 @@ module.exports.runhooks = async (order, cmdName, runtime) => {
 
   return scrolex.exe(squashedHooks.join(' && '), {
     cwd       : runtime.projectDir,
+    fatal     : true,
     mode      : 'passthru',
     components: `lanyon>hooks>${order}${cmdName}`,
   })
