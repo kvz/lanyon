@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`utils dockerString 1`] = `"docker run --rm --interactive --env \\"JEKYLL_UID=501\\" --env \\"JEKYLL_ENV=production\\" --workdir /Users/kvz/code/project/.lanyon --volume /Users/kvz/code/project:/Users/kvz/code/project kevinvz/lanyon:v1.0.109 ls"`;
