@@ -7,16 +7,14 @@ addons:
     - ubuntu-toolchain-r-test
 script:
 - npm run test
-- travis_wait 300 npm run test:acceptance
 os: linux
+group: edge
 dist: trusy
 sudo: required
 services: [ docker ]
 node_js: '8'
 language: node_js
 env:
-  matrix:
-  - OSDIST="trusty"
   global:
   - LANYON_USE_LINKED="1"
   - secure: Du81N+VYszPmbjdb17tMcKHAKBWlarOYr6Z+kN6h41s8VlS+rmLv9yRlEsxU8+P1x9AA31wwN5duIkyFZr+3GD7mGAjzowHnKZD5j1CF7v0cKoowfJW/mbtodh35/n3j28UQuA/C7OWjeYE5BhVtW7cV3h2Pgdgf1/h9P8jRNeOaMbuhvSsKrQj7lZ5ffzi12wJxWyZDnG1geaSP17cIiqG0B3oGesfY7ASYz+2G/YufgdunFtjMxyfPNfQD+06gxOKo5iFqkjfE84Atgsd+G91vVIxam4gBtVVbAi2qmeB1Dpz9N4sR+XV+u29381KBkflT0JeElABFulr2b5rUCW8ACKWGGzDLOALvFyS12iZjcZrvDag/s9bSm4Gjhf5VdE4ygpAxjSXhSpDJcC1sDeO/oUGoGdia01g9FHM99mFtemciZwxbGRsU7X9+JSEjqh51CmANuB+L/avsd/KVXF7RiKuu9CCTc3XGG6MxXNVUDaFE+wCfQZsMcqLeKzX4aLAMdrTT1VV0ZNQIo/DnvVF4oUvdhhwZlUcY74jBpW3tYnn7i+V66Hj15Ej+S01D/ZCJKP6xP5HgYGy1ArQzGx0tF65fHZ1O51GEZzaIcKFvzqhONDkBGEjulyaEWpb6j9ofJFdbUEkLdbwLdzTfJ8goZyyjmYw74/deg38ttzs=
