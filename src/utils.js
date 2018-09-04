@@ -2,6 +2,7 @@ const childProcess = require('child_process')
 const fs = require('fs')
 // const _        = require('lodash')
 const path = require('path')
+const os = require('os')
 // const _ = require('lodash')
 const yaml = require('js-yaml')
 // const spawnSync   = require('spawn-sync')
@@ -106,7 +107,7 @@ module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal =
   }
 }
 
-module.exports.dockerString = function dockerString (cmd, { runtime }) {
+module.exports.dockerString = function dockerString (cmd, { opts = {}, runtime }) {
   let volumePaths = utils.volumePaths({ runtime })
   let listVolumes = []
   for (let key in volumePaths) {
@@ -127,10 +128,24 @@ module.exports.dockerString = function dockerString (cmd, { runtime }) {
     `
   }
 
+  if (!opts || !('priviliged' in opts)) {
+    opts.priviliged = false
+  }
+
+  // https://github.com/envygeeks/jekyll-docker/issues/223
+  let userstr = ''
+  if (opts.priviliged === false) {
+    userstr = oneLine`
+      --env "JEKYLL_UID=${os.userInfo().uid}"
+      --env "JEKYLL_GID=${os.userInfo().gid}"
+    `
+  }
+
   return oneLine`
     docker run
       --rm
-      -i
+      --interactive
+      ${userstr}
       --env "JEKYLL_ENV=${runtime.lanyonEnv}"
       --workdir ${runtime.cacheDir}
       ${listVolumes.join('\n')}
