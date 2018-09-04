@@ -31,6 +31,8 @@ Released: TBA.
 Released: 2018-09-04.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.128...v0.0.129).
 
+- [x] Allow to `setupContainer()` (but don't use it yet)
+- [x] Write files as current $USER to avoid manual chowning
 - [x] Make failing hooks fatal
 
 ## v0.0.128

@@ -72,6 +72,19 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   return cmd
 }
 
+module.exports.splitDir = function splitDir (dir) {
+  let dirList = []
+  let parts = `${dir}`.split('/')
+  let cont = ''
+  for (let i in parts) {
+    let part = parts[i]
+    if (!part) continue
+    cont = `${cont}/${part}`
+    dirList.push(cont)
+  }
+  return dirList
+}
+
 module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal = '' }) {
   if (runtime.dying === true) {
     return
@@ -277,6 +290,16 @@ module.exports.initProject = async ({ assetsBuildDir, gitRoot, cacheDir }) => {
       }
     }
   }
+}
+
+module.exports.setupContainer = async ({runtime}) => {
+  // // Chown jekyll parent directories to avoid: `Permission denied @ dir_s_mkdir - /Users/`...
+  // let dirlist = utils.splitDir(runtime.contentBuildDir).map((i) => `'${i}'`).join(' ')
+  // preBuilds.push(`cd '${runtime.cacheDir}' && ${toolkit.dockerString(`bash -c "chown jekyll.jekyll ${dirlist}" || true`, { runtime })}`)
+
+  let scrolexOpts = {}
+  let cmd = utils.dockerString('ls', { runtime })
+  return scrolex.exe(cmd, scrolexOpts)
 }
 
 module.exports.fsCopySync = (src, dst, { mode = '644', encoding = 'utf-8' } = {}) => {
