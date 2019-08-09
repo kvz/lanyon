@@ -32,7 +32,7 @@ elif [ "${mode}" = "connect" ]; then
   set -x
   docker run \
     --rm \
-    --volume="$PWD:/srv/jekyll" \
+    --volume="${PWD}:/srv/jekyll" \
     -it "kevinvz/lanyon:${__lanyonVersion}" \
     bash
 else
