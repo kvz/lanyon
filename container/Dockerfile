@@ -14,7 +14,7 @@ RUN gem install \
     stringex:2.8.4 \
     jekyll-feed:0.10.0 \
     jekyll-crosspost-to-medium:0.1.15 \
-    jekyll-lunr-js-search:3.3.0 \
+    jekyll-algolia:1.4.11 \
     liquid_pluralize:1.0.3 \
     minimal-mistakes-jekyll:4.16.5 \
   -- --use-system-libraries 
