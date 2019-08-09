@@ -4,7 +4,7 @@
 # https://rubygems.org/gems/stringex
 # https://rubygems.org/gems/jekyll-feed
 # https://rubygems.org/gems/jekyll-crosspost-to-medium
-# https://rubygems.org/gems/jekyll-lunr-js-search
+# https://rubygems.org/gems/jekyll-algolia
 # https://rubygems.org/gems/liquid_pluralize
 # https://rubygems.org/gems/minimal-mistakes-jekyll
 FROM jekyll/jekyll:3.8
