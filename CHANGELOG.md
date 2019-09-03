@@ -14,7 +14,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.136...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.137...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -25,6 +25,15 @@ Released: TBA.
 - [ ] Upgrade Webpack and friends
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
+
+## v0.0.137
+
+Released: 2019-09-03.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.136...v0.0.137).
+
+- [x] Upgrade to Jekyll 4
+- [x] Upgrade to jekyll-feed 0.12.1 and minimal-mistakes-jekyll 4.16.6
+- [x] Deprecate jekyll-algolia, github-pages
 
 ## v0.0.136
 

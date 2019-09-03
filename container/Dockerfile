@@ -7,20 +7,20 @@
 # https://rubygems.org/gems/jekyll-algolia
 # https://rubygems.org/gems/liquid_pluralize
 # https://rubygems.org/gems/minimal-mistakes-jekyll
-FROM jekyll/jekyll:3.8
+# jekyll-algolia:1.4.11 \
+# github-pages:198 \
+# stringex:2.8.4 \
+FROM jekyll/jekyll:4.0
 RUN gem install \
-    github-pages:198 \
     jekyll-archives:2.2.1 \
-    stringex:2.8.4 \
-    jekyll-feed:0.10.0 \
+    jekyll-feed:0.12.1 \
     jekyll-crosspost-to-medium:0.1.15 \
-    jekyll-algolia:1.4.11 \
     liquid_pluralize:1.0.3 \
-    minimal-mistakes-jekyll:4.16.5 \
+    minimal-mistakes-jekyll:4.16.6 \
   -- --use-system-libraries 
-COPY Gemfile.lock /srv/jekyll/Gemfile.lock
-COPY Gemfile /srv/jekyll/Gemfile
-RUN bundle update --verbose
+# COPY Gemfile.lock /srv/jekyll/Gemfile.lock
+# COPY Gemfile /srv/jekyll/Gemfile
+# RUN bundle update --verbose
 # COPY package.json /srv/lanyon/package.json
 # COPY yarn.lock /srv/lanyon/yarn.lock
 # RUN cd /srv/lanyon && yarn --production
