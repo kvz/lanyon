@@ -9,10 +9,10 @@
 # https://rubygems.org/gems/minimal-mistakes-jekyll
 # jekyll-algolia:1.4.11 \
 # github-pages:198 \
-# stringex:2.8.4 \
 FROM jekyll/jekyll:4.0
 RUN gem install \
     jekyll-archives:2.2.1 \
+    stringex:2.8.5 \
     jekyll-feed:0.12.1 \
     jekyll-crosspost-to-medium:0.1.15 \
     liquid_pluralize:1.0.3 \
