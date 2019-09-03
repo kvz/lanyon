@@ -21,7 +21,9 @@ module.exports = async function dispatch () {
   const runtime = config.runtime
   const cmdName = process.argv[2]
 
-  let buildCmd = '[jekyll] build --verbose --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml'
+  // let buildCmd = '[jekyll] build --verbose --trace --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml'
+  // LANYON_EXTRA_JEKYLL_FLAGS="--trace --verbose"
+  let buildCmd = `[jekyll] build ${process.env.LANYON_EXTRA_JEKYLL_FLAGS || ''} --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml`
   let formattedBuildCmd = utils.formatCmd(buildCmd, { runtime, cmdName })
   // console.log(formattedBuildCmd)
 
