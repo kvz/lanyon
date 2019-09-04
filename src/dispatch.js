@@ -127,6 +127,9 @@ module.exports = async function dispatch () {
   process.on('SIGINT', function () {
     utils.trapCleanup({ runtime, signal: 'SIGINT' })
   })
+  process.on('SIGUSR2', function () {
+    utils.trapCleanup({ runtime, signal: 'SIGUSR2' })
+  })
 
   // Run cmd arg
   if (_.isFunction(cmd)) {
