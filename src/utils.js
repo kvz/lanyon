@@ -30,7 +30,7 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
 
   // Replace all npms with their first-found full-path executables
   const npmBins = {
-    'browser-sync': 'node_modules/browser-sync/bin/browser-sync.js',
+    'browser-sync': 'node_modules/browser-sync/dist/bin.js',
     'nodemon'     : 'node_modules/nodemon/bin/nodemon.js',
     'webpack'     : 'node_modules/webpack/bin/webpack.js',
     // 'imagemin'     : 'node_modules/imagemin-cli/cli.js',
