@@ -31,6 +31,7 @@ Released: TBA.
 Released: 2019-09-04.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.141...v0.0.142).
 
+- [x] Update dependencies (within major)
 - [x] Make all processes less verbose, unless `LANYON_DEBUG=1`
 - [x] Remove `reloadThrottle` and `reloadDelay` so that hopefully `reloadDebounce` in browsersync can persevere
 - [x] Crash lanyon if it catches a `SIGUSR2` (which could be thrown by Nodemon)
