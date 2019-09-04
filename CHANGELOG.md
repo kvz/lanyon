@@ -29,7 +29,7 @@ Released: TBA.
 ## v0.0.142
 
 Released: 2019-09-04.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.140...v0.0.142).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.141...v0.0.142).
 
 - [x] Crash lanyon if it catches a `SIGUSR2` (which could be thrown by Nodemon)
 - [x] Crash nodemon (and hence lanyon) if its child-process-to-be-started-on-filechange (docker->jekyll) crash
