@@ -1,7 +1,7 @@
 module.exports = function ({runtime, jekyll}) {
   let nodemonCfg = {
-    onChangeOnly: true,
-    verbose     : true,
+    onChangeOnly: false,
+    verbose     : false,
     delay       : 600,
     watch       : runtime.contentScandir,
     ignore      : [
