@@ -284,7 +284,7 @@ module.exports.initProject = async ({ assetsBuildDir, gitRoot, cacheDir }) => {
     if (!fs.existsSync(dir)) {
       let rel = path.relative(gitRoot, dir)
       try {
-        await scrolex.exe(`mkdir -p '${rel}' && git ignore '${rel}'`, scrolexOpts)
+        await scrolex.exe(`mkdir -p '${rel}' && echo '${rel}' >> .gitignore`, scrolexOpts)
       } catch (err) {
         console.error(`Could not create dir. rel=${rel} gitRoot=${gitRoot} dir=${dir} err=${err}`)
       }

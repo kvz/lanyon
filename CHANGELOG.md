@@ -14,7 +14,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.141...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.142...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -26,9 +26,16 @@ Released: TBA.
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
 
+## v0.0.142
+
+Released: 2019-09-04.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.140...v0.0.142).
+
+- [x] Fix `git ignore` error
+
 ## v0.0.141
 
-Released: 2019-09-03.
+Released: 2019-09-04.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.140...v0.0.141).
 
 - [x] Allow to pass in webpack resolve alias via `runtime.alias`
