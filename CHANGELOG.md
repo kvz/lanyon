@@ -31,6 +31,7 @@ Released: TBA.
 Released: 2019-09-04.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.140...v0.0.142).
 
+- [x] Crash nodemon (and hence lanyon) if its child-process-to-be-started-on-filechange (docker->jekyll) crash
 - [x] Fix `git ignore` error
 
 ## v0.0.141
