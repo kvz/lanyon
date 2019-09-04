@@ -537,9 +537,7 @@ module.exports = function ({runtime}) {
       // If false it's also try to use no module extension from above
       enforceModuleExtension: false,
       // These aliasing is used when trying to resolve a module
-      // alias: {
-      //   jquery: path.resolve(__dirname, 'vendor/jquery-2.0.0.js'),
-      // },
+      alias                 : runtime.alias,
     },
   }
 
