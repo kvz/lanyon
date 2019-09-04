@@ -57,10 +57,9 @@ module.exports = function ({runtime, webpack}) {
         '.lanyon',
       ],
     },
-    reloadDelay   : 100, // Time, in milliseconds, to wait before instructing the browser to reload/inject following a file change event
     reloadDebounce: 300, // Wait for a specified window of event-silence before sending any reload events.
     files         : runtime.contentBuildDir,
-    logLevel      : 'debug',
+    logLevel      : process.env.LANYON_DEBUG === '1' ? 'debug' : 'info',
   }
 
   return browsersyncCfg
