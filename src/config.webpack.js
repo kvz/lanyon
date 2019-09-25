@@ -104,7 +104,7 @@ module.exports = function ({runtime}) {
     devtool: (function dynamicDevtool () {
       // https://webpack.js.org/configuration/devtool/#devtool
       if (runtime.isDev) {
-        return 'inline-eval-cheap-source-map'
+        return 'eval-source-map'
       }
 
       return 'source-map'
