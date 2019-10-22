@@ -377,11 +377,12 @@ module.exports = function ({runtime}) {
             {
               loader : 'babel-loader',
               options: {
-                babelrc: true,
+                // babelrc: true,
                 presets: [
-                  require.resolve('babel-preset-es2015'),
-                  require.resolve('babel-preset-react'),
-                  require.resolve('babel-preset-stage-0'),
+                  ['@babel/preset-env', {
+                    'debug': true
+                  }],
+                  '@babel/preset-react',
                 ],
                 plugins: [
                   require.resolve('babel-plugin-transform-class-properties'),
