@@ -76,8 +76,6 @@ module.exports = function ({runtime}) {
     path.join(runtime.lanyonDir, 'node_modules'),
   ].concat(runtime.extraAssetsSourceDirs || [])
 
-  console.log({ moduleDirs })
-
   let webpackCfg = {
     entry: (function dynamicEntries () {
       var entries = {}
