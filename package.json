@@ -29,7 +29,7 @@
     "jest:watch": "env DEBUG=scrolex:* NODE_ENV=test jest --watch",
     "jest": "env DEBUG=scrolex:* NODE_ENV=test jest",
     "lint": "DEBUG=eslint:cli-engine eslint .",
-    "npublish": "npm publish",
+    "npublish": "npm publish --otp",
     "push": "git push && git push --tags",
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
