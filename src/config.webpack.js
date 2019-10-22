@@ -405,6 +405,7 @@ module.exports = function ({runtime}) {
         new webpack.DefinePlugin({
           'process.env.LANYON_ENV': JSON.stringify(runtime.lanyonEnv),
           'process.env.NODE_ENV'  : JSON.stringify(process.env.NODE_ENV),
+          'process.env.ENDPOINT'  : JSON.stringify(process.env.ENDPOINT),
         }),
         new webpack.ProvidePlugin({
           _: 'lodash',
