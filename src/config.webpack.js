@@ -69,6 +69,15 @@ module.exports = function ({runtime}) {
     return filename
   }
 
+  const moduleDirs = [
+    runtime.assetsSourceDir,
+    path.join(runtime.projectDir, 'node_modules'),
+    path.join(runtime.npmRoot, 'node_modules'),
+    path.join(runtime.lanyonDir, 'node_modules'),
+  ].concat(runtime.extraAssetsSourceDirs || [])
+
+  console.log({ moduleDirs })
+
   let webpackCfg = {
     entry: (function dynamicEntries () {
       var entries = {}
@@ -363,7 +372,7 @@ module.exports = function ({runtime}) {
           test   : /\.(js|jsx)$/,
           include: [
             `${runtime.assetsSourceDir}`,
-          ],
+          ].concat((runtime.extraAssetsSourceDirs || [])),
           exclude: [
             /[\\/](node_modules|js-untouched)[\\/]/,
           ],
@@ -513,12 +522,7 @@ module.exports = function ({runtime}) {
       optimizationBailout: true,
     },
     resolve: {
-      modules: [
-        runtime.assetsSourceDir,
-        path.join(runtime.projectDir, 'node_modules'),
-        path.join(runtime.npmRoot, 'node_modules'),
-        path.join(runtime.lanyonDir, 'node_modules'),
-      ],
+      modules: moduleDirs,
 
       // These JSON files are read in directories
       descriptionFiles: ['package.json'],

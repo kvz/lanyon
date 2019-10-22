@@ -70,6 +70,7 @@ module.exports = function () {
   runtimeCfg.cacheDir = path.join(runtimeCfg.projectDir, '.lanyon')
   runtimeCfg.recordsPath = path.join(runtimeCfg.cacheDir, 'records.json')
   runtimeCfg.assetsSourceDir = path.join(runtimeCfg.projectDir, 'assets')
+  runtimeCfg.extraAssetsSourceDirs = []
   runtimeCfg.assetsBuildDir = path.join(runtimeCfg.assetsSourceDir, 'build')
   runtimeCfg.contentScandir = path.join(runtimeCfg.projectDir, runtimeCfg.contentScandir || '.')
   runtimeCfg.contentBuildDir = path.join(runtimeCfg.projectDir, '_site')
