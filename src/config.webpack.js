@@ -402,6 +402,10 @@ module.exports = function ({runtime}) {
     },
     plugins: (function dynamicPlugins () {
       let plugins = [
+        new webpack.DefinePlugin({
+          'process.env.LANYON_ENV': JSON.stringify(runtime.lanyonEnv),
+          'process.env.NODE_ENV'  : JSON.stringify(process.env.NODE_ENV),
+        }),
         new webpack.ProvidePlugin({
           _: 'lodash',
         }),
@@ -448,11 +452,6 @@ module.exports = function ({runtime}) {
         // When deploying React apps to production, make sure to use the production build which
         // skips development warnings and is faster. See https://fb.me/react-minification for more details.
         // https://facebook.github.io/react/docs/optimizing-performance.html#use-the-production-build
-        plugins.push(new webpack.DefinePlugin({
-          'process.env': {
-            NODE_ENV: JSON.stringify('production'),
-          },
-        }))
         plugins.push(new webpack.optimize.UglifyJsPlugin({
           compress: {
             warnings: false,
