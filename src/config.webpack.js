@@ -377,15 +377,19 @@ module.exports = function ({runtime}) {
             {
               loader : 'babel-loader',
               options: {
-                // babelrc: true,
+                babelrc: false,
                 presets: [
-                  ['@babel/preset-env', {
-                    'debug': true
+                  [require.resolve('@babel/preset-env'), {
+                    'debug'  : false,
+                    'modules': 'commonjs',
+                    'loose'  : false,
                   }],
-                  '@babel/preset-react',
+                  require.resolve('@babel/preset-react'),
                 ],
                 plugins: [
-                  require.resolve('babel-plugin-transform-class-properties'),
+                  require.resolve('@babel/plugin-proposal-class-properties'),
+                  require.resolve('react-hot-loader/babel'),
+                  require.resolve('nanohtml'),
                 ],
                 // sourceRoot    : `${runtime.projectDir}`,
                 cacheDirectory: `${runtime.cacheDir}/babelCache`,
