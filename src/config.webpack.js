@@ -69,6 +69,15 @@ module.exports = function ({runtime}) {
     return filename
   }
 
+  const moduleDirs = [
+    runtime.assetsSourceDir,
+    path.join(runtime.projectDir, 'node_modules'),
+    path.join(runtime.npmRoot, 'node_modules'),
+    path.join(runtime.lanyonDir, 'node_modules'),
+  ].concat(runtime.extraAssetsSourceDirs || [])
+
+  console.log({ moduleDirs })
+
   let webpackCfg = {
     entry: (function dynamicEntries () {
       var entries = {}
@@ -104,7 +113,7 @@ module.exports = function ({runtime}) {
     devtool: (function dynamicDevtool () {
       // https://webpack.js.org/configuration/devtool/#devtool
       if (runtime.isDev) {
-        return 'inline-eval-cheap-source-map'
+        return 'eval-source-map'
       }
 
       return 'source-map'
@@ -363,7 +372,7 @@ module.exports = function ({runtime}) {
           test   : /\.(js|jsx)$/,
           include: [
             `${runtime.assetsSourceDir}`,
-          ],
+          ].concat((runtime.extraAssetsSourceDirs || [])),
           exclude: [
             /[\\/](node_modules|js-untouched)[\\/]/,
           ],
@@ -377,14 +386,19 @@ module.exports = function ({runtime}) {
             {
               loader : 'babel-loader',
               options: {
-                babelrc: true,
+                babelrc: false,
                 presets: [
-                  require.resolve('babel-preset-es2015'),
-                  require.resolve('babel-preset-react'),
-                  require.resolve('babel-preset-stage-0'),
+                  [require.resolve('@babel/preset-env'), {
+                    'debug'  : false,
+                    'modules': 'commonjs',
+                    'loose'  : false,
+                  }],
+                  require.resolve('@babel/preset-react'),
                 ],
                 plugins: [
-                  require.resolve('babel-plugin-transform-class-properties'),
+                  require.resolve('@babel/plugin-proposal-class-properties'),
+                  require.resolve('react-hot-loader/babel'),
+                  require.resolve('nanohtml'),
                 ],
                 // sourceRoot    : `${runtime.projectDir}`,
                 cacheDirectory: `${runtime.cacheDir}/babelCache`,
@@ -397,6 +411,11 @@ module.exports = function ({runtime}) {
     },
     plugins: (function dynamicPlugins () {
       let plugins = [
+        new webpack.DefinePlugin({
+          'process.env.LANYON_ENV': JSON.stringify(runtime.lanyonEnv),
+          'process.env.NODE_ENV'  : JSON.stringify(process.env.NODE_ENV),
+          'process.env.ENDPOINT'  : JSON.stringify(process.env.ENDPOINT),
+        }),
         new webpack.ProvidePlugin({
           _: 'lodash',
         }),
@@ -443,11 +462,6 @@ module.exports = function ({runtime}) {
         // When deploying React apps to production, make sure to use the production build which
         // skips development warnings and is faster. See https://fb.me/react-minification for more details.
         // https://facebook.github.io/react/docs/optimizing-performance.html#use-the-production-build
-        plugins.push(new webpack.DefinePlugin({
-          'process.env': {
-            NODE_ENV: JSON.stringify('production'),
-          },
-        }))
         plugins.push(new webpack.optimize.UglifyJsPlugin({
           compress: {
             warnings: false,
@@ -508,12 +522,7 @@ module.exports = function ({runtime}) {
       optimizationBailout: true,
     },
     resolve: {
-      modules: [
-        runtime.assetsSourceDir,
-        path.join(runtime.projectDir, 'node_modules'),
-        path.join(runtime.npmRoot, 'node_modules'),
-        path.join(runtime.lanyonDir, 'node_modules'),
-      ],
+      modules: moduleDirs,
 
       // These JSON files are read in directories
       descriptionFiles: ['package.json'],
@@ -537,9 +546,7 @@ module.exports = function ({runtime}) {
       // If false it's also try to use no module extension from above
       enforceModuleExtension: false,
       // These aliasing is used when trying to resolve a module
-      // alias: {
-      //   jquery: path.resolve(__dirname, 'vendor/jquery-2.0.0.js'),
-      // },
+      alias                 : runtime.alias,
     },
   }
 

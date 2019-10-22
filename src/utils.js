@@ -30,7 +30,7 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
 
   // Replace all npms with their first-found full-path executables
   const npmBins = {
-    'browser-sync': 'node_modules/browser-sync/bin/browser-sync.js',
+    'browser-sync': 'node_modules/browser-sync/dist/bin.js',
     'nodemon'     : 'node_modules/nodemon/bin/nodemon.js',
     'webpack'     : 'node_modules/webpack/bin/webpack.js',
     // 'imagemin'     : 'node_modules/imagemin-cli/cli.js',
@@ -284,7 +284,7 @@ module.exports.initProject = async ({ assetsBuildDir, gitRoot, cacheDir }) => {
     if (!fs.existsSync(dir)) {
       let rel = path.relative(gitRoot, dir)
       try {
-        await scrolex.exe(`mkdir -p '${rel}' && git ignore '${rel}'`, scrolexOpts)
+        await scrolex.exe(`mkdir -p '${rel}' && echo '${rel}' >> .gitignore`, scrolexOpts)
       } catch (err) {
         console.error(`Could not create dir. rel=${rel} gitRoot=${gitRoot} dir=${dir} err=${err}`)
       }

@@ -21,7 +21,18 @@ module.exports = async function dispatch () {
   const runtime = config.runtime
   const cmdName = process.argv[2]
 
-  let buildCmd = '[jekyll] build --verbose --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml'
+  // let buildCmd = '[jekyll] build --verbose --trace --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml'
+  // LANYON_EXTRA_JEKYLL_FLAGS="--trace --verbose"
+
+  let extraFlags = ''
+  if (process.env.LANYON_EXTRA_JEKYLL_FLAGS) {
+    extraFlags += process.env.LANYON_EXTRA_JEKYLL_FLAGS + ' '
+  }
+  if (process.env.LANYON_DEBUG === '1') {
+    extraFlags += '--verbose --trace '
+  }
+
+  let buildCmd = `[jekyll] build ${extraFlags}--config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml`
   let formattedBuildCmd = utils.formatCmd(buildCmd, { runtime, cmdName })
   // console.log(formattedBuildCmd)
 
@@ -33,7 +44,7 @@ module.exports = async function dispatch () {
 
   const scripts = {
     'build:assets'       : '[webpack] --config [cacheDir]/webpack.config.js',
-    'build:content:watch': `env DEBUG=nodemon:* [nodemon] --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} ${strPostBuildContentHooks}'`,
+    'build:content:watch': `${process.env.LANYON_DEBUG === '1' ? `env DEBUG=nodemon:* ` : ''}[nodemon] --exitcrash --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} ${strPostBuildContentHooks}'`,
     // 'build:content:watch': '[jekyll] build --watch --verbose --force_polling --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     'build:content'      : buildCmd,
     // 'build:images'             : '[imagemin] [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
@@ -124,6 +135,9 @@ module.exports = async function dispatch () {
   })
   process.on('SIGINT', function () {
     utils.trapCleanup({ runtime, signal: 'SIGINT' })
+  })
+  process.on('SIGUSR2', function () {
+    utils.trapCleanup({ runtime, signal: 'SIGUSR2' })
   })
 
   // Run cmd arg

@@ -14,7 +14,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.136...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.3...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -25,6 +25,85 @@ Released: TBA.
 - [ ] Upgrade Webpack and friends
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
+- [ ] (BREAKING) Make Lanyon look solely at browserrc and do not bundle a list of browser
+
+## v0.1.3
+
+Released: 2019-10-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.2...v0.1.3).
+
+- [x] Add support for `extraAssetsSourceDirs`
+
+## v0.1.2
+
+Released: 2019-10-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.1...v0.1.2).
+
+- [x] Allow `process.env.ENDPOINT` to be used in JS
+
+## v0.1.1
+
+Released: 2019-10-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.0...v0.1.1).
+
+- [x] Also allow `process.env.NODE_ENV` to be used in JS when `LANYON_ENV` is `'development'`
+- [x] Allow `process.env.LANYON_ENV` to be used in JS
+
+## v0.1.0
+
+Released: 2019-10-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.143...v0.1.0).
+
+- [x] (BREAKING) Upgrade to Babel 7 and the babel-env preset. Among things, you'll need to change `Object.assign()`s to Object Spreads
+
+## v0.0.143
+
+Released: 2019-09-25.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.142...v0.0.143).
+
+- [x] Switch to `eval-source-map` in dev which provides better sourcemaps (#20, thanks @lakesare)
+
+## v0.0.142
+
+Released: 2019-09-04.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.141...v0.0.142).
+
+- [x] Update dependencies (within major)
+- [x] Make all processes less verbose, unless `LANYON_DEBUG=1`
+- [x] Remove `reloadThrottle` and `reloadDelay` so that hopefully `reloadDebounce` in browsersync can persevere
+- [x] Crash lanyon if it catches a `SIGUSR2` (which could be thrown by Nodemon)
+- [x] Crash nodemon (and hence lanyon) if its child-process-to-be-started-on-filechange (docker->jekyll) crash
+- [x] Fix `git ignore` error
+
+## v0.0.141
+
+Released: 2019-09-04.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.140...v0.0.141).
+
+- [x] Allow to pass in webpack resolve alias via `runtime.alias`
+
+## v0.0.140
+
+Released: 2019-09-03.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.139...v0.0.140).
+
+- [x] Don't run in verbose mode by default (but allow passing in `LANYON_EXTRA_JEKYLL_FLAGS="--trace --verbose"` if more detail is needed)
+
+## v0.0.139
+
+Released: 2019-09-03.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.136...v0.0.139).
+
+- [x] Bring back stringex
+
+## v0.0.137
+
+Released: 2019-09-03.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.136...v0.0.137).
+
+- [x] Upgrade to Jekyll 4
+- [x] Upgrade to jekyll-feed 0.12.1 and minimal-mistakes-jekyll 4.16.6
+- [x] Deprecate jekyll-algolia, github-pages
 
 ## v0.0.136
 
