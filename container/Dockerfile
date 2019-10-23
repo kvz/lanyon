@@ -8,6 +8,9 @@
 # https://rubygems.org/gems/jekyll-sitemap
 # https://rubygems.org/gems/jekyll-mentions
 # https://rubygems.org/gems/jekyll-tagging
+# https://rubygems.org/gems/jekyll-paginate
+# https://rubygems.org/gems/jekyll-tagsgenerator
+
 FROM jekyll/jekyll:4.0
 RUN gem install \
     jekyll-archives:2.2.1 \
@@ -19,6 +22,8 @@ RUN gem install \
     jekyll-sitemap:1.3.1 \
     jekyll-mentions:1.5.1 \
     jekyll-tagging:1.1.0 \
+    jekyll-paginate:1.1.0 \
+    jekyll-tagsgenerator:0.0.2 \
   -- --use-system-libraries 
 # COPY Gemfile.lock /srv/jekyll/Gemfile.lock
 # COPY Gemfile /srv/jekyll/Gemfile
