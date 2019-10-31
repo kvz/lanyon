@@ -10,6 +10,7 @@
 # https://rubygems.org/gems/jekyll-tagging
 # https://rubygems.org/gems/jekyll-paginate
 # https://rubygems.org/gems/jekyll-tagsgenerator
+# https://rubygems.org/gems/jekyll-last-modified-at
 # https://rubygems.org/gems/jekyll-redirect-from
 
 FROM jekyll/jekyll:4.0
@@ -25,6 +26,7 @@ RUN gem install \
     jekyll-tagging:1.1.0 \
     jekyll-paginate:1.1.0 \
     jekyll-tagsgenerator:0.0.2 \
+    jekyll-last-modified-at:1.1.0 \
     jekyll-redirect-from:0.15.0 \
   -- --use-system-libraries 
 # COPY Gemfile.lock /srv/jekyll/Gemfile.lock
