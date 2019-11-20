@@ -14,7 +14,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.1.8...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.9...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -26,6 +26,13 @@ Released: TBA.
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
 - [ ] (BREAKING) Make Lanyon look solely at browserrc and do not bundle a list of browser
+
+## v0.1.9
+
+Released: 2019-11-20
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.8...v0.1.9).
+
+- [x] Fix: `BrowserslistError: Unknown version 3 of safari`
 
 ## v0.1.8
 
@@ -39,7 +46,7 @@ Released: 2019-10-23.
 Released: 2019-10-23.
 [Diff](https://github.com/kvz/lanyon/compare/v0.1.6...v0.1.7).
 
-- [x] Add redirect from
+- [x] Add redirect_from
 
 ## v0.1.6
 

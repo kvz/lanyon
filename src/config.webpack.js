@@ -366,11 +366,16 @@ module.exports = function ({runtime}) {
           })
         }
 
+        let jsDirs = [
+          `${runtime.assetsSourceDir}`,
+        ].concat((runtime.extraAssetsSourceDirs || []))
+
+        // console.log({jsDirs})
+        // process.exit(1)
+
         rules.push({
           test   : /\.(js|jsx)$/,
-          include: [
-            `${runtime.assetsSourceDir}`,
-          ].concat((runtime.extraAssetsSourceDirs || [])),
+          include: jsDirs,
           exclude: [
             /[\\/](node_modules|js-untouched)[\\/]/,
           ],
