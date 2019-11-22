@@ -14,7 +14,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.1.9...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.10...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -26,6 +26,13 @@ Released: TBA.
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
 - [ ] (BREAKING) Make Lanyon look solely at browserrc and do not bundle a list of browser
+
+## v0.1.10
+
+Released: 2019-11-22
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.9...v0.1.10).
+
+- [x] Switch from jekyll-paginate v1 to v2
 
 ## v0.1.9
 

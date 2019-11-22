@@ -8,7 +8,7 @@
 # https://rubygems.org/gems/jekyll-sitemap
 # https://rubygems.org/gems/jekyll-mentions
 # https://rubygems.org/gems/jekyll-tagging
-# https://rubygems.org/gems/jekyll-paginate
+# https://rubygems.org/gems/jekyll-paginate-v2
 # https://rubygems.org/gems/jekyll-tagsgenerator
 # https://rubygems.org/gems/jekyll-last-modified-at
 # https://rubygems.org/gems/jekyll-redirect-from
@@ -24,11 +24,12 @@ RUN gem install \
     jekyll-sitemap:1.3.1 \
     jekyll-mentions:1.5.1 \
     jekyll-tagging:1.1.0 \
-    jekyll-paginate:1.1.0 \
+    jekyll-paginate-v2:2.0.0 \
     jekyll-tagsgenerator:0.0.2 \
     jekyll-last-modified-at:1.1.0 \
     jekyll-redirect-from:0.15.0 \
   -- --use-system-libraries 
+# jekyll-paginate:1.1.0 \
 # COPY Gemfile.lock /srv/jekyll/Gemfile.lock
 # COPY Gemfile /srv/jekyll/Gemfile
 # RUN bundle update --verbose
