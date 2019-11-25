@@ -24,12 +24,17 @@ RUN gem install \
     jekyll-sitemap:1.3.1 \
     jekyll-mentions:1.5.1 \
     jekyll-tagging:1.1.0 \
-    jekyll-paginate-v2:2.0.0 \
+    jekyll-paginate:1.1.0 \
     jekyll-tagsgenerator:0.0.2 \
     jekyll-last-modified-at:1.1.0 \
     jekyll-redirect-from:0.15.0 \
   -- --use-system-libraries 
-# jekyll-paginate:1.1.0 \
+
+#     jekyll-paginate-v2:1.9.4 \
+# RUN gem specific_install \
+#   https://github.com/mmistakes/jekyll-paginate-v2.git -b jekyll-v4 \
+#   -- --use-system-libraries 
+
 # COPY Gemfile.lock /srv/jekyll/Gemfile.lock
 # COPY Gemfile /srv/jekyll/Gemfile
 # RUN bundle update --verbose
