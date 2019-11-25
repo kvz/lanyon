@@ -14,7 +14,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.1.11...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.12...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -25,7 +25,14 @@ Released: TBA.
 - [ ] Upgrade Webpack and friends
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
-- [ ] (BREAKING) Make Lanyon look solely at browserrc and do not bundle a list of browser
+
+## v0.1.12
+
+Released: 2019-11-22
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.11...v0.1.12).
+
+- [x] Make Lanyon look at browser config as passing in by project via runtime.browsers
+- [x] Upgrade to standard14
 
 ## v0.1.11
 

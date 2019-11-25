@@ -13,45 +13,36 @@ const scrolex = require('scrolex').persistOpts({
   components           : 'lanyon>config>webpack',
 })
 
-const postCssLoader = {
-  loader : 'postcss-loader',
-  options: {
-    sourceMap: true,
-    ident    : 'postcss',
-    plugins  : (loader) => [
-      require('autoprefixer')({
-        browsers: [
-          '> 1%',
-          'ie 10',
-          'ie 8',
-          'safari 4',
-        ],
-      }),
-      // require('cssnano')(),
-    ],
-  },
-}
-
-const postCssLoaderProduction = {
-  loader : 'postcss-loader',
-  options: {
-    sourceMap: true,
-    ident    : 'postcss',
-    plugins  : (loader) => [
-      require('autoprefixer')({
-        browsers: [
-          '> 1%',
-          'ie 10',
-          'ie 8',
-          'safari 4',
-        ],
-      }),
-      // require('cssnano')(),
-    ],
-  },
-}
-
 module.exports = function ({ runtime }) {
+  const browsers = runtime.browsers || [ '> 1%', 'ie 10', 'ie 8', 'safari 4' ]
+  const postCssLoader = {
+    loader : 'postcss-loader',
+    options: {
+      sourceMap: true,
+      ident    : 'postcss',
+      plugins  : (loader) => [
+        require('autoprefixer')({
+          browsers: browsers,
+        }),
+        // require('cssnano')(),
+      ],
+    },
+  }
+
+  const postCssLoaderProduction = {
+    loader : 'postcss-loader',
+    options: {
+      sourceMap: true,
+      ident    : 'postcss',
+      plugins  : (loader) => [
+        require('autoprefixer')({
+          browsers: browsers,
+        }),
+        // require('cssnano')(),
+      ],
+    },
+  }
+
   function getFilename (extension, isChunk, isContent) {
     let filename = `[name].${extension}`
 
