@@ -10,7 +10,7 @@ const WebpackMd5Hash = require('webpack-md5-hash')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
-  components           : `lanyon>config>webpack`,
+  components           : 'lanyon>config>webpack',
 })
 
 const postCssLoader = {
@@ -51,7 +51,7 @@ const postCssLoaderProduction = {
   },
 }
 
-module.exports = function ({runtime}) {
+module.exports = function ({ runtime }) {
   function getFilename (extension, isChunk, isContent) {
     let filename = `[name].${extension}`
 
@@ -76,7 +76,7 @@ module.exports = function ({runtime}) {
     path.join(runtime.lanyonDir, 'node_modules'),
   ].concat(runtime.extraAssetsSourceDirs || [])
 
-  let webpackCfg = {
+  const webpackCfg = {
     entry: (function dynamicEntries () {
       var entries = {}
 
@@ -119,7 +119,7 @@ module.exports = function ({runtime}) {
     bail  : false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
     module: {
       rules: (function dynamicRules () {
-        let rules = [
+        const rules = [
           {
             test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
             use : [
@@ -366,7 +366,7 @@ module.exports = function ({runtime}) {
           })
         }
 
-        let jsDirs = [
+        const jsDirs = [
           `${runtime.assetsSourceDir}`,
         ].concat((runtime.extraAssetsSourceDirs || []))
 
@@ -392,9 +392,9 @@ module.exports = function ({runtime}) {
                 babelrc: false,
                 presets: [
                   [require.resolve('@babel/preset-env'), {
-                    'debug'  : false,
-                    'modules': 'commonjs',
-                    'loose'  : false,
+                    debug  : false,
+                    modules: 'commonjs',
+                    loose  : false,
                   }],
                   require.resolve('@babel/preset-react'),
                 ],
@@ -413,7 +413,7 @@ module.exports = function ({runtime}) {
       }()),
     },
     plugins: (function dynamicPlugins () {
-      let plugins = [
+      const plugins = [
         new webpack.DefinePlugin({
           'process.env.LANYON_ENV': JSON.stringify(runtime.lanyonEnv),
           'process.env.NODE_ENV'  : JSON.stringify(process.env.NODE_ENV),

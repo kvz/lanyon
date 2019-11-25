@@ -8,7 +8,7 @@ const oneLine = require('common-tags/lib/oneLine')
 
 describe('utils', () => {
   test('dockerString', () => {
-    let p = {
+    const p = {
       runtime: {
         contentBuildDir: '/Users/kvz/code/project/_site',
         cacheDir       : '/Users/kvz/code/project/.lanyon',
@@ -17,7 +17,7 @@ describe('utils', () => {
         lanyonEnv      : 'production',
       },
     }
-    let res = utils.dockerString('ls', p)
+    const res = utils.dockerString('ls', p)
     expect(res).toMatch(new RegExp(oneLine`
       ^docker run
       --rm

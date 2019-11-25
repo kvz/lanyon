@@ -7,7 +7,7 @@ let mods = {
   overrideConfig : function ({ config, toolkit }) { return config },
 }
 
-let cfg = {}
+const cfg = {}
 let runtime = require('./config.runtime.js')()
 
 if (fs.existsSync(`${runtime.projectDir}/.lanyonrc.js`)) {
@@ -36,4 +36,4 @@ cfg.dockerComposeDev = require('./config.dockerComposeDev.js')({ runtime, toolki
 cfg.nodemon = require('./config.nodemon.js')({ runtime, jekyll: cfg.jekyll, toolkit })
 cfg.runtime = runtime
 
-module.exports = mods.overrideConfig({config: cfg, toolkit})
+module.exports = mods.overrideConfig({ config: cfg, toolkit })

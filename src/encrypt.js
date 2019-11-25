@@ -2,7 +2,7 @@
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
-  components           : `lanyon>encrypt`,
+  components           : 'lanyon>encrypt',
 })
 
 if (require.main === module) {

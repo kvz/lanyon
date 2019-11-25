@@ -1,5 +1,5 @@
-module.exports = function ({runtime, jekyll}) {
-  let nodemonCfg = {
+module.exports = function ({ runtime, jekyll }) {
+  const nodemonCfg = {
     onChangeOnly: false,
     verbose     : process.env.LANYON_DEBUG === '1',
     delay       : 600,

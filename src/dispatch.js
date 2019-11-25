@@ -32,11 +32,11 @@ module.exports = async function dispatch () {
     extraFlags += '--verbose --trace '
   }
 
-  let buildCmd = `[jekyll] build ${extraFlags}--config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml`
-  let formattedBuildCmd = utils.formatCmd(buildCmd, { runtime, cmdName })
+  const buildCmd = `[jekyll] build ${extraFlags}--config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml`
+  const formattedBuildCmd = utils.formatCmd(buildCmd, { runtime, cmdName })
   // console.log(formattedBuildCmd)
 
-  let postBuildContentHooks = utils.gethooks('post', 'build:content', runtime)
+  const postBuildContentHooks = utils.gethooks('post', 'build:content', runtime)
   let strPostBuildContentHooks = ''
   if (postBuildContentHooks.length) {
     strPostBuildContentHooks = `cd "${runtime.projectDir}" && ${postBuildContentHooks.join(' && ')}`
@@ -44,32 +44,32 @@ module.exports = async function dispatch () {
 
   const scripts = {
     'build:assets'       : '[webpack] --config [cacheDir]/webpack.config.js',
-    'build:content:watch': `${process.env.LANYON_DEBUG === '1' ? `env DEBUG=nodemon:* ` : ''}[nodemon] --exitcrash --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} ${strPostBuildContentHooks}'`,
+    'build:content:watch': `${process.env.LANYON_DEBUG === '1' ? 'env DEBUG=nodemon:* ' : ''}[nodemon] --exitcrash --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} ${strPostBuildContentHooks}'`,
     // 'build:content:watch': '[jekyll] build --watch --verbose --force_polling --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     'build:content'      : buildCmd,
     // 'build:images'             : '[imagemin] [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
     // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
-    'build'              : {
-      'mode'    : 'series', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
-      'commands': [
+    build                : {
+      mode    : 'series', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
+      commands: [
         'build:assets',
         'build:content',
       ],
     },
-    'deploy' : require(`./deploy`),
-    'encrypt': require(`./encrypt`),
-    'help'   : '[jekyll] build --help',
-    'serve'  : '[browser-sync] start --config [cacheDir]/browsersync.config.js',
-    'start'  : {
-      'mode'    : 'all',
-      'commands': [
+    deploy : require('./deploy'),
+    encrypt: require('./encrypt'),
+    help   : '[jekyll] build --help',
+    serve  : '[browser-sync] start --config [cacheDir]/browsersync.config.js',
+    start  : {
+      mode    : 'all',
+      commands: [
         'build:content:watch',
         'serve',
       ],
     },
   }
 
-  let cmd = scripts[cmdName]
+  const cmd = scripts[cmdName]
 
   scrolex.persistOpts({
     announce             : true,
@@ -84,13 +84,13 @@ module.exports = async function dispatch () {
   })
 
   if (require.main === module) {
-    scrolex.failure(`Please only used this module via require`)
+    scrolex.failure('Please only used this module via require')
     process.exit(1)
   }
 
   scrolex.stick(`Booting Lanyon->${cmdName}. Version: ${runtime.lanyonVersion} on PID: ${process.pid} from: ${__filename}`)
 
-  for (let key of Object.keys(runtime).sort()) {
+  for (const key of Object.keys(runtime).sort()) {
     scrolex.stick(`Detected ${key} as "${runtime[key]}"`)
   }
 
@@ -107,7 +107,7 @@ module.exports = async function dispatch () {
     let runs = 0
     while (true) {
       runs++
-      let c = utils.dockerString(`stat ${runtime.cacheDir}/jekyll.config.yml`, { runtime })
+      const c = utils.dockerString(`stat ${runtime.cacheDir}/jekyll.config.yml`, { runtime })
       let gotErr = false
       try {
         await scrolex.exe(`${c}`, { cwd: runtime.cacheDir, mode: 'silent' })
@@ -115,7 +115,7 @@ module.exports = async function dispatch () {
         gotErr = err
         console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does not exist yet inside container, waiting on docker-sync ... `)
         if (runs === 1) {
-          await scrolex.exe(`(docker-sync-stack clean; docker-sync stop; docker-compose stop; bash -c "docker-sync-stack start &") && sleep 5`, {
+          await scrolex.exe('(docker-sync-stack clean; docker-sync stop; docker-compose stop; bash -c "docker-sync-stack start &") && sleep 5', {
             cwd                  : runtime.cacheDir,
             addCommandAsComponent: false,
             components           : `lanyon>${cmdName}>docker-sync-stack`,
@@ -126,7 +126,7 @@ module.exports = async function dispatch () {
         console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does exist inside container, docker-sync active ✅`)
         break
       }
-      await scrolex.exe(`sleep 2`, { cwd: runtime.cacheDir, mode: 'silent' })
+      await scrolex.exe('sleep 2', { cwd: runtime.cacheDir, mode: 'silent' })
     }
   }
 
@@ -153,12 +153,12 @@ module.exports = async function dispatch () {
     })
   } else if (_.isObject(cmd)) {
     // Execute multiple commands, in parallel or serial
-    let methods = []
+    const methods = []
 
     cmd.commands.forEach(async (name) => {
-      let realcmd = utils.formatCmd(scripts[name], { runtime, cmdName })
+      const realcmd = utils.formatCmd(scripts[name], { runtime, cmdName })
 
-      let method = utils.runString.bind(utils.runString, realcmd, {
+      const method = utils.runString.bind(utils.runString, realcmd, {
         runtime,
         cmdName,
         origCmd : scripts[name],
@@ -176,7 +176,7 @@ module.exports = async function dispatch () {
     await Promise[cmd.mode](methods)
     process.exit(0)
   } else if (_.isString(cmd)) {
-    let realcmd = utils.formatCmd(cmd, { runtime, cmdName })
+    const realcmd = utils.formatCmd(cmd, { runtime, cmdName })
 
     utils.runString(realcmd, { runtime, cmdName, origCmd: cmd, hookName: cmdName.replace(/(:watch|\[\])/, '') }, (err) => {
       if (err) {

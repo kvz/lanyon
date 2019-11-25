@@ -4,11 +4,11 @@ const fs = require('fs')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
-  components           : `lanyon>config>runtime`,
+  components           : 'lanyon>config>runtime',
 })
 
 module.exports = function () {
-  let runtimeCfg = {}
+  const runtimeCfg = {}
   runtimeCfg.lanyonDir = path.join(__dirname, '..')
   runtimeCfg.lanyonEnv = process.env.LANYON_ENV || 'development'
   runtimeCfg.lanyonPackageFile = path.join(runtimeCfg.lanyonDir, 'package.json')
@@ -34,7 +34,7 @@ module.exports = function () {
   }
   runtimeCfg.gitRoot = utils.upwardDirContaining('.git', runtimeCfg.npmRoot)
 
-  let wantVersion = runtimeCfg.lanyonVersion
+  const wantVersion = runtimeCfg.lanyonVersion
   // wantVersion = '0.0.109'
   runtimeCfg.dockerImage = `kevinvz/lanyon:${wantVersion}`
 
@@ -43,22 +43,22 @@ module.exports = function () {
     'app',
   ]
   runtimeCfg.prerequisites = {
-    'sh': {
-      'preferred': '0.5.7',
-      'range'    : '>=0.0.1',
+    sh: {
+      preferred: '0.5.7',
+      range    : '>=0.0.1',
     },
-    'node': {
-      'preferred': '8.11.0',
-      'range'    : '>=8',
+    node: {
+      preferred: '8.11.0',
+      range    : '>=8',
     },
-    'docker': {
-      'preferred': '1.12.3',
-      'range'    : '>=1.12',
+    docker: {
+      preferred: '1.12.3',
+      range    : '>=1.12',
     },
   }
   runtimeCfg.ports = {
-    'assets' : 3000,
-    'content': 4000,
+    assets : 3000,
+    content: 4000,
   }
 
   try {

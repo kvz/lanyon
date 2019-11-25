@@ -17,7 +17,7 @@ const oneLine = require('common-tags/lib/oneLine')
 // const pad = require('pad')
 
 if (require.main === module) {
-  scrolex.failure(`Please only used this module via require`)
+  scrolex.failure('Please only used this module via require')
   process.exit(1)
 }
 
@@ -31,8 +31,8 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   // Replace all npms with their first-found full-path executables
   const npmBins = {
     'browser-sync': 'node_modules/browser-sync/dist/bin.js',
-    'nodemon'     : 'node_modules/nodemon/bin/nodemon.js',
-    'webpack'     : 'node_modules/webpack/bin/webpack.js',
+    nodemon       : 'node_modules/nodemon/bin/nodemon.js',
+    webpack       : 'node_modules/webpack/bin/webpack.js',
     // 'imagemin'     : 'node_modules/imagemin-cli/cli.js',
   }
   for (const name in npmBins) {
@@ -64,7 +64,7 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   }
 
   // cp -f ${runtime.projectDir}/Gemfile ${runtime.cacheDir}/Gemfile &&
-  let jekyllBin = utils.dockerString('jekyll', { runtime })
+  const jekyllBin = utils.dockerString('jekyll', { runtime })
 
   // Replace shims
   cmd = cmd.replace(/(\s|^)\[jekyll\](\s|$)/, `$1${jekyllBin}$2`)
@@ -73,11 +73,11 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
 }
 
 module.exports.splitDir = function splitDir (dir) {
-  let dirList = []
-  let parts = `${dir}`.split('/')
+  const dirList = []
+  const parts = `${dir}`.split('/')
   let cont = ''
-  for (let i in parts) {
-    let part = parts[i]
+  for (const i in parts) {
+    const part = parts[i]
     if (!part) continue
     cont = `${cont}/${part}`
     dirList.push(cont)
@@ -98,14 +98,14 @@ module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal =
 
   if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
     cleanupCmds = cleanupCmds.concat([
-      `docker-sync stop`,
+      'docker-sync stop',
       // `docker-compose stop`,
     ])
   }
 
   console.log(`>>> About to exit. code=${code}, signal=${signal}. Cleaning up... `)
-  for (let i in cleanupCmds) {
-    let c = cleanupCmds[i]
+  for (const i in cleanupCmds) {
+    const c = cleanupCmds[i]
     console.error(`Cleanup command: '${c}' ...`)
     try {
       childProcess.execSync(`${c}`, {
@@ -115,15 +115,15 @@ module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal =
   }
 
   if (signal === 'SIGINT') {
-    console.log(`>>> Process aborted`)
+    console.log('>>> Process aborted')
     process.exit(1)
   }
 }
 
 module.exports.dockerString = function dockerString (cmd, { opts = {}, runtime } = {}) {
-  let volumePaths = utils.volumePaths({ runtime })
-  let listVolumes = []
-  for (let key in volumePaths) {
+  const volumePaths = utils.volumePaths({ runtime })
+  const listVolumes = []
+  for (const key in volumePaths) {
     listVolumes.push(`--volume ${key}:${volumePaths[key]}`)
   }
 
@@ -168,7 +168,7 @@ module.exports.dockerString = function dockerString (cmd, { opts = {}, runtime }
 }
 
 module.exports.volumePaths = function volumePaths ({ runtime }) {
-  let volumePaths = {}
+  const volumePaths = {}
 
   if (runtime.contentBuildDir.indexOf(runtime.projectDir) === -1) {
     volumePaths[runtime.contentBuildDir] = runtime.contentBuildDir
@@ -197,7 +197,7 @@ module.exports.runString = async function runString (cmd, { runtime, cmdName, or
 }
 
 module.exports.runhooks = async (order, cmdName, runtime) => {
-  let squashedHooks = utils.gethooks(order, cmdName, runtime)
+  const squashedHooks = utils.gethooks(order, cmdName, runtime)
 
   scrolex.stick(`Running ${squashedHooks.length} ${order}${cmdName} hooks`)
   if (!squashedHooks.length) {
@@ -228,8 +228,8 @@ module.exports.gethooks = (order, cmdName, runtime) => {
   ]
 
   let squashedHooks = []
-  for (let i in arr) {
-    let hook = arr[i]
+  for (const i in arr) {
+    const hook = arr[i]
     if (runtime[hook]) {
       const lastPart = hook.split(':').pop()
       let needEnv = 'both'
@@ -280,9 +280,9 @@ module.exports.initProject = async ({ assetsBuildDir, gitRoot, cacheDir }) => {
     cacheDir,
   ]
 
-  for (let dir of dirs) {
+  for (const dir of dirs) {
     if (!fs.existsSync(dir)) {
-      let rel = path.relative(gitRoot, dir)
+      const rel = path.relative(gitRoot, dir)
       try {
         await scrolex.exe(`mkdir -p '${rel}' && echo '${rel}' >> .gitignore`, scrolexOpts)
       } catch (err) {

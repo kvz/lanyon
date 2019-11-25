@@ -3,7 +3,7 @@ const globby  = require('globby')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
-  components           : `lanyon>deploy`,
+  components           : 'lanyon>deploy',
 })
 
 if (require.main === module) {
