@@ -14,7 +14,7 @@ const scrolex = require('scrolex').persistOpts({
 })
 
 module.exports = function ({ runtime }) {
-  const browsers = runtime.browsers || [ '> 1%', 'ie 10', 'ie 8', 'safari 4' ]
+  const browsers = runtime.browsers || ['> 1%', 'ie 10', 'ie 8', 'safari 4']
   const postCssLoader = {
     loader : 'postcss-loader',
     options: {
@@ -451,18 +451,20 @@ module.exports = function ({ runtime }) {
           filename : getFilename('css'),
           allChunks: true,
         }))
-        // Avoid warning:
-        // Warning: It looks like you're using a minified copy of the development build of React.
-        // When deploying React apps to production, make sure to use the production build which
-        // skips development warnings and is faster. See https://fb.me/react-minification for more details.
-        // https://facebook.github.io/react/docs/optimizing-performance.html#use-the-production-build
-        plugins.push(new webpack.optimize.UglifyJsPlugin({
-          compress: {
-            warnings: false,
-          },
-          sourceMap: true,
-          exclude  : /[\\/](node_modules|js-untouched)[\\/]/,
-        }))
+        if (runtime.uglify) {
+          // Avoid warning:
+          // Warning: It looks like you're using a minified copy of the development build of React.
+          // When deploying React apps to production, make sure to use the production build which
+          // skips development warnings and is faster. See https://fb.me/react-minification for more details.
+          // https://facebook.github.io/react/docs/optimizing-performance.html#use-the-production-build
+          plugins.push(new webpack.optimize.UglifyJsPlugin({
+            compress: {
+              warnings: false,
+            },
+            sourceMap: true,
+            exclude  : /[\\/](node_modules|js-untouched)[\\/]/,
+          }))
+        }
 
         // plugins.push(new webpack.NoErrorsPlugin())
         plugins.push(new OptimizeCssAssetsPlugin())

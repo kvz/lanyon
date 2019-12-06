@@ -23,9 +23,14 @@ module.exports = function () {
     GHPAGES_BOTEMAIL: process.env.GHPAGES_BOTEMAIL,
   }
   runtimeCfg.isDev = runtimeCfg.lanyonEnv === 'development'
+
   runtimeCfg.attachHMR = runtimeCfg.isDev && process.argv[1].indexOf('browser-sync') !== -1 && ['start', 'start:crm', 'start:crm2'].indexOf(process.argv[2]) !== -1
 
   runtimeCfg.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cwd() // <-- symlinked npm will mess up process.cwd() and point to ~/code/lanyon
+
+  if (!('uglify' in runtimeCfg) && !runtimeCfg.isDev) {
+    runtimeCfg.uglify = true
+  }
 
   runtimeCfg.npmRoot = utils.upwardDirContaining('package.json', runtimeCfg.projectDir, 'lanyon')
   if (!runtimeCfg.npmRoot) {
