@@ -384,6 +384,7 @@ module.exports = function ({runtime}) {
                   require.resolve('babel-preset-stage-0'),
                 ],
                 plugins: [
+                  [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
                   require.resolve('babel-plugin-transform-class-properties'),
                 ],
                 // sourceRoot    : `${runtime.projectDir}`,
