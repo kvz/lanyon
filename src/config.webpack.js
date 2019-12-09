@@ -390,6 +390,7 @@ module.exports = function ({ runtime }) {
                   require.resolve('@babel/preset-react'),
                 ],
                 plugins: [
+                  [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
                   require.resolve('@babel/plugin-proposal-class-properties'),
                   require.resolve('react-hot-loader/babel'),
                   require.resolve('nanohtml'),
