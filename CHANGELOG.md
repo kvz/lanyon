@@ -26,6 +26,13 @@ Released: TBA.
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
 
+## v0.1.16
+
+Released: 2019-12-30
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.15...v0.1.16).
+
+- [x] Add `ignoreOrder` for `ExtractTextPlugin` to avoid: "Order in extracted chunk undefined" ¯\_(ツ)_/¯
+
 ## v0.1.15
 
 Released: 2019-12-09

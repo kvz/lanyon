@@ -449,8 +449,9 @@ module.exports = function ({ runtime }) {
         plugins.push(new webpack.HotModuleReplacementPlugin())
       } else {
         plugins.push(new ExtractTextPlugin({
-          filename : getFilename('css'),
-          allChunks: true,
+          filename   : getFilename('css'),
+          allChunks  : true,
+          ignoreOrder: true, // <-- add this to avoid: "Order in extracted chunk undefined" ¯\_(ツ)_/¯ https://github.com/redbadger/website-honestly/issues/128
         }))
         if (runtime.uglify) {
           // Avoid warning:
