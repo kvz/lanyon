@@ -7,6 +7,7 @@ const Visualizer = require('webpack-visualizer-plugin')
 const yaml = require('js-yaml')
 const AssetsPlugin = require('assets-webpack-plugin')
 const WebpackMd5Hash = require('webpack-md5-hash')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
@@ -22,7 +23,7 @@ module.exports = function ({ runtime }) {
       ident    : 'postcss',
       plugins  : (loader) => [
         require('autoprefixer')({
-          browsers: browsers,
+          overrideBrowserslist: browsers,
         }),
         // require('cssnano')(),
       ],
@@ -36,7 +37,7 @@ module.exports = function ({ runtime }) {
       ident    : 'postcss',
       plugins  : (loader) => [
         require('autoprefixer')({
-          browsers: browsers,
+          overrideBrowserslist: browsers,
         }),
         // require('cssnano')(),
       ],
@@ -68,6 +69,30 @@ module.exports = function ({ runtime }) {
   ].concat(runtime.extraAssetsSourceDirs || [])
 
   const webpackCfg = {
+    mode        : runtime.lanyonEnv,
+    optimization: {
+      minimizer: (function dynamicMinimizers () {
+        const minimizers = []
+        if (runtime.uglify) {
+          // https://stackoverflow.com/questions/49053215/webpack-4-how-to-configure-minimize
+          // we specify a custom UglifyJsPlugin here to get source maps in production
+          minimizers.push(
+            new UglifyJsPlugin({
+              cache        : true,
+              parallel     : true,
+              uglifyOptions: {
+                compress: false,
+                ecma    : 6,
+                mangle  : true,
+              },
+              sourceMap: true,
+            })
+          )
+        }
+
+        return minimizers
+      }()),
+    },
     entry: (function dynamicEntries () {
       var entries = {}
 
@@ -157,6 +182,11 @@ module.exports = function ({ runtime }) {
               {
                 loader: 'file-loader',
               },
+            ],
+          }, {
+            test: /\.worker\.js$/,
+            use : [
+              { loader: 'worker-loader' },
             ],
           }, {
             test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
@@ -453,20 +483,6 @@ module.exports = function ({ runtime }) {
           allChunks  : true,
           ignoreOrder: true, // <-- add this to avoid: "Order in extracted chunk undefined" ¯\_(ツ)_/¯ https://github.com/redbadger/website-honestly/issues/128
         }))
-        if (runtime.uglify) {
-          // Avoid warning:
-          // Warning: It looks like you're using a minified copy of the development build of React.
-          // When deploying React apps to production, make sure to use the production build which
-          // skips development warnings and is faster. See https://fb.me/react-minification for more details.
-          // https://facebook.github.io/react/docs/optimizing-performance.html#use-the-production-build
-          plugins.push(new webpack.optimize.UglifyJsPlugin({
-            compress: {
-              warnings: false,
-            },
-            sourceMap: true,
-            exclude  : /[\\/](node_modules|js-untouched)[\\/]/,
-          }))
-        }
 
         // plugins.push(new webpack.NoErrorsPlugin())
         plugins.push(new OptimizeCssAssetsPlugin())
