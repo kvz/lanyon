@@ -131,7 +131,6 @@
     "webpack-dev-server": "3.11.0",
     "webpack-hot-middleware": "2.25.0",
     "webpack-manifest-plugin": "2.2.0",
-    "webpack-md5-hash": "0.0.6",
     "webpack-svgstore-plugin": "4.1.0",
     "webpack-visualizer-plugin": "0.1.11",
     "worker-loader": "2.0.0"

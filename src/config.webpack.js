@@ -6,7 +6,6 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const Visualizer = require('webpack-visualizer-plugin')
 const yaml = require('js-yaml')
 const AssetsPlugin = require('assets-webpack-plugin')
-const WebpackMd5Hash = require('webpack-md5-hash')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
@@ -48,14 +47,11 @@ module.exports = function ({ runtime }) {
     let filename = `[name].${extension}`
 
     if (!runtime.isDev) {
-      filename = `[name].[chunkhash].${extension}`
-      if (isContent) {
-        filename = `[name].[contenthash].${extension}`
-      }
+      filename = `[name].[contenthash].${extension}`
     }
 
     if (isChunk) {
-      filename = `[name].[chunkhash].[id].chunk.${extension}`
+      filename = `[name].[contenthash].[id].chunk.${extension}`
     }
 
     return filename
@@ -470,7 +466,6 @@ module.exports = function ({ runtime }) {
             }
           },
         }),
-        new WebpackMd5Hash(),
       ]
 
       plugins.push(new webpack.optimize.ModuleConcatenationPlugin())
