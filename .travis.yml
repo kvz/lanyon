@@ -5,34 +5,22 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    packages:
-    - bc
 script:
-- if [ "$(bc <<< "${TRAVIS_NODE_VERSION} < 8")" -eq 1 ]; then (echo "Only Node 8 are supported"; exit 1); fi
 - npm run test
-- travis_wait 300 npm run test:acceptance
 os: linux
+group: edge
 dist: trusy
 sudo: required
+services: [ docker ]
+node_js: '8'
+language: node_js
 env:
-  matrix:
-  - OSDIST="trusty"
   global:
   - LANYON_USE_LINKED="1"
   - secure: Du81N+VYszPmbjdb17tMcKHAKBWlarOYr6Z+kN6h41s8VlS+rmLv9yRlEsxU8+P1x9AA31wwN5duIkyFZr+3GD7mGAjzowHnKZD5j1CF7v0cKoowfJW/mbtodh35/n3j28UQuA/C7OWjeYE5BhVtW7cV3h2Pgdgf1/h9P8jRNeOaMbuhvSsKrQj7lZ5ffzi12wJxWyZDnG1geaSP17cIiqG0B3oGesfY7ASYz+2G/YufgdunFtjMxyfPNfQD+06gxOKo5iFqkjfE84Atgsd+G91vVIxam4gBtVVbAi2qmeB1Dpz9N4sR+XV+u29381KBkflT0JeElABFulr2b5rUCW8ACKWGGzDLOALvFyS12iZjcZrvDag/s9bSm4Gjhf5VdE4ygpAxjSXhSpDJcC1sDeO/oUGoGdia01g9FHM99mFtemciZwxbGRsU7X9+JSEjqh51CmANuB+L/avsd/KVXF7RiKuu9CCTc3XGG6MxXNVUDaFE+wCfQZsMcqLeKzX4aLAMdrTT1VV0ZNQIo/DnvVF4oUvdhhwZlUcY74jBpW3tYnn7i+V66Hj15Ej+S01D/ZCJKP6xP5HgYGy1ArQzGx0tF65fHZ1O51GEZzaIcKFvzqhONDkBGEjulyaEWpb6j9ofJFdbUEkLdbwLdzTfJ8goZyyjmYw74/deg38ttzs=
   - secure: JM5fA4yMjOTPYrsuMSxgEdZH7agmtrYPA0L7xCCgs6btDt5XIyIXtBkn6jW066VtxlU7ruGJHiqM0sW4Fl+rmy/hibFNBfS2ll0Q8TWappD2SOXKW5lgW3FrjhyRXq1vzpnPdHR+01IxrCkPnkTIHsB4y9bGONHLR6bhYrIi7NobobcsCLlRJoedxitHCjATJ0mq+oDpn2tDQesLMtvL7YGEWMHMHbsAgBtAe0O06HBoR8K4pjhrF4cJ/KXucMvVevJSloJHCYvoMSCQXE1xoVbzT0L3hyxVyvqwXnhOWF04Vh4e+pfBybSmRfrUkt08SiMapi1NVGJf1jy/PampRj13ITnAASpeSJQat7Q4Bp7+Ap4PzRmPXAQDwJV+dbhlsk2fTL7PXCDWGTtwCB7pI6+SJOwSvkex4OTFA6y29lYz3GsDdXlbYActK8R8mQ/7R5pbfmEEqhL6UhkUnc/NG7taTdJmiDjaBWyeJU6KVHIbnylq9rtmHs2bMiYJU3keya+7nE6D8PZj8qtG6cxWopNOOIWCwPvfW+tOejHRNwDW9z2+83+Dh+8UHW1qXAiA8zYoA3E1GNQpGWEVUHXOlzbAmhubHujzifB2HdMTuxjuFXziHvJI4HZdh/LPXSzWsBuM/8b7s1/nV8gWISUCgnFZkeH10lGdj6uYC35hP18=
   - secure: XuJgkSTVR/wF2USjCrlVqZiP35R+i8VcslkCS3wK9GfRayuD1r2tpXUqtKMzpLNpLufmZqYTJ/2+B8brMAF8H68lC084kybTXygqC4/mphqJ5ingZAMIfLrTqH4PT4ATLzwg4ecc2C9M1ytjaa0TQv8mKq5mEMT0JeUIz5ddrm5fabZQga/EbuTWr+mTXJ2j+5fy1Y71nXM6tNAwAhYmfbNmOpDN4G+OYc7u7U4vUNXkv8FUOlJeflGFfH64wWE7qtHpO52b+SeWezLf1MYo7VO9+b8xQmRudWzxNM5u5vSjk1g7eCxcXGNxRLHLCtEcyp4AmSRVoO7Tr8XHndY5B69dB3NEql3mlEkAqpgW3OY2fIK2KwOydpv/IOsewafG8qVgAtw7iANxkKPkjg52EedfTJ943hILfzkXpRmCvX5qxSUbHrsNad9u7V7QaKF+kX4No1qAE3GpGXsPKpGQv2UOiFMbBYeZEzQYmHj0vKM9+QE8n7BA95kkm4XqrfDSmRB2V+hBK13F/EWpV21+xNBYbBK8+iGCk4hI/AQo8y5Xo4dEKb4rllMC+P4hv9qBNVVXzsetlWgf89H7ubFIxbl9rzD5q9eMBI6/Vhoy9/wjHUrUkvpZAyol/1M7w3WA6PXuL90US6ObFffa6RxpMCGNL3VH4541vJL60eJ1O/A=
   - secure: d25Q3JJSiywRSgxWjyJCnBeJp+gCJwQekb/GVgEZbvv/qfE2N4VfNXqHg5+ZcmIrd/GvDD0LoZwdOCSDIy6tNLKRwQWsJs/HjanMWZDNh6OJbrqPS7J5CC0bX4VNip4Eedzv7L0p1Y4C4J43nyvcNkljhm1iLZWEhBQs5GaJZHQFi0hRvhAu5GrL4Zy8i7Ux8ZaM13a/O4L4JPyt6m42hAEWKuKLGpoSH99hNg99NJh07dmzW21CVk6lviZPVl7McR9C6L7w0alows8DPdTGpdP/UxS2Alq3GTMrSJzExsBdH3/M0cHoNopt98eOurx3qKXQP4FPuT11dcXGWt/jLE1wDIm/KtzHtDUs22VPmD+npGwLkgS7licb6X27LaLk4kvs92KQcHcskJsk5kfAlD3rto4LTQphmQSCEh/eaq2fZv8Q61BvAcEprvs3UncAbQute6dKraH0aanUsjUItDXRHUeQeIoyRmDOImc9NjEy+OCf8aA9qnTxwIX0q0sqRUrQaLT0rW3Qa0mAWK3hFVSBhbQlSiuryT9ci1K9BWXTCpFeiv3o7bX7RBZTxHX7WgHrLatkVMmX+nOOJpvpgEH5Cxrh5VKvQmpdnKHQ858ZW4ofgvflq+wZSBLu7cDRwe0DXSGg7Smcz79zvKhTy7+q8jhnhgBpPcSg/4r2JgM=
-node_js: '8'
-language: node_js
-matrix:
-  include:
-  - os: osx
-    node_js: '8'
-    osx_image: xcode9
-    env: OSDIST="xcode9"
-    language: node_js
-    node_js: '8'
 before_cache:
 - rm -f ./node_modules/.bin/which
 deploy:

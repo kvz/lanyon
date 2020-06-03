@@ -1,24 +1,24 @@
 const utils = require('./utils')
 
-module.exports = function ({runtime}) {
-  let volumePaths = utils.volumePaths({ runtime })
-  let listVolumes = []
-  let volumeCfg = {}
-  for (let key in volumePaths) {
+module.exports = function ({ runtime }) {
+  const volumePaths = utils.volumePaths({ runtime })
+  const listVolumes = []
+  const volumeCfg = {}
+  for (const key in volumePaths) {
     listVolumes.push(`${key}:${volumePaths[key]}`)
     volumeCfg[key.replace(/\//g, '')] = {
       external: true,
     }
   }
 
-  let dockerComposeDevCfg = {
-    'version' : '2',
-    'services': {
+  const dockerComposeDevCfg = {
+    version : '2',
+    services: {
       'lanyon-container': {
-        'volumes': listVolumes,
+        volumes: listVolumes,
       },
     },
-    'volumes': volumeCfg,
+    volumes: volumeCfg,
   }
 
   return dockerComposeDevCfg

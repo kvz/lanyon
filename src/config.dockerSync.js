@@ -1,25 +1,25 @@
 const utils = require('./utils')
 
-module.exports = function ({runtime, jekyll}) {
-  let volumePaths = utils.volumePaths({ runtime })
-  let volumeSyncCfg = {}
-  for (let key in volumePaths) {
+module.exports = function ({ runtime, jekyll }) {
+  const volumePaths = utils.volumePaths({ runtime })
+  const volumeSyncCfg = {}
+  for (const key in volumePaths) {
     volumeSyncCfg[key.replace(/\//g, '')] = {
-      'src'          : volumePaths[key],
-      'sync_userid'  : 1000,
-      'sync_excludes': [
+      src          : volumePaths[key],
+      sync_userid  : 1000,
+      sync_excludes: [
         'node_modules',
         '.git',
       ].concat(jekyll.exclude),
     }
   }
 
-  let dockerSyncCfg = {
-    'version': '2',
-    'options': {
-      'verbose': true,
+  const dockerSyncCfg = {
+    version: '2',
+    options: {
+      verbose: true,
     },
-    'syncs': volumeSyncCfg,
+    syncs: volumeSyncCfg,
   }
 
   return dockerSyncCfg

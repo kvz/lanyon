@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`utils dockerCmd should add custom flags 1`] = `"docker run FLAGS --user $(id -u) --workdir CACHEDIR --volume CACHEDIR:CACHEDIR --volume PROJECTDIR:PROJECTDIR kevinvz/lanyon:LANYONVERSION CMD"`;

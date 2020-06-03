@@ -5,7 +5,6 @@
 - [ ] Add `travis` to Dockerfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Throw an error if we find legacy Jekyll residu such as `./vendors` or `.bundle`
 - [ ] Maybe add https://github.com/btford/write-good and or text-lint (#8)
-- [ ] Consider postcss
 - [ ] Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content
 - [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
@@ -15,7 +14,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.0.116...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.17...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -23,6 +22,309 @@ Released: TBA.
 - [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
 - [ ] Make travis tests pass again
 - [ ] Debug browsersync's endless refresh
+- [ ] Upgrade Webpack and friends
+- [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
+- [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
+
+## v0.1.17
+
+Released: 2020-04-22
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.16...v0.1.17).
+
+- [x] Upgrade node-sass 4.12.0 -> 4.13.1
+
+## v0.1.16
+
+Released: 2019-12-30
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.15...v0.1.16).
+
+- [x] Add `ignoreOrder` for `ExtractTextPlugin` to avoid: "Order in extracted chunk undefined" ¯\_(ツ)_/¯
+
+## v0.1.15
+
+Released: 2019-12-09
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.13...v0.1.15).
+
+- [x] Add `@babel/plugin-proposal-decorators`
+
+## v0.1.13
+
+Released: 2019-11-22
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.12...v0.1.13).
+
+- [x] Make uglification optional via `runtime.uglify = false`
+
+## v0.1.12
+
+Released: 2019-11-22
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.11...v0.1.12).
+
+- [x] Make Lanyon look at browser config as passing in by project via runtime.browsers
+- [x] Upgrade to standard14
+
+## v0.1.11
+
+Released: 2019-11-22
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.10...v0.1.11).
+
+- [x] Revert from jekyll-paginate v2 to v1 because v2 isn't Jekyll v4 compatible it turns out (https://github.com/sverrirs/jekyll-paginate-v2/issues/165)
+
+## v0.1.10
+
+Released: 2019-11-22
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.9...v0.1.10).
+
+- [x] Switch from jekyll-paginate v1 to v2
+
+## v0.1.9
+
+Released: 2019-11-20
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.8...v0.1.9).
+
+- [x] Fix: `BrowserslistError: Unknown version 3 of safari`
+
+## v0.1.8
+
+Released: 2019-10-23.
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.7...v0.1.8).
+
+- [x] Add `jekyll-last-modified-at:1.1.0`
+
+## v0.1.7
+
+Released: 2019-10-23.
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.6...v0.1.7).
+
+- [x] Add redirect_from
+
+## v0.1.6
+
+Released: 2019-10-23.
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.5...v0.1.6).
+
+- [x] Add paginate tagsgenerator
+
+## v0.1.5
+
+Released: 2019-10-23.
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.4...v0.1.5).
+
+- [x] Add jekyll seo-tag, sitemap, mentions, tagging
+- [x] Remove minimal-mistakes-jekyll
+
+## v0.1.4
+
+Released: 2019-10-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.3...v0.1.4).
+
+- [x] yarn add @babel/core@7.6.4 @babel/preset-react@7.6.3
+
+## v0.1.3
+
+Released: 2019-10-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.2...v0.1.3).
+
+- [x] Add support for `extraAssetsSourceDirs`
+
+## v0.1.2
+
+Released: 2019-10-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.1...v0.1.2).
+
+- [x] Allow `process.env.ENDPOINT` to be used in JS
+
+## v0.1.1
+
+Released: 2019-10-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.0...v0.1.1).
+
+- [x] Also allow `process.env.NODE_ENV` to be used in JS when `LANYON_ENV` is `'development'`
+- [x] Allow `process.env.LANYON_ENV` to be used in JS
+
+## v0.1.0
+
+Released: 2019-10-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.143...v0.1.0).
+
+- [x] (BREAKING) Upgrade to Babel 7 and the babel-env preset. Among things, you'll need to change `Object.assign()`s to Object Spreads
+
+## v0.0.143
+
+Released: 2019-09-25.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.142...v0.0.143).
+
+- [x] Switch to `eval-source-map` in dev which provides better sourcemaps (#20, thanks @lakesare)
+
+## v0.0.142
+
+Released: 2019-09-04.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.141...v0.0.142).
+
+- [x] Update dependencies (within major)
+- [x] Make all processes less verbose, unless `LANYON_DEBUG=1`
+- [x] Remove `reloadThrottle` and `reloadDelay` so that hopefully `reloadDebounce` in browsersync can persevere
+- [x] Crash lanyon if it catches a `SIGUSR2` (which could be thrown by Nodemon)
+- [x] Crash nodemon (and hence lanyon) if its child-process-to-be-started-on-filechange (docker->jekyll) crash
+- [x] Fix `git ignore` error
+
+## v0.0.141
+
+Released: 2019-09-04.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.140...v0.0.141).
+
+- [x] Allow to pass in webpack resolve alias via `runtime.alias`
+
+## v0.0.140
+
+Released: 2019-09-03.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.139...v0.0.140).
+
+- [x] Don't run in verbose mode by default (but allow passing in `LANYON_EXTRA_JEKYLL_FLAGS="--trace --verbose"` if more detail is needed)
+
+## v0.0.139
+
+Released: 2019-09-03.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.136...v0.0.139).
+
+- [x] Bring back stringex
+
+## v0.0.137
+
+Released: 2019-09-03.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.136...v0.0.137).
+
+- [x] Upgrade to Jekyll 4
+- [x] Upgrade to jekyll-feed 0.12.1 and minimal-mistakes-jekyll 4.16.6
+- [x] Deprecate jekyll-algolia, github-pages
+
+## v0.0.136
+
+Released: 2019-08-09.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.135...v0.0.136).
+
+- [x] Also add gem lockfile
+
+## v0.0.135
+
+Released: 2019-08-09.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.134...v0.0.135).
+
+- [x] Install algolia via Gemfile & bundle update so that `jekyll algolia` becomes available
+
+## v0.0.134
+
+Released: 2019-08-09.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.133...v0.0.134).
+
+- [x] Replace lunrjs with algolia
+
+## v0.0.133
+
+Released: 2019-08-09.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.132...v0.0.133).
+
+- [x] Upgrade dependencies in docker image
+
+## v0.0.132
+
+Released: 2018-09-04.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.131...v0.0.132).
+
+- [x] Fix Travis & Babel issues
+
+## v0.0.131
+
+Released: 2018-09-04.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.130...v0.0.131).
+
+- [x] Fix Travis tests
+- [x] revert: Allow to `setupContainer()` (but don't use it yet)
+
+## v0.0.130
+
+Released: 2018-09-04.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.129...v0.0.130).
+
+- [x] Easier debugging of travis deploy failures
+
+## v0.0.129
+
+Released: 2018-09-04.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.128...v0.0.129).
+
+- [x] Allow to `setupContainer()` (but don't use it yet)
+- [x] Write files as current $USER to avoid manual chowning
+- [x] Make failing hooks fatal
+
+## v0.0.128
+
+Released: 2018-09-04.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.127...v0.0.128).
+
+- [x] Upgrade SASS
+
+## v0.0.127
+
+Released: 2018-08-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.126...v0.0.127).
+
+- [x] Remove react as being bundled by lanyon /thx @Acconut
+
+## v0.0.126
+
+Released: 2018-08-22.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.125...v0.0.126).
+
+- [x] Remove coffeescript support /thx @Acconut
+
+## v0.0.125
+
+Released: 2018-07-16.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.124...v0.0.125).
+
+- [x] Upgrade gems and Jekyll from 3.7 -> 3.8 (which includes "Two massive performance improvements for large sites" - https://github.com/jekyll/jekyll/blob/master/History.markdown#380--2018-04-19)
+
+## v0.0.124
+
+Released: 2018-07-13.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.123...v0.0.124).
+
+- [x] Drop support for: Modernizr, Svgeezy, Bower
+
+## v0.0.123
+
+Released: 2018-07-06.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.122...v0.0.123).
+
+- [x] More consistent override methods
+
+## v0.0.122
+
+Released: 2018-07-06.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.121...v0.0.122).
+
+- [x] Add support for PostCSS
+
+## v0.0.121
+
+Released: 2018-04-18.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.120...v0.0.121).
+
+- [x] Pass a toolkit to lanyonrc with functions like dockerString
+
+## v0.0.120
+
+Released: 2018-04-12.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.117...v0.0.120).
+
+- [x] Fix initProject issues
+
+## v0.0.117
+
+Released: 2018-04-12.
+[Diff](https://github.com/kvz/lanyon/compare/v0.0.116...v0.0.117).
+
+- [x] Improved child process juggling
 
 ## v0.0.116
 

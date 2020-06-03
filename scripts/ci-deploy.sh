@@ -26,7 +26,7 @@ fi
 
 if [ ! -f node_modules/.bin/lanyon ]; then
   if [ "${LANYON_USE_LINKED:-}" = "1" ]; then
-    npm link lanyon
+    yarn link lanyon || npm link lanyon
   else
     yarn || npm install
   fi

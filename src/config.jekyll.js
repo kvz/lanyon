@@ -5,10 +5,10 @@ const path = require('path')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
-  components           : `lanyon>config>jekyll`,
+  components           : 'lanyon>config>jekyll',
 })
 
-module.exports = function ({runtime}) {
+module.exports = function ({ runtime }) {
   const jekyllConfigPath = path.join(runtime.projectDir, '_config.yml')
   let jekyllCfg = {}
   try {

@@ -35,8 +35,8 @@ function mdfive () {
 }
 
 
-if ! type npm; then
-  echo "No npm program found"
+if ! type yarn; then
+  echo "No yarn program found"
   exit 1
 fi
 
@@ -71,6 +71,7 @@ EOF
   cat << EOF > package.json
 {
   "name": "my-website",
+  "license": "MIT",
   "scripts": {
     "build": "lanyon build",
     "build:production": "LANYON_ENV=production lanyon build"
@@ -107,25 +108,21 @@ EOF
 
   echo "--> Exporting lanyon link"
   pushd "${lanyonDir}"
-    npm link
+    yarn link
   popd
-  echo "--> Importing lanyon link (like an npm install, but with local sources)"
-  npm link lanyon
-  npm install
-
-  set -x
-  cat ./node_modules/.bin/lanyon
-  set +x
+  echo "--> Importing lanyon link (like a yarn, but with local sources)"
+  yarn link lanyon
+  yarn
 
   echo "--> Building site for 'development' in '${projectDir}'"
-  npm run build
+  yarn build
   echo "--> Showing tree for 'development' in '${projectDir}'"
   # There is no app.js in development
   head "./_site/index.html"
 
   echo "--> Building site for 'production' in '${projectDir}'"
   rm -rf ./_site
-  npm run build:production
+  yarn build:production
   echo "--> Showing tree for 'production' in '${projectDir}'"
   head "./_site/assets/build/app.js"
   head "./_site/index.html"

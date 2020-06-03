@@ -2,6 +2,7 @@ const childProcess = require('child_process')
 const fs = require('fs')
 // const _        = require('lodash')
 const path = require('path')
+const os = require('os')
 // const _ = require('lodash')
 const yaml = require('js-yaml')
 // const spawnSync   = require('spawn-sync')
@@ -16,7 +17,7 @@ const oneLine = require('common-tags/lib/oneLine')
 // const pad = require('pad')
 
 if (require.main === module) {
-  scrolex.failure(`Please only used this module via require`)
+  scrolex.failure('Please only used this module via require')
   process.exit(1)
 }
 
@@ -29,9 +30,9 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
 
   // Replace all npms with their first-found full-path executables
   const npmBins = {
-    'browser-sync': 'node_modules/browser-sync/bin/browser-sync.js',
-    'nodemon'     : 'node_modules/nodemon/bin/nodemon.js',
-    'webpack'     : 'node_modules/webpack/bin/webpack.js',
+    'browser-sync': 'node_modules/browser-sync/dist/bin.js',
+    nodemon       : 'node_modules/nodemon/bin/nodemon.js',
+    webpack       : 'node_modules/webpack/bin/webpack.js',
     // 'imagemin'     : 'node_modules/imagemin-cli/cli.js',
   }
   for (const name in npmBins) {
@@ -63,7 +64,7 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   }
 
   // cp -f ${runtime.projectDir}/Gemfile ${runtime.cacheDir}/Gemfile &&
-  let jekyllBin = utils.dockerString('jekyll', { runtime })
+  const jekyllBin = utils.dockerString('jekyll', { runtime })
 
   // Replace shims
   cmd = cmd.replace(/(\s|^)\[jekyll\](\s|$)/, `$1${jekyllBin}$2`)
@@ -71,33 +72,58 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   return cmd
 }
 
-module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal = '', cleanupCmds }) {
+module.exports.splitDir = function splitDir (dir) {
+  const dirList = []
+  const parts = `${dir}`.split('/')
+  let cont = ''
+  for (const i in parts) {
+    const part = parts[i]
+    if (!part) continue
+    cont = `${cont}/${part}`
+    dirList.push(cont)
+  }
+  return dirList
+}
+
+module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal = '' }) {
   if (runtime.dying === true) {
     return
   }
   runtime.dying = true
-  console.log(`>>> About to exit. code=${code}, signal=${signal}. Cleaning up... `)
-  let opts = {
-    cwd: `${runtime.cacheDir}`,
+
+  let cleanupCmds = [
+    'pkill -f nodemon',
+    'pkill -f browser-sync',
+  ]
+
+  if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
+    cleanupCmds = cleanupCmds.concat([
+      'docker-sync stop',
+      // `docker-compose stop`,
+    ])
   }
 
-  for (let i in cleanupCmds) {
-    let c = cleanupCmds[i]
+  console.log(`>>> About to exit. code=${code}, signal=${signal}. Cleaning up... `)
+  for (const i in cleanupCmds) {
+    const c = cleanupCmds[i]
     console.error(`Cleanup command: '${c}' ...`)
     try {
-      childProcess.execSync(`${c}`, opts)
+      childProcess.execSync(`${c}`, {
+        cwd: `${runtime.cacheDir}`,
+      })
     } catch (err) {} // eslint-disable-line
   }
 
   if (signal === 'SIGINT') {
-    process.exit()
+    console.log('>>> Process aborted')
+    process.exit(1)
   }
 }
 
-module.exports.dockerString = function dockerString (cmd, { runtime }) {
-  let volumePaths = utils.volumePaths({ runtime })
-  let listVolumes = []
-  for (let key in volumePaths) {
+module.exports.dockerString = function dockerString (cmd, { opts = {}, runtime } = {}) {
+  const volumePaths = utils.volumePaths({ runtime })
+  const listVolumes = []
+  for (const key in volumePaths) {
     listVolumes.push(`--volume ${key}:${volumePaths[key]}`)
   }
 
@@ -115,10 +141,24 @@ module.exports.dockerString = function dockerString (cmd, { runtime }) {
     `
   }
 
+  if (!opts || !('priviliged' in opts)) {
+    opts.priviliged = false
+  }
+
+  // https://github.com/envygeeks/jekyll-docker/issues/223
+  // --env "JEKYLL_GID=${os.userInfo().gid}" // <-- runs the risk of: groupmod: GID '20' already exists
+  let userstr = ''
+  if (opts.priviliged === false) {
+    userstr = oneLine`
+      --env "JEKYLL_UID=${os.userInfo().uid}"
+    `
+  }
+
   return oneLine`
     docker run
       --rm
-      -i
+      --interactive
+      ${userstr}
       --env "JEKYLL_ENV=${runtime.lanyonEnv}"
       --workdir ${runtime.cacheDir}
       ${listVolumes.join('\n')}
@@ -128,7 +168,7 @@ module.exports.dockerString = function dockerString (cmd, { runtime }) {
 }
 
 module.exports.volumePaths = function volumePaths ({ runtime }) {
-  let volumePaths = {}
+  const volumePaths = {}
 
   if (runtime.contentBuildDir.indexOf(runtime.projectDir) === -1) {
     volumePaths[runtime.contentBuildDir] = runtime.contentBuildDir
@@ -157,7 +197,7 @@ module.exports.runString = async function runString (cmd, { runtime, cmdName, or
 }
 
 module.exports.runhooks = async (order, cmdName, runtime) => {
-  let squashedHooks = utils.gethooks(order, cmdName, runtime)
+  const squashedHooks = utils.gethooks(order, cmdName, runtime)
 
   scrolex.stick(`Running ${squashedHooks.length} ${order}${cmdName} hooks`)
   if (!squashedHooks.length) {
@@ -166,6 +206,7 @@ module.exports.runhooks = async (order, cmdName, runtime) => {
 
   return scrolex.exe(squashedHooks.join(' && '), {
     cwd       : runtime.projectDir,
+    fatal     : true,
     mode      : 'passthru',
     components: `lanyon>hooks>${order}${cmdName}`,
   })
@@ -187,8 +228,8 @@ module.exports.gethooks = (order, cmdName, runtime) => {
   ]
 
   let squashedHooks = []
-  for (let i in arr) {
-    let hook = arr[i]
+  for (const i in arr) {
+    const hook = arr[i]
     if (runtime[hook]) {
       const lastPart = hook.split(':').pop()
       let needEnv = 'both'
@@ -227,23 +268,27 @@ module.exports.upwardDirContaining = (find, cwd, not) => {
   return false
 }
 
-module.exports.initProject = async ({ assetsBuildDir, gitRoot, cacheDir, binDir }) => {
+module.exports.initProject = async ({ assetsBuildDir, gitRoot, cacheDir }) => {
   const scrolexOpts = {
     cwd  : gitRoot,
     fatal: false,
     mode : 'passthru',
   }
-  if (!fs.existsSync(assetsBuildDir)) {
-    let rel = path.relative(gitRoot, assetsBuildDir)
-    await scrolex.exe(`mdkir '${rel}' && git ignore '${rel}'`, scrolexOpts)
-  }
-  if (!fs.existsSync(cacheDir)) {
-    let rel = path.relative(gitRoot, cacheDir)
-    await scrolex.exe(`mdkir '${rel}' && git ignore '${rel}'`, scrolexOpts)
-  }
-  if (!fs.existsSync(binDir)) {
-    let rel = path.relative(gitRoot, binDir)
-    await scrolex.exe(`mdkir '${rel}' && git ignore '${rel}'`, scrolexOpts)
+
+  const dirs = [
+    assetsBuildDir,
+    cacheDir,
+  ]
+
+  for (const dir of dirs) {
+    if (!fs.existsSync(dir)) {
+      const rel = path.relative(gitRoot, dir)
+      try {
+        await scrolex.exe(`mkdir -p '${rel}' && echo '${rel}' >> .gitignore`, scrolexOpts)
+      } catch (err) {
+        console.error(`Could not create dir. rel=${rel} gitRoot=${gitRoot} dir=${dir} err=${err}`)
+      }
+    }
   }
 }
 
