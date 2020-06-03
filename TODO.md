@@ -1,2 +1,0 @@
-- [ ] Nodemon ignores aren't working
-- [ ] worker-loader isn't working
