@@ -46,12 +46,19 @@ module.exports = function ({ runtime }) {
   function getFilename (extension, isChunk, isContent) {
     let filename = `[name].${extension}`
 
+    // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/763
+    let hashNotation = ''
+    if (extension === 'css') {
+      hashNotation = '[hash]'
+    } else {
+      hashNotation = '[contenthash]'
+    }
     if (!runtime.isDev) {
-      filename = `[name].[contenthash].${extension}`
+      filename = `[name].${hashNotation}.${extension}`
     }
 
     if (isChunk) {
-      filename = `[name].[contenthash].[id].chunk.${extension}`
+      filename = `[name].${hashNotation}.[id].chunk.${extension}`
     }
 
     return filename
