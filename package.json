@@ -4,7 +4,7 @@
   "description": "Jekyll without the Hassle",
   "main": "src/config.js",
   "engines": {
-    "node": ">=8"
+    "node": ">=10"
   },
   "jest": {
     "verbose": true,
