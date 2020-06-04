@@ -20,6 +20,7 @@ Released: TBA.
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
 - [ ] Deprecate Scrollex in favor of execa passing through to stdout/stderr
+- [ ] Less verbose Lanyon unless you turn on LANYON_DEBUG
 
 ## v0.2.0
 

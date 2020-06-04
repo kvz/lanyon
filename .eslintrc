@@ -1,31 +1,41 @@
 {
   "extends": [
+    "standard",
     "eslint:recommended",
-    "standard"
+    "plugin:import/errors",
+    "plugin:import/warnings"
   ],
   "env": {
     "es6": true,
     "jest": true,
     "node": true
   },
+  "settings": {
+  },
   "globals": {
   },
-  "plugins": [],
+  "plugins": [
+    "prefer-import"
+  ],
+  "parser": "babel-eslint",
   "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    }
   },
   "rules": {
+    "prefer-import/prefer-import-over-require": "off",
+    "camelcase": "off",
+    "no-fallthrough": "off",
     "no-console": "off",
-    "no-multi-spaces": [
+    // "no-unused-vars": "off",
+    "no-useless-escape": "off",
+    "no-template-curly-in-string": "off",
+    "no-multi-spaces": "off",
+    "no-multi-str": "off",
+    "quotes": [
       "error",
+      "single",
       {
-        "exceptions": {
-          "VariableDeclarator": true,
-          "ImportDeclaration": true,
-          "Property": true
-        }
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
       }
     ],
     "comma-dangle": [
