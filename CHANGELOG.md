@@ -21,6 +21,7 @@ Released: TBA.
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
 - [ ] Deprecate Scrollex in favor of execa passing through to stdout/stderr
 - [ ] Less verbose Lanyon unless you turn on LANYON_DEBUG
+- [ ] Remove font-awesome
 
 ## v0.2.5
 
