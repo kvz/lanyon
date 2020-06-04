@@ -200,7 +200,10 @@ module.exports.runString = async function runString (cmd, { runtime, cmdName, or
 module.exports.runhooks = async (order, cmdName, runtime) => {
   const squashedHooks = utils.gethooks(order, cmdName, runtime)
 
-  scrolex.stick(`Running ${squashedHooks.length} ${order}${cmdName} hooks`)
+  if (process.env.LANYON_DEBUG === '1') {
+    scrolex.stick(`Running ${squashedHooks.length} ${order}${cmdName} hooks`)
+  }
+
   if (!squashedHooks.length) {
     return
   }
@@ -298,6 +301,7 @@ module.exports.fsCopySync = (src, dst, { mode = '644', encoding = 'utf-8' } = {}
 }
 
 module.exports.writeConfig = (cfg) => {
+  scrolex.stick(`Writing configs to '${cfg.runtime.cacheDir}/'`)
   if (!fs.existsSync(`${cfg.runtime.cacheDir}/jekyll.lanyon_assets.yml`)) {
     fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.lanyon_assets.yml`, '# this file should be overwritten by the Webpack AssetsPlugin', 'utf-8')
   }

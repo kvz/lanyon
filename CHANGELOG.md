@@ -6,6 +6,7 @@
 - [ ] Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
 - [ ] Go over all `process.env.*` and make sure they are only at the head of `config.js`
+- [ ] Deprecate Scrollex in favor of execa passing through to stdout/stderr
 
 ## master
 
@@ -19,14 +20,13 @@ Released: TBA.
 - [ ] Debug browsersync's endless refresh
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
-- [ ] Deprecate Scrollex in favor of execa passing through to stdout/stderr
-- [ ] Less verbose Lanyon unless you turn on LANYON_DEBUG
 
 ## v0.2.6
 
 Released: 2020-06-04
 [Diff](https://github.com/kvz/lanyon/compare/v0.2.5...v0.2.6).
 
+- [x] Less verbose Lanyon unless you turn on LANYON_DEBUG
 - [x] Remove font-awesome
 - [x] Remove SvgStoreWebpackPlugin
 - [x] Simplify postcss

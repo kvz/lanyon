@@ -95,8 +95,10 @@ module.exports = async function dispatch () {
 
   scrolex.stick(`Booting Lanyon->${cmdName}. Version: ${runtime.lanyonVersion} on PID: ${process.pid} from: ${__filename}`)
 
-  for (const key of Object.keys(runtime).sort()) {
-    scrolex.stick(`Detected ${key} as "${runtime[key]}"`)
+  if (process.env.LANYON_DEBUG === '1') {
+    for (const key of Object.keys(runtime).sort()) {
+      scrolex.stick(`Runtime key '${key}' is '${runtime[key]}'`)
+    }
   }
 
   // Create asset dirs and git ignores
@@ -105,7 +107,6 @@ module.exports = async function dispatch () {
   }
 
   // Write all config files to cacheDir
-  scrolex.stick('Writing configs')
   utils.writeConfig(config)
 
   if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
