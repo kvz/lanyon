@@ -28,6 +28,7 @@ Released: TBA.
 Released: 2020-06-04
 [Diff](https://github.com/kvz/lanyon/compare/v0.2.5...v0.2.6).
 
+- [x] Remove LoaderOptionsPlugin
 - [x] Remove CommonsChunkPlugin and friends
 - [x] Remove Visualizer statistics 
 

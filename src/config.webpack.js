@@ -262,11 +262,6 @@ module.exports = function ({ runtime }) {
       },
       prefix: 'icon-',
     }))
-    // Until loaders are updated one can use the LoaderOptionsPlugin to switch loaders into debug mode:
-    plugins.push(new webpack.LoaderOptionsPlugin({
-      debug  : runtime.isDev,
-      context: runtime.projectDir,
-    }))
     plugins.push(new AssetsPlugin({
       filename: 'jekyll.lanyon_assets.yml',
       path    : runtime.cacheDir,
