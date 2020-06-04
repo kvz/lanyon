@@ -28,34 +28,6 @@ module.exports = function ({ runtime }) {
 
   const browsers = runtime.browsers || ['> 1%', 'ie 10', 'ie 8', 'safari 4']
 
-  const postCssLoader = {
-    loader : 'postcss-loader',
-    options: {
-      sourceMap: true,
-      ident    : 'postcss',
-      plugins  : (loader) => [
-        require('autoprefixer')({
-          overrideBrowserslist: browsers,
-        }),
-        // require('cssnano')(),
-      ],
-    },
-  }
-
-  const postCssLoaderProduction = {
-    loader : 'postcss-loader',
-    options: {
-      sourceMap: true,
-      ident    : 'postcss',
-      plugins  : (loader) => [
-        require('autoprefixer')({
-          overrideBrowserslist: browsers,
-        }),
-        // require('cssnano')(),
-      ],
-    },
-  }
-
   const webpackRules = () => {
     const rules = []
 
@@ -182,12 +154,23 @@ module.exports = function ({ runtime }) {
         {
           loader : MiniCssExtractPlugin.loader,
           options: {
-            hmr: process.env.NODE_ENV === 'development',
+            hmr: runtime.isDev,
           },
         },
         'css-loader',
         'resolve-url-loader',
-        runtime.isDev ? postCssLoader : postCssLoaderProduction,
+        {
+          loader : 'postcss-loader',
+          options: {
+            sourceMap: true,
+            ident    : 'postcss',
+            plugins  : (loader) => [
+              require('autoprefixer')({
+                overrideBrowserslist: browsers,
+              }),
+            ],
+          },
+        },
         'sass-loader',
       ],
     })
@@ -198,12 +181,23 @@ module.exports = function ({ runtime }) {
         {
           loader : MiniCssExtractPlugin.loader,
           options: {
-            hmr: process.env.NODE_ENV === 'development',
+            hmr: runtime.isDev,
           },
         },
         'css-loader',
         'resolve-url-loader',
-        runtime.isDev ? postCssLoader : postCssLoaderProduction,
+        {
+          loader : 'postcss-loader',
+          options: {
+            sourceMap: true,
+            ident    : 'postcss',
+            plugins  : (loader) => [
+              require('autoprefixer')({
+                overrideBrowserslist: browsers,
+              }),
+            ],
+          },
+        },
         'less-loader',
       ],
     })
@@ -327,8 +321,8 @@ module.exports = function ({ runtime }) {
     output: {
       publicPath   : runtime.publicPath,
       path         : runtime.assetsBuildDir,
-      filename     : runtime.isDev ? `[name].js` : `[name].[contenthash].js`,
-      chunkFilename     : runtime.isDev ? `[name].js` : `[name].[contenthash].[id].chunk.js`,
+      filename     : runtime.isDev ? `[name].js`: `[name].[contenthash].js`,
+      chunkFilename: runtime.isDev ? `[name].js`: `[name].[contenthash].[id].chunk.js`,
     },
     devtool: (function dynamicDevtool () {
       // https://webpack.js.org/configuration/devtool/#devtool
