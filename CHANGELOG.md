@@ -21,13 +21,13 @@ Released: TBA.
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
 - [ ] Deprecate Scrollex in favor of execa passing through to stdout/stderr
 - [ ] Less verbose Lanyon unless you turn on LANYON_DEBUG
-- [ ] Remove font-awesome
 
 ## v0.2.6
 
 Released: 2020-06-04
 [Diff](https://github.com/kvz/lanyon/compare/v0.2.5...v0.2.6).
 
+- [x] Remove font-awesome
 - [x] Simplify postcss
 - [x] Remove cssnano
 - [x] Remove ProvidePlugin (of `lodash` as `_` without importing it)
