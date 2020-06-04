@@ -1,8 +1,10 @@
 const path = require('path')
 const webpack = require('webpack')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+// const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const SvgStoreWebpackPlugin = require('webpack-svgstore-plugin')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const TerserJSPlugin = require('terser-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const Visualizer = require('webpack-visualizer-plugin')
 const yaml = require('js-yaml')
 const AssetsPlugin = require('assets-webpack-plugin')
@@ -60,17 +62,19 @@ module.exports = function ({ runtime }) {
 
     // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/763
     let hashNotation = ''
-    if (extension === 'css') {
-      hashNotation = '[hash]'
-    } else {
-      hashNotation = '[contenthash]'
+    if (!runtime.isDev) {
+      if (extension === 'css') {
+        hashNotation = '[hash].'
+      } else {
+        hashNotation = '[contenthash].'
+      }
     }
     if (!runtime.isDev) {
-      filename = `[name].${hashNotation}.${extension}`
+      filename = `[name].${hashNotation}${extension}`
     }
 
     if (isChunk) {
-      filename = `[name].${hashNotation}.[id].chunk.${extension}`
+      filename = `[name].${hashNotation}[id].chunk.${extension}`
     }
 
     return filename
@@ -196,187 +200,56 @@ module.exports = function ({ runtime }) {
       ],
     })
 
-    if (runtime.isDev) {
-      rules.push({
-        test: /\.css$/,
-        use : [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader : 'css-loader',
-            options: {
-              // sourceMap: true,
-              // { importLoaders: 1 }
-            },
-          },
-          postCssLoader,
-          {
-            loader: 'resolve-url-loader',
-          },
-        ],
-      })
-
-      rules.push({
-        test: /\.scss$/,
-        use : [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader : 'css-loader',
-            options: {
-              // sourceMap: true,
-            },
-          },
-          postCssLoader,
-          {
-            loader: 'resolve-url-loader',
-          },
-          {
-            loader : 'sass-loader',
-            options: {
-              // sourceMap: true,
-            },
-          },
-        ],
-      })
-
-      rules.push({
-        test: /\.less$/,
-        use : [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader : 'css-loader',
-            options: {
-              // sourceMap: true,
-            },
-          },
-          postCssLoader,
-          {
-            loader: 'resolve-url-loader',
-          },
-          {
-            loader : 'less-loader',
-            options: {
-              // sourceMap: true,
-            },
-          },
-        ],
-      })
-    } else {
-      rules.push({
-        test: /\.css$/,
-        use : ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use     : [
-            {
-              loader : 'css-loader',
-              options: {
-                sourceMap    : true,
-                importLoaders: 1,
-              },
-            },
-            postCssLoaderProduction,
-            {
-              loader : 'resolve-url-loader',
-              options: {
-                sourceMap: true,
-              },
-            },
-          ],
-        }),
-      })
-      rules.push({
-        test: /\.scss$/,
-        use : ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use     : [
-            {
-              loader : 'css-loader',
-              options: {
-                importLoaders: 1,
-                sourceMap    : true,
-              },
-            },
-            postCssLoaderProduction,
-            {
-              loader : 'resolve-url-loader',
-              options: {
-                sourceMap: true,
-              },
-            },
-            {
-              loader : 'sass-loader',
-              options: {
-                sourceMap: true,
-              },
-            },
-          ],
-        }),
-      })
-      rules.push({
-        test: /\.less$/,
-        use : ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use     : [
-            {
-              loader : 'css-loader',
-              options: {
-                sourceMap: true,
-              },
-            },
-            postCssLoaderProduction,
-            {
-              loader : 'resolve-url-loader',
-              options: {
-                sourceMap: true,
-              },
-            },
-            {
-              loader : 'less-loader',
-              options: {
-                sourceMap: true,
-              },
-            },
-          ],
-        }),
-      })
-    }
-
     rules.push({
-      test   : /\.(js|jsx)$/,
-      include: jsDirs,
-      exclude: [
-        /[\\/](node_modules|js-untouched)[\\/]/,
-      ],
-      use: [
+      test: /\.(le|sa|sc|c)ss$/,
+      use : [
         {
-          loader : 'babel-loader',
+          loader : MiniCssExtractPlugin.loader,
           options: {
-            babelrc: false,
-            presets: [
-              [require.resolve('@babel/preset-env'), {
-                debug  : false,
-                modules: 'commonjs',
-                loose  : false,
-              }],
-              require.resolve('@babel/preset-react'),
-            ],
-            plugins: [
-              [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
-              require.resolve('@babel/plugin-proposal-class-properties'),
-              require.resolve('react-hot-loader/babel'),
-              require.resolve('nanohtml'),
-            ],
-            // sourceRoot    : `${runtime.projectDir}`,
-            cacheDirectory: `${runtime.cacheDir}/babelCache`,
+            hmr: process.env.NODE_ENV === 'development',
           },
         },
+        'css-loader',
+        'resolve-url-loader',
+        postCssLoaderProduction,
+        'sass-loader',
+        'less-loader',
       ],
     })
+
+    if (!runtime.isDev) {
+      rules.push({
+        test   : /\.(js|jsx)$/,
+        include: jsDirs,
+        exclude: [
+          /[\\/](node_modules|js-untouched)[\\/]/,
+        ],
+        use: [
+          {
+            loader : 'babel-loader',
+            options: {
+              babelrc: false,
+              presets: [
+                [require.resolve('@babel/preset-env'), {
+                  debug  : false,
+                  modules: 'commonjs',
+                  loose  : false,
+                }],
+                require.resolve('@babel/preset-react'),
+              ],
+              plugins: [
+                [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
+                require.resolve('@babel/plugin-proposal-class-properties'),
+                require.resolve('react-hot-loader/babel'),
+                require.resolve('nanohtml'),
+              ],
+              // sourceRoot    : `${runtime.projectDir}`,
+              cacheDirectory: `${runtime.cacheDir}/babelCache`,
+            },
+          },
+        ],
+      })
+    }
 
     return rules
   }
@@ -421,16 +294,17 @@ module.exports = function ({ runtime }) {
 
     // plugins.push(new webpack.optimize.ModuleConcatenationPlugin())
 
+    plugins.push(new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename     : getFilename('css'),
+      chunkFilename: getFilename('css', true),
+      ignoreOrder  : true, // <-- add this to avoid: "Order in extracted chunk undefined" ¯\_(ツ)_/¯ https://github.com/redbadger/website-honestly/issues/128
+    }))
+
     if (runtime.isDev) {
       plugins.push(new webpack.HotModuleReplacementPlugin())
     } else {
-      plugins.push(new ExtractTextPlugin({
-        filename   : getFilename('css'),
-        allChunks  : true,
-        ignoreOrder: true, // <-- add this to avoid: "Order in extracted chunk undefined" ¯\_(ツ)_/¯ https://github.com/redbadger/website-honestly/issues/128
-      }))
-
-      plugins.push(new OptimizeCssAssetsPlugin())
       plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 15 }))
       plugins.push(new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 10000 }))
       plugins.push(function ReportErrors () {
@@ -470,7 +344,8 @@ module.exports = function ({ runtime }) {
   const webpackCfg = {
     mode        : runtime.isDev ? 'development' : 'production',
     optimization: {
-      minimize: !runtime.isDev,
+      minimize : !runtime.isDev,
+      minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
       // minimizer: (function dynamicMinimizers () {
       //   const minimizers = []
       //   if (runtime.uglify) {
