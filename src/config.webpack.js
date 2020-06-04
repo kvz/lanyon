@@ -291,7 +291,11 @@ module.exports = function ({ runtime }) {
       processOutput (assets) {
         scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
         try {
-          return yaml.safeDump({ lanyon_assets: assets })
+          if ('' in assets) {
+            assets.orphaned = assets['']
+            delete assets['']
+          }
+          yaml.safeDump({ lanyon_assets: assets })
         } catch (e) {
           console.error({ assets })
           throw new Error(`Unable to encode above config to YAML. ${e.message}`)
