@@ -6,7 +6,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const Visualizer = require('webpack-visualizer-plugin')
 const yaml = require('js-yaml')
 const AssetsPlugin = require('assets-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
@@ -72,29 +72,30 @@ module.exports = function ({ runtime }) {
   ].concat(runtime.extraAssetsSourceDirs || [])
 
   const webpackCfg = {
-    mode        : runtime.lanyonEnv,
+    mode        : runtime.isDev ? 'development' : 'production',
     optimization: {
-      minimizer: (function dynamicMinimizers () {
-        const minimizers = []
-        if (runtime.uglify) {
-          // https://stackoverflow.com/questions/49053215/webpack-4-how-to-configure-minimize
-          // we specify a custom UglifyJsPlugin here to get source maps in production
-          minimizers.push(
-            new UglifyJsPlugin({
-              cache        : true,
-              parallel     : true,
-              uglifyOptions: {
-                compress: false,
-                ecma    : 6,
-                mangle  : true,
-              },
-              sourceMap: true,
-            })
-          )
-        }
+      minimize: !runtime.isDev,
+      // minimizer: (function dynamicMinimizers () {
+      //   const minimizers = []
+      //   if (runtime.uglify) {
+      //     // https://stackoverflow.com/questions/49053215/webpack-4-how-to-configure-minimize
+      //     // we specify a custom UglifyJsPlugin here to get source maps in production
+      //     minimizers.push(
+      //       new UglifyJsPlugin({
+      //         cache        : true,
+      //         parallel     : true,
+      //         uglifyOptions: {
+      //           compress: false,
+      //           ecma    : 6,
+      //           mangle  : true,
+      //         },
+      //         sourceMap: true,
+      //       })
+      //     )
+      //   }
 
-        return minimizers
-      }()),
+      //   return minimizers
+      // }()),
     },
     entry: (function dynamicEntries () {
       var entries = {}
