@@ -14,7 +14,7 @@ module.exports = function ({ runtime, jekyll }) {
       '**/env.sh',
       '**/node_modules/**',
       '**/vendor/**',
-    ].concat(jekyll.exclude.map(i => `**/${i}`)),
+    ].concat((jekyll.exclude || []).map(i => `**/${i}`)),
     ext: [
       'htm',
       'html',
