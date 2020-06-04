@@ -58,13 +58,7 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
     }
     const pat = new RegExp(`(\\s|^)\\[${name}\\](\\s|$)`)
 
-    let extraFlags = ''
-
-    if (process.env.LANYON_DEBUG === '1') {
-      extraFlags += '--trace-deprecation '
-    }
-
-    cmd = cmd.replace(pat, `$1node ${extraFlags}${npmBins[name]}$2`)
+    cmd = cmd.replace(pat, `$1node --trace-deprecation ${npmBins[name]}$2`)
 
     // let nodeBin = utils.dockerString('node', { extraArgs: extraVolumes, runtime })
     // cmd = cmd.replace(pat, `$1${nodeBin} ${npmBins[name]}$2`)

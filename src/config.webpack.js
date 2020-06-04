@@ -290,11 +290,17 @@ module.exports = function ({ runtime }) {
       path    : runtime.cacheDir,
       processOutput (assets) {
         scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
+        if (!assets) {
+          console.error({ assets })
+          scrolex.failure(`The assets var was empty!`)
+          process.exit(1)
+        }
+        if ('' in assets) {
+          assets.orphaned = assets['']
+          delete assets['']
+        }
+
         try {
-          if ('' in assets) {
-            assets.orphaned = assets['']
-            delete assets['']
-          }
           yaml.safeDump({ lanyon_assets: assets })
         } catch (e) {
           console.error({ assets })
