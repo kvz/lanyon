@@ -201,7 +201,7 @@ module.exports = function ({ runtime }) {
     })
 
     rules.push({
-      test: /\.(le|sa|sc|c)ss$/,
+      test: /\.(sa|sc|c)ss$/,
       use : [
         {
           loader : MiniCssExtractPlugin.loader,
@@ -211,8 +211,23 @@ module.exports = function ({ runtime }) {
         },
         'css-loader',
         'resolve-url-loader',
-        postCssLoaderProduction,
+        runtime.isDev ? postCssLoader : postCssLoaderProduction,
         'sass-loader',
+      ],
+    })
+
+    rules.push({
+      test: /\.less$/,
+      use : [
+        {
+          loader : MiniCssExtractPlugin.loader,
+          options: {
+            hmr: process.env.NODE_ENV === 'development',
+          },
+        },
+        'css-loader',
+        'resolve-url-loader',
+        runtime.isDev ? postCssLoader : postCssLoaderProduction,
         'less-loader',
       ],
     })
