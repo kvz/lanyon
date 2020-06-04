@@ -28,11 +28,11 @@ Released: 2020-06-04
 [Diff](https://github.com/kvz/lanyon/compare/v0.2.5...v0.2.6).
 
 - [x] Remove font-awesome
+- [x] Remove SvgStoreWebpackPlugin
 - [x] Simplify postcss
 - [x] Remove cssnano
 - [x] Remove ProvidePlugin (of `lodash` as `_` without importing it)
 - [x] Remove LoaderOptionsPlugin
-- [x] Remove SvgStoreWebpackPlugin
 - [x] Remove CommonsChunkPlugin and friends
 - [x] Remove Visualizer statistics 
 
