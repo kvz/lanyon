@@ -4,10 +4,8 @@ const webpack = require('webpack')
 const TerserJSPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const Visualizer = require('webpack-visualizer-plugin')
 const yaml = require('js-yaml')
 const AssetsPlugin = require('assets-webpack-plugin')
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
