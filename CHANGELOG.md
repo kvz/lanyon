@@ -2,29 +2,49 @@
 
 ## Unplanned
 
-- [ ] Add `travis` to Dockerfile, and run it from our local shims vs from global during `lanyon encrypt`
 - [ ] Throw an error if we find legacy Jekyll residu such as `./vendors` or `.bundle`
-- [ ] Maybe add https://github.com/btford/write-good and or text-lint (#8)
 - [ ] Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content
-- [ ] Consider bundlesize tracking on cli like https://github.com/rstacruz/webpack-tricks#investigating-bundle-sizes
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
 - [ ] Go over all `process.env.*` and make sure they are only at the head of `config.js`
-- [ ] Add http://cssnano.co/
 
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.1.17...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.0...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
 - [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
-- [ ] Make travis tests pass again
 - [ ] Debug browsersync's endless refresh
-- [ ] Upgrade Webpack and friends
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
+- [ ] Deprecate Scrollex in favor of execa passing through to stdout/stderr
+- [ ] Less verbose Lanyon unless you turn on LANYON_DEBUG
+
+## v0.2.0
+
+Released: 2020-06-04
+[Diff](https://github.com/kvz/lanyon/compare/v0.1.17...v0.2.0).
+
+- [x] Show Node.js deprecation traces when `LANYON_DEBUG=1`, as well as Webpack profile and progress
+- [x] Add worker-loader
+- [x] Drop Node.js 8 support
+- [x] Make travis tests pass again
+- [x] Migrate from extract-text-webpack-plugin + style-loader -> mini-css-extract-plugin
+- [x] Migrate from UglifyJS -> terser-webpack-plugin@3.0.3,
+- [x] Upgrade autoprefixer@8.6.5 -> autoprefixer@9.8.0
+- [x] Upgrade css-loader@0.28.11 -> css-loader@3.5.3
+- [x] Upgrade file-loader@1.1.11 -> file-loader@6.0.0
+- [x] Upgrade less-loader@4.1.0 -> less-loader@6.1.0
+- [x] Upgrade less@2.7.3 -> less@3.11.2
+- [x] Upgrade nodemon@1.19.2 -> nodemon@2
+- [x] Upgrade optimize-css-assets-webpack-plugin@3.2.1 -> optimize-css-assets-webpack-plugin@5.0.3
+- [x] Upgrade postcss-loader@2.1.6 -> postcss-loader@3.0.0
+- [x] Upgrade resolve-url-loader@2.3.2 -> resolve-url-loader@3.1.1
+- [x] Upgrade sass-loader@7.3.1 -> sass-loader@8.0.2
+- [x] Upgrade style-loader@0.23.1 -> style-loader@1.2.1
+- [x] Upgrade webpack@3.12.0 -> webpack@4.43.0
 
 ## v0.1.17
 
@@ -499,7 +519,7 @@ Released: 2017-07-10.
 - [x] Upgrade github-pages, nokogiri, and minimum required ruby to 2.1.0
 - [x] Reset shims while rebuilding container
 - [x] Respect docker while verifying Ruby
-- [x] Ship "jekyll-lunr-js-search": "3.3.0"
+- [x] Ship "jekyll-lunr-js-search@3.3.0"
 
 ## v0.0.92
 

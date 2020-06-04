@@ -24,15 +24,20 @@ module.exports = async function dispatch () {
   // let buildCmd = '[jekyll] build --verbose --trace --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml'
   // LANYON_EXTRA_JEKYLL_FLAGS="--trace --verbose"
 
-  let extraFlags = ''
+  let extraJekyllFlags = ''
   if (process.env.LANYON_EXTRA_JEKYLL_FLAGS) {
-    extraFlags += process.env.LANYON_EXTRA_JEKYLL_FLAGS + ' '
+    extraJekyllFlags += process.env.LANYON_EXTRA_JEKYLL_FLAGS + ' '
   }
   if (process.env.LANYON_DEBUG === '1') {
-    extraFlags += '--verbose --trace '
+    extraJekyllFlags += '--verbose --trace '
   }
 
-  const buildCmd = `[jekyll] build ${extraFlags}--config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml`
+  let extraWebpackFlags = ''
+  if (process.env.LANYON_DEBUG === '1') {
+    extraWebpackFlags += '--progress --profile '
+  }
+
+  const buildCmd = `[jekyll] build ${extraJekyllFlags}--config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml`
   const formattedBuildCmd = utils.formatCmd(buildCmd, { runtime, cmdName })
   // console.log(formattedBuildCmd)
 
@@ -43,7 +48,7 @@ module.exports = async function dispatch () {
   }
 
   const scripts = {
-    'build:assets'       : '[webpack] --config [cacheDir]/webpack.config.js',
+    'build:assets'       : `[webpack] ${extraWebpackFlags}--config [cacheDir]/webpack.config.js`,
     'build:content:watch': `${process.env.LANYON_DEBUG === '1' ? 'env DEBUG=nodemon:* ' : ''}[nodemon] --exitcrash --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} ${strPostBuildContentHooks}'`,
     // 'build:content:watch': '[jekyll] build --watch --verbose --force_polling --config [cacheDir]/jekyll.config.yml,[cacheDir]/jekyll.lanyon_assets.yml',
     'build:content'      : buildCmd,
