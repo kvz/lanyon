@@ -56,24 +56,6 @@ module.exports = function ({ runtime }) {
     },
   }
 
-  function getFilename (extension, isChunk, isContent) {
-    let filename = `[name].${extension}`
-
-    let hashNotation = ''
-    if (!runtime.isDev) {
-      hashNotation = '[contenthash].'
-    }
-    if (!runtime.isDev) {
-      filename = `[name].${hashNotation}${extension}`
-    }
-
-    if (isChunk) {
-      filename = `[name].${hashNotation}[id].chunk.${extension}`
-    }
-
-    return filename
-  }
-
   const webpackRules = () => {
     const rules = []
 
@@ -311,50 +293,16 @@ module.exports = function ({ runtime }) {
       },
     }))
 
-    // plugins.push(new webpack.optimize.ModuleConcatenationPlugin())
-
     plugins.push(new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename     : getFilename('css'),
-      chunkFilename: getFilename('css', true),
+      filename     : runtime.isDev ? `[name].css` : `[name].[contenthash].css`,
+      chunkFilename: runtime.isDev ? `[name].css` : `[name].[contenthash].[id].chunk.css`,
       ignoreOrder  : true, // <-- add this to avoid: "Order in extracted chunk undefined" ¯\_(ツ)_/¯ https://github.com/redbadger/website-honestly/issues/128
     }))
 
     if (runtime.isDev) {
       plugins.push(new webpack.HotModuleReplacementPlugin())
-    } else {
-      plugins.push(new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 15 }))
-      plugins.push(new webpack.optimize.MinChunkSizePlugin({ minChunkSize: 10000 }))
-      plugins.push(function ReportErrors () {
-        this.plugin('done', ({ compilation }) => {
-          for (const asset in compilation.assets) {
-            scrolex.stick(`Wrote ${runtime.assetsBuildDir}/${asset}`)
-          }
-          if (compilation.errors && compilation.errors.length) {
-            scrolex.failure(compilation.errors)
-            if (!runtime.isDev) {
-              process.exit(1)
-            }
-          }
-        })
-      })
-    }
-
-    if (runtime.common) {
-      plugins.push(new webpack.optimize.CommonsChunkPlugin({
-        name    : 'common',
-        filename: getFilename('js'),
-      }))
-    }
-
-    if (!runtime.isDev && runtime.statistics) {
-      // @todo: Once Vizualizer supports multiple entries, add support for that here
-      // https://github.com/chrisbateman/webpack-visualizer/issues/5
-      // Currently it just shows stats for all entries in one graph
-      plugins.push(new Visualizer({
-        filename: runtime.statistics,
-      }))
     }
 
     return plugins
@@ -365,27 +313,6 @@ module.exports = function ({ runtime }) {
     optimization: {
       minimize : !runtime.isDev,
       minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
-      // minimizer: (function dynamicMinimizers () {
-      //   const minimizers = []
-      //   if (runtime.uglify) {
-      //     // https://stackoverflow.com/questions/49053215/webpack-4-how-to-configure-minimize
-      //     // we specify a custom UglifyJsPlugin here to get source maps in production
-      //     minimizers.push(
-      //       new UglifyJsPlugin({
-      //         cache        : true,
-      //         parallel     : true,
-      //         uglifyOptions: {
-      //           compress: false,
-      //           ecma    : 6,
-      //           mangle  : true,
-      //         },
-      //         sourceMap: true,
-      //       })
-      //     )
-      //   }
-
-      //   return minimizers
-      // }()),
     },
     entry: (function dynamicEntries () {
       var entries = {}
@@ -398,12 +325,6 @@ module.exports = function ({ runtime }) {
         }
       })
 
-      if (runtime.common) {
-        // e.g.: [ "jquery" ]
-        // https://webpack.github.io/docs/code-splitting.html#split-app-and-vendor-code
-        entries.common = runtime.common
-      }
-
       return entries
     }()),
     node: {
@@ -414,9 +335,8 @@ module.exports = function ({ runtime }) {
     output: {
       publicPath   : runtime.publicPath,
       path         : runtime.assetsBuildDir,
-      filename     : getFilename('js'),
-      chunkFilename: getFilename('js', true),
-      // cssFilename  : getFilename('css'),
+      filename     : runtime.isDev ? `[name].js` : `[name].[contenthash].js`,
+      chunkFilename     : runtime.isDev ? `[name].js` : `[name].[contenthash].[id].chunk.js`,
     },
     devtool: (function dynamicDevtool () {
       // https://webpack.js.org/configuration/devtool/#devtool
@@ -426,7 +346,8 @@ module.exports = function ({ runtime }) {
 
       return 'source-map'
     }()),
-    bail  : false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
+    // bail  : false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
+    bail: true,
     module: {
       rules: webpackRules(),
     },

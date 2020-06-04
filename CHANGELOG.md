@@ -10,7 +10,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.2.5...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.6...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -22,6 +22,14 @@ Released: TBA.
 - [ ] Deprecate Scrollex in favor of execa passing through to stdout/stderr
 - [ ] Less verbose Lanyon unless you turn on LANYON_DEBUG
 - [ ] Remove font-awesome
+
+## v0.2.6
+
+Released: 2020-06-04
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.5...v0.2.6).
+
+- [x] Remove CommonsChunkPlugin and friends
+- [x] Remove Visualizer statistics 
 
 ## v0.2.5
 

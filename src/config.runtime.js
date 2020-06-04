@@ -43,7 +43,6 @@ module.exports = function () {
   // wantVersion = '0.0.109'
   runtimeCfg.dockerImage = `kevinvz/lanyon:${wantVersion}`
 
-  runtimeCfg.statistics = 'stats.html'
   runtimeCfg.entries = [
     'app',
   ]
