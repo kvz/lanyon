@@ -251,9 +251,6 @@ module.exports = function ({ runtime }) {
       'process.env.NODE_ENV'  : JSON.stringify(process.env.NODE_ENV),
       'process.env.ENDPOINT'  : JSON.stringify(process.env.ENDPOINT),
     }))
-    plugins.push(new webpack.ProvidePlugin({
-      _: 'lodash',
-    }))
     plugins.push(new SvgStoreWebpackPlugin({
       svgoOptions: {
         plugins: [
