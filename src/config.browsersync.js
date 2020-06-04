@@ -1,6 +1,5 @@
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
-// const BowerWebpackPlugin      = require('bower-webpack-plugin')
 
 module.exports = function ({ runtime, webpack }) {
   let bundler = null
