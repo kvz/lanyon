@@ -10,7 +10,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.2.0...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.1...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -21,6 +21,13 @@ Released: TBA.
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
 - [ ] Deprecate Scrollex in favor of execa passing through to stdout/stderr
 - [ ] Less verbose Lanyon unless you turn on LANYON_DEBUG
+
+## v0.2.1
+
+Released: 2020-06-04
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.0...v0.2.1).
+
+- [x] Fix JSX parsing
 
 ## v0.2.0
 

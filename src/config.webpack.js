@@ -1,6 +1,5 @@
 const path = require('path')
 const webpack = require('webpack')
-// const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const SvgStoreWebpackPlugin = require('webpack-svgstore-plugin')
 const TerserJSPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -60,14 +59,9 @@ module.exports = function ({ runtime }) {
   function getFilename (extension, isChunk, isContent) {
     let filename = `[name].${extension}`
 
-    // https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/763
     let hashNotation = ''
     if (!runtime.isDev) {
-      if (extension === 'css') {
-        hashNotation = '[hash].'
-      } else {
-        hashNotation = '[contenthash].'
-      }
+      hashNotation = '[contenthash].'
     }
     if (!runtime.isDev) {
       filename = `[name].${hashNotation}${extension}`
@@ -232,39 +226,37 @@ module.exports = function ({ runtime }) {
       ],
     })
 
-    if (!runtime.isDev) {
-      rules.push({
-        test   : /\.(js|jsx)$/,
-        include: jsDirs,
-        exclude: [
-          /[\\/](node_modules|js-untouched)[\\/]/,
-        ],
-        use: [
-          {
-            loader : 'babel-loader',
-            options: {
-              babelrc: false,
-              presets: [
-                [require.resolve('@babel/preset-env'), {
-                  debug  : false,
-                  modules: 'commonjs',
-                  loose  : false,
-                }],
-                require.resolve('@babel/preset-react'),
-              ],
-              plugins: [
-                [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
-                require.resolve('@babel/plugin-proposal-class-properties'),
-                require.resolve('react-hot-loader/babel'),
-                require.resolve('nanohtml'),
-              ],
-              // sourceRoot    : `${runtime.projectDir}`,
-              cacheDirectory: `${runtime.cacheDir}/babelCache`,
-            },
+    rules.push({
+      test   : /\.(js|jsx)$/,
+      include: jsDirs,
+      exclude: [
+        /[\\/](node_modules|js-untouched)[\\/]/,
+      ],
+      use: [
+        {
+          loader : 'babel-loader',
+          options: {
+            babelrc: false,
+            presets: [
+              [require.resolve('@babel/preset-env'), {
+                debug  : false,
+                modules: 'commonjs',
+                loose  : false,
+              }],
+              require.resolve('@babel/preset-react'),
+            ],
+            plugins: [
+              [require.resolve('@babel/plugin-proposal-decorators'), { legacy: true }],
+              require.resolve('@babel/plugin-proposal-class-properties'),
+              require.resolve('react-hot-loader/babel'),
+              require.resolve('nanohtml'),
+            ],
+            // sourceRoot    : `${runtime.projectDir}`,
+            cacheDirectory: `${runtime.cacheDir}/babelCache`,
           },
-        ],
-      })
-    }
+        },
+      ],
+    })
 
     return rules
   }
