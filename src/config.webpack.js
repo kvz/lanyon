@@ -1,6 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const SvgStoreWebpackPlugin = require('webpack-svgstore-plugin')
+// const SvgStoreWebpackPlugin = require('webpack-svgstore-plugin')
 const TerserJSPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
@@ -245,14 +245,14 @@ module.exports = function ({ runtime }) {
       'process.env.NODE_ENV'  : JSON.stringify(process.env.NODE_ENV),
       'process.env.ENDPOINT'  : JSON.stringify(process.env.ENDPOINT),
     }))
-    plugins.push(new SvgStoreWebpackPlugin({
-      svgoOptions: {
-        plugins: [
-          { removeTitle: true },
-        ],
-      },
-      prefix: 'icon-',
-    }))
+    // plugins.push(new SvgStoreWebpackPlugin({
+    //   svgoOptions: {
+    //     plugins: [
+    //       { removeTitle: true },
+    //     ],
+    //   },
+    //   prefix: 'icon-',
+    // }))
     plugins.push(new AssetsPlugin({
       filename: 'jekyll.lanyon_assets.yml',
       path    : runtime.cacheDir,
