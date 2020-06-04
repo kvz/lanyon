@@ -300,12 +300,14 @@ module.exports = function ({ runtime }) {
           delete assets['']
         }
 
+        let payload = ''
         try {
-          yaml.safeDump({ lanyon_assets: assets })
+          payload = yaml.safeDump({ lanyon_assets: assets })
         } catch (e) {
           console.error({ assets })
           throw new Error(`Unable to encode above config to YAML. ${e.message}`)
         }
+        return payload
       },
     }))
 
