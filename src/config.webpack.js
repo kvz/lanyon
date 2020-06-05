@@ -319,8 +319,8 @@ module.exports = function ({ runtime }) {
     output: {
       publicPath   : runtime.publicPath,
       path         : runtime.assetsBuildDir,
-      filename     : runtime.isDev ? `[name].js`: `[name].[contenthash].js`,
-      chunkFilename: runtime.isDev ? `[name].js`: `[name].[contenthash].[id].chunk.js`,
+      filename     : runtime.isDev ? `[name].js` : `[name].[contenthash].js`,
+      chunkFilename: runtime.isDev ? `[name].js` : `[name].[contenthash].[id].chunk.js`,
     },
     devtool: (function dynamicDevtool () {
       // https://webpack.js.org/configuration/devtool/#devtool
@@ -331,7 +331,7 @@ module.exports = function ({ runtime }) {
       return 'source-map'
     }()),
     // bail  : false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
-    bail: true,
+    bail  : true,
     module: {
       rules: webpackRules(),
     },
