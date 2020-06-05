@@ -346,8 +346,7 @@ module.exports = function ({ runtime }) {
     }()),
     bail  : true,
     module: {
-      noParse: (content) => /jquery|lodash/.test(content),
-      rules  : webpackRules(),
+      rules: webpackRules(),
     },
     plugins      : webpackPlugins(),
     resolveLoader: {
