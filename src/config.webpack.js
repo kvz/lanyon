@@ -1,4 +1,6 @@
 const path = require('path')
+const fs = require('fs')
+const _merge = require('lodash/merge')
 const webpack = require('webpack')
 // const SvgStoreWebpackPlugin = require('webpack-svgstore-plugin')
 const TerserJSPlugin = require('terser-webpack-plugin')
@@ -277,13 +279,19 @@ module.exports = function ({ runtime }) {
           delete assets['']
         }
 
+        let existing = {}
+        try {
+          existing = yaml.safeLoad(fs.readFileSync(`${runtime.cacheDir}/jekyll.lanyon_assets.yml`, 'utf-8'))
+        } catch (err) {} // eslint-disable-line no-empty
+
         let payload = ''
         try {
-          payload = yaml.safeDump({ lanyon_assets: assets })
-        } catch (e) {
+          payload = yaml.safeDump(_merge(existing, { lanyon_assets: assets }))
+        } catch (err) {
           console.error({ assets })
-          throw new Error(`Unable to encode above config to YAML. ${e.message}`)
+          throw new Error(`Unable to encode above config to YAML. ${err.message}`)
         }
+
         return payload
       },
     }))
