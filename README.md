@@ -2,21 +2,52 @@
 
 **Disclaimer 2018-03-26:** Lanyon's initial goal was to be a tool for everybody, but since it never really took off and that we have limited time to make this _really_ nice, we've decided to reduce its scope to be useful to just <https://transloadit.com>. We won't be as interested in supported other usecases, so you might want to think twice about adopting it. This is mostly still publicly available for our own convenience, and in the off-chance Lanyon as-is, is still useful to others. In addition, we've introduced the requirement of Node 8 & Docker installed, in order to cut down on countering with Ruby dependency hells and speed up development without transpiling.
 
-## Migration guide to Docker-only-Lanyon:
 
-- `yarn add lanyon@0.0.132` (or higher)
-- `rm -rf .lanyon Gemfile*`
-- `_config.yml`: `gems`->`plugins`
-- `package.json`: remove `'lanyon'` and save config in `.lanyonrc.js` instead
-- git ignore `.jekyll-cache/` and `.jekyll-metadata`
+## Install
+
+In your website project root:
+
+```bash
+yarn add lanyon
+```
+
+Add a `.lanyonrc` file that you can use to tweak the configuration of Jekyll, Webpack, Nodemon, BrowserSync according to your environment:
+
+```js
+module.exports.overrideRuntime = function ({ runtime, toolkit }) {
+  if (!runtime.isDev) {
+    runtime['prebuild:content'] = 'npm run inject'
+  }
+
+  return runtime
+}
+
+module.exports.overrideConfig = function ({ config, toolkit }) {
+  if (config.runtime.isDev) {
+    config.jekyll.url = 'http://localhost:3000'
+  }
+
+  config.jekyll.profile = true
+  config.jekyll.trace = true
+
+  if (config.runtime.isDev) {
+    config.jekyll.unpublished = true
+    config.jekyll.future = true
+    config.jekyll.incremental = true // <-- for clarify; incremental is the default also
+  } else {
+    config.jekyll.incremental = false
+  }
+
+  return config
+}
+```
+
+Add `"postinstall": "rm -rf .lanyon/{babel,cache}-loader"` to your `package.json`. Read [why](https://webpack.js.org/guides/build-performance/#persistent-cache).
 
 ## Use
 
-If you want to speed up on OSX and set `dockerSync.enabled = true`, first install:
 
-```
-sudo gem install docker-sync
-```
+
 
 ## Changelog
 

@@ -13,7 +13,7 @@ const scrolex = require('scrolex').persistOpts({
 })
 
 module.exports = function ({ runtime }) {
-  const jsDirs = [
+  const assetDirs = [
     `${runtime.assetsSourceDir}`,
   ].concat((runtime.extraAssetsSourceDirs || []))
 
@@ -150,6 +150,12 @@ module.exports = function ({ runtime }) {
       test: /\.(sa|sc|c)ss$/,
       use : [
         {
+          loader : 'cache-loader',
+          options: {
+            cacheDirectory: `${runtime.cacheDir}/cache-loader`,
+          },
+        },
+        {
           loader : MiniCssExtractPlugin.loader,
           options: {
             hmr: runtime.isDev,
@@ -177,6 +183,12 @@ module.exports = function ({ runtime }) {
       test: /\.less$/,
       use : [
         {
+          loader : 'cache-loader',
+          options: {
+            cacheDirectory: `${runtime.cacheDir}/cache-loader`,
+          },
+        },
+        {
           loader : MiniCssExtractPlugin.loader,
           options: {
             hmr: runtime.isDev,
@@ -202,16 +214,24 @@ module.exports = function ({ runtime }) {
 
     rules.push({
       test   : /\.(js|jsx)$/,
-      include: jsDirs,
+      include: assetDirs,
       exclude: [
         /[\\/](node_modules|js-untouched)[\\/]/,
       ],
       use: [
         {
+          loader: 'thread-loader',
+          // options: {
+          //   workerParallelJobs: 2,
+          // },
+        },
+        {
           loader : 'babel-loader',
           options: {
-            babelrc: false,
-            presets: [
+            babelrc         : false,
+            cacheCompression: false,
+            cacheDirectory  : `${runtime.cacheDir}/babel-loader`,
+            presets         : [
               [require.resolve('@babel/preset-env'), {
                 debug  : false,
                 modules: 'commonjs',
@@ -225,8 +245,6 @@ module.exports = function ({ runtime }) {
               require.resolve('react-hot-loader/babel'),
               require.resolve('nanohtml'),
             ],
-            // sourceRoot    : `${runtime.projectDir}`,
-            cacheDirectory: `${runtime.cacheDir}/babelCache`,
           },
         },
       ],
@@ -243,14 +261,7 @@ module.exports = function ({ runtime }) {
       'process.env.NODE_ENV'  : JSON.stringify(process.env.NODE_ENV),
       'process.env.ENDPOINT'  : JSON.stringify(process.env.ENDPOINT),
     }))
-    // plugins.push(new SvgStoreWebpackPlugin({
-    //   svgoOptions: {
-    //     plugins: [
-    //       { removeTitle: true },
-    //     ],
-    //   },
-    //   prefix: 'icon-',
-    // }))
+
     plugins.push(new AssetsPlugin({
       filename: 'jekyll.lanyon_assets.yml',
       path    : runtime.cacheDir,
@@ -281,7 +292,7 @@ module.exports = function ({ runtime }) {
       // Options similar to the same options in webpackOptions.output
       // both options are optional
       filename     : runtime.isDev ? `[name].css` : `[name].[contenthash].css`,
-      chunkFilename: runtime.isDev ? `[name].css` : `[name].[contenthash].[id].chunk.css`,
+      chunkFilename: runtime.isDev ? `[name].css` : `[name].[contenthash].[chunkhash].chunk.css`,
       ignoreOrder  : true, // <-- add this to avoid: "Order in extracted chunk undefined" ¯\_(ツ)_/¯ https://github.com/redbadger/website-honestly/issues/128
     }))
 
@@ -295,11 +306,14 @@ module.exports = function ({ runtime }) {
   const webpackCfg = {
     mode        : runtime.isDev ? 'development' : 'production',
     optimization: {
-      minimize : !runtime.isDev,
-      minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
+      minimize              : !runtime.isDev,
+      minimizer             : !runtime.isDev ? [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})] : [],
+      removeAvailableModules: false,
+      removeEmptyChunks     : false,
+      splitChunks           : false,
     },
     entry: (function dynamicEntries () {
-      var entries = {}
+      const entries = {}
 
       runtime.entries.forEach(entry => {
         entries[entry] = [path.join(runtime.assetsSourceDir, `${entry}.js`)]
@@ -320,20 +334,22 @@ module.exports = function ({ runtime }) {
       publicPath   : runtime.publicPath,
       path         : runtime.assetsBuildDir,
       filename     : runtime.isDev ? `[name].js` : `[name].[contenthash].js`,
-      chunkFilename: runtime.isDev ? `[name].js` : `[name].[contenthash].[id].chunk.js`,
+      chunkFilename: runtime.isDev ? `[name].js` : `[name].[contenthash].[chunkhash].chunk.js`,
     },
     devtool: (function dynamicDevtool () {
-      // https://webpack.js.org/configuration/devtool/#devtool
+      // https://webpack.js.org/guides/build-performance/#devtool
       if (runtime.isDev) {
-        return 'eval-source-map'
+        // return 'eval-source-map'
+        return 'eval-cheap-module-source-map'
       }
 
-      return 'source-map'
+      // return 'source-map'
+      return 'eval-cheap-module-source-map'
     }()),
-    // bail  : false, // <-- We use our own ReportErrors plugin as with bail errors details are lost. e.g.: `Error at NormalModule.onModuleBuildFailed`
     bail  : true,
     module: {
-      rules: webpackRules(),
+      noParse: (content) => /jquery|lodash/.test(content),
+      rules  : webpackRules(),
     },
     plugins      : webpackPlugins(),
     resolveLoader: {
@@ -344,37 +360,15 @@ module.exports = function ({ runtime }) {
       ],
     },
     recordsPath: runtime.recordsPath,
-    stats      : {
-      // Examine all modules
-      maxModules         : Infinity,
-      // Display bailout reasons
-      optimizationBailout: true,
-    },
-    resolve: {
-      modules: moduleDirs,
-
-      // These JSON files are read in directories
-      descriptionFiles: ['package.json'],
-
-      // These fields in the description files are looked up when trying to resolve the package directory
-      mainFields: ['browser', 'main'],
-
-      // These files are tried when trying to resolve a directory
-      mainFiles: ['index'],
-
-      // These fields in the description files offer aliasing in this package
-      // The content of these fields is an object where requests to a key are mapped to the corresponding value
-      aliasFields: ['browser'],
-
-      // These extensions are tried when resolving a file
-      extensions: ['.js', '.json'],
-
-      // If false it will also try to use no extension from above
-      enforceExtension: false,
-
-      // If false it's also try to use no module extension from above
+    resolve    : {
+      modules               : moduleDirs,
+      descriptionFiles      : ['package.json'],
+      mainFields            : ['browser', 'main'],
+      mainFiles             : ['index'],
+      aliasFields           : ['browser'],
+      extensions            : ['.js'],
+      enforceExtension      : false,
       enforceModuleExtension: false,
-      // These aliasing is used when trying to resolve a module
       alias                 : runtime.alias,
     },
   }

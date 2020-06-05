@@ -26,19 +26,19 @@ Released: TBA.
 Released: 2020-06-05
 [Diff](https://github.com/kvz/lanyon/compare/v0.2.6...v0.2.7).
 
-- [ ] Add cache-loader <https://github.com/webpack-contrib/cache-loader/> in front of expensive non-babel loaders <-- as it has its own caching. Clear cache directory on `"postinstall"` in `package.json`.
-- [ ] Add DllPlugin <https://webpack.js.org/plugins/dll-plugin/>
-- [ ] Limit fileset by making `include` as discrimating as can be
-- [ ] Make sure we set a `recordsPath` <https://webpack.js.org/configuration/other-options/#recordspath>
-- [ ] Minimize the number of items in `resolve.modules`, `resolve.extensions`, `resolve.mainFiles`, `resolve.descriptionFiles`, as they increase the number of filesystem calls.
-- [ ] No `Uglify`, `Terser`, `ExtractText`, `[hash]`, `[chunkhash]`, `AggressiveSplittingPlugin`, `AggressiveMergingPlugin`, `ModuleConcatenationPlugin` for dev mode. Set `uglifyOptions.compress: false` for prod.
-- [ ] Only use `ProgressPlugin` briefly, then remove
-- [ ] Set `cacheDirectory: .lanyon`, `cacheCompression:false` on babel-loader <https://github.com/babel/babel-loader#options>
-- [ ] Set `module.noParse: (content) => /jquery|lodash/.test(content)` <https://webpack.js.org/configuration/module/#module-noparse>
-- [ ] Set `optimization: { removeAvailableModules: false, removeEmptyChunks: false, splitChunks: false, },` <https://webpack.js.org/guides/build-performance/#avoid-extra-optimization-steps>
-- [ ] Switch sourcemaps to `eval-cheap-module-source-map` <https://webpack.js.org/guides/build-performance/#devtool>
-- [ ] Use SplitChunksPlugin <https://webpack.js.org/guides/build-performance/#smaller--faster>
-- [ ] Use ThreadLoader <https://github.com/webpack-contrib/thread-loader>. For node-sass, set `workerParallelJobs: 2`.
+- [-] Add DllPlugin <https://webpack.js.org/plugins/dll-plugin/> <-- this requires several webpack calls and entry points using eachother, high hanging fruit
+- [-] Use SplitChunksPlugin <https://webpack.js.org/guides/build-performance/#smaller--faster> <-- increases build time (as indicated in <https://webpack.js.org/guides/build-performance/#avoid-extra-optimization-steps>) and generates many more assets to include it seems, high hanging fruit
+- [x] Add cache-loader <https://github.com/webpack-contrib/cache-loader/> in front of expensive non-babel loaders <-- as it has its own caching. Clear cache directory on `"postinstall"` in `package.json`.
+- [x] Add cache-loader:babel `cacheDirectory: .lanyon`, `cacheCompression:false` on babel-loader <https://github.com/babel/babel-loader#options>
+- [x] Limit fileset by making `include` as discrimating as can be
+- [x] Make sure we set a `recordsPath` <https://webpack.js.org/configuration/other-options/#recordspath>
+- [x] Minimize the number of items in `resolve.modules`, `resolve.extensions`, `resolve.mainFiles`, `resolve.descriptionFiles`, as they increase the number of filesystem calls.
+- [x] No `Uglify`, `Terser`, `ExtractText`, `[hash]`, `[chunkhash]`, `AggressiveSplittingPlugin`, `AggressiveMergingPlugin`, `ModuleConcatenationPlugin` for dev mode. Set `uglifyOptions.compress: false` for prod.
+- [x] Only use `ProgressPlugin` briefly, then remove
+- [x] Set `module.noParse: (content) => /jquery|lodash/.test(content)` <https://webpack.js.org/configuration/module/#module-noparse>
+- [x] Set `optimization: { removeAvailableModules: false, removeEmptyChunks: false, splitChunks: false, },` <https://webpack.js.org/guides/build-performance/#avoid-extra-optimization-steps>
+- [x] Switch sourcemaps to `eval-cheap-module-source-map` <https://webpack.js.org/guides/build-performance/#devtool>
+- [x] Use ThreadLoader <https://github.com/webpack-contrib/thread-loader>. For node-sass, set `workerParallelJobs: 2`. <-- gives errors for css but seems to work for js
 
 ## v0.2.6
 
