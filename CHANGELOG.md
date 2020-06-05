@@ -26,7 +26,6 @@ Released: TBA.
 Released: 2020-06-05
 [Diff](https://github.com/kvz/lanyon/compare/v0.2.6...v0.2.7).
 
-- [ ] Fix linting
 - [ ] Add cache-loader <https://github.com/webpack-contrib/cache-loader/> in front of expensive non-babel loaders <-- as it has its own caching. Clear cache directory on `"postinstall"` in `package.json`.
 - [ ] Add DllPlugin <https://webpack.js.org/plugins/dll-plugin/>
 - [ ] Limit fileset by making `include` as discrimating as can be
