@@ -339,12 +339,10 @@ module.exports = function ({ runtime }) {
     devtool: (function dynamicDevtool () {
       // https://webpack.js.org/guides/build-performance/#devtool
       if (runtime.isDev) {
-        // return 'eval-source-map'
         return 'eval-cheap-module-source-map'
       }
 
-      // return 'source-map'
-      return 'eval-cheap-module-source-map'
+      return 'source-map'
     }()),
     bail  : true,
     module: {
