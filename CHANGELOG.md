@@ -11,7 +11,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.2.6...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.7...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -20,6 +20,26 @@ Released: TBA.
 - [ ] Debug browsersync's endless refresh
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
+
+## v0.2.7
+
+Released: 2020-06-05
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.6...v0.2.7).
+
+- [ ] Fix linting
+- [ ] Add cache-loader <https://github.com/webpack-contrib/cache-loader/> in front of expensive non-babel loaders <-- as it has its own caching. Clear cache directory on `"postinstall"` in `package.json`.
+- [ ] Add DllPlugin <https://webpack.js.org/plugins/dll-plugin/>
+- [ ] Limit fileset by making `include` as discrimating as can be
+- [ ] Make sure we set a `recordsPath` <https://webpack.js.org/configuration/other-options/#recordspath>
+- [ ] Minimize the number of items in `resolve.modules`, `resolve.extensions`, `resolve.mainFiles`, `resolve.descriptionFiles`, as they increase the number of filesystem calls.
+- [ ] No `Uglify`, `Terser`, `ExtractText`, `[hash]`, `[chunkhash]`, `AggressiveSplittingPlugin`, `AggressiveMergingPlugin`, `ModuleConcatenationPlugin` for dev mode. Set `uglifyOptions.compress: false` for prod.
+- [ ] Only use `ProgressPlugin` briefly, then remove
+- [ ] Set `cacheDirectory: .lanyon`, `cacheCompression:false` on babel-loader <https://github.com/babel/babel-loader#options>
+- [ ] Set `module.noParse: (content) => /jquery|lodash/.test(content)` <https://webpack.js.org/configuration/module/#module-noparse>
+- [ ] Set `optimization: { removeAvailableModules: false, removeEmptyChunks: false, splitChunks: false, },` <https://webpack.js.org/guides/build-performance/#avoid-extra-optimization-steps>
+- [ ] Switch sourcemaps to `eval-cheap-module-source-map` <https://webpack.js.org/guides/build-performance/#devtool>
+- [ ] Use SplitChunksPlugin <https://webpack.js.org/guides/build-performance/#smaller--faster>
+- [ ] Use ThreadLoader <https://github.com/webpack-contrib/thread-loader>. For node-sass, set `workerParallelJobs: 2`.
 
 ## v0.2.6
 
