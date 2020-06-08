@@ -110,19 +110,7 @@ module.exports = function ({ runtime }) {
     })
 
     rules.push({
-      test: /[\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]/,
-      use : [
-        {
-          loader : 'imports-loader',
-          options: {
-            this: '>window',
-          },
-        },
-      ],
-    })
-
-    rules.push({
-      test: /[\\/]jquery\..*\.js$/,
+      test: /([\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]|[\\/]jquery\..*\.js$)/,
       use : [
         {
           loader : 'imports-loader',
