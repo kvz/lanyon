@@ -30,10 +30,10 @@ Released: 2020-06-08
     ```js
     module.exports.overrideRuntime = ({ runtime, toolkit }) => {
       runtime.headAssetTemplate = ({ htmlWebpackPlugin }) => { 
-        return `${htmlWebpackPlugin.tags.headTags}`.replace(/^\/assets\//g, `https://transloadit.edgly.net/assets/`)
+        return `${htmlWebpackPlugin.tags.headTags}`.replace(/\/assets\//g, `https://transloadit.edgly.net/assets/`)
       }
       runtime.bodyAssetTemplate = ({ htmlWebpackPlugin }) => { 
-        return `${htmlWebpackPlugin.tags.bodyTags}`.replace(/^\/assets\//g, `https://transloadit.edgly.net/assets/`)
+        return `${htmlWebpackPlugin.tags.bodyTags}`.replace(/\/assets\//g, `https://transloadit.edgly.net/assets/`)
       }
     }
     ```
