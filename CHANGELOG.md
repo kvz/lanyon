@@ -27,6 +27,7 @@ Released: 2020-06-08
 [Diff](https://github.com/kvz/lanyon/compare/v0.2.16...v0.2.17).
 
 - [x] Combine jQuery & Bootstrap window import rules
+- [x] Combine file & url loaders where safely possible
 
 ## v0.2.16
 

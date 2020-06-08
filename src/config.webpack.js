@@ -24,7 +24,7 @@ module.exports = function ({ runtime }) {
     const rules = []
 
     rules.push({
-      test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+      test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,
       use : [
         {
           loader : 'url-loader',
@@ -33,53 +33,6 @@ module.exports = function ({ runtime }) {
             mimetype: 'application/font-woff',
           },
         },
-      ],
-    })
-
-    rules.push({
-      test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-      use : [
-        {
-          loader : 'url-loader',
-          options: {
-            limit   : 10000,
-            mimetype: 'application/font-woff',
-          },
-        },
-      ],
-    })
-
-    rules.push({
-      test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-      use : [
-        {
-          loader : 'url-loader',
-          options: {
-            limit   : 10000,
-            mimetype: 'application/octet-stream',
-          },
-        },
-      ],
-    })
-
-    rules.push({
-      test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-      use : [
-        'file-loader',
-      ],
-    })
-
-    rules.push({
-      test: /\.cur(\?v=\d+\.\d+\.\d+)?$/,
-      use : [
-        'file-loader',
-      ],
-    })
-
-    rules.push({
-      test: /\.worker\.js$/,
-      use : [
-        'worker-loader',
       ],
     })
 
@@ -97,7 +50,7 @@ module.exports = function ({ runtime }) {
     })
 
     rules.push({
-      test: /\.(png|gif|jpe?g)$/,
+      test: /\.(png|gif|jpe?g|ttf(\?v=\d+\.\d+\.\d+)?)$/,
       use : [
         {
           loader : 'url-loader',
@@ -106,6 +59,20 @@ module.exports = function ({ runtime }) {
             mimetype: 'application/octet-stream',
           },
         },
+      ],
+    })
+
+    rules.push({
+      test: /\.(eot|cur)(\?v=\d+\.\d+\.\d+)?$/,
+      use : [
+        'file-loader',
+      ],
+    })
+
+    rules.push({
+      test: /\.worker\.js$/,
+      use : [
+        'worker-loader',
       ],
     })
 
