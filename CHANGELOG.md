@@ -11,7 +11,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.2.14...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.15...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -20,6 +20,23 @@ Released: TBA.
 - [ ] Debug browsersync's endless refresh
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
+
+## v0.2.15
+
+Released: 2020-06-08
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.14...v0.2.15).
+
+- [x] Allow user to transform the assets that are injected into `_includes/_generated_assets/` via the override functions `runtime.headAssetTemplate` and `runtime.bodyAssetTemplate` that you can set in your `.lanyonrc` like so:
+    ```js
+    module.exports.overrideRuntime = ({ runtime, toolkit }) => {
+      runtime.headAssetTemplate = ({ htmlWebpackPlugin }) => { 
+        return `${htmlWebpackPlugin.tags.headTags}`.replace(/^\/assets\//g, `https://transloadit.edgly.net/assets/`)
+      }
+      runtime.bodyAssetTemplate = ({ htmlWebpackPlugin }) => { 
+        return `${htmlWebpackPlugin.tags.bodyTags}`.replace(/^\/assets\//g, `https://transloadit.edgly.net/assets/`)
+      }
+    }
+    ```
 
 ## v0.2.14
 

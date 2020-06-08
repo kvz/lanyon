@@ -265,14 +265,14 @@ module.exports = function ({ runtime }) {
         scriptLoading  : 'blocking', // worth an experiment: 'defer'
         filename       : `${runtime.projectDir}/_includes/_generated_assets/${entry}-${runtime.lanyonEnv}-head.html`,
         chunks         : [entry],
-        templateContent: ({ htmlWebpackPlugin }) => `${htmlWebpackPlugin.tags.headTags}`,
+        templateContent: runtime.headAssetTemplate ? runtime.headAssetTemplate  : ({ htmlWebpackPlugin }) => `${htmlWebpackPlugin.tags.headTags}`,
       }))
       plugins.push(new HtmlWebpackPlugin({
         inject         : false,
         scriptLoading  : 'blocking', // worth an experiment: 'defer'
         filename       : `${runtime.projectDir}/_includes/_generated_assets/${entry}-${runtime.lanyonEnv}-body.html`,
         chunks         : [entry],
-        templateContent: ({ htmlWebpackPlugin }) => `${htmlWebpackPlugin.tags.bodyTags}`,
+        templateContent: runtime.bodyAssetTemplate ? runtime.bodyAssetTemplate : ({ htmlWebpackPlugin }) => `${htmlWebpackPlugin.tags.bodyTags}`,
       }))
     })
 
