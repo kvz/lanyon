@@ -65,25 +65,21 @@ module.exports = function ({ runtime }) {
     rules.push({
       test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
       use : [
-        {
-          loader: 'file-loader',
-        },
+        'file-loader',
       ],
     })
 
     rules.push({
       test: /\.cur(\?v=\d+\.\d+\.\d+)?$/,
       use : [
-        {
-          loader: 'file-loader',
-        },
+        'file-loader',
       ],
     })
 
     rules.push({
       test: /\.worker\.js$/,
       use : [
-        { loader: 'worker-loader' },
+        'worker-loader',
       ],
     })
 
@@ -114,10 +110,8 @@ module.exports = function ({ runtime }) {
     })
 
     rules.push({
-      // https://www.techchorus.net/blog/using-sass-version-of-bootstrap-with-webpack/
       test: /[\\/]bootstrap-sass[\\/]assets[\\/]javascripts[\\/]/,
       use : [
-        // loader: 'imports?this=>window',
         {
           loader : 'imports-loader',
           options: {
@@ -130,7 +124,6 @@ module.exports = function ({ runtime }) {
     rules.push({
       test: /[\\/]jquery\..*\.js$/,
       use : [
-        // loader: 'imports?this=>window',
         {
           loader : 'imports-loader',
           options: {
@@ -213,12 +206,7 @@ module.exports = function ({ runtime }) {
         /[\\/](node_modules|js-untouched)[\\/]/,
       ],
       use: [
-        {
-          loader: 'thread-loader',
-          // options: {
-          //   workerParallelJobs: 2,
-          // },
-        },
+        'thread-loader',
         {
           loader : 'babel-loader',
           options: {
