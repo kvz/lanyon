@@ -309,10 +309,13 @@ module.exports = function ({ runtime }) {
       plugins.push(new webpack.HotModuleReplacementPlugin())
     }
 
-    plugins.push(new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      logLevel    : 'info',
-    }))
+    if (runtime.analyze) {
+      plugins.push(new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        logLevel    : 'info',
+        openAnalyzer: true,
+      }))
+    }
 
     return plugins
   }

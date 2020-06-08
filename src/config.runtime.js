@@ -15,6 +15,7 @@ module.exports = function () {
   const lanyonPackage = require(runtimeCfg.lanyonPackageFile)
   runtimeCfg.lanyonVersion = lanyonPackage.version
   runtimeCfg.publicPath = '/assets/build/'
+  runtimeCfg.analyze = process.env.LANYON_ANALYZE === '1' || false
 
   runtimeCfg.onTravis = process.env.TRAVIS === 'true'
   runtimeCfg.ghPagesEnv = {
