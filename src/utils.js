@@ -105,10 +105,15 @@ module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal =
     ])
   }
 
-  console.log(`>>> About to exit. code=${code}, signal=${signal}. Cleaning up... `)
+  if (process.env.LANYON_DEBUG === '1') {
+    console.error(`>>> About to exit. code=${code}, signal=${signal}. Cleaning up... `)
+  }
+
   for (const i in cleanupCmds) {
     const c = cleanupCmds[i]
-    console.error(`Cleanup command: '${c}' ...`)
+    if (process.env.LANYON_DEBUG === '1') {
+      console.error(`Cleanup command: '${c}' ...`)
+    }
     try {
       childProcess.execSync(`${c}`, {
         cwd: `${runtime.cacheDir}`,
@@ -117,7 +122,9 @@ module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal =
   }
 
   if (signal === 'SIGINT') {
-    console.log('>>> Process aborted')
+    if (process.env.LANYON_DEBUG === '1') {
+      console.error('>>> Process aborted')
+    }
     process.exit(1)
   }
 }

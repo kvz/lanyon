@@ -1,12 +1,9 @@
 const path = require('path')
-const fs = require('fs')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const webpack = require('webpack')
 const TerserJSPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const yaml = require('js-yaml')
-const { StatsWriterPlugin } = require('webpack-stats-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = function ({ runtime }) {
@@ -301,33 +298,19 @@ module.exports = function ({ runtime }) {
 
   const webpackCfg = {
     mode        : runtime.isDev ? 'development' : 'production',
+    bail        : true,
+    module      : { rules: webpackRules() },
+    plugins     : webpackPlugins(),
+    node        : { fs: 'empty', module: 'empty' },
+    recordsPath : runtime.recordsPath,
+    target      : 'web',
     optimization: {
-      minimize              : !runtime.isDev,
-      minimizer             : !runtime.isDev ? [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})] : [],
-      removeAvailableModules: false,
-      removeEmptyChunks     : false,
-      splitChunks           : {
+      minimize   : !runtime.isDev,
+      minimizer  : !runtime.isDev ? [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})] : [],
+      splitChunks: !runtime.isDev ? {
         chunks: 'all',
-      },
+      } : false,
     },
-    entry: (function dynamicEntries () {
-      const entries = {}
-
-      runtime.entries.forEach(entry => {
-        entries[entry] = [path.join(runtime.assetsSourceDir, `${entry}.js`)]
-
-        if (entry === 'app' && runtime.isDev) {
-          entries[entry].unshift('webpack-hot-middleware/client')
-        }
-      })
-
-      return entries
-    }()),
-    node: {
-      fs    : 'empty',
-      module: 'empty',
-    },
-    target: 'web',
     output: {
       publicPath   : runtime.publicPath,
       path         : runtime.assetsBuildDir,
@@ -342,11 +325,6 @@ module.exports = function ({ runtime }) {
 
       return 'source-map'
     }()),
-    bail  : true,
-    module: {
-      rules: webpackRules(),
-    },
-    plugins      : webpackPlugins(),
     resolveLoader: {
       modules: [
         path.join(runtime.lanyonDir, 'node_modules'),
@@ -354,8 +332,7 @@ module.exports = function ({ runtime }) {
         path.join(runtime.projectDir, 'node_modules'),
       ],
     },
-    recordsPath: runtime.recordsPath,
-    resolve    : {
+    resolve: {
       modules               : moduleDirs,
       descriptionFiles      : ['package.json'],
       mainFields            : ['browser', 'main'],
@@ -366,6 +343,19 @@ module.exports = function ({ runtime }) {
       enforceModuleExtension: false,
       alias                 : runtime.alias,
     },
+    entry: (function dynamicEntries () {
+      const entries = {}
+
+      runtime.entries.forEach(entry => {
+        entries[entry] = [path.join(runtime.assetsSourceDir, `${entry}.js`)]
+
+        if (entry === 'app' && runtime.isDev) {
+          entries[entry].unshift('webpack-hot-middleware/client')
+        }
+      })
+
+      return entries
+    }()),
   }
 
   return webpackCfg
