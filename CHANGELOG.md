@@ -11,7 +11,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.2.12...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.13...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -20,6 +20,16 @@ Released: TBA.
 - [ ] Debug browsersync's endless refresh
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
+
+## v0.2.13
+
+Released: 2020-06-08
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.12...v0.2.13).
+
+- [x] Fix bug: No longer use cache-loader before MiniCssExtractPlugin, so that CSS assets exist in entrypoints, even when nothing changed
+- [x] Switch from `AssetsPlugin` to `StatsWriterPlugin` /thx @goto-bus-stop
+- [x] **BREAKING** Switch to `splitChunks`. This means entrypoints have multiple assets now
+- [x] **BREAKING** Switch from `jekyll.lanyon_assets.yml` to `HtmlWebpackPlugin` which creates html snippets to easier load multiple assets per entrypoint. These files are written to `_includes/_generated_assets/`. To include CSS: `{%include _generated_assets/app-{{jekyll.environment}}-head.html%}`, for JS: `{%include _generated_assets/app-{{jekyll.environment}}-body.html%}`.
 
 ## v0.2.12
 

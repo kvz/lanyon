@@ -27,6 +27,7 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
   cmd = cmd.replace(/\[projectDir]/g, runtime.projectDir)
   cmd = cmd.replace(/\[cacheDir]/g, runtime.cacheDir)
+  cmd = cmd.replace(/\[assetsBuildDir]/g, runtime.assetsBuildDir)
 
   // Replace all npms with their first-found full-path executables
   const npmBins = {
@@ -301,10 +302,6 @@ module.exports.fsCopySync = (src, dst, { mode = '644', encoding = 'utf-8' } = {}
 }
 
 module.exports.writeConfig = (cfg) => {
-  scrolex.stick(`Writing configs to '${cfg.runtime.cacheDir}/'`)
-  if (!fs.existsSync(`${cfg.runtime.cacheDir}/jekyll.lanyon_assets.yml`)) {
-    fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.lanyon_assets.yml`, '# this file should be overwritten by the Webpack AssetsPlugin', 'utf-8')
-  }
   try {
     fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.config.yml`, yaml.safeDump(cfg.jekyll), 'utf-8')
   } catch (e) {

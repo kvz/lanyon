@@ -1,19 +1,13 @@
 const path = require('path')
 const fs = require('fs')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const _merge = require('lodash/merge')
 const webpack = require('webpack')
-// const SvgStoreWebpackPlugin = require('webpack-svgstore-plugin')
 const TerserJSPlugin = require('terser-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const yaml = require('js-yaml')
-const AssetsPlugin = require('assets-webpack-plugin')
-const scrolex = require('scrolex').persistOpts({
-  announce             : true,
-  addCommandAsComponent: true,
-  components           : 'lanyon>config>webpack',
-})
+const { StatsWriterPlugin } = require('webpack-stats-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = function ({ runtime }) {
   const assetDirs = [
@@ -153,15 +147,15 @@ module.exports = function ({ runtime }) {
       test: /\.(sa|sc|c)ss$/,
       use : [
         {
-          loader : 'cache-loader',
-          options: {
-            cacheDirectory: `${runtime.cacheDir}/cache-loader`,
-          },
-        },
-        {
           loader : MiniCssExtractPlugin.loader,
           options: {
             hmr: runtime.isDev,
+          },
+        },
+        {
+          loader : 'cache-loader',
+          options: {
+            cacheDirectory: `${runtime.cacheDir}/cache-loader`,
           },
         },
         'css-loader',
@@ -186,15 +180,15 @@ module.exports = function ({ runtime }) {
       test: /\.less$/,
       use : [
         {
-          loader : 'cache-loader',
-          options: {
-            cacheDirectory: `${runtime.cacheDir}/cache-loader`,
-          },
-        },
-        {
           loader : MiniCssExtractPlugin.loader,
           options: {
             hmr: runtime.isDev,
+          },
+        },
+        {
+          loader : 'cache-loader',
+          options: {
+            cacheDirectory: `${runtime.cacheDir}/cache-loader`,
           },
         },
         'css-loader',
@@ -265,37 +259,22 @@ module.exports = function ({ runtime }) {
       'process.env.ENDPOINT'  : JSON.stringify(process.env.ENDPOINT),
     }))
 
-    plugins.push(new AssetsPlugin({
-      filename: 'jekyll.lanyon_assets.yml',
-      path    : runtime.cacheDir,
-      processOutput (assets) {
-        scrolex.stick(`Writing asset manifest to: "${runtime.cacheDir}/jekyll.lanyon_assets.yml"`)
-        if (!assets) {
-          console.error({ assets })
-          scrolex.failure(`The assets var was empty!`)
-          process.exit(1)
-        }
-        if ('' in assets) {
-          assets.orphaned = assets['']
-          delete assets['']
-        }
-
-        let existing = {}
-        try {
-          existing = yaml.safeLoad(fs.readFileSync(`${runtime.cacheDir}/jekyll.lanyon_assets.yml`, 'utf-8'))
-        } catch (err) {} // eslint-disable-line no-empty
-
-        let payload = ''
-        try {
-          payload = yaml.safeDump(_merge(existing, { lanyon_assets: assets }))
-        } catch (err) {
-          console.error({ assets })
-          throw new Error(`Unable to encode above config to YAML. ${err.message}`)
-        }
-
-        return payload
-      },
-    }))
+    runtime.entries.forEach(entry => {
+      plugins.push(new HtmlWebpackPlugin({
+        inject         : false,
+        scriptLoading  : 'blocking', // worth an experiment: 'defer'
+        filename       : `${runtime.projectDir}/_includes/_generated_assets/${entry}-${runtime.lanyonEnv}-head.html`,
+        chunks         : [entry],
+        templateContent: ({ htmlWebpackPlugin }) => `${htmlWebpackPlugin.tags.headTags}`,
+      }))
+      plugins.push(new HtmlWebpackPlugin({
+        inject         : false,
+        scriptLoading  : 'blocking', // worth an experiment: 'defer'
+        filename       : `${runtime.projectDir}/_includes/_generated_assets/${entry}-${runtime.lanyonEnv}-body.html`,
+        chunks         : [entry],
+        templateContent: ({ htmlWebpackPlugin }) => `${htmlWebpackPlugin.tags.bodyTags}`,
+      }))
+    })
 
     plugins.push(new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
@@ -327,7 +306,9 @@ module.exports = function ({ runtime }) {
       minimizer             : !runtime.isDev ? [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})] : [],
       removeAvailableModules: false,
       removeEmptyChunks     : false,
-      splitChunks           : false,
+      splitChunks           : {
+        chunks: 'all',
+      },
     },
     entry: (function dynamicEntries () {
       const entries = {}
