@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const _merge = require('lodash/merge')
 const webpack = require('webpack')
 // const SvgStoreWebpackPlugin = require('webpack-svgstore-plugin')
@@ -307,6 +308,11 @@ module.exports = function ({ runtime }) {
     if (runtime.isDev) {
       plugins.push(new webpack.HotModuleReplacementPlugin())
     }
+
+    plugins.push(new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      logLevel    : 'info',
+    }))
 
     return plugins
   }

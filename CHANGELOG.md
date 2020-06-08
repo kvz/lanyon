@@ -11,7 +11,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.2.10...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.11...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -20,6 +20,13 @@ Released: TBA.
 - [ ] Debug browsersync's endless refresh
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
+
+## v0.2.11
+
+Released: 2020-06-08
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.10...v0.2.11).
+
+- [x] Add BundleAnalyzerPlugin. To use try e.g. `make build-assets-production && open _assets/build/report.html` inside your project (or: `LANYON_ENV=production npx lanyon build:assets && open _assets/build/report.html`)
 
 ## v0.2.10
 
