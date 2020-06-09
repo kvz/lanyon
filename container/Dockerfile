@@ -13,7 +13,7 @@
 # https://rubygems.org/gems/jekyll-last-modified-at
 # https://rubygems.org/gems/jekyll-redirect-from
 
-FROM jekyll/jekyll:4.0
+FROM jekyll/jekyll:4.0.0
 RUN gem install \
     jekyll-archives:2.2.1 \
     stringex:2.8.5 \
