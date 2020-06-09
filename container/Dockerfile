@@ -13,7 +13,7 @@
 # https://rubygems.org/gems/liquid_pluralize
 # https://rubygems.org/gems/stringex
 
-FROM jekyll/jekyll:4.0.0
+FROM kevinvz/jekyll:4.1.0
 RUN gem install \
     jekyll-archives:2.2.1 \
     jekyll-crosspost-to-medium:0.1.16 \

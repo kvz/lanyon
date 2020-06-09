@@ -21,6 +21,14 @@ Released: TBA.
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
 
+## v0.2.23
+
+Released: 2020-06-09
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.21...v0.2.22).
+
+- [x] Upgrade from Jekyll 4.0.0 -> 4.1.0
+- [x] Temporarily switch from jekyll/jekyll-> kevinvz/jekyll as long as a new official container does not exist <https://github.com/jekyll/jekyll/issues/8240>
+
 ## v0.2.22
 
 Released: 2020-06-09
