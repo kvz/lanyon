@@ -20,6 +20,7 @@ Released: TBA.
 - [ ] Debug browsersync's endless refresh
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
+- [x] Fix typo: Productioin
 
 ## v0.2.18
 

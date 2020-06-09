@@ -93,7 +93,7 @@ module.exports = async function dispatch () {
     process.exit(1)
   }
 
-  scrolex.stick(`Booting Lanyon->${cmdName}. ${runtime.isDev ? 'Development' : 'Productioin'} build. Version: ${runtime.lanyonVersion} on PID: ${process.pid} from: ${__filename}`)
+  scrolex.stick(`Booting Lanyon->${cmdName}. ${runtime.isDev ? 'Development' : 'Production'} build. Version: ${runtime.lanyonVersion} on PID: ${process.pid} from: ${__filename}`)
 
   if (process.env.LANYON_DEBUG === '1') {
     for (const key of Object.keys(runtime).sort()) {
