@@ -1,7 +1,6 @@
-const fs = require('fs')
-const yaml = require('js-yaml')
-const path = require('path')
-
+const fs      = require('fs')
+const yaml    = require('js-yaml')
+const path    = require('path')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,

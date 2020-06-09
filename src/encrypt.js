@@ -1,4 +1,3 @@
-// const utils = require('./utils')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,

@@ -1,20 +1,14 @@
 const childProcess = require('child_process')
-const fs = require('fs')
-// const _        = require('lodash')
-const path = require('path')
-const os = require('os')
-// const _ = require('lodash')
-const yaml = require('js-yaml')
-// const spawnSync   = require('spawn-sync')
-// const oneLine     = require('common-tags/lib/oneLine')
-// const stripIndent = require('common-tags/lib/stripIndent')
-const scrolex = require('scrolex').persistOpts({
+const fs           = require('fs')
+const path         = require('path')
+const os           = require('os')
+const yaml         = require('js-yaml')
+const oneLine      = require('common-tags/lib/oneLine')
+const scrolex      = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
 })
 const utils = this
-const oneLine = require('common-tags/lib/oneLine')
-// const pad = require('pad')
 
 if (require.main === module) {
   scrolex.failure('Please only used this module via require')

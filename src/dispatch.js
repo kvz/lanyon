@@ -1,5 +1,5 @@
 Promise.series = function series (providers) {
-  const ret = Promise.resolve(null)
+  const ret     = Promise.resolve(null)
   const results = []
 
   return providers.reduce(function (result, provider, index) {

@@ -1,6 +1,6 @@
-const path = require('path')
-const utils = require('./utils')
-const fs = require('fs')
+const path    = require('path')
+const utils   = require('./utils')
+const fs      = require('fs')
 const scrolex = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,

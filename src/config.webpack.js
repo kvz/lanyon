@@ -1,10 +1,10 @@
-const path = require('path')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const webpack = require('webpack')
-const TerserJSPlugin = require('terser-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const path                    = require('path')
+const BundleAnalyzerPlugin    = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const webpack                 = require('webpack')
+const TerserJSPlugin          = require('terser-webpack-plugin')
+const MiniCssExtractPlugin    = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin       = require('html-webpack-plugin')
 
 module.exports = function ({ runtime }) {
   const assetDirs = [
@@ -118,39 +118,6 @@ module.exports = function ({ runtime }) {
           },
         },
         'sass-loader',
-      ],
-    })
-
-    rules.push({
-      test: /\.less$/,
-      use : [
-        {
-          loader : MiniCssExtractPlugin.loader,
-          options: {
-            hmr: runtime.isDev,
-          },
-        },
-        {
-          loader : 'cache-loader',
-          options: {
-            cacheDirectory: `${runtime.cacheDir}/cache-loader`,
-          },
-        },
-        'css-loader',
-        'resolve-url-loader',
-        {
-          loader : 'postcss-loader',
-          options: {
-            sourceMap: true,
-            ident    : 'postcss',
-            plugins  : (loader) => [
-              require('autoprefixer')({
-                overrideBrowserslist: browsers,
-              }),
-            ],
-          },
-        },
-        'less-loader',
       ],
     })
 

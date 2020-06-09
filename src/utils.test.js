@@ -1,10 +1,5 @@
-const utils = require('./utils')
+const utils   = require('./utils')
 const oneLine = require('common-tags/lib/oneLine')
-// const debug      = require('depurar')('sut')
-// const sut           = utils
-// const cacheDir      = 'CACHEDIR'
-// const projectDir    = 'PROJECTDIR'
-// const lanyonVersion = 'LANYONVERSION'
 
 describe('utils', () => {
   test('dockerString', () => {
