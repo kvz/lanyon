@@ -202,6 +202,7 @@ module.exports = function ({ runtime }) {
     runtime.entries.forEach(entry => {
       plugins.push(new HtmlWebpackPlugin({
         inject         : false,
+        cache          : true,
         scriptLoading  : 'blocking', // worth an experiment: 'defer'
         filename       : `${runtime.projectDir}/_includes/_generated_assets/${entry}-${runtime.lanyonEnv}-head.html`,
         chunks         : [entry],
@@ -209,6 +210,7 @@ module.exports = function ({ runtime }) {
       }))
       plugins.push(new HtmlWebpackPlugin({
         inject         : false,
+        cache          : true,
         scriptLoading  : 'blocking', // worth an experiment: 'defer'
         filename       : `${runtime.projectDir}/_includes/_generated_assets/${entry}-${runtime.lanyonEnv}-body.html`,
         chunks         : [entry],

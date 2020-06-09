@@ -11,7 +11,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.2.17...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.18...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -20,6 +20,13 @@ Released: TBA.
 - [ ] Debug browsersync's endless refresh
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
+
+## v0.2.18
+
+Released: 2020-06-09
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.17...v0.2.18).
+
+- [x] Set `cache:true` for HTML Plugin so asset references aren't written each time, triggering Jekyll builds for all pages that use them, which can be all of them.
 
 ## v0.2.17
 
