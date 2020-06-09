@@ -98,7 +98,7 @@ Released: 2020-06-08
 - [x] Fix bug: No longer use cache-loader before MiniCssExtractPlugin, so that CSS assets exist in entrypoints, even when nothing changed
 - [x] Switch from `AssetsPlugin` to `StatsWriterPlugin` /thx @goto-bus-stop
 - [x] **BREAKING** Switch to `splitChunks`. This means entrypoints have multiple assets now
-- [x] **BREAKING** Switch from `jekyll.lanyon_assets.yml` to `HtmlWebpackPlugin` which creates html snippets to easier load multiple assets per entrypoint. These files are written to `_includes/_generated_assets/`. To include CSS: `{%include _generated_assets/app-{{jekyll.environment}}-head.html%}`, for JS: `{%include _generated_assets/app-{{jekyll.environment}}-body.html%}`.
+- [x] **BREAKING** Switch from `jekyll.lanyon_assets.yml` to `HtmlWebpackPlugin` which creates html snippets to easier load multiple assets per entrypoint. These files are written to `_includes/_generated_assets/`. To include, replace any occurance of `lanyon_assets`, with CSS: `{%include _generated_assets/app-{{jekyll.environment}}-head.html%}`, for JS: `{%include _generated_assets/app-{{jekyll.environment}}-body.html%}`. You'll first want to run a `build` before doing a `start` to prewarm the generated includes. It's recommended to commit the development assets, but git ignore production ones by adding `_includes/_generated_assets/*-production-*.html` to `.gitignore`
 
 ## v0.2.12
 
