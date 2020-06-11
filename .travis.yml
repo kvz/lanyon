@@ -29,7 +29,7 @@ deploy:
   script: scripts/ci-deploy.sh
   on:
     branch: master
-    node: 8
+    node: 10
 notifications:
   slack:
     secure: M9XSZl576OPn25wZn5KQBQZHc2aEoUxYfhB3LBWaUwamw5cgi6Xu7/KRxI+2dFMcCbtjawfZm2yCY856SsVAPU19gT2QNzEdFkVyrEU/jFGH/6RlNh5Oh0vVC+aQUZm3bR50RDIihRuAvcZZpvllDrwlDyqS+Uz/1impFIG2XNzQBP1OqwmJJURqTspYsSKD2DP0Ieom7pZHtEAmujr+d028sOL7uEnMBnC2i78x6SsvL0gXwPEq2W2HX9w8+FTIlVRqTOZ4deNoYwhFyohfK76dsCB0FudjG1bLEctl6DZJvNZTKpemI76em9qtuXU81GGnSmV4p9lgXk0V8CTtAHQKFFVe4H+rk9ZsZamKPVMOIOjCBda1DKwiyAk361Lp4BoQCectZfTSor61MnqQ+4uC0dSfXMm+kBZ5VdPOGgtkfxUl6FaPz62vdkjyWar1yrzaqkCwQk8NxqDOKqJX7N9TtEXWE9eRGMpzWcRlZsX+wNT7oFs6Ql7GbEH5Gw4mYB5BzHAx506yy5xfXEIm1ApJPnQUL2l3bZ7fi6DY56SU+9Eed+19/PWI8PJx1Jlv5AOcKCGdr56btBlR9VIY6PexbDwbUH4OtNTtgP2QYcvMwow6S8sEk0OZgTYeHMAamWHyWOPODkfTdMnEPvvZ8Wzb2L9gGerqS4xH+gGQ5nE=

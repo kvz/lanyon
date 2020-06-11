@@ -4,13 +4,6 @@
     "type": "git",
     "url": "git://github.com/kvz/lanyon.git"
   },
-  "lanyon": {
-    "prebuild": "./_scripts/inject.sh",
-    "contentScandir": "../",
-    "contentIgnore": [
-      "website/*.md"
-    ]
-  },
   "scripts": {
     "build:production": "LANYON_ENV=production lanyon build",
     "build": "lanyon build",
@@ -22,6 +15,6 @@
     "start": "lanyon start"
   },
   "dependencies": {
-    "lanyon": "0.2.0"
+    "lanyon": "0.2.24"
   }
 }

@@ -4,11 +4,6 @@
     "type": "git",
     "url": "git://github.com/kvz/lanyon.git"
   },
-  "lanyon": {
-    "entries": [
-      "app"
-    ]
-  },
   "scripts": {
     "build:production": "LANYON_ENV=production lanyon build",
     "build": "lanyon build",
@@ -21,6 +16,6 @@
   },
   "dependencies": {
     "fakefile": "0.0.8",
-    "lanyon": "0.2.0"
+    "lanyon": "0.2.24"
   }
 }

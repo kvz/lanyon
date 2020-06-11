@@ -4,12 +4,12 @@ layout_var: 'Scope is layout'
 
 <html>
   <head>
-    <link rel="stylesheet" href="{{site.lanyon_assets.app.css}}" media="screen" charset="utf-8">
+    {%include _generated_assets/app-{{jekyll.environment}}-head.html%}
     <title>{{page.title}} | Lanyon</title>
   </head>
   <body>
     <h1>{{page.title}}</h1>
     {{content}}
+    {%include _generated_assets/app-{{jekyll.environment}}-body.html%}
   </body>
-  <script async src="{{site.lanyon_assets.app.js}}"></script>
 </html>

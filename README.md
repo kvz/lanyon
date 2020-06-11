@@ -42,20 +42,29 @@ module.exports.overrideConfig = function ({ config, toolkit }) {
 }
 ```
 
-Add `"postinstall": "rm -rf .lanyon/{babel,cache}-loader"` to your `package.json`. Read [why](https://webpack.js.org/guides/build-performance/#persistent-cache).
+To your `package.json`, at these run-scripts:
+
+```json
+...
+"build:production": "LANYON_ENV=production npx lanyon build:production"
+"build": "npx lanyon build"
+"postinstall": "rm -rf .lanyon/{babel,cache}-loader"
+"start": "npx lanyon start"
+...
+```
+
+Read [why](https://webpack.js.org/guides/build-performance/#persistent-cache) the `postinstall` is necessary.
 
 ## Use
 
-
-
+```bash
+yarn build # or npm run build
+yarn start # or npm start
+```
 
 ## Changelog
 
 Please see the [CHANGELOG.md](./CHANGELOG.md) file.
-
-## Contributing
-
-Please see the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
 
 ## Reading List
 
