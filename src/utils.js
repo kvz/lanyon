@@ -63,7 +63,11 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
   const jekyllBin = utils.dockerString('jekyll', { runtime })
 
   // Replace shims
-  cmd = cmd.replace(/(\s|^)\[jekyll\](\s|$)/, `$1${jekyllBin}$2`)
+  if (process.env.LANYON_JEKYLL) {
+    cmd = cmd.replace(/(\s|^)\[jekyll\](\s|$)/, `$1${process.env.LANYON_JEKYLL}$2`)
+  } else {
+    cmd = cmd.replace(/(\s|^)\[jekyll\](\s|$)/, `$1${jekyllBin}$2`)
+  }
 
   return cmd
 }
