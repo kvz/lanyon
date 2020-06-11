@@ -1,7 +1,4 @@
-[![Build Status](https://travis-ci.org/kvz/lanyon.svg?branch=master)](https://travis-ci.org/kvz/lanyon)
-
 **Disclaimer 2018-03-26:** Lanyon's initial goal was to be a tool for everybody, but since it never really took off and that we have limited time to make this _really_ nice, we've decided to reduce its scope to be useful to just <https://transloadit.com>. We won't be as interested in supported other usecases, so you might want to think twice about adopting it. This is mostly still publicly available for our own convenience, and in the off-chance Lanyon as-is, is still useful to others. In addition, we've introduced the requirement of Node 8 & Docker installed, in order to cut down on countering with Ruby dependency hells and speed up development without transpiling.
-
 
 ## Install
 
@@ -28,12 +25,12 @@ module.exports.overrideConfig = function ({ config, toolkit }) {
   }
 
   config.jekyll.profile = true
-  config.jekyll.trace = true
+  config.jekyll.trace   = true
 
   if (config.runtime.isDev) {
     config.jekyll.unpublished = true
-    config.jekyll.future = true
-    config.jekyll.incremental = true // <-- for clarify; incremental is the default also
+    config.jekyll.future      = true
+    config.jekyll.incremental = true  // <-- for clarify; incremental is the default also
   } else {
     config.jekyll.incremental = false
   }
@@ -46,7 +43,7 @@ To your `package.json`, at these run-scripts:
 
 ```json
 ...
-"build:production": "LANYON_ENV=production npx lanyon build:production"
+"build:production": "LANYON_ENV=production npx lanyon build"
 "build": "npx lanyon build"
 "postinstall": "rm -rf .lanyon/{babel,cache}-loader"
 "start": "npx lanyon start"
