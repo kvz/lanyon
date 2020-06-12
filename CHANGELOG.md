@@ -11,7 +11,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.2.24...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.25...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -21,9 +21,16 @@ Released: TBA.
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
 
+## v0.2.25
+
+Released: 2020-06-12
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.24...v0.2.25).
+
+- [x] Allow to not use Nodemon to kickstart Jekyll builds, but use Jekyll file watching directly via `LANYON_JEKYLL_WATCH`. Example: `LANYON_JEKYLL_WATCH=1 =${HOME}/code/content/_jekyll/jekyll.sh npx lanyon start`
+
 ## v0.2.24
 
-Released: 2020-06-09
+Released: 2020-06-11
 [Diff](https://github.com/kvz/lanyon/compare/v0.2.23...v0.2.24).
 
 - [x] Allow to pass in your own Jekyll install via `LANYON_JEKYLL`. Example: `LANYON_JEKYLL=${HOME}/code/content/_jekyll/jekyll.sh npx lanyon start`

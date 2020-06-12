@@ -50,7 +50,6 @@ module.exports = async function dispatch () {
   const scripts = {
     'build:assets'       : `[webpack] ${extraWebpackFlags}--config [cacheDir]/webpack.config.js`,
     'build:content:watch': `${process.env.LANYON_DEBUG === '1' ? 'env DEBUG=nodemon:* ' : ''}[nodemon] --exitcrash --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} ${strPostBuildContentHooks}'`,
-    // 'build:content:watch': '[jekyll] build --watch --verbose --force_polling --config [cacheDir]/jekyll.config.yml',
     'build:content'      : buildCmd,
     // 'build:images'             : '[imagemin] [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
     // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
@@ -72,6 +71,10 @@ module.exports = async function dispatch () {
         'serve',
       ],
     },
+  }
+
+  if (process.env.LANYON_JEKYLL_WATCH === '1') {
+    scripts['build:content:watch'] =  '[jekyll] build --watch --verbose --force_polling --config [cacheDir]/jekyll.config.yml'
   }
 
   const cmd = scripts[cmdName]
