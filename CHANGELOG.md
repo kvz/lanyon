@@ -19,14 +19,14 @@ Released: TBA.
 - [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
 - [ ] Debug browsersync's endless refresh
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
-- [ ] Incorporate hacks in tus.io .lanyonrc, it should be able to run with an empty rc, except for hook
+- [ ] Consider solidifying some hacks like backendProxy or _assets rewrite from the content repo as lanyon options
 
 ## v0.2.25
 
 Released: 2020-06-12
 [Diff](https://github.com/kvz/lanyon/compare/v0.2.24...v0.2.25).
 
-- [x] Allow to not use Nodemon to kickstart Jekyll builds, but use Jekyll file watching directly via `LANYON_JEKYLL_WATCH`. Example: `LANYON_JEKYLL_WATCH=1 =${HOME}/code/content/_jekyll/jekyll.sh npx lanyon start`
+- [x] Allow to not use Nodemon to kickstart Jekyll builds, but use Jekyll file watching directly via `LANYON_JEKYLL_WATCH`. Example: `LANYON_JEKYLL_WATCH=1 LANYON_JEKYLL=${HOME}/code/content/_jekyll/jekyll.sh npx lanyon start`
 
 ## v0.2.24
 
