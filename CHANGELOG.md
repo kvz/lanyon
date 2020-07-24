@@ -11,7 +11,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.2.25...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.26...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -21,6 +21,15 @@ Released: TBA.
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Consider solidifying some hacks like backendProxy or _assets rewrite from the content repo as lanyon options
 - [ ] Do a `build:assets` before `watch` in case `_includes/_generated_assets/app-development-body.html` does not exist
+
+## v0.2.26
+
+Released: 2020-07-24
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.25...v0.2.26).
+
+- [x] Add `--profile` when using LANYON_DEBUG
+- [x] More consistent `--verbose` (also respect it when using `LANYON_JEKYLL_WATCH`)
+- [x] Add liquid-c for faster building
 
 ## v0.2.25
 
@@ -105,10 +114,10 @@ Released: 2020-06-08
 - [x] Allow user to transform the assets that are injected into `_includes/_generated_assets/` via the override functions `runtime.headAssetTemplate` and `runtime.bodyAssetTemplate` that you can set in your `.lanyonrc` like so:
     ```js
     module.exports.overrideRuntime = ({ runtime, toolkit }) => {
-      runtime.headAssetTemplate = ({ htmlWebpackPlugin }) => { 
+      runtime.headAssetTemplate = ({ htmlWebpackPlugin }) => {
         return `${htmlWebpackPlugin.tags.headTags}`.replace(/"\/assets\//g, `"https://transloadit.edgly.net/assets/`)
       }
-      runtime.bodyAssetTemplate = ({ htmlWebpackPlugin }) => { 
+      runtime.bodyAssetTemplate = ({ htmlWebpackPlugin }) => {
         return `${htmlWebpackPlugin.tags.bodyTags}`.replace(/"\/assets\//g, `"https://transloadit.edgly.net/assets/`)
       }
     }
@@ -198,7 +207,7 @@ Released: 2020-06-04
 - [x] Remove ProvidePlugin (of `lodash` as `_` without importing it)
 - [x] Remove LoaderOptionsPlugin
 - [x] Remove CommonsChunkPlugin and friends
-- [x] Remove Visualizer statistics 
+- [x] Remove Visualizer statistics
 
 ## v0.2.5
 
@@ -839,7 +848,7 @@ Released: 2017-04-05.
 Released: 2017-04-05.
 [Diff](https://github.com/kvz/lanyon/compare/v0.0.75...v0.0.77).
 
-- [x] Allow hooks to only run on e.g. `build:content` vs also on `build:assets`. 
+- [x] Allow hooks to only run on e.g. `build:content` vs also on `build:assets`.
 - [x] Run dependency version checks in parallel to speed up boottimes
 
 ## v0.0.75
@@ -957,7 +966,7 @@ Released: 2017-02-17.
 - [x] Add support for e.g. `LANYON_EXCLUDE=_posts,_demos` env var, allowing you to temporarily not build content
 - [x] Instead of overwriting a project's `exclude`, add to it.
 - [x] Upgrade to resolve-url >2.0, fixing a bug where leading to broken font-awesome icons in chrome in dev mode
-- [x] Upgrade minor & patch level dependencies 
+- [x] Upgrade minor & patch level dependencies
 
 ## v0.0.59
 
@@ -1166,7 +1175,7 @@ Released: 2017-01-04.
 
 - [x] More optimization for production builds
 - [x] Fix svgeezy (which works with a local `svgeezy` var, not one on `window`)
-- [x] Enable vizualizer support by default, writing to `assets/build/stats.html`, unless you set `lanyon.statistics` to `false` in your `package.json` 
+- [x] Enable vizualizer support by default, writing to `assets/build/stats.html`, unless you set `lanyon.statistics` to `false` in your `package.json`
 - [x] Add support for long-term caching, and cache busting
 - [x] Add vizualizer by definining `lanyon.statistics: "webpack-statistics.html"` in your `package.json`. Directory is fixed to build dir, and this does not work in `development`/HMR mode
 - [x] Add support for shared code-splitted bundles by defining `lanyon.common` in your `package.json`

@@ -29,7 +29,7 @@ module.exports = async function dispatch () {
     extraJekyllFlags += process.env.LANYON_EXTRA_JEKYLL_FLAGS + ' '
   }
   if (process.env.LANYON_DEBUG === '1') {
-    extraJekyllFlags += '--verbose --trace '
+    extraJekyllFlags += '--verbose --trace --profile '
   }
 
   let extraWebpackFlags = ''
@@ -74,7 +74,7 @@ module.exports = async function dispatch () {
   }
 
   if (process.env.LANYON_JEKYLL_WATCH === '1') {
-    scripts['build:content:watch'] =  '[jekyll] build --watch --verbose --force_polling --config [cacheDir]/jekyll.config.yml'
+    scripts['build:content:watch'] =  `[jekyll] build ${extraJekyllFlags}--watch --force_polling --config [cacheDir]/jekyll.config.yml`
   }
 
   const cmd = scripts[cmdName]

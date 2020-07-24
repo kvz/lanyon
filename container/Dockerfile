@@ -28,12 +28,13 @@ RUN gem install \
     jekyll-tagsgenerator:0.0.2 \
     liquid_pluralize:1.0.3 \
     stringex:2.8.5 \
-  -- --use-system-libraries 
+    liquid-c:4.0.0 \
+  -- --use-system-libraries
 
 #     jekyll-paginate-v2:1.9.4 \
 # RUN gem specific_install \
 #   https://github.com/mmistakes/jekyll-paginate-v2.git -b jekyll-v4 \
-#   -- --use-system-libraries 
+#   -- --use-system-libraries
 
 # COPY Gemfile.lock /srv/jekyll/Gemfile.lock
 # COPY Gemfile /srv/jekyll/Gemfile
