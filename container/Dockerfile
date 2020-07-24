@@ -29,6 +29,7 @@ RUN gem install \
     liquid_pluralize:1.0.3 \
     stringex:2.8.5 \
     liquid-c:4.0.0 \
+    jekyll-include-cache:0.2.0 \
   -- --use-system-libraries
 
 #     jekyll-paginate-v2:1.9.4 \

@@ -11,7 +11,7 @@
 ## master
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.2.26...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.27...master).
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
 - [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
@@ -21,6 +21,13 @@ Released: TBA.
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
 - [ ] Consider solidifying some hacks like backendProxy or _assets rewrite from the content repo as lanyon options
 - [ ] Do a `build:assets` before `watch` in case `_includes/_generated_assets/app-development-body.html` does not exist
+
+## v0.2.27
+
+Released: 2020-07-24
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.26...v0.2.27).
+
+- [x] Add `jekyll-include-cache:0.2.0`
 
 ## v0.2.26
 
