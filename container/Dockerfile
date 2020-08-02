@@ -17,7 +17,7 @@
 # https://rubygems.org/gems/liquid-c
 # https://rubygems.org/gems/stringex
 
-FROM kevinvz/jekyll:4.1.0
+FROM kevinvz/jekyll:4.1.1
 RUN gem install \
     jekyll-algolia:1.6.0 \
     jekyll-archives:2.2.1 \
