@@ -3,7 +3,7 @@
 ## Unplanned
 
 - [ ] Throw an error if we find legacy Jekyll residu such as `./vendors` or `.bundle`
-- [ ] Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content
+- [ ] Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content (CAN DO, config.webpack.js contains a custom plugin example that shows this now)
 - [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
 - [ ] Go over all `process.env.*` and make sure they are only at the head of `config.js`
 - [ ] Deprecate Scrollex in favor of execa passing through to stdout/stderr

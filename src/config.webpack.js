@@ -184,7 +184,16 @@ module.exports = function ({ runtime }) {
         templateContent: runtime.bodyAssetTemplate ? runtime.bodyAssetTemplate : ({ htmlWebpackPlugin }) => `${htmlWebpackPlugin.tags.bodyTags}`,
       }))
     })
+    // plugins.push({
+    //   apply: (compiler) => {
+    //     compiler.hooks.afterEmit.tap('AfterEmitPlugin', async (compilation) => {
+    //       const files = await globby(`${runtime.cacheDir}/_generated_assets/*`)
+    //       const targetDir = `${runtime.projectDir}/_includes/_generated_assets/`
 
+    //       console.log({ files, targetDir })
+    //     })
+    //   },
+    // })
     plugins.push(new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
