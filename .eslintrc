@@ -26,8 +26,13 @@
     "no-fallthrough": "off",
     "no-console": "off",
     // "no-unused-vars": "off",
+    "template-curly-spacing": "off",
     "no-useless-escape": "off",
     "no-template-curly-in-string": "off",
+    "indent": [
+      "error", 2,
+      { "ignoredNodes": ["TemplateLiteral"] }
+    ],
     "no-multi-spaces": "off",
     "no-multi-str": "off",
     "quotes": [
