@@ -14,7 +14,7 @@
   },
   "files": [
     "Makefile",
-    "scripts",
+    "scripts/ci-deploy.sh",
     "src"
   ],
   "bin": {
