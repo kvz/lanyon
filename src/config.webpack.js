@@ -13,7 +13,7 @@ module.exports = function ({ runtime }) {
 
   const moduleDirs = [
     runtime.assetsSourceDir,
-    path.join(runtime.projectDir, 'node_modules'),
+    'node_modules',
     path.join(runtime.npmRoot, 'node_modules'),
     path.join(runtime.lanyonDir, 'node_modules'),
   ].concat(runtime.extraAssetsSourceDirs || [])
