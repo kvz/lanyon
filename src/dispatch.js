@@ -48,6 +48,7 @@ module.exports = async function dispatch () {
   }
 
   const scripts = {
+    configure            : (runtime, cb) => cb(null),
     'build:assets'       : `[webpack] ${extraWebpackFlags}--config [cacheDir]/webpack.config.js`,
     'build:content:watch': `${process.env.LANYON_DEBUG === '1' ? 'env DEBUG=nodemon:* ' : ''}[nodemon] --exitcrash --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} ${strPostBuildContentHooks}'`,
     'build:content'      : buildCmd,
