@@ -50,7 +50,7 @@ module.exports = function ({ runtime }) {
     })
 
     rules.push({
-      test: /\.(png|gif|jpe?g|ttf(\?v=\d+\.\d+\.\d+)?)$/,
+      test: /\.(png|webp|gif|jpe?g|ttf(\?v=\d+\.\d+\.\d+)?)$/,
       use : [
         {
           loader : 'url-loader',
@@ -82,7 +82,11 @@ module.exports = function ({ runtime }) {
         {
           loader : 'imports-loader',
           options: {
-            this: '>window',
+            imports: [
+              'default jquery $',
+            ],
+            // Disabled for Webpack5
+            // this: '>window',
           },
         },
       ],
@@ -94,7 +98,8 @@ module.exports = function ({ runtime }) {
         {
           loader : MiniCssExtractPlugin.loader,
           options: {
-            hmr: runtime.isDev,
+            // Disabled for Webpack5
+            // hmr: runtime.isDev,
           },
         },
         {
@@ -108,13 +113,19 @@ module.exports = function ({ runtime }) {
         {
           loader : 'postcss-loader',
           options: {
-            sourceMap: true,
-            ident    : 'postcss',
-            plugins  : (loader) => [
-              require('autoprefixer')({
-                overrideBrowserslist: browsers,
-              }),
-            ],
+            postcssOptions: {
+              sourceMap: true,
+              ident    : 'postcss',
+              plugins  : [
+                [
+                  'postcss-preset-env',
+                  {
+                    // Options
+                    browsers: browsers,
+                  },
+                ],
+              ],
+            },
           },
         },
         'sass-loader',
@@ -222,15 +233,18 @@ module.exports = function ({ runtime }) {
     bail        : true,
     module      : { rules: webpackRules() },
     plugins     : webpackPlugins(),
-    node        : { fs: 'empty', module: 'empty' },
+    // Disabled for Webpack5
+    node        : false,
     recordsPath : runtime.recordsPath,
     target      : 'web',
     optimization: {
       minimize   : !runtime.isDev,
       minimizer  : !runtime.isDev ? [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})] : [],
-      splitChunks: !runtime.isDev ? {
-        chunks: 'all',
-      } : false,
+      splitChunks: !runtime.isDev
+        ? {
+          chunks: 'all',
+        }
+        : false,
     },
     output: {
       publicPath   : runtime.publicPath,
@@ -254,15 +268,19 @@ module.exports = function ({ runtime }) {
       ],
     },
     resolve: {
-      modules               : moduleDirs,
-      descriptionFiles      : ['package.json'],
-      mainFields            : ['browser', 'main'],
-      mainFiles             : ['index'],
-      aliasFields           : ['browser'],
-      extensions            : ['.js'],
-      enforceExtension      : false,
-      enforceModuleExtension: false,
-      alias                 : runtime.alias,
+      modules         : moduleDirs,
+      descriptionFiles: ['package.json'],
+      mainFields      : ['browser', 'main'],
+      mainFiles       : ['index'],
+      aliasFields     : ['browser'],
+      extensions      : ['.js'],
+      enforceExtension: false,
+      fallback        : {
+        stream: require.resolve('stream-browserify'),
+      },
+      // Disabled for Webpack5
+      // enforceModuleExtension: false,
+      alias: runtime.alias,
     },
     entry: (function dynamicEntries () {
       const entries = {}
