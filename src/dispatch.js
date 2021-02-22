@@ -106,7 +106,7 @@ module.exports = async function dispatch () {
   }
 
   // Create asset dirs and git ignores
-  if (cmdName.match(/^build|start/)) {
+  if (cmdName.match(/^(build|configure|start)/)) {
     await utils.initProject(runtime)
   }
 
