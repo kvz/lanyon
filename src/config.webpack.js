@@ -3,7 +3,7 @@ const BundleAnalyzerPlugin    = require('webpack-bundle-analyzer').BundleAnalyze
 const webpack                 = require('webpack')
 const TerserJSPlugin          = require('terser-webpack-plugin')
 const MiniCssExtractPlugin    = require('mini-css-extract-plugin')
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const CssMinimizerPlugin      = require('css-minimizer-webpack-plugin')
 const HtmlWebpackPlugin       = require('html-webpack-plugin')
 
 module.exports = function ({ runtime }) {
@@ -239,7 +239,7 @@ module.exports = function ({ runtime }) {
     target      : 'web',
     optimization: {
       minimize   : !runtime.isDev,
-      minimizer  : !runtime.isDev ? [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})] : [],
+      minimizer  : !runtime.isDev ? [new TerserJSPlugin({}), new CssMinimizerPlugin({})] : [],
       splitChunks: !runtime.isDev
         ? {
           chunks: 'all',
