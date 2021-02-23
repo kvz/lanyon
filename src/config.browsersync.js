@@ -30,8 +30,9 @@ module.exports = function ({ runtime, webpack }) {
         if (runtime.attachHMR) {
           middlewares.push(webpackDevMiddleware(bundler, {
             publicPath: runtime.publicPath,
-            hot       : true,
-            inline    : true,
+            // Disabled for Webpack5
+            // hot       : true,
+            // inline    : true,
             stats     : { colors: true },
           }))
           middlewares.push(webpackHotMiddleware(bundler))
