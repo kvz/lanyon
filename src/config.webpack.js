@@ -147,11 +147,7 @@ module.exports = function ({ runtime }) {
             cacheCompression: false,
             cacheDirectory  : `${runtime.cacheDir}/babel-loader`,
             presets         : [
-              [require.resolve('@babel/preset-env'), {
-                debug  : false,
-                modules: 'commonjs',
-                loose  : false,
-              }],
+              require.resolve('@babel/preset-env'),
               require.resolve('@babel/preset-react'),
             ],
             plugins: [
