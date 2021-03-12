@@ -171,19 +171,19 @@ module.exports = function ({ runtime }) {
   const webpackPlugins = () => {
     const plugins = []
 
-    const customEnv = {
+    const defines = {
       'process.env.LANYON_ENV': JSON.stringify(runtime.lanyonEnv),
       'process.env.NODE_ENV'  : JSON.stringify(process.env.NODE_ENV),
       'process.env.ENDPOINT'  : JSON.stringify(process.env.ENDPOINT),
     }
 
     if (runtime.customEnv) {
-      for (const key in runtime.customEnv) {
-        customEnv[key] = JSON.stringify(runtime.customEnv[key])
+      for (const [key, value] of Object.entries(runtime.customEnv)) {
+        defines[`process.env.${key}`] = JSON.stringify(value)
       }
     }
 
-    plugins.push(new webpack.DefinePlugin(customEnv))
+    plugins.push(new webpack.DefinePlugin(defines))
 
     runtime.entries.forEach(entry => {
       plugins.push(new HtmlWebpackPlugin({
