@@ -1,0 +1,2223 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+      <title>Changelog | Lanyon – Jekyll without the hassle | Lanyon</title>
+    
+    <meta name="keywords" content="static, site, generator, jekyll">
+    <meta name="description" content="Lanyon">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="/assets/build/app.db1e5da539a4394c97fe.css" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <div id="header-overlay"></div>
+      <a href="/">
+        <h1 id="logo">Lanyon</h1>
+      </a>
+      <div id="menu">
+        <i class="material-icons">menu</i>
+        <ul id="menu-items">
+        </ul>
+      </div>
+      <span id="more">
+        <i class="material-icons">expand_more</i>
+      </span>
+    </header>
+    <section id="content">
+      
+
+      <h1 id="changelog">Changelog</h1>
+
+<h2 id="unplanned">Unplanned</h2>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Throw an error if we find legacy Jekyll residu such as <code class="language-plaintext highlighter-rouge">./vendors</code> or <code class="language-plaintext highlighter-rouge">.bundle</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content (CAN DO, config.webpack.js contains a custom plugin example that shows this now)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from <code class="language-plaintext highlighter-rouge">assets/images</code> -&gt; <code class="language-plaintext highlighter-rouge">assets/build/images</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Go over all <code class="language-plaintext highlighter-rouge">process.env.*</code> and make sure they are only at the head of <code class="language-plaintext highlighter-rouge">config.js</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Deprecate Scrollex in favor of execa passing through to stdout/stderr</li>
+</ul>
+
+<h2 id="master">master</h2>
+
+<p>Released: TBA.
+<a href="https://github.com/kvz/lanyon/compare/v0.2.28...master">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Add a ‘real’ command line parser for <code class="language-plaintext highlighter-rouge">lib/cli.js</code> like minimist</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Make it so that you can only build e.g. a homepage via <code class="language-plaintext highlighter-rouge">LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html</code>. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Bundle node + modules in docker container also (and see if we can use them, using <code class="language-plaintext highlighter-rouge">open</code> for browsersync)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Debug browsersync’s endless refresh</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Throw warning when not jekyll excluding: <code class="language-plaintext highlighter-rouge">- node_modules - .git</code>, like when you have <code class="language-plaintext highlighter-rouge">exclude: [vendor]</code> in your jekyll config</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Consider solidifying some hacks like backendProxy or _assets rewrite from the content repo as lanyon options</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Do a <code class="language-plaintext highlighter-rouge">build:assets</code> before <code class="language-plaintext highlighter-rouge">watch</code> in case <code class="language-plaintext highlighter-rouge">_includes/_generated_assets/app-development-body.html</code> does not exist</li>
+</ul>
+
+<h2 id="v0228">v0.2.28</h2>
+
+<p>Released: 2020-08-02
+<a href="https://github.com/kvz/lanyon/compare/v0.2.27...v0.2.28">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade to Jekyll 4.1.1</li>
+</ul>
+
+<h2 id="v0227">v0.2.27</h2>
+
+<p>Released: 2020-07-24
+<a href="https://github.com/kvz/lanyon/compare/v0.2.26...v0.2.27">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add <code class="language-plaintext highlighter-rouge">jekyll-include-cache:0.2.0</code>
+</li>
+</ul>
+
+<h2 id="v0226">v0.2.26</h2>
+
+<p>Released: 2020-07-24
+<a href="https://github.com/kvz/lanyon/compare/v0.2.25...v0.2.26">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add <code class="language-plaintext highlighter-rouge">--profile</code> when using LANYON_DEBUG</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>More consistent <code class="language-plaintext highlighter-rouge">--verbose</code> (also respect it when using <code class="language-plaintext highlighter-rouge">LANYON_JEKYLL_WATCH</code>)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add liquid-c for faster building</li>
+</ul>
+
+<h2 id="v0225">v0.2.25</h2>
+
+<p>Released: 2020-06-12
+<a href="https://github.com/kvz/lanyon/compare/v0.2.24...v0.2.25">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow to not use Nodemon to kickstart Jekyll builds, but use Jekyll file watching directly via <code class="language-plaintext highlighter-rouge">LANYON_JEKYLL_WATCH</code>. Example: <code class="language-plaintext highlighter-rouge">LANYON_JEKYLL_WATCH=1 LANYON_JEKYLL=${HOME}/code/content/_jekyll/jekyll.sh npx lanyon start</code>
+</li>
+</ul>
+
+<h2 id="v0224">v0.2.24</h2>
+
+<p>Released: 2020-06-11
+<a href="https://github.com/kvz/lanyon/compare/v0.2.23...v0.2.24">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow to pass in your own Jekyll install via <code class="language-plaintext highlighter-rouge">LANYON_JEKYLL</code>. Example: <code class="language-plaintext highlighter-rouge">LANYON_JEKYLL=${HOME}/code/content/_jekyll/jekyll.sh npx lanyon start</code>
+</li>
+</ul>
+
+<h2 id="v0223">v0.2.23</h2>
+
+<p>Released: 2020-06-09
+<a href="https://github.com/kvz/lanyon/compare/v0.2.22...v0.2.23">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade from Jekyll 4.0.0 -&gt; 4.1.0</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Temporarily switch from jekyll/jekyll-&gt; kevinvz/jekyll as long as a new official container does not exist <a href="https://github.com/jekyll/jekyll/issues/8240">https://github.com/jekyll/jekyll/issues/8240</a>
+</li>
+</ul>
+
+<h2 id="v0222">v0.2.22</h2>
+
+<p>Released: 2020-06-09
+<a href="https://github.com/kvz/lanyon/compare/v0.2.21...v0.2.22">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked><strong>BREAKING</strong> Remove LESS support in favor of SASS/SCSS</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked><strong>BREAKING</strong> Cleanup unused node modules</li>
+</ul>
+
+<h2 id="v0221">v0.2.21</h2>
+
+<p>Released: 2020-06-09
+<a href="https://github.com/kvz/lanyon/compare/v0.2.20...v0.2.21">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade all gems as part of the Lanyon docker image</li>
+</ul>
+
+<h2 id="v0220">v0.2.20</h2>
+
+<p>Released: 2020-06-09
+<a href="https://github.com/kvz/lanyon/compare/v0.2.19...v0.2.20">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Pin Jekyll version to 4.0.0 (vs 4.0), because 4.0 also matches 4.0.1, which introduced a speed regression https://github.com/jekyll/jekyll/issues/8233</li>
+</ul>
+
+<h2 id="v0219">v0.2.19</h2>
+
+<p>Released: 2020-06-09
+<a href="https://github.com/kvz/lanyon/compare/v0.2.18...v0.2.19">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade deps</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix typo: Productioin</li>
+</ul>
+
+<h2 id="v0218">v0.2.18</h2>
+
+<p>Released: 2020-06-09
+<a href="https://github.com/kvz/lanyon/compare/v0.2.17...v0.2.18">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Set <code class="language-plaintext highlighter-rouge">cache:true</code> for HTML Plugin so asset references aren’t written each time, triggering Jekyll builds for all pages that use them, which can be all of them.</li>
+</ul>
+
+<h2 id="v0217">v0.2.17</h2>
+
+<p>Released: 2020-06-08
+<a href="https://github.com/kvz/lanyon/compare/v0.2.16...v0.2.17">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Combine jQuery &amp; Bootstrap window import rules</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Combine file &amp; url loaders where safely possible</li>
+</ul>
+
+<h2 id="v0216">v0.2.16</h2>
+
+<p>Released: 2020-06-08
+<a href="https://github.com/kvz/lanyon/compare/v0.2.15...v0.2.16">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Less verbose exit</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Cleanup whitespace and internal webpack config structure</li>
+</ul>
+
+<h2 id="v0215">v0.2.15</h2>
+
+<p>Released: 2020-06-08
+<a href="https://github.com/kvz/lanyon/compare/v0.2.14...v0.2.15">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow user to transform the assets that are injected into <code class="language-plaintext highlighter-rouge">_includes/_generated_assets/</code> via the override functions <code class="language-plaintext highlighter-rouge">runtime.headAssetTemplate</code> and <code class="language-plaintext highlighter-rouge">runtime.bodyAssetTemplate</code> that you can set in your <code class="language-plaintext highlighter-rouge">.lanyonrc</code> like so:
+    <div class="language-js highlighter-rouge">
+<div class="highlight"><pre class="highlight"><code>  <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">overrideRuntime</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">runtime</span><span class="p">,</span> <span class="nx">toolkit</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">runtime</span><span class="p">.</span><span class="nx">headAssetTemplate</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">htmlWebpackPlugin</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="s2">`</span><span class="p">${</span><span class="nx">htmlWebpackPlugin</span><span class="p">.</span><span class="nx">tags</span><span class="p">.</span><span class="nx">headTags</span><span class="p">}</span><span class="s2">`</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/"</span><span class="se">\/</span><span class="sr">assets</span><span class="se">\/</span><span class="sr">/g</span><span class="p">,</span> <span class="s2">`"https://transloadit.edgly.net/assets/`</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nx">runtime</span><span class="p">.</span><span class="nx">bodyAssetTemplate</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">htmlWebpackPlugin</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="s2">`</span><span class="p">${</span><span class="nx">htmlWebpackPlugin</span><span class="p">.</span><span class="nx">tags</span><span class="p">.</span><span class="nx">bodyTags</span><span class="p">}</span><span class="s2">`</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/"</span><span class="se">\/</span><span class="sr">assets</span><span class="se">\/</span><span class="sr">/g</span><span class="p">,</span> <span class="s2">`"https://transloadit.edgly.net/assets/`</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<h2 id="v0214">v0.2.14</h2>
+
+<p>Released: 2020-06-08
+<a href="https://github.com/kvz/lanyon/compare/v0.2.12...v0.2.14">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bug: no longer reference <code class="language-plaintext highlighter-rouge">jekyll.lanyon_assets.yml</code>
+</li>
+</ul>
+
+<h2 id="v0213">v0.2.13</h2>
+
+<p>Released: 2020-06-08
+<a href="https://github.com/kvz/lanyon/compare/v0.2.12...v0.2.13">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bug: No longer use cache-loader before MiniCssExtractPlugin, so that CSS assets exist in entrypoints, even when nothing changed</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch from <code class="language-plaintext highlighter-rouge">AssetsPlugin</code> to <code class="language-plaintext highlighter-rouge">StatsWriterPlugin</code> /thx @goto-bus-stop</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked><strong>BREAKING</strong> Switch to <code class="language-plaintext highlighter-rouge">splitChunks</code>. This means entrypoints have multiple assets now</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked><strong>BREAKING</strong> Switch from <code class="language-plaintext highlighter-rouge">jekyll.lanyon_assets.yml</code> to <code class="language-plaintext highlighter-rouge">HtmlWebpackPlugin</code> which creates html snippets to easier load multiple assets per entrypoint. These files are written to <code class="language-plaintext highlighter-rouge">_includes/_generated_assets/</code>. To include, replace any occurance of <code class="language-plaintext highlighter-rouge">lanyon_assets</code>, with CSS: <code class="language-plaintext highlighter-rouge">&lt;link href="/assets/build/app.db1e5da539a4394c97fe.css" rel="stylesheet"&gt;</code>, for JS: <code class="language-plaintext highlighter-rouge">&lt;script src="/assets/build/app.335e0e403ae647dc9d77.js"&gt;&lt;/script&gt;</code>. You’ll first want to run a <code class="language-plaintext highlighter-rouge">build</code> before doing a <code class="language-plaintext highlighter-rouge">start</code> to prewarm the generated includes. It’s recommended to commit the development assets, but git ignore production ones by adding <code class="language-plaintext highlighter-rouge">_includes/_generated_assets/*-production-*.html</code> to <code class="language-plaintext highlighter-rouge">.gitignore</code>
+</li>
+</ul>
+
+<h2 id="v0212">v0.2.12</h2>
+
+<p>Released: 2020-06-08
+<a href="https://github.com/kvz/lanyon/compare/v0.2.11...v0.2.12">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add BundleAnalyzerPlugin behind <code class="language-plaintext highlighter-rouge">LANYON_ANALYZE=1</code> flag. To use try e.g. <code class="language-plaintext highlighter-rouge">LANYON_ANALYZE=1 LANYON_ENV=production npx lanyon build:assets</code>
+</li>
+</ul>
+
+<h2 id="v0211">v0.2.11</h2>
+
+<p>Released: 2020-06-08
+<a href="https://github.com/kvz/lanyon/compare/v0.2.10...v0.2.11">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add BundleAnalyzerPlugin. To use try e.g. <code class="language-plaintext highlighter-rouge">make build-assets-production &amp;&amp; open _assets/build/report.html</code> inside your project (or: <code class="language-plaintext highlighter-rouge">LANYON_ENV=production npx lanyon build:assets &amp;&amp; open _assets/build/report.html</code>)</li>
+</ul>
+
+<h2 id="v0210">v0.2.10</h2>
+
+<p>Released: 2020-06-05
+<a href="https://github.com/kvz/lanyon/compare/v0.2.9...v0.2.10">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Accumulate lanyon_assets rather than overwriting, because with caching, we sometimes only get passed JS assets, which effectively removes CSS asset references</li>
+</ul>
+
+<h2 id="v029">v0.2.9</h2>
+
+<p>Released: 2020-06-05
+<a href="https://github.com/kvz/lanyon/compare/v0.2.8...v0.2.9">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Move back from <code class="language-plaintext highlighter-rouge">noParse: (content) =&gt; /jquery|lodash/.test(content),</code> because it results in <code class="language-plaintext highlighter-rouge">ReferenceError: require is not defined</code> for <code class="language-plaintext highlighter-rouge">_.get</code>
+</li>
+</ul>
+
+<h2 id="v028">v0.2.8</h2>
+
+<p>Released: 2020-06-05
+<a href="https://github.com/kvz/lanyon/compare/v0.2.7...v0.2.8">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Move back from <code class="language-plaintext highlighter-rouge">eval-cheap-module-source-map</code> to <code class="language-plaintext highlighter-rouge">source-map</code> for production as it increased js builds by 15MB</li>
+</ul>
+
+<h2 id="v027">v0.2.7</h2>
+
+<p>Released: 2020-06-05
+<a href="https://github.com/kvz/lanyon/compare/v0.2.6...v0.2.7">Diff</a>.</p>
+
+<ul class="task-list">
+  <li>[-] Add DllPlugin <a href="https://webpack.js.org/plugins/dll-plugin/">https://webpack.js.org/plugins/dll-plugin/</a> &lt;– this requires several webpack calls and entry points using eachother, high hanging fruit</li>
+  <li>[-] Use SplitChunksPlugin <a href="https://webpack.js.org/guides/build-performance/#smaller--faster">https://webpack.js.org/guides/build-performance/#smaller--faster</a> &lt;– increases build time (as indicated in <a href="https://webpack.js.org/guides/build-performance/#avoid-extra-optimization-steps">https://webpack.js.org/guides/build-performance/#avoid-extra-optimization-steps</a>) and generates many more assets to include it seems, high hanging fruit</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add cache-loader <a href="https://github.com/webpack-contrib/cache-loader/">https://github.com/webpack-contrib/cache-loader/</a> in front of expensive non-babel loaders &lt;– as it has its own caching. Clear cache directory on <code class="language-plaintext highlighter-rouge">"postinstall"</code> in <code class="language-plaintext highlighter-rouge">package.json</code>.</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add cache-loader:babel <code class="language-plaintext highlighter-rouge">cacheDirectory: .lanyon</code>, <code class="language-plaintext highlighter-rouge">cacheCompression:false</code> on babel-loader <a href="https://github.com/babel/babel-loader#options">https://github.com/babel/babel-loader#options</a>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Limit fileset by making <code class="language-plaintext highlighter-rouge">include</code> as discrimating as can be</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make sure we set a <code class="language-plaintext highlighter-rouge">recordsPath</code> <a href="https://webpack.js.org/configuration/other-options/#recordspath">https://webpack.js.org/configuration/other-options/#recordspath</a>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Minimize the number of items in <code class="language-plaintext highlighter-rouge">resolve.modules</code>, <code class="language-plaintext highlighter-rouge">resolve.extensions</code>, <code class="language-plaintext highlighter-rouge">resolve.mainFiles</code>, <code class="language-plaintext highlighter-rouge">resolve.descriptionFiles</code>, as they increase the number of filesystem calls.</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>No <code class="language-plaintext highlighter-rouge">Uglify</code>, <code class="language-plaintext highlighter-rouge">Terser</code>, <code class="language-plaintext highlighter-rouge">ExtractText</code>, <code class="language-plaintext highlighter-rouge">[hash]</code>, <code class="language-plaintext highlighter-rouge">[chunkhash]</code>, <code class="language-plaintext highlighter-rouge">AggressiveSplittingPlugin</code>, <code class="language-plaintext highlighter-rouge">AggressiveMergingPlugin</code>, <code class="language-plaintext highlighter-rouge">ModuleConcatenationPlugin</code> for dev mode. Set <code class="language-plaintext highlighter-rouge">uglifyOptions.compress: false</code> for prod.</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Only use <code class="language-plaintext highlighter-rouge">ProgressPlugin</code> briefly, then remove</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Set <code class="language-plaintext highlighter-rouge">module.noParse: (content) =&gt; /jquery|lodash/.test(content)</code> <a href="https://webpack.js.org/configuration/module/#module-noparse">https://webpack.js.org/configuration/module/#module-noparse</a>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Set <code class="language-plaintext highlighter-rouge">optimization: { removeAvailableModules: false, removeEmptyChunks: false, splitChunks: false, },</code> <a href="https://webpack.js.org/guides/build-performance/#avoid-extra-optimization-steps">https://webpack.js.org/guides/build-performance/#avoid-extra-optimization-steps</a>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch sourcemaps to <code class="language-plaintext highlighter-rouge">eval-cheap-module-source-map</code> <a href="https://webpack.js.org/guides/build-performance/#devtool">https://webpack.js.org/guides/build-performance/#devtool</a>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Use ThreadLoader <a href="https://github.com/webpack-contrib/thread-loader">https://github.com/webpack-contrib/thread-loader</a>. For node-sass, set <code class="language-plaintext highlighter-rouge">workerParallelJobs: 2</code>. &lt;– gives errors for css but seems to work for js</li>
+</ul>
+
+<h2 id="v026">v0.2.6</h2>
+
+<p>Released: 2020-06-04
+<a href="https://github.com/kvz/lanyon/compare/v0.2.5...v0.2.6">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Less verbose Lanyon unless you turn on LANYON_DEBUG</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove font-awesome</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove SvgStoreWebpackPlugin</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Simplify postcss</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove cssnano</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove ProvidePlugin (of <code class="language-plaintext highlighter-rouge">lodash</code> as <code class="language-plaintext highlighter-rouge">_</code> without importing it)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove LoaderOptionsPlugin</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove CommonsChunkPlugin and friends</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove Visualizer statistics</li>
+</ul>
+
+<h2 id="v025">v0.2.5</h2>
+
+<p>Released: 2020-06-04
+<a href="https://github.com/kvz/lanyon/compare/v0.2.4...v0.2.5">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add <code class="language-plaintext highlighter-rouge">.lanyon</code> to <code class="language-plaintext highlighter-rouge">.gitignore</code> only once</li>
+</ul>
+
+<h2 id="v024">v0.2.4</h2>
+
+<p>Released: 2020-06-04
+<a href="https://github.com/kvz/lanyon/compare/v0.2.3...v0.2.4">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bug in asset writing</li>
+</ul>
+
+<h2 id="v023">v0.2.3</h2>
+
+<p>Released: 2020-06-04
+<a href="https://github.com/kvz/lanyon/compare/v0.2.2...v0.2.3">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Bail out if <code class="language-plaintext highlighter-rouge">assets</code> was empty</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Always show deprecation traces for Node</li>
+</ul>
+
+<h2 id="v022">v0.2.2</h2>
+
+<p>Released: 2020-06-04
+<a href="https://github.com/kvz/lanyon/compare/v0.2.1...v0.2.2">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Store <code class="language-plaintext highlighter-rouge">orphaned</code> assets under said key</li>
+</ul>
+
+<h2 id="v021">v0.2.1</h2>
+
+<p>Released: 2020-06-04
+<a href="https://github.com/kvz/lanyon/compare/v0.2.0...v0.2.1">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix JSX parsing</li>
+</ul>
+
+<h2 id="v020">v0.2.0</h2>
+
+<p>Released: 2020-06-04
+<a href="https://github.com/kvz/lanyon/compare/v0.1.17...v0.2.0">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Show Node.js deprecation traces when <code class="language-plaintext highlighter-rouge">LANYON_DEBUG=1</code>, as well as Webpack profile and progress</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add worker-loader</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Drop Node.js 8 support</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make travis tests pass again</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Migrate from extract-text-webpack-plugin + style-loader -&gt; mini-css-extract-plugin</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Migrate from UglifyJS -&gt; terser-webpack-plugin@3.0.3,</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade autoprefixer@8.6.5 -&gt; autoprefixer@9.8.0</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade css-loader@0.28.11 -&gt; css-loader@3.5.3</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade file-loader@1.1.11 -&gt; file-loader@6.0.0</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade less-loader@4.1.0 -&gt; less-loader@6.1.0</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade less@2.7.3 -&gt; less@3.11.2</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade nodemon@1.19.2 -&gt; nodemon@2</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade optimize-css-assets-webpack-plugin@3.2.1 -&gt; optimize-css-assets-webpack-plugin@5.0.3</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade postcss-loader@2.1.6 -&gt; postcss-loader@3.0.0</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade resolve-url-loader@2.3.2 -&gt; resolve-url-loader@3.1.1</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade sass-loader@7.3.1 -&gt; sass-loader@8.0.2</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade style-loader@0.23.1 -&gt; style-loader@1.2.1</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade webpack@3.12.0 -&gt; webpack@4.43.0</li>
+</ul>
+
+<h2 id="v0117">v0.1.17</h2>
+
+<p>Released: 2020-04-22
+<a href="https://github.com/kvz/lanyon/compare/v0.1.16...v0.1.17">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade node-sass 4.12.0 -&gt; 4.13.1</li>
+</ul>
+
+<h2 id="v0116">v0.1.16</h2>
+
+<p>Released: 2019-12-30
+<a href="https://github.com/kvz/lanyon/compare/v0.1.15...v0.1.16">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add <code class="language-plaintext highlighter-rouge">ignoreOrder</code> for <code class="language-plaintext highlighter-rouge">ExtractTextPlugin</code> to avoid: “Order in extracted chunk undefined” ¯_(ツ)_/¯</li>
+</ul>
+
+<h2 id="v0115">v0.1.15</h2>
+
+<p>Released: 2019-12-09
+<a href="https://github.com/kvz/lanyon/compare/v0.1.13...v0.1.15">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add <code class="language-plaintext highlighter-rouge">@babel/plugin-proposal-decorators</code>
+</li>
+</ul>
+
+<h2 id="v0113">v0.1.13</h2>
+
+<p>Released: 2019-11-22
+<a href="https://github.com/kvz/lanyon/compare/v0.1.12...v0.1.13">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make uglification optional via <code class="language-plaintext highlighter-rouge">runtime.uglify = false</code>
+</li>
+</ul>
+
+<h2 id="v0112">v0.1.12</h2>
+
+<p>Released: 2019-11-22
+<a href="https://github.com/kvz/lanyon/compare/v0.1.11...v0.1.12">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make Lanyon look at browser config as passing in by project via runtime.browsers</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade to standard14</li>
+</ul>
+
+<h2 id="v0111">v0.1.11</h2>
+
+<p>Released: 2019-11-22
+<a href="https://github.com/kvz/lanyon/compare/v0.1.10...v0.1.11">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Revert from jekyll-paginate v2 to v1 because v2 isn’t Jekyll v4 compatible it turns out (https://github.com/sverrirs/jekyll-paginate-v2/issues/165)</li>
+</ul>
+
+<h2 id="v0110">v0.1.10</h2>
+
+<p>Released: 2019-11-22
+<a href="https://github.com/kvz/lanyon/compare/v0.1.9...v0.1.10">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch from jekyll-paginate v1 to v2</li>
+</ul>
+
+<h2 id="v019">v0.1.9</h2>
+
+<p>Released: 2019-11-20
+<a href="https://github.com/kvz/lanyon/compare/v0.1.8...v0.1.9">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix: <code class="language-plaintext highlighter-rouge">BrowserslistError: Unknown version 3 of safari</code>
+</li>
+</ul>
+
+<h2 id="v018">v0.1.8</h2>
+
+<p>Released: 2019-10-23.
+<a href="https://github.com/kvz/lanyon/compare/v0.1.7...v0.1.8">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add <code class="language-plaintext highlighter-rouge">jekyll-last-modified-at:1.1.0</code>
+</li>
+</ul>
+
+<h2 id="v017">v0.1.7</h2>
+
+<p>Released: 2019-10-23.
+<a href="https://github.com/kvz/lanyon/compare/v0.1.6...v0.1.7">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add redirect_from</li>
+</ul>
+
+<h2 id="v016">v0.1.6</h2>
+
+<p>Released: 2019-10-23.
+<a href="https://github.com/kvz/lanyon/compare/v0.1.5...v0.1.6">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add paginate tagsgenerator</li>
+</ul>
+
+<h2 id="v015">v0.1.5</h2>
+
+<p>Released: 2019-10-23.
+<a href="https://github.com/kvz/lanyon/compare/v0.1.4...v0.1.5">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add jekyll seo-tag, sitemap, mentions, tagging</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove minimal-mistakes-jekyll</li>
+</ul>
+
+<h2 id="v014">v0.1.4</h2>
+
+<p>Released: 2019-10-22.
+<a href="https://github.com/kvz/lanyon/compare/v0.1.3...v0.1.4">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>yarn add @babel/core@7.6.4 @babel/preset-react@7.6.3</li>
+</ul>
+
+<h2 id="v013">v0.1.3</h2>
+
+<p>Released: 2019-10-22.
+<a href="https://github.com/kvz/lanyon/compare/v0.1.2...v0.1.3">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add support for <code class="language-plaintext highlighter-rouge">extraAssetsSourceDirs</code>
+</li>
+</ul>
+
+<h2 id="v012">v0.1.2</h2>
+
+<p>Released: 2019-10-22.
+<a href="https://github.com/kvz/lanyon/compare/v0.1.1...v0.1.2">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow <code class="language-plaintext highlighter-rouge">process.env.ENDPOINT</code> to be used in JS</li>
+</ul>
+
+<h2 id="v011">v0.1.1</h2>
+
+<p>Released: 2019-10-22.
+<a href="https://github.com/kvz/lanyon/compare/v0.1.0...v0.1.1">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Also allow <code class="language-plaintext highlighter-rouge">process.env.NODE_ENV</code> to be used in JS when <code class="language-plaintext highlighter-rouge">LANYON_ENV</code> is <code class="language-plaintext highlighter-rouge">'development'</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow <code class="language-plaintext highlighter-rouge">process.env.LANYON_ENV</code> to be used in JS</li>
+</ul>
+
+<h2 id="v010">v0.1.0</h2>
+
+<p>Released: 2019-10-22.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.143...v0.1.0">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>(BREAKING) Upgrade to Babel 7 and the babel-env preset. Among things, you’ll need to change <code class="language-plaintext highlighter-rouge">Object.assign()</code>s to Object Spreads</li>
+</ul>
+
+<h2 id="v00143">v0.0.143</h2>
+
+<p>Released: 2019-09-25.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.142...v0.0.143">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch to <code class="language-plaintext highlighter-rouge">eval-source-map</code> in dev which provides better sourcemaps (#20, thanks @lakesare)</li>
+</ul>
+
+<h2 id="v00142">v0.0.142</h2>
+
+<p>Released: 2019-09-04.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.141...v0.0.142">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Update dependencies (within major)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make all processes less verbose, unless <code class="language-plaintext highlighter-rouge">LANYON_DEBUG=1</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove <code class="language-plaintext highlighter-rouge">reloadThrottle</code> and <code class="language-plaintext highlighter-rouge">reloadDelay</code> so that hopefully <code class="language-plaintext highlighter-rouge">reloadDebounce</code> in browsersync can persevere</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Crash lanyon if it catches a <code class="language-plaintext highlighter-rouge">SIGUSR2</code> (which could be thrown by Nodemon)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Crash nodemon (and hence lanyon) if its child-process-to-be-started-on-filechange (docker-&gt;jekyll) crash</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix <code class="language-plaintext highlighter-rouge">git ignore</code> error</li>
+</ul>
+
+<h2 id="v00141">v0.0.141</h2>
+
+<p>Released: 2019-09-04.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.140...v0.0.141">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow to pass in webpack resolve alias via <code class="language-plaintext highlighter-rouge">runtime.alias</code>
+</li>
+</ul>
+
+<h2 id="v00140">v0.0.140</h2>
+
+<p>Released: 2019-09-03.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.139...v0.0.140">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Don’t run in verbose mode by default (but allow passing in <code class="language-plaintext highlighter-rouge">LANYON_EXTRA_JEKYLL_FLAGS="--trace --verbose"</code> if more detail is needed)</li>
+</ul>
+
+<h2 id="v00139">v0.0.139</h2>
+
+<p>Released: 2019-09-03.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.136...v0.0.139">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Bring back stringex</li>
+</ul>
+
+<h2 id="v00137">v0.0.137</h2>
+
+<p>Released: 2019-09-03.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.136...v0.0.137">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade to Jekyll 4</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade to jekyll-feed 0.12.1 and minimal-mistakes-jekyll 4.16.6</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Deprecate jekyll-algolia, github-pages</li>
+</ul>
+
+<h2 id="v00136">v0.0.136</h2>
+
+<p>Released: 2019-08-09.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.135...v0.0.136">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Also add gem lockfile</li>
+</ul>
+
+<h2 id="v00135">v0.0.135</h2>
+
+<p>Released: 2019-08-09.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.134...v0.0.135">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Install algolia via Gemfile &amp; bundle update so that <code class="language-plaintext highlighter-rouge">jekyll algolia</code> becomes available</li>
+</ul>
+
+<h2 id="v00134">v0.0.134</h2>
+
+<p>Released: 2019-08-09.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.133...v0.0.134">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Replace lunrjs with algolia</li>
+</ul>
+
+<h2 id="v00133">v0.0.133</h2>
+
+<p>Released: 2019-08-09.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.132...v0.0.133">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade dependencies in docker image</li>
+</ul>
+
+<h2 id="v00132">v0.0.132</h2>
+
+<p>Released: 2018-09-04.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.131...v0.0.132">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix Travis &amp; Babel issues</li>
+</ul>
+
+<h2 id="v00131">v0.0.131</h2>
+
+<p>Released: 2018-09-04.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.130...v0.0.131">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix Travis tests</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>revert: Allow to <code class="language-plaintext highlighter-rouge">setupContainer()</code> (but don’t use it yet)</li>
+</ul>
+
+<h2 id="v00130">v0.0.130</h2>
+
+<p>Released: 2018-09-04.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.129...v0.0.130">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Easier debugging of travis deploy failures</li>
+</ul>
+
+<h2 id="v00129">v0.0.129</h2>
+
+<p>Released: 2018-09-04.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.128...v0.0.129">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow to <code class="language-plaintext highlighter-rouge">setupContainer()</code> (but don’t use it yet)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Write files as current $USER to avoid manual chowning</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make failing hooks fatal</li>
+</ul>
+
+<h2 id="v00128">v0.0.128</h2>
+
+<p>Released: 2018-09-04.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.127...v0.0.128">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade SASS</li>
+</ul>
+
+<h2 id="v00127">v0.0.127</h2>
+
+<p>Released: 2018-08-22.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.126...v0.0.127">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove react as being bundled by lanyon /thx @Acconut</li>
+</ul>
+
+<h2 id="v00126">v0.0.126</h2>
+
+<p>Released: 2018-08-22.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.125...v0.0.126">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove coffeescript support /thx @Acconut</li>
+</ul>
+
+<h2 id="v00125">v0.0.125</h2>
+
+<p>Released: 2018-07-16.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.124...v0.0.125">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade gems and Jekyll from 3.7 -&gt; 3.8 (which includes “Two massive performance improvements for large sites” - https://github.com/jekyll/jekyll/blob/master/History.markdown#380–2018-04-19)</li>
+</ul>
+
+<h2 id="v00124">v0.0.124</h2>
+
+<p>Released: 2018-07-13.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.123...v0.0.124">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Drop support for: Modernizr, Svgeezy, Bower</li>
+</ul>
+
+<h2 id="v00123">v0.0.123</h2>
+
+<p>Released: 2018-07-06.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.122...v0.0.123">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>More consistent override methods</li>
+</ul>
+
+<h2 id="v00122">v0.0.122</h2>
+
+<p>Released: 2018-07-06.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.121...v0.0.122">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add support for PostCSS</li>
+</ul>
+
+<h2 id="v00121">v0.0.121</h2>
+
+<p>Released: 2018-04-18.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.120...v0.0.121">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Pass a toolkit to lanyonrc with functions like dockerString</li>
+</ul>
+
+<h2 id="v00120">v0.0.120</h2>
+
+<p>Released: 2018-04-12.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.117...v0.0.120">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix initProject issues</li>
+</ul>
+
+<h2 id="v00117">v0.0.117</h2>
+
+<p>Released: 2018-04-12.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.116...v0.0.117">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Improved child process juggling</li>
+</ul>
+
+<h2 id="v00116">v0.0.116</h2>
+
+<p>Released: 2018-04-12.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.115...v0.0.116">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove <code class="language-plaintext highlighter-rouge">shelljs</code> completely</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Deprecate magic themeDir handling for now</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Use pkill instead of killall so it works on both Linux &amp; OSX (thanks @Acconut)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Restart lanyon container if it crashes</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Cleaner kills for cleanup</li>
+</ul>
+
+<h2 id="v00115">v0.0.115</h2>
+
+<p>Released: 2018-04-11.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.114...v0.0.115">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Figure out if incremental build is maybe actually working (is non-inc even slower?) investigate docker jekyll disk speedup</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Optionally offer docker-sync for faster build times on osx https://github.com/EugenMayer/docker-sync/wiki/2.-Configuration</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Simplify how hooks work</li>
+</ul>
+
+<h2 id="v00114">v0.0.114</h2>
+
+<p>Released: 2018-04-10.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.113...v0.0.114">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix JEKYLL_ENV in Docker</li>
+</ul>
+
+<h2 id="v00113">v0.0.113</h2>
+
+<p>Released: 2018-04-10.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.109...v0.0.113">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Move <code class="language-plaintext highlighter-rouge">--display-optimization-bailout</code> cli arg to webpack config instead</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make sure webpack does not immediately return</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Simplify docker volumes (and avoid nesting)</li>
+</ul>
+
+<h2 id="v00112">v0.0.112</h2>
+
+<p>Released: 2018-04-10.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.109...v0.0.112">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow to disable incremental</li>
+</ul>
+
+<h2 id="v00109">v0.0.109</h2>
+
+<p>Released: 2018-04-09.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.108...v0.0.109">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Move postbuild hook into nodemon</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make nodemon respect jekyll exclude, deprecating <code class="language-plaintext highlighter-rouge">contentIgnore</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Don’t let Lanyon call lanyon</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Split up config over individual files per tool</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow <code class="language-plaintext highlighter-rouge">.lanyonrc.js</code> in projectDir to temper with config (deprecating many env vars)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Require Node 8+ (and ditch babel)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Require Docker (and ditch rbenv, rvm, system support)</li>
+</ul>
+
+<h2 id="v00108">v0.0.108</h2>
+
+<p>Released: 2018-03-26.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.107...v0.0.108">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove jQuery from Lanyon</li>
+</ul>
+
+<h2 id="v00107">v0.0.107</h2>
+
+<p>Released: 2018-02-26.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.106...v0.0.107">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix <code class="language-plaintext highlighter-rouge">LANYON_DISABLE_JEKYLL_PLUGINS</code>
+</li>
+</ul>
+
+<h2 id="v00106">v0.0.106</h2>
+
+<p>Released: 2017-10-24.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.105...v0.0.106">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Introduce a browsersync reloadDelay reloadDebounce reloadThrottle</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Introduce a nodemon delay of 600ms</li>
+</ul>
+
+<h2 id="v00105">v0.0.105</h2>
+
+<p>Released: 2017-10-24.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.104...v0.0.105">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix the disabling of setting no plugins via e.g. <code class="language-plaintext highlighter-rouge">env LANYON_DISABLE_GEMS=jemoji,jekyll-redirect-from,jekyll-feed,jekyll-sitemap LANYON_EXCLUDE=** LANYON_INCLUDE=home.html,_layouts/default.html lanyon start</code>
+</li>
+</ul>
+
+<h2 id="v00104">v0.0.104</h2>
+
+<p>Released: 2017-10-18.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.103...v0.0.104">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Advocate LANYON_DISABLE_JEKYLL_PLUGINS</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch from <code class="language-plaintext highlighter-rouge">babel-preset-2015</code> to <code class="language-plaintext highlighter-rouge">babel-preset-env</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Deprecate Node 0.12 and v4 support (now v6+)</li>
+</ul>
+
+<h2 id="v00103">v0.0.103</h2>
+
+<p>Released: 2017-10-18.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.102...v0.0.103">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Downgrade uglify-js</li>
+</ul>
+
+<h2 id="v00102">v0.0.102</h2>
+
+<p>Released: 2017-10-18.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.101...v0.0.102">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add minimal-mistakes-jekyll</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Downgrade less</li>
+</ul>
+
+<h2 id="v00101">v0.0.101</h2>
+
+<p>Released: 2017-10-18.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.100...v0.0.101">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make Jest run on <code class="language-plaintext highlighter-rouge">./src</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Rename <code class="language-plaintext highlighter-rouge">gems</code> -&gt; <code class="language-plaintext highlighter-rouge">plugins</code> to avoid deprecation notice: <code class="language-plaintext highlighter-rouge">Deprecation: The 'gems' configuration option has been renamed to 'plugins'. Please update your config file accordingly.</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade <code class="language-plaintext highlighter-rouge">github-pages</code> to <code class="language-plaintext highlighter-rouge">164</code> (and thereby <code class="language-plaintext highlighter-rouge">jekyll</code> to <code class="language-plaintext highlighter-rouge">3.6</code>)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add Scope Hoisting</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade to Webpack v3</li>
+</ul>
+
+<h2 id="v00100">v0.0.100</h2>
+
+<p>Released: 2017-09-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.99...v0.0.100">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bug in: Rebuild docker gems only if there are custom gems in the project</li>
+</ul>
+
+<h2 id="v0099">v0.0.99</h2>
+
+<p>Released: 2017-09-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.97...v0.0.99">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Yarn &amp; npm fixes</li>
+</ul>
+
+<h2 id="v0097">v0.0.97</h2>
+
+<p>Released: 2017-09-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.96...v0.0.97">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Rebuild docker gems only if there are custom gems in the project</li>
+</ul>
+
+<h2 id="v0096">v0.0.96</h2>
+
+<p>Released: 2017-09-03.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.95...v0.0.96">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Back to rootless docker runs, should fix Travis CI failure where shims written by container are inaccessible: https://travis-ci.org/kvz/lanyon/jobs/271361343#L765</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade github-pages to <code class="language-plaintext highlighter-rouge">157</code>
+</li>
+</ul>
+
+<h2 id="v0095">v0.0.95</h2>
+
+<p>Released: 2017-09-03.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.94...v0.0.95">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow docker variant to install custom gems</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Avoid promise warnings by catching async/await in install</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade parallelshell</li>
+</ul>
+
+<h2 id="v0094">v0.0.94</h2>
+
+<p>Released: 2017-07-10.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.93...v0.0.94">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix dependency pathfinding of local lanyon</li>
+</ul>
+
+<h2 id="v0093">v0.0.93</h2>
+
+<p>Released: 2017-07-10.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.92...v0.0.93">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade github-pages, nokogiri, and minimum required ruby to 2.1.0</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Reset shims while rebuilding container</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Respect docker while verifying Ruby</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Ship “jekyll-lunr-js-search@3.3.0”</li>
+</ul>
+
+<h2 id="v0092">v0.0.92</h2>
+
+<p>Released: 2017-06-29.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.91...v0.0.92">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix js sourcemaps when UglifyJsPlugin was enabled (now adding <code class="language-plaintext highlighter-rouge">//# sourceMappingURL=app.6fce32551585c35c4b80.js.map</code> again)</li>
+</ul>
+
+<h2 id="v0091">v0.0.91</h2>
+
+<p>Released: 2017-06-29.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.90...v0.0.91">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade npm deps</li>
+</ul>
+
+<h2 id="v0090">v0.0.90</h2>
+
+<p>Released: 2017-06-23.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.88...v0.0.90">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Respect local <code class="language-plaintext highlighter-rouge">.babelrc</code>, allowing for e.g. transform-object-assign to work in content and thus fix issues with IE 11</li>
+</ul>
+
+<h2 id="v0088">v0.0.88</h2>
+
+<p>Released: 2017-06-02.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.87...v0.0.88">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add support for <code class="language-plaintext highlighter-rouge">_config.develop.yml</code>. If it exists, it will be merged over <code class="language-plaintext highlighter-rouge">_config.yml</code> but “under” magic keys: <code class="language-plaintext highlighter-rouge">gems</code>, <code class="language-plaintext highlighter-rouge">exclude</code>, <code class="language-plaintext highlighter-rouge">include</code> that can be influenced via <code class="language-plaintext highlighter-rouge">LANYON_DISABLE_GEMS</code> <code class="language-plaintext highlighter-rouge">LANYON_EXCLUDE</code> <code class="language-plaintext highlighter-rouge">LANYON_INCLUDE</code> env vars</li>
+</ul>
+
+<h2 id="v0087">v0.0.87</h2>
+
+<p>Released: 2017-05-29.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.86...v0.0.87">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make common bundles use a hash in their filenames as it might resolve behavior reported in https://github.com/webpack/webpack/issues/959</li>
+</ul>
+
+<h2 id="v0086">v0.0.86</h2>
+
+<p>Released: 2017-04-29.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.85...v0.0.86">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade github-pages 129-&gt;134 and jekyll 3.3.0-&gt;3.4.3</li>
+</ul>
+
+<h2 id="v0085">v0.0.85</h2>
+
+<p>Released: 2017-04-27.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.84...v0.0.85">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Avoid: <code class="language-plaintext highlighter-rouge">Warning: It looks like you're using a minified copy of the development build of React.</code>
+</li>
+</ul>
+
+<h2 id="v0084">v0.0.84</h2>
+
+<p>Released: 2017-04-25.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.83...v0.0.84">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Improved React support</li>
+</ul>
+
+<h2 id="v0083">v0.0.83</h2>
+
+<p>Released: 2017-04-21.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.82...v0.0.83">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bundling npm modules that have a browser entry point and a node entry point (thx @goto-bus-stop)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bundling modules that happen to have the same name as a Webpack loader that’s also installed. (BREAKING: all modules now exlicitly need to be suffixed with <code class="language-plaintext highlighter-rouge">-loader</code>) (thx @goto-bus-stop)</li>
+</ul>
+
+<h2 id="v0082">v0.0.82</h2>
+
+<p>Released: 2017-04-20.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.81...v0.0.82">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Use <code class="language-plaintext highlighter-rouge">source-map</code> in production vs the inline variant :o</li>
+</ul>
+
+<h2 id="v0081">v0.0.81</h2>
+
+<p>Released: 2017-04-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.80...v0.0.81">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Also scan <code class="language-plaintext highlighter-rouge">npmRoot</code> for modules, so that consumers that have <code class="language-plaintext highlighter-rouge">website</code> as a <code class="language-plaintext highlighter-rouge">projectDir</code> can still have Lanyon locate <code class="language-plaintext highlighter-rouge">babel-loader</code>, <code class="language-plaintext highlighter-rouge">style-loader</code>, etc. Removed resolving <code class="language-plaintext highlighter-rouge">babel-loader</code> due to this. Previously was done for asset loading.</li>
+</ul>
+
+<h2 id="v0080">v0.0.80</h2>
+
+<p>Released: 2017-04-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.79...v0.0.80">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Also scan <code class="language-plaintext highlighter-rouge">npmRoot</code> for modules, so that consumers that have <code class="language-plaintext highlighter-rouge">website</code> as a <code class="language-plaintext highlighter-rouge">projectDir</code> can still have Lanyon locate <code class="language-plaintext highlighter-rouge">babel-loader</code>, <code class="language-plaintext highlighter-rouge">style-loader</code>, etc. Removed resolving <code class="language-plaintext highlighter-rouge">babel-loader</code> due to this.</li>
+</ul>
+
+<h2 id="v0079">v0.0.79</h2>
+
+<p>Released: 2017-04-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.78...v0.0.79">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Resolve <code class="language-plaintext highlighter-rouge">babel-loader</code> so the projectDir does not need it</li>
+</ul>
+
+<h2 id="v0078">v0.0.78</h2>
+
+<p>Released: 2017-04-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.77...v0.0.78">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow any kind of hook</li>
+</ul>
+
+<h2 id="v0077">v0.0.77</h2>
+
+<p>Released: 2017-04-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.75...v0.0.77">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow hooks to only run on e.g. <code class="language-plaintext highlighter-rouge">build:content</code> vs also on <code class="language-plaintext highlighter-rouge">build:assets</code>.</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Run dependency version checks in parallel to speed up boottimes</li>
+</ul>
+
+<h2 id="v0075">v0.0.75</h2>
+
+<p>Released: 2017-04-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.74...v0.0.75">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix less error by moving resolve-url-loader after less parsing (loaders are used from right to left) <code class="language-plaintext highlighter-rouge">( WARNING in /Users/kvz/code/lanyon/~/css-loader?{}!/Users/kvz/code/lanyon/~/less-loader/dist?{}!/Users/kvz/code/lanyon/~/resolve-url-loader!../assets/stylesheets/app.css.less (Emitted value instead of an instance of Error)   resolve-url-loader cannot operate: CSS error /Users/kvz/code/tus.io/assets/stylesheets/app.css.less:21:1: missing '{')</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Enable Bower via https://github.com/lpiepiora/bower-webpack-plugin/issues/39#issuecomment-291114301 vs <code class="language-plaintext highlighter-rouge">BowerWebpackPlugin</code>
+</li>
+</ul>
+
+<h2 id="v0074">v0.0.74</h2>
+
+<p>Released: 2017-04-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.73...v0.0.74">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>More safe version checking</li>
+</ul>
+
+<h2 id="v0073">v0.0.73</h2>
+
+<p>Released: 2017-04-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.71...v0.0.73">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Ship a <code class="language-plaintext highlighter-rouge">deploy</code> executable for Travis instead of generating one, which relies on <code class="language-plaintext highlighter-rouge">lanyon install</code>, which is not a file, resulting in more complicated <code class="language-plaintext highlighter-rouge">.travis.yml</code> files: <code class="language-plaintext highlighter-rouge">./node_modules/lanyon/scripts/ci-deploy.sh</code>
+</li>
+</ul>
+
+<h2 id="v0071">v0.0.71</h2>
+
+<p>Released: 2017-04-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.70...v0.0.71">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Install an install-shim because travis needs full paths to execute vs scripts in the <code class="language-plaintext highlighter-rouge">before_deploy</code> step</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Display versions of dependencies for easier debugging</li>
+</ul>
+
+<h2 id="v0070">v0.0.70</h2>
+
+<p>Released: 2017-04-05.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.69...v0.0.70">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade from webpack <code class="language-plaintext highlighter-rouge">1.14.0</code> -&gt; <code class="language-plaintext highlighter-rouge">2.3.1</code> (BowerWebpackPlugin don’t work yet)</li>
+</ul>
+
+<h2 id="v0069">v0.0.69</h2>
+
+<p>Released: 2017-03-28.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.68...v0.0.69">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add support for <code class="language-plaintext highlighter-rouge">extraWebroots</code> so that you can serve e.g. dummy dynamic content in development</li>
+</ul>
+
+<h2 id="v0068">v0.0.68</h2>
+
+<p>Released: 2017-03-24.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.67...v0.0.68">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Always profile Jekyll on one-off builds</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Better error handling for YAML exceptions</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix: <code class="language-plaintext highlighter-rouge">YAMLException: unacceptable kind of an object to dump [object Undefined]</code>
+</li>
+</ul>
+
+<h2 id="v0067">v0.0.67</h2>
+
+<p>Released: 2017-03-24.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.66...v0.0.67">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix issue where production builds reported bad sourcemaps</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix issue where empty <code class="language-plaintext highlighter-rouge">LANYON_DISABLE_GEMS</code> list results in no gems being enabled</li>
+</ul>
+
+<h2 id="v0066">v0.0.66</h2>
+
+<p>Released: 2017-03-24.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.65...v0.0.66">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix issue where multiple webpack instances where running</li>
+</ul>
+
+<h2 id="v0065">v0.0.65</h2>
+
+<p>Released: 2017-03-23.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.64...v0.0.65">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Support for <code class="language-plaintext highlighter-rouge">LANYON_DISABLE_GEMS=jekyll-feed,jekyll-sitemap</code> allowing you to temporarily disable time consuming plugins</li>
+</ul>
+
+<h2 id="v0064">v0.0.64</h2>
+
+<p>Released: 2017-03-23.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.62...v0.0.63">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Teach Lanyon about zero leading version numbers such as <code class="language-plaintext highlighter-rouge">Docker version 17.03.0-ce</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Now that jemoji relies on <code class="language-plaintext highlighter-rouge">gemoji</code> 3.0+ (vs ~2.0), add cli command to generate emoji into <code class="language-plaintext highlighter-rouge">assets/images/emoji</code> (<code class="language-plaintext highlighter-rouge">build:emoji</code> calling <code class="language-plaintext highlighter-rouge">bundle exec gemoji extract assets/images/emoji</code>)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch from <code class="language-plaintext highlighter-rouge">eval-cheap-source-map</code> to <code class="language-plaintext highlighter-rouge">inline-eval-cheap-source-map</code> for presumably faster builds https://github.com/erikras/react-redux-universal-hot-example/issues/616</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade GitHub pages from 112 to 129</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove <code class="language-plaintext highlighter-rouge">jekyll-crosspost-to-medium</code> as built in gem</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Downgrade <code class="language-plaintext highlighter-rouge">css-loader</code> to 0.14.5 to address superslow HMR builds https://github.com/webpack-contrib/css-loader/issues/124</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Pass down <code class="language-plaintext highlighter-rouge">DEBUG</code> env var</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade <code class="language-plaintext highlighter-rouge">scrolex@0.0.27</code>
+</li>
+</ul>
+
+<h2 id="v0063">v0.0.63</h2>
+
+<p>The release that wasn’t</p>
+
+<h2 id="v0062">v0.0.62</h2>
+
+<p>Released: 2017-02-18.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.61...v0.0.62">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade node-sass to address peerInvalid: https://travis-ci.org/kvz/lanyon/jobs/202922768#L455</li>
+</ul>
+
+<h2 id="v0061">v0.0.61</h2>
+
+<p>Released: 2017-02-18.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.60...v0.0.61">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bug: Do not add empty items to <code class="language-plaintext highlighter-rouge">exclude</code> (or everything gets excluded)</li>
+</ul>
+
+<h2 id="v0060">v0.0.60</h2>
+
+<p>Released: 2017-02-17.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.59...v0.0.60">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add support for e.g. <code class="language-plaintext highlighter-rouge">LANYON_EXCLUDE=_posts,_demos</code> env var, allowing you to temporarily not build content</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Instead of overwriting a project’s <code class="language-plaintext highlighter-rouge">exclude</code>, add to it.</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade to resolve-url &gt;2.0, fixing a bug where leading to broken font-awesome icons in chrome in dev mode</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade minor &amp; patch level dependencies</li>
+</ul>
+
+<h2 id="v0059">v0.0.59</h2>
+
+<p>Released: 2017-02-15.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.58...v0.0.59">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade to <code class="language-plaintext highlighter-rouge">scrolex@0.0.26</code> which will default to <code class="language-plaintext highlighter-rouge">passthru</code> <code class="language-plaintext highlighter-rouge">mode</code> on Travis CI and non-TTY environments</li>
+</ul>
+
+<h2 id="v0058">v0.0.58</h2>
+
+<p>Released: 2017-02-15.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.57...v0.0.58">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bug that prevented resetting of shims</li>
+</ul>
+
+<h2 id="v0057">v0.0.57</h2>
+
+<p>Released: 2017-02-15.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.56...v0.0.57">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix rvm homebrew lock on Travis</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add support for <code class="language-plaintext highlighter-rouge">postbuild</code> hooks</li>
+</ul>
+
+<h2 id="v0056">v0.0.56</h2>
+
+<p>Released: 2017-02-15.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.55...v0.0.56">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Only use singlescroll on <code class="language-plaintext highlighter-rouge">start</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>In boot, treat <code class="language-plaintext highlighter-rouge">lanyon</code> like any other <code class="language-plaintext highlighter-rouge">npmBin</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch to using rvm <code class="language-plaintext highlighter-rouge">--binary</code> to avoid compile issues (https://travis-ci.org/kvz/lanyon/jobs/201786728#L1679)</li>
+</ul>
+
+<h2 id="v0055">v0.0.55</h2>
+
+<p>Released: 2017-02-15.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.54...v0.0.55">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Find <code class="language-plaintext highlighter-rouge">node_modules/.bin/lanyon</code> in <code class="language-plaintext highlighter-rouge">npmRoot</code> vs <code class="language-plaintext highlighter-rouge">projectDir</code>
+</li>
+</ul>
+
+<h2 id="v0054">v0.0.54</h2>
+
+<p>Released: 2017-02-14.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.53...v0.0.54">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make gem-paths absolute</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Use npm <code class="language-plaintext highlighter-rouge">files</code>
+</li>
+</ul>
+
+<h2 id="v0053">v0.0.53</h2>
+
+<p>Released: 2017-02-14.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.52...v0.0.53">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove <code class="language-plaintext highlighter-rouge">lib</code> from Git again now that we can build on older nodes now that the es2015-loose problem is solved</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Also run <code class="language-plaintext highlighter-rouge">lanyon install</code> in the Travis deploy shim, so that we can opt to not install lanyon in unrelated branches</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch from <code class="language-plaintext highlighter-rouge">es2015-loose</code> to <code class="language-plaintext highlighter-rouge">es2015</code> babel preset to resolve build issues on Travis</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add Dockerfile for testing building on node 0.12 locally</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove imagemin so long as we’re not using it and it’s causing build problems (gifsicle: Assertion failed: 0 (../deps/uv/src/uv-common.c: uv_err_name: 143))</li>
+</ul>
+
+<h2 id="v0052">v0.0.52</h2>
+
+<p>Released: 2017-02-11.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.51...v0.0.52">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Localize <code class="language-plaintext highlighter-rouge">GEM_HOME</code> and <code class="language-plaintext highlighter-rouge">GEM_PATH</code> in container</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Only run acceptance test on all platforms. Rest of the tests on Node 6 only</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Distribute the <code class="language-plaintext highlighter-rouge">Gemfile.lock</code> as well, allow updates via <code class="language-plaintext highlighter-rouge">LANYON_UPDATE_GEM_LOCKFILE=1</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch from ava -&gt; jest</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bug: <code class="language-plaintext highlighter-rouge">the input device is not a TTY</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>No longer auto install ruby things upon <code class="language-plaintext highlighter-rouge">install</code>, require an explicit call to <code class="language-plaintext highlighter-rouge">cli.js install</code> instead</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Introduce async/await for internal use (install)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add scrolling output via <code class="language-plaintext highlighter-rouge">scrolex</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Rename <code class="language-plaintext highlighter-rouge">postinstall</code> to <code class="language-plaintext highlighter-rouge">install</code>
+</li>
+</ul>
+
+<h2 id="v0051">v0.0.51</h2>
+
+<p>Released: 2017-01-31.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.50...v0.0.51">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add webpack-svgstore-plugin (@arturi, #6)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Remove underscore version from libxml2 on brew osx prefix as <code class="language-plaintext highlighter-rouge">/usr/local/Cellar/libxml2/2.9.4</code> exists but advertised <code class="language-plaintext highlighter-rouge">/usr/local/Cellar/libxml2/2.9.4_2</code> does not</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add <code class="language-plaintext highlighter-rouge">container:rebuild</code> to rebuild a container from scratc (<code class="language-plaintext highlighter-rouge">docker build --no-cache</code>)</li>
+</ul>
+
+<h2 id="v0050">v0.0.50</h2>
+
+<p>Released: 2017-01-06.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.49...v0.0.50">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add pkg-config to resolve another Another Nokogiri error https://travis-ci.org/kvz/lanyon/jobs/193744753#L418</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Skip installs if <code class="language-plaintext highlighter-rouge">LANYON_NOINSTALL==1</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch to ES6 (see https://github.com/transloadit/botty/blob/738f9d51417d84d429cd4b558898bc3a9826cd9d/decaf.sh), mostly to profit from template strings. Transpile down to ES5 for npm as Lanyon aims for portability.</li>
+</ul>
+
+<h2 id="v0049">v0.0.49</h2>
+
+<p>Released: 2017-01-06.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.48...v0.0.49">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add experimental support for optimizing images via <code class="language-plaintext highlighter-rouge">build:images</code> (from <code class="language-plaintext highlighter-rouge">assets/images</code> to <code class="language-plaintext highlighter-rouge">assets/build/images</code>)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Build docker container inside <code class="language-plaintext highlighter-rouge">.lanyon</code> dir. Write config from <code class="language-plaintext highlighter-rouge">utils</code> like any other config, vs copying over files (allows for intelligent cache invalidation later on also)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Do not use docker cache so we get a fresh Gemfile. Fixes https://travis-ci.org/kvz/lanyon/jobs/188882616#L1530</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add <code class="language-plaintext highlighter-rouge">container:connect</code> command to look inside docker container</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Give Lanyon Jekyll <img class="emoji" title=":gem:" alt=":gem:" src="https://github.githubassets.com/images/icons/emoji/unicode/1f48e.png" height="20" width="20"> theme awareness</li>
+</ul>
+
+<h2 id="v0048">v0.0.48</h2>
+
+<p>Released: 2017-01-04.
+<a href="https://github.com/kvz/lanyon/compare/v0.0.47...v0.0.48">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Upgrade to github pages gem version <code class="language-plaintext highlighter-rouge">v104</code> -&gt; <code class="language-plaintext highlighter-rouge">v112</code> (https://github.com/github/pages-gem/compare/v104…v112)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Provide access to gemlist of gh pages gem for internal use via <code class="language-plaintext highlighter-rouge">./lib/cli.js list:ghpgems</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Avoid new installs preferring nokogiri 1.7 over 1.6 so more systems can use Ruby 2.0 vs then nokogiri 1.7 required 2.1</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Also initProject at <code class="language-plaintext highlighter-rouge">start</code> so that config can be written if users type start as a first run</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add a website <a href="http://lanyon.io">http://lanyon.io</a>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>First go into projectDir before running deploy, to support nested websites</li>
+</ul>
+
+<h2 id="v0047">v0.0.47</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.46...v0.0.47">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Basic support for injecters via <code class="language-plaintext highlighter-rouge">contentIgnore</code> and <code class="language-plaintext highlighter-rouge">contentScandir</code>
+</li>
+</ul>
+
+<h2 id="v0046">v0.0.46</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.45...v0.0.46">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add support for <code class="language-plaintext highlighter-rouge">OptimizeCssAssetsPlugin</code>
+</li>
+</ul>
+
+<h2 id="v0045">v0.0.45</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.44...v0.0.45">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Support for a <code class="language-plaintext highlighter-rouge">js-untouched</code> directory, where js won’t pass through babel</li>
+</ul>
+
+<h2 id="v0044">v0.0.44</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.43...v0.0.44">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix babel source maps</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Only exit on error when in production mode`</li>
+</ul>
+
+<h2 id="v0043">v0.0.43</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.42...v0.0.43">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Use Babel ES2015 as shipped by Lanyon, ignoring any project’s <code class="language-plaintext highlighter-rouge">.babelrc</code> (BREAKING) (We <em>might</em> support sth more intelligent in the future, but for now are favoring convention &amp; near-zero-setup by the project)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>“Don’t use JSX loader, use babel instead” - https://github.com/petehunt/jsx-loader</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bug: test: could not interpret expression</li>
+</ul>
+
+<h2 id="v0042">v0.0.42</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.41...v0.0.42">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Ditch uglify loader in favor of plugin, as the loader cannot handle ES6 (even though the babel loader is ran first)</li>
+</ul>
+
+<h2 id="v0041">v0.0.41</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.40...v0.0.41">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bug where only incremental builds receive asset indices</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Only reset <code class="language-plaintext highlighter-rouge">jekyll.lanyon_assets.yml</code> if it does not exist</li>
+</ul>
+
+<h2 id="v0040">v0.0.40</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.39...v0.0.40">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add globby as a dependency</li>
+</ul>
+
+<h2 id="v0039">v0.0.39</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.38...v0.0.39">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix deploy failsafe</li>
+</ul>
+
+<h2 id="v0038">v0.0.38</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.37...v0.0.38">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>No longer exclude <code class="language-plaintext highlighter-rouge">node_modules|bower_components|vendor</code> by default</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Disable resolve-url-loader for less as less currently produces invalid css (in its eyes)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make errors fatal in production</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Include plain css with ExtractTextPlugin</li>
+</ul>
+
+<h2 id="v0037">v0.0.37</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.36...v0.0.37">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make Deploy check aware of hashed cachebuster assets</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix less resolve-url-loader sourcemap issues</li>
+</ul>
+
+<h2 id="v0036">v0.0.36</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.35...v0.0.36">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Move uglify loader to deps (vs devDeps)</li>
+</ul>
+
+<h2 id="v0035">v0.0.35</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.34...v0.0.35">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Build assets first, so that Jekyll can copy it into <code class="language-plaintext highlighter-rouge">_site</code>, and also <code class="language-plaintext highlighter-rouge">jekyll.lanyon_assets.yml</code> exists in time</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add debugging notes</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add uglify as a dependency</li>
+</ul>
+
+<h2 id="v0034">v0.0.34</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.33...v0.0.34">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>More optimization for production builds</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix svgeezy (which works with a local <code class="language-plaintext highlighter-rouge">svgeezy</code> var, not one on <code class="language-plaintext highlighter-rouge">window</code>)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Enable vizualizer support by default, writing to <code class="language-plaintext highlighter-rouge">assets/build/stats.html</code>, unless you set <code class="language-plaintext highlighter-rouge">lanyon.statistics</code> to <code class="language-plaintext highlighter-rouge">false</code> in your <code class="language-plaintext highlighter-rouge">package.json</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add support for long-term caching, and cache busting</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add vizualizer by definining <code class="language-plaintext highlighter-rouge">lanyon.statistics: "webpack-statistics.html"</code> in your <code class="language-plaintext highlighter-rouge">package.json</code>. Directory is fixed to build dir, and this does not work in <code class="language-plaintext highlighter-rouge">development</code>/HMR mode</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add support for shared code-splitted bundles by defining <code class="language-plaintext highlighter-rouge">lanyon.common</code> in your <code class="language-plaintext highlighter-rouge">package.json</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add jquery to bower components</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix coffee loader</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add resolve-url-loader so e.g. mediaplayer &amp; select2 can find their relative assets such as <code class="language-plaintext highlighter-rouge">./select2.png</code> or <code class="language-plaintext highlighter-rouge">./controls.png</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow asset loaders to load from <code class="language-plaintext highlighter-rouge">bower_components</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow bower installed bootstrap-sass to use <code class="language-plaintext highlighter-rouge">window</code> and <code class="language-plaintext highlighter-rouge">jQuery</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Offer a lodash <code class="language-plaintext highlighter-rouge">_</code> plugin</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Reset (a possibly corrupted) <code class="language-plaintext highlighter-rouge">records.json</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix: <code class="language-plaintext highlighter-rouge">Module not found: Error: Cannot resolve module 'fs'</code> by adding  <code class="language-plaintext highlighter-rouge">node: { fs: 'empty' }, target: 'node'</code> to webpack config</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Support <code class="language-plaintext highlighter-rouge">prebuild*</code> hooks being arrays</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bad Git ignores</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Revert plain css files to extract text plugin</li>
+</ul>
+
+<h2 id="v0033-bad-build">v0.0.33 (bad build)</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.32...v0.0.33">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add plain css files to extract text plugin /thx @Acconut</li>
+</ul>
+
+<h2 id="v0032">v0.0.32</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.31...v0.0.32">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow relative projectDir</li>
+</ul>
+
+<h2 id="v0031">v0.0.31</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.30...v0.0.31">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Allow scanning from <code class="language-plaintext highlighter-rouge">LANYON_PROJECT</code>
+</li>
+</ul>
+
+<h2 id="v0030">v0.0.30</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.29...v0.0.30">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Never settle for <code class="language-plaintext highlighter-rouge">lanyon</code> as a projectDir</li>
+</ul>
+
+<h2 id="v0029">v0.0.29</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.28...v0.0.29">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Do <code class="language-plaintext highlighter-rouge">realpathSync</code> relative from <code class="language-plaintext highlighter-rouge">gitRoot</code>
+</li>
+</ul>
+
+<h2 id="v0028">v0.0.28</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.27...v0.0.28">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bad build</li>
+</ul>
+
+<h2 id="v0027">v0.0.27</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.26...v0.0.27">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Added <code class="language-plaintext highlighter-rouge">utils.upwardDirContaining</code> for definitive pathfinding</li>
+</ul>
+
+<h2 id="v0026">v0.0.26</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.25...v0.0.26">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Use <code class="language-plaintext highlighter-rouge">find-up</code> for finding <code class="language-plaintext highlighter-rouge">gitRoot</code> and <code class="language-plaintext highlighter-rouge">npmRoot</code>, which might not be <code class="language-plaintext highlighter-rouge">projectDir</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Also support <code class="language-plaintext highlighter-rouge">web:deploy</code> npm script name</li>
+</ul>
+
+<h2 id="v0025">v0.0.25</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.24...v0.0.25">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Also traverse upwards from projectDir to find <code class="language-plaintext highlighter-rouge">node_modules</code>
+</li>
+</ul>
+
+<h2 id="v0024">v0.0.24</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.23...v0.0.24">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Better module pathfinding</li>
+</ul>
+
+<h2 id="v0023">v0.0.23</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.22...v0.0.23">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Use <code class="language-plaintext highlighter-rouge">gitRoot</code> instead of <code class="language-plaintext highlighter-rouge">projectDir</code> for flat module finding, so it works when your project is in a subdir (like <code class="language-plaintext highlighter-rouge">website</code> or <code class="language-plaintext highlighter-rouge">docs</code>)</li>
+</ul>
+
+<h2 id="v0022">v0.0.22</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.21...v0.0.22">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Support for flat module structure where modules live in <code class="language-plaintext highlighter-rouge">projectDir</code>
+</li>
+</ul>
+
+<h2 id="v0021">v0.0.21</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.20...v0.0.21">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Deploy now supports <code class="language-plaintext highlighter-rouge">web:build:production</code>
+</li>
+</ul>
+
+<h2 id="v0020">v0.0.20</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.19...v0.0.20">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Prefix deps with node</li>
+</ul>
+
+<h2 id="v0019">v0.0.19</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.18...v0.0.19">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix bug leading to block install resets</li>
+</ul>
+
+<h2 id="v0018">v0.0.18</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.17...v0.0.18">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Make installs idempotent</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Detect rubyProvider of existing shims</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Introduce a <code class="language-plaintext highlighter-rouge">LANYON_RESET</code>, that removes all shims</li>
+</ul>
+
+<h2 id="v0017">v0.0.17</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.16...v0.0.17">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Don’t rely on <code class="language-plaintext highlighter-rouge">.bin</code> symlinks as they don’t appear to survive Travis CI cache</li>
+</ul>
+
+<h2 id="v0016">v0.0.16</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.15...v0.0.16">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Use spawn-sync for older nodes</li>
+</ul>
+
+<h2 id="v0015">v0.0.15</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.14...v0.0.15">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Pathfinding fixes, added <code class="language-plaintext highlighter-rouge">gitRoot</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Rename <code class="language-plaintext highlighter-rouge">vendor/bin</code> to <code class="language-plaintext highlighter-rouge">bin</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Refactoring of deploy &amp; encrypt</li>
+</ul>
+
+<h2 id="v0014">v0.0.14</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.13...v0.0.14">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Offer <code class="language-plaintext highlighter-rouge">lanyon deploy</code> for deploying onto GitHub Pages</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Offer <code class="language-plaintext highlighter-rouge">lanyon encrypt</code> for encrypting GitHub Pages deploy secrets onto Travis CI</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Fix broken shim quoting</li>
+</ul>
+
+<h2 id="v0013">v0.0.13</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.12...v0.0.13">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Avoid double installs by fixing binDir references for shims</li>
+</ul>
+
+<h2 id="v0012">v0.0.12</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.11...v0.0.12">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Utilize Webpack <code class="language-plaintext highlighter-rouge">--production</code> flag</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add Jekyll config writer (so we can ignore <code class="language-plaintext highlighter-rouge">node_modules</code> and <code class="language-plaintext highlighter-rouge">.lanyon</code>)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>By default prefer system ruby over docker, for performance reasons</li>
+</ul>
+
+<h2 id="v0011">v0.0.11</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.10...v0.0.11">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add support for <code class="language-plaintext highlighter-rouge">production</code>-or-<code class="language-plaintext highlighter-rouge">development</code>-only hooks</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add coffeescript support</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add less support</li>
+</ul>
+
+<h2 id="v0010">v0.0.10</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.9...v0.0.10">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Add support for configurable projectDir (so you can have a <code class="language-plaintext highlighter-rouge">./website</code> or <code class="language-plaintext highlighter-rouge">./docs</code> in your project)</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Refactoring</li>
+</ul>
+
+<h2 id="v009">v0.0.9</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.8...v0.0.9">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch to a local lanyon install if available</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Simplify/fix Browserify file watching</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Do docker connect via shim</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Store everything in <code class="language-plaintext highlighter-rouge">cacheDir</code> (projectDir/.lanyon) instead of in node_modules dir</li>
+</ul>
+
+<h2 id="v008">v0.0.8</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/v0.0.7...v0.0.8">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Support for prebuild hook</li>
+</ul>
+
+<h2 id="v007">v0.0.7</h2>
+
+<p><a href="https://github.com/kvz/lanyon/compare/8d2286d78ea5f0e0ad2b9f021a00158774d31891...v0.0.7">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Use textextractor loader in production for scss, also check https://github.com/gowravshekar/font-awesome-webpack#extract-text-webpack-plugin</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>checkout http://stackoverflow.com/questions/33649761/how-do-i-load-font-awesome-using-scss-sass-in-webpack-using-relative-paths</li>
+</ul>
+
+<p><a href="/">« Home</a></p>
+
+
+      <div class="Social">
+        <iframe src="http://ghbtns.com/github-btn.html?user=kvz&amp;repo=lanyon&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20"></iframe>
+      </div>
+
+      <p>
+        <small>
+          <hr>
+          Website design based on
+          the wonderful <a href="http://apex.run">apex.run</a>
+          with <a href="https://twitter.com/tjholowaychuk/status/744909762865696769">the author's consent</a>.
+        </small>
+      </p>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/languages/bash.min.js"></script>
+    <script src="/assets/build/app.335e0e403ae647dc9d77.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-63083-14', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>

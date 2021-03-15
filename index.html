@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+      <title>Lanyon – Jekyll without the hassle</title>
+    
+    <meta name="keywords" content="static, site, generator, jekyll">
+    <meta name="description" content="Lanyon">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="/assets/build/app.db1e5da539a4394c97fe.css" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <div id="header-overlay"></div>
+      <a href="/">
+        <h1 id="logo">Lanyon</h1>
+      </a>
+      <div id="menu">
+        <i class="material-icons">menu</i>
+        <ul id="menu-items">
+        </ul>
+      </div>
+      <span id="more">
+        <i class="material-icons">expand_more</i>
+      </span>
+    </header>
+    <section id="content">
+      
+        <div class="Social">
+          <iframe src="http://ghbtns.com/github-btn.html?user=kvz&repo=lanyon&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20"></iframe>
+          <a href="https://travis-ci.org/kvz/lanyon"><img src="https://travis-ci.org/kvz/lanyon.svg" alt="Build Status"></a>
+        </div>
+      
+
+      <p><strong>Disclaimer 2018-03-26:</strong> Lanyon’s initial goal was to be a tool for everybody, but since it never really took off and that we have limited time to make this <em>really</em> nice, we’ve decided to reduce its scope to be useful to just <a href="https://transloadit.com">https://transloadit.com</a>. We won’t be as interested in supported other usecases, so you might want to think twice about adopting it. This is mostly still publicly available for our own convenience, and in the off-chance Lanyon as-is, is still useful to others. In addition, we’ve introduced the requirement of Node 8 &amp; Docker installed, in order to cut down on countering with Ruby dependency hells and speed up development without transpiling.</p>
+
+<h2 id="install">Install</h2>
+
+<p>In your website project root:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn add lanyon
+</code></pre></div></div>
+
+<p>Add a <code class="language-plaintext highlighter-rouge">.lanyonrc</code> file that you can use to tweak the configuration of Jekyll, Webpack, Nodemon, BrowserSync according to your environment:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">overrideRuntime</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">({</span> <span class="nx">runtime</span><span class="p">,</span> <span class="nx">toolkit</span> <span class="p">})</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">runtime</span><span class="p">.</span><span class="nx">isDev</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">runtime</span><span class="p">[</span><span class="dl">'</span><span class="s1">prebuild:content</span><span class="dl">'</span><span class="p">]</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">npm run inject</span><span class="dl">'</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">runtime</span>
+<span class="p">}</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">overrideConfig</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">({</span> <span class="nx">config</span><span class="p">,</span> <span class="nx">toolkit</span> <span class="p">})</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">runtime</span><span class="p">.</span><span class="nx">isDev</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">config</span><span class="p">.</span><span class="nx">jekyll</span><span class="p">.</span><span class="nx">url</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">http://localhost:3000</span><span class="dl">'</span>
+  <span class="p">}</span>
+
+  <span class="nx">config</span><span class="p">.</span><span class="nx">jekyll</span><span class="p">.</span><span class="nx">profile</span> <span class="o">=</span> <span class="kc">true</span>
+  <span class="nx">config</span><span class="p">.</span><span class="nx">jekyll</span><span class="p">.</span><span class="nx">trace</span>   <span class="o">=</span> <span class="kc">true</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">runtime</span><span class="p">.</span><span class="nx">isDev</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">config</span><span class="p">.</span><span class="nx">jekyll</span><span class="p">.</span><span class="nx">unpublished</span> <span class="o">=</span> <span class="kc">true</span>
+    <span class="nx">config</span><span class="p">.</span><span class="nx">jekyll</span><span class="p">.</span><span class="nx">future</span>      <span class="o">=</span> <span class="kc">true</span>
+    <span class="nx">config</span><span class="p">.</span><span class="nx">jekyll</span><span class="p">.</span><span class="nx">incremental</span> <span class="o">=</span> <span class="kc">true</span>  <span class="c1">// &lt;-- for clarify; incremental is the default also</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nx">config</span><span class="p">.</span><span class="nx">jekyll</span><span class="p">.</span><span class="nx">incremental</span> <span class="o">=</span> <span class="kc">false</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">config</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>To your <code class="language-plaintext highlighter-rouge">package.json</code>, at these run-scripts:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span><span class="w">
+</span><span class="nl">"build:production"</span><span class="p">:</span><span class="w"> </span><span class="s2">"LANYON_ENV=production npx lanyon build"</span><span class="w">
+</span><span class="nl">"build"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npx lanyon build"</span><span class="w">
+</span><span class="nl">"postinstall"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rm -rf .lanyon/{babel,cache}-loader"</span><span class="w">
+</span><span class="nl">"start"</span><span class="p">:</span><span class="w"> </span><span class="s2">"npx lanyon start"</span><span class="w">
+</span><span class="err">...</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Read <a href="https://webpack.js.org/guides/build-performance/#persistent-cache">why</a> the <code class="language-plaintext highlighter-rouge">postinstall</code> is necessary.</p>
+
+<h2 id="use">Use</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yarn build <span class="c"># or npm run build</span>
+yarn start <span class="c"># or npm start</span>
+</code></pre></div></div>
+
+<h2 id="changelog">Changelog</h2>
+
+<p>Please see the <a href="./CHANGELOG.md">CHANGELOG.md</a> file.</p>
+
+<h2 id="reading-list">Reading List</h2>
+
+<p>These articles where helpful in creating Lanyon</p>
+
+<ul>
+  <li>Check for recent <code class="language-plaintext highlighter-rouge">github-pages</code> versions at <a href="https://rubygems.org/gems/github-pages/versions">https://rubygems.org/gems/github-pages/versions</a></li>
+  <li>Check for recent Jekyll versions at <a href="https://github.com/jekyll/jekyll/releases">https://github.com/jekyll/jekyll/releases</a></li>
+  <li><a href="https://slack.engineering/keep-webpack-fast-a-field-guide-for-better-build-performance-f56a5995e8f1">https://slack.engineering/keep-webpack-fast-a-field-guide-for-better-build-performance-f56a5995e8f1</a></li>
+  <li><a href="https://webpack.js.org/guides/build-performance/">https://webpack.js.org/guides/build-performance/</a></li>
+  <li><a href="https://github.com/petehunt/webpack-howto/blob/master/README.md#8-optimizing-common-code">https://github.com/petehunt/webpack-howto/blob/master/README.md#8-optimizing-common-code</a></li>
+  <li><a href="https://www.jonathan-petitcolas.com/2016/08/12/plugging-webpack-to-jekyll-powered-pages.html">https://www.jonathan-petitcolas.com/2016/08/12/plugging-webpack-to-jekyll-powered-pages.html</a></li>
+  <li><a href="https://webpack.github.io/docs/configuration.html#resolve-alias">https://webpack.github.io/docs/configuration.html#resolve-alias</a></li>
+  <li><a href="https://github.com/HenrikJoreteg/hjs-webpack">https://github.com/HenrikJoreteg/hjs-webpack</a></li>
+  <li><a href="http://webpack.github.io/docs/webpack-dev-middleware.html">http://webpack.github.io/docs/webpack-dev-middleware.html</a></li>
+  <li><a href="http://stackoverflow.com/a/28989476/151666">http://stackoverflow.com/a/28989476/151666</a></li>
+  <li><a href="https://github.com/webpack/webpack-dev-server/issues/97#issuecomment-70388180">https://github.com/webpack/webpack-dev-server/issues/97#issuecomment-70388180</a></li>
+  <li><a href="https://webpack.github.io/docs/hot-module-replacement.html">https://webpack.github.io/docs/hot-module-replacement.html</a></li>
+  <li><a href="https://github.com/css-modules/webpack-demo/issues/8#issuecomment-133922019">https://github.com/css-modules/webpack-demo/issues/8#issuecomment-133922019</a></li>
+  <li><a href="https://github.com/gowravshekar/font-awesome-webpack">https://github.com/gowravshekar/font-awesome-webpack</a></li>
+  <li><a href="https://webpack.github.io/docs/code-splitting.html#split-app-and-vendor-code">https://webpack.github.io/docs/code-splitting.html#split-app-and-vendor-code</a></li>
+  <li><a href="https://medium.com/@okonetchnikov/long-term-caching-of-static-assets-with-webpack-1ecb139adb95#.w0elv8n7o">https://medium.com/@okonetchnikov/long-term-caching-of-static-assets-with-webpack-1ecb139adb95#.w0elv8n7o</a></li>
+  <li><a href="https://webpack.github.io/docs/optimization.html">https://webpack.github.io/docs/optimization.html</a></li>
+</ul>
+
+<h2 id="authors">Authors</h2>
+
+<ul>
+  <li><a href="https://transloadit.com/about/#kevin">Kevin van Zonneveld</a></li>
+  <li><a href="https://github.com/arturi">Artur Paikin</a></li>
+</ul>
+
+<h2 id="license">License</h2>
+
+<p>Copyright (c) 2016 Kevin van Zonneveld. Licenses under <a href="LICENSE">MIT</a>.</p>
+
+
+
+      <div class="Social">
+        <iframe src="http://ghbtns.com/github-btn.html?user=kvz&repo=lanyon&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20"></iframe>
+      </div>
+
+      <p>
+        <small>
+          <hr />
+          Website design based on
+          the wonderful <a href="http://apex.run">apex.run</a>
+          with <a href="https://twitter.com/tjholowaychuk/status/744909762865696769">the author's consent</a>.
+        </small>
+      </p>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/languages/bash.min.js"></script>
+    <script src="/assets/build/app.335e0e403ae647dc9d77.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-63083-14', 'auto');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>
