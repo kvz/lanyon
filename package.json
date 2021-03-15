@@ -78,6 +78,7 @@
   },
   "dependencies": {
     "@babel/core": "7.12.17",
+    "@babel/eslint-plugin": "^7.13.10",
     "@babel/plugin-proposal-class-properties": "7.12.13",
     "@babel/plugin-proposal-decorators": "7.12.13",
     "@babel/preset-env": "7.12.17",
@@ -90,6 +91,9 @@
     "common-tags": "1.8.0",
     "css-loader": "5.0.2",
     "css-minimizer-webpack-plugin": "^1.2.0",
+    "eslint-config-transloadit": "1.1.4",
+    "eslint-plugin-jest": "^24.3.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
     "file-loader": "6.2.0",
     "globby": "11.0.2",
     "html-webpack-plugin": "5.2.0",
