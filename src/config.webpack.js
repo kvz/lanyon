@@ -1,5 +1,5 @@
 const path                    = require('path')
-const BundleAnalyzerPlugin    = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const webpack                 = require('webpack')
 const TerserJSPlugin          = require('terser-webpack-plugin')
 const MiniCssExtractPlugin    = require('mini-css-extract-plugin')
@@ -121,7 +121,7 @@ module.exports = function ({ runtime }) {
                   'postcss-preset-env',
                   {
                     // Options
-                    browsers: browsers,
+                    browsers,
                   },
                 ],
               ],

@@ -3,8 +3,8 @@ const scrolex = require('scrolex')
 const utils   = require('./utils')
 
 let mods = {
-  overrideRuntime: function ({ runtime, toolkit }) { return runtime },
-  overrideConfig : function ({ config, toolkit }) { return config },
+  overrideRuntime ({ runtime, toolkit }) { return runtime },
+  overrideConfig ({ config, toolkit }) { return config },
 }
 
 const cfg = {}
@@ -16,7 +16,7 @@ if (fs.existsSync(`${runtime.projectDir}/.lanyonrc.js`)) {
 
 const toolkit = {
   dockerString: utils.dockerString,
-  scrolex     : scrolex,
+  scrolex,
 }
 
 runtime = mods.overrideRuntime({ runtime, toolkit })
@@ -34,6 +34,7 @@ cfg.dockerSync = require('./config.dockerSync.js')({ runtime, jekyll: cfg.jekyll
 cfg.dockerCompose = require('./config.dockerCompose.js')({ runtime, toolkit })
 cfg.dockerComposeDev = require('./config.dockerComposeDev.js')({ runtime, toolkit })
 cfg.nodemon = require('./config.nodemon.js')({ runtime, jekyll: cfg.jekyll, toolkit })
+
 cfg.runtime = runtime
 
 module.exports = mods.overrideConfig({ config: cfg, toolkit })

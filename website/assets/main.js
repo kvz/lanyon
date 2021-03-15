@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', chooseMenuColor)
 window.onscroll = chooseMenuColor
 
 function chooseMenuColor () {
-  var menuElement = document.getElementById('menu')
-  var menuTopOffset = 45
+  const menuElement = document.getElementById('menu')
+  const menuTopOffset = 45
   Math.floor(window.innerHeight * 0.20) < window.pageYOffset + menuTopOffset
     ? menuElement.classList.remove('over-header')
     : menuElement.classList.add('over-header')
@@ -20,7 +20,7 @@ function $all (selector) {
   return Array.prototype.slice.call(document.querySelectorAll(selector))
 }
 
-var container = $get('#menu-items')
+const container = $get('#menu-items')
 
 // if (location.pathname !== '/') {
 //   var li = document.createElement('li');
@@ -28,8 +28,8 @@ var container = $get('#menu-items')
 //   container.appendChild(li);
 // }
 
-$all('#content h2').forEach(function (el) {
-  var li = document.createElement('li')
-  li.innerHTML = '<a href="#' + el.id + '">' + el.innerHTML + '</a>'
+$all('#content h2').forEach((el) => {
+  const li = document.createElement('li')
+  li.innerHTML = `<a href="#${el.id}">${el.innerHTML}</a>`
   container.appendChild(li)
 })
