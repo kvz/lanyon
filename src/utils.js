@@ -8,6 +8,7 @@ const scrolex      = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
 })
+
 const utils = this
 
 if (require.main === module) {

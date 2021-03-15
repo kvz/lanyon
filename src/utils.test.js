@@ -1,5 +1,5 @@
-const utils   = require('./utils')
 const oneLine = require('common-tags/lib/oneLine')
+const utils   = require('./utils')
 
 describe('utils', () => {
   test('dockerString', () => {

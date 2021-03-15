@@ -1,24 +1,27 @@
+const _       = require('lodash')
+const scrolex = require('scrolex')
+const config  = require('./config')
+const utils   = require('./utils')
+const deploy  = require('./deploy')
+const encrypt = require('./encrypt')
+
 Promise.series = function series (providers) {
   const ret     = Promise.resolve(null)
   const results = []
 
-  return providers.reduce(function (result, provider, index) {
-    return result.then(function () {
-      return provider().then(function (val) {
+  return providers.reduce((result, provider, index) => {
+    return result.then(() => {
+      return provider().then((val) => {
         results[index] = val
       })
     })
-  }, ret).then(function () {
+  }, ret).then(() => {
     return results
   })
 }
 
 module.exports = async function dispatch () {
-  const _       = require('lodash')
-  const config  = require('./config')
-  const utils   = require('./utils')
-  const scrolex = require('scrolex')
-  const runtime = config.runtime
+  const { runtime } = config
   const cmdName = process.argv[2]
 
   // let buildCmd = '[jekyll] build --verbose --trace --config [cacheDir]/jekyll.config.yml'
@@ -26,7 +29,7 @@ module.exports = async function dispatch () {
 
   let extraJekyllFlags = ''
   if (process.env.LANYON_EXTRA_JEKYLL_FLAGS) {
-    extraJekyllFlags += process.env.LANYON_EXTRA_JEKYLL_FLAGS + ' '
+    extraJekyllFlags += `${process.env.LANYON_EXTRA_JEKYLL_FLAGS} `
   }
   if (process.env.LANYON_DEBUG === '1') {
     extraJekyllFlags += '--verbose --trace --profile '
@@ -48,12 +51,13 @@ module.exports = async function dispatch () {
   }
 
   const scripts = {
-    configure            : (runtime, cb) => cb(null),
+    configure            : (_runtime, cb) => cb(null),
     'build:assets'       : `[webpack] ${extraWebpackFlags}--config [cacheDir]/webpack.config.js`,
     'build:content:watch': `${process.env.LANYON_DEBUG === '1' ? 'env DEBUG=nodemon:* ' : ''}[nodemon] --exitcrash --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} ${strPostBuildContentHooks}'`,
     'build:content'      : buildCmd,
     // 'build:images'             : '[imagemin] [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
-    // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226
+    // @todo: useless until we have: https://github.com/imagemin/imagemin-cli/pull/11
+    // and https://github.com/imagemin/imagemin/issues/226
     build                : {
       mode    : 'series', // <-- parrallel won't work for production builds, jekyll needs to copy assets into _site
       commands: [
@@ -61,11 +65,11 @@ module.exports = async function dispatch () {
         'build:content',
       ],
     },
-    deploy : require('./deploy'),
-    encrypt: require('./encrypt'),
-    help   : '[jekyll] build --help',
-    serve  : '[browser-sync] start --config [cacheDir]/browsersync.config.js',
-    start  : {
+    deploy,
+    encrypt,
+    help : '[jekyll] build --help',
+    serve: '[browser-sync] start --config [cacheDir]/browsersync.config.js',
+    start: {
       mode    : 'all',
       commands: [
         'build:content:watch',
@@ -84,12 +88,15 @@ module.exports = async function dispatch () {
     announce             : true,
     addCommandAsComponent: true,
     components           : `lanyon>${cmdName}`,
-    env                  : Object.assign({}, process.env, {
+    env                  : {
+      ...process.env,
       DEBUG         : process.env.DEBUG,
       NODE_ENV      : runtime.lanyonEnv,
       JEKYLL_ENV    : runtime.lanyonEnv,
-      LANYON_PROJECT: runtime.projectDir, // <-- to preserve the cwd over multiple nested executes, if it wasn't initially setly set
-    }),
+      LANYON_PROJECT: runtime.projectDir,
+      // ^-- to preserve the cwd over
+      // multiple nested executes, if it wasn't initially setly set
+    },
   })
 
   if (require.main === module) {
@@ -143,10 +150,10 @@ module.exports = async function dispatch () {
   process.on('exit', (code) => {
     utils.trapCleanup({ runtime, code })
   })
-  process.on('SIGINT', function () {
+  process.on('SIGINT', () => {
     utils.trapCleanup({ runtime, signal: 'SIGINT' })
   })
-  process.on('SIGUSR2', function () {
+  process.on('SIGUSR2', () => {
     utils.trapCleanup({ runtime, signal: 'SIGUSR2' })
   })
 
