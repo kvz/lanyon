@@ -1,0 +1,43 @@
+module.exports = {
+  extends: [
+    'transloadit',
+  ],
+  env: {
+    es6 : true,
+    jest: true,
+    node: true,
+  },
+  parser       : 'babel-eslint',
+  parserOptions: {
+    requireConfigFile: false,
+  },
+  rules: {
+    // rules we had to turn off just to get a pass, but we'd
+    // like to turn on one by one with separate PRs
+    /// /////////////////////////////////////////////////////////
+    'consistent-return'        : ['warn'],
+    'global-require'           : ['warn'],
+    'guard-for-in'             : ['warn'],
+    'import/no-dynamic-require': ['warn'],
+    'import/order'             : ['warn'],
+    'no-await-in-loop'         : ['warn'],
+    'no-param-reassign'        : ['warn'],
+    'no-restricted-syntax'     : ['warn'],
+    'no-shadow'                : ['warn'],
+    'no-unused-expressions'    : ['warn'],
+    'no-use-before-define'     : ['warn'],
+  },
+  overrides: [
+    {
+      files: [
+        'website/**/*.js',
+      ],
+      env: {
+        browser: true,
+      },
+      rules: {
+        'no-var': ['off'],
+      },
+    },
+  ],
+}

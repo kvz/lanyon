@@ -3,8 +3,8 @@ const scrolex = require('scrolex')
 const utils   = require('./utils')
 
 let mods = {
-  overrideRuntime ({ runtime, toolkit }) { return runtime },
-  overrideConfig ({ config, toolkit }) { return config },
+  overrideRuntime ({ runtime }) { return runtime },
+  overrideConfig ({ config }) { return config },
 }
 
 const cfg = {}

@@ -16,7 +16,7 @@ if (require.main === module) {
   process.exit(1)
 }
 
-module.exports.formatCmd = function formatCmd (cmd, { runtime, cmdName }) {
+module.exports.formatCmd = function formatCmd (cmd, { runtime }) {
   // Replace dirs
   cmd = cmd.replace(/\[lanyonDir]/g, runtime.lanyonDir)
   cmd = cmd.replace(/\[contentBuildDir]/g, runtime.contentBuildDir)
@@ -143,7 +143,7 @@ module.exports.dockerString = function dockerString (cmd, { opts = {}, runtime }
     // -e "JEKYLL_ENV=${runtime.lanyonEnv}"
     // docker-sync start && docker-compose up && docker-compose exec
     return oneLine`
-      docker-compose exec -T 
+      docker-compose exec -T
         lanyon-container
       ${cmd}
     `
