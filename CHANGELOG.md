@@ -22,6 +22,20 @@ Released: TBA.
 - [ ] Consider solidifying some hacks like backendProxy or _assets rewrite from the content repo as lanyon options
 - [ ] Do a `build:assets` before `watch` in case `_includes/_generated_assets/app-development-body.html` does not exist
 
+## v0.3.4
+
+Released: 2021-04-29
+[Diff](https://github.com/kvz/lanyon/compare/v0.2.28...v0.3.4).
+
+- [x] Do not build Docker containers anymore by default (as Transloadit doesn not use them anymore. Too slow on macOS.)
+- [x] Change to Transloadit linting
+- [x] Support nested node_modules — specifying absolute paths makes Webpack look only in root node_modules
+- [x] Initialize cache directory without running a build via `lanyon configure`
+- [x] Upgrade to Webpack 5
+- [x] Replace OptimizeCSSAssetsPlugin with CssMinimizerPlugin
+- [x] Add support for customEnv, allowing you to replace any `process.env.THING` with a value you set in your `.lanyonrc.js`
+- [x] Pass browser targets to babel-present-env (by default it targets ES5), resulting in smaller builds
+
 ## v0.2.28
 
 Released: 2020-08-02

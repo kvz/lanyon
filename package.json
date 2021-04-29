@@ -34,7 +34,7 @@
     "release:major": "env SEMANTIC=major npm run release",
     "release:minor": "env SEMANTIC=minor npm run release",
     "release:patch": "env SEMANTIC=patch npm run release",
-    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all container:build push npublish",
+    "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all push npublish",
     "test:acceptance": "./scripts/test-acceptance.sh",
     "test": "npm-run-all lint jest test:acceptance",
     "upgrade:modules": "npm-check-updates -u --semverLevel major && yarn",
