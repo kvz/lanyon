@@ -56,33 +56,6 @@ projectDir="$(cd "${projectDir}" && pwd)" # we need to resolve this for docker. 
 export LANYON_PROJECT=${projectDir}
 
 pushd "${projectDir}"
-  cat << EOF > Gemfile
-source "https://rubygems.org"
-
-gem "jekyll", "4.2.0"
-gem "stringex", "2.8.5"
-gem "liquid-c", "4.0.0"
-gem "ffi", "1.15.0"
-
-# Do not use jekyll_plugins group,
-# so we can dynamically disable plugins in lanyonrc.js
-gem "jekyll-feed", "0.15.1"
-gem "jekyll-redirect-from", "0.16.0"
-gem "jekyll-sitemap", "1.4.0"
-
-# Needed for the customized jemoji plugin inside
-# _plugins directory
-gem "jemoji", "0.12.0"
-EOF
-
-  echo "--> Setting up local Jekyll"
-  gem update --system --no-document
-  gem update bundler --no-document
-  # bundle config gemfile Gemfile
-  bundle config path vendor/bundle
-  bundle install --jobs 4 --retry 3
-  export LANYON_JEKYLL="bundle exec jekyll"
-
   echo "--> Setting up sample project"
   git init
   mkdir -p assets _layouts

@@ -21,8 +21,8 @@ jobs:
       - name: Set up Ruby dependencies cache
         uses: actions/cache@v1
         with:
-          path: /tmp/lanyon-test/vendor/bundle
-          key: ubuntu-20.04-gems-${{ hashFiles('/tmp/lanyon-test/Gemfile') }}
+          path: _jekyll/vendor/bundle
+          key: ubuntu-20.04-gems-${{ hashFiles('_jekyll/Gemfile') }}
           restore-keys: 'ubuntu-20.04-gems-'
       - uses: actions/setup-node@master
         with:
@@ -32,10 +32,12 @@ jobs:
           frozen-lockfile: true
       - name: Test
         run : |
+          export LANYON_JEKYLL=$(pwd)/_jekyll/jekyll.sh
           yarn test
       - name: Website Build
         if  : true || github.ref == 'refs/heads/master'
         run : |
+          export LANYON_JEKYLL=$(pwd)/_jekyll/jekyll.sh
           yarn web:build
       - name: Website Deploy 🚀
         if  : true || github.ref == 'refs/heads/master'
