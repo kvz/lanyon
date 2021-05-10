@@ -18,10 +18,10 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.0.0
-      - name: Set up Ruby dependencies cache
+      - name: Set up _jekyll dependencies cache
         uses: actions/cache@v1
         with:
-          path: _jekyll/vendor/bundle
+          path: _jekyll
           key: ubuntu-20.04-gems-${{ hashFiles('_jekyll/Gemfile') }}
           restore-keys: 'ubuntu-20.04-gems-'
       - uses: actions/setup-node@master
