@@ -49,12 +49,21 @@ tmpDir="/private/tmp"
 if [ ! -d "${tmpDir}" ]; then
   tmpDir="/tmp"
 fi
-projectDir=${tmpDir}/lanyon-$(date +%s%N)
+projectDir=${tmpDir}/lanyon-test
+rm -rf "${projectDir}"
 mkdir -p "${projectDir}"
 projectDir="$(cd "${projectDir}" && pwd)" # we need to resolve this for docker. Readlink won't work on nested symlinks
 export LANYON_PROJECT=${projectDir}
 
 pushd "${projectDir}"
+  echo "--> Setting up local Jekyll"
+  gem update --system --no-document
+  gem update bundler --no-document
+  # bundle config gemfile Gemfile
+  bundle config path vendor/bundle
+  bundle install --jobs 4 --retry 3
+  export LANYON_JEKYLL="bundle exec jekyll"
+
   echo "--> Setting up sample project"
   git init
   mkdir -p assets _layouts
