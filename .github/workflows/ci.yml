@@ -45,13 +45,13 @@ jobs:
           yarn test
           yarn link
       - name: Website Build
-        if  : true || github.ref == 'refs/heads/master'
+        if  : github.ref == 'refs/heads/master'
         run : |
           export LANYON_JEKYLL=$(pwd)/_jekyll/jekyll.sh
           (cd website && yarn link lanyon)
           yarn web:build
       - name: Website Deploy 🚀
-        if  : true || github.ref == 'refs/heads/master'
+        if  : github.ref == 'refs/heads/master'
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
