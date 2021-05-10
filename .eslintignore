@@ -1,6 +1,7 @@
-node_modules/
-example/assets/build/
-example/_site/
-website/assets/build/
-website/_site/
+_jekyll
 deps/
+example/_site/
+example/assets/build/
+node_modules/
+website/_site/
+website/assets/build/
