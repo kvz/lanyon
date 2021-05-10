@@ -35,7 +35,7 @@
     "release:minor": "env SEMANTIC=minor yarn release",
     "release:patch": "env SEMANTIC=patch yarn release",
     "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all push npublish",
-    "test:acceptance": "./scripts/test-acceptance.sh",
+    "test:acceptance": "export LANYON_JEKYLL=$(pwd)/_jekyll/jekyll.sh && ./scripts/test-acceptance.sh",
     "test": "npm-run-all lint jest test:acceptance",
     "web:build": "cd website && yarn && yarn build:production",
     "web:install": "cd website && yarn install",

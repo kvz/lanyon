@@ -5,6 +5,7 @@ _jekyll/Gemfile.lock
 _jekyll/share/*
 _jekyll/src
 _jekyll/tmp/
+_jekyll/vendor/
 _jekyll/wget-log
 .grunt
 .jekyll-cache/

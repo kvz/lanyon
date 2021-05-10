@@ -76,6 +76,9 @@ EOF
   "scripts": {
     "build": "lanyon build",
     "build:production": "LANYON_ENV=production lanyon build"
+  },
+  "dependencies": {
+    "lanyon": "0.3.6"
   }
 }
 EOF
@@ -107,12 +110,7 @@ title: Homepage
 Hello, world!
 EOF
 
-  echo "--> Exporting lanyon link"
-  pushd "${lanyonDir}"
-    yarn link
-  popd
-  echo "--> Importing lanyon link (like a yarn, but with local sources)"
-  yarn link lanyon
+  echo "--> Yarn"
   yarn
 
   echo "--> Building site for 'development' in '${projectDir}'"
