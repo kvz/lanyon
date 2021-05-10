@@ -15,21 +15,30 @@ jobs:
         with:
           fetch-depth: 1
       - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0.0
-      - name: Set up _jekyll dependencies cache
-        uses: actions/cache@v1
-        with:
-          path: _jekyll
-          key: ubuntu-20.04-gems-${{ hashFiles('_jekyll/Gemfile') }}
-          restore-keys: 'ubuntu-20.04-gems-'
       - uses: actions/setup-node@master
         with:
           node-version: 14.x 
       - uses: sergioramos/yarn-actions/install@master
         with:
           frozen-lockfile: true
+          # better yarn cache: https://stackoverflow.com/a/62244232/151666
+          prefer-offline: true
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Set up _jekyll dependencies cache
+        uses: actions/cache@v1
+        with:
+          path: _jekyll
+          key: ubuntu-20.04-gems-${{ hashFiles('_jekyll/Gemfile') }}
+          restore-keys: 'ubuntu-20.04-gems-'
       - name: Test
         run : |
           export LANYON_JEKYLL=$(pwd)/_jekyll/jekyll.sh

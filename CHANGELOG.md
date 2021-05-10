@@ -1,26 +1,35 @@
 # Changelog
 
-## Unplanned
-
-- [ ] Throw an error if we find legacy Jekyll residu such as `./vendors` or `.bundle`
-- [ ] Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content (CAN DO, config.webpack.js contains a custom plugin example that shows this now)
-- [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
-- [ ] Go over all `process.env.*` and make sure they are only at the head of `config.js`
-- [ ] Deprecate Scrollex in favor of execa passing through to stdout/stderr
-
-## master
-
-Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.2.28...master).
+## Backlog
 
 - [ ] Add a 'real' command line parser for `lib/cli.js` like minimist
-- [ ] Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627
+- [ ] Deprecate Scrollex in favor of execa passing through to stdout/stderr
+- [ ] Go over all `process.env.*` and make sure they are only at the head of `config.js`
+- [ ] Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content (CAN DO, config.webpack.js contains a custom plugin example that shows this now)
 - [ ] Make it so that you can only build e.g. a homepage via `LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html`. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488
-- [ ] Bundle node + modules in docker container also (and see if we can use them, using `open` for browsersync)
-- [ ] Debug browsersync's endless refresh
+- [ ] Throw an error if we find legacy Jekyll residu such as `./vendors` or `.bundle`
 - [ ] Throw warning when not jekyll excluding: `- node_modules - .git`, like when you have `exclude: [vendor]` in your jekyll config
+- [ ] Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from `assets/images` -> `assets/build/images`
+
+## Next
+
+Released: TBA.
+[Diff](https://github.com/kvz/lanyon/compare/v0.3.6...master).
+
 - [ ] Consider solidifying some hacks like backendProxy or _assets rewrite from the content repo as lanyon options
-- [ ] Do a `build:assets` before `watch` in case `_includes/_generated_assets/app-development-body.html` does not exist
+- [ ] Remove all occurances of docker/container, possibly bundle `_jekyll/jekyll.sh` with Lanyon
+- [ ] Deprecate LANYON_MINIMAL, and then delete many lines from .lanyonrc in c repo
+- [ ] Remove example
+- [x] Do a `build:assets` before `watch` in case `_includes/_generated_assets/app-development-body.html` does not exist <-- can be resolved via `lanyon config` these days
+- [x] Switch from Travis to GitHub Actions
+
+## v0.3.6
+
+Released: 2021-04-29
+[Diff](https://github.com/kvz/lanyon/compare/v0.3.4...v0.3.6).
+
+- [x] Do not build containers by default anymore. Docker is just too slow on macOS, so we're going native Jekyll there via `LANYON_JEKYLL`.
+- [x] Switch to Dart Sass
 
 ## v0.3.4
 
