@@ -31,15 +31,15 @@
     "lint": "DEBUG=eslint:cli-engine eslint .",
     "npublish": "npm publish --otp",
     "push": "git push && git push --tags",
-    "release:major": "env SEMANTIC=major npm run release",
-    "release:minor": "env SEMANTIC=minor npm run release",
-    "release:patch": "env SEMANTIC=patch npm run release",
+    "release:major": "env SEMANTIC=major yarn release",
+    "release:minor": "env SEMANTIC=minor yarn release",
+    "release:patch": "env SEMANTIC=patch yarn release",
     "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all push npublish",
     "test:acceptance": "./scripts/test-acceptance.sh",
     "test": "npm-run-all lint jest test:acceptance",
-    "upgrade:modules": "npm-check-updates -u --semverLevel major && yarn",
-    "web:install": "cd website && npm run install",
-    "web:start": "cd website && npm run start"
+    "web:build": "cd website && yarn && yarn build:production",
+    "web:install": "cd website && yarn install",
+    "web:start": "cd website && yarn start"
   },
   "repository": {
     "type": "git",
