@@ -31,46 +31,60 @@
 
       <h1 id="changelog">Changelog</h1>
 
-<h2 id="unplanned">Unplanned</h2>
-
-<ul class="task-list">
-  <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled>Throw an error if we find legacy Jekyll residu such as <code class="language-plaintext highlighter-rouge">./vendors</code> or <code class="language-plaintext highlighter-rouge">.bundle</code>
-</li>
-  <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled>Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content (CAN DO, config.webpack.js contains a custom plugin example that shows this now)</li>
-  <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled>Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from <code class="language-plaintext highlighter-rouge">assets/images</code> -&gt; <code class="language-plaintext highlighter-rouge">assets/build/images</code>
-</li>
-  <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled>Go over all <code class="language-plaintext highlighter-rouge">process.env.*</code> and make sure they are only at the head of <code class="language-plaintext highlighter-rouge">config.js</code>
-</li>
-  <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled>Deprecate Scrollex in favor of execa passing through to stdout/stderr</li>
-</ul>
-
-<h2 id="master">master</h2>
-
-<p>Released: TBA.
-<a href="https://github.com/kvz/lanyon/compare/v0.2.28...master">Diff</a>.</p>
+<h2 id="backlog">Backlog</h2>
 
 <ul class="task-list">
   <li class="task-list-item">
 <input type="checkbox" class="task-list-item-checkbox" disabled>Add a ‘real’ command line parser for <code class="language-plaintext highlighter-rouge">lib/cli.js</code> like minimist</li>
   <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled>Fix bug where failed deploy is not fatal: https://travis-ci.org/kvz/invig/builds/202931498#L627</li>
+<input type="checkbox" class="task-list-item-checkbox" disabled>Deprecate Scrollex in favor of execa passing through to stdout/stderr</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Go over all <code class="language-plaintext highlighter-rouge">process.env.*</code> and make sure they are only at the head of <code class="language-plaintext highlighter-rouge">config.js</code>
+</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Hooks are ran with every build, but not when doing HMR. We might be able to hook into the asset manifest callback to work around this for assets, while lib/cli.js calls it for content (CAN DO, config.webpack.js contains a custom plugin example that shows this now)</li>
   <li class="task-list-item">
 <input type="checkbox" class="task-list-item-checkbox" disabled>Make it so that you can only build e.g. a homepage via <code class="language-plaintext highlighter-rouge">LANYON_EXCLUDE=* LANYON_INCLUDE=home.html,_layouts/default.html</code>. However, we first need this Jekyll issue resolved: https://github.com/jekyll/jekyll/issues/4791#issuecomment-289021488</li>
   <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled>Bundle node + modules in docker container also (and see if we can use them, using <code class="language-plaintext highlighter-rouge">open</code> for browsersync)</li>
-  <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled>Debug browsersync’s endless refresh</li>
+<input type="checkbox" class="task-list-item-checkbox" disabled>Throw an error if we find legacy Jekyll residu such as <code class="language-plaintext highlighter-rouge">./vendors</code> or <code class="language-plaintext highlighter-rouge">.bundle</code>
+</li>
   <li class="task-list-item">
 <input type="checkbox" class="task-list-item-checkbox" disabled>Throw warning when not jekyll excluding: <code class="language-plaintext highlighter-rouge">- node_modules - .git</code>, like when you have <code class="language-plaintext highlighter-rouge">exclude: [vendor]</code> in your jekyll config</li>
   <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Wait on https://github.com/imagemin/imagemin-cli/pull/11 and https://github.com/imagemin/imagemin/issues/226 and add image building from <code class="language-plaintext highlighter-rouge">assets/images</code> -&gt; <code class="language-plaintext highlighter-rouge">assets/build/images</code>
+</li>
+</ul>
+
+<h2 id="next">Next</h2>
+
+<p>Released: TBA.
+<a href="https://github.com/kvz/lanyon/compare/v0.3.6...master">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
 <input type="checkbox" class="task-list-item-checkbox" disabled>Consider solidifying some hacks like backendProxy or _assets rewrite from the content repo as lanyon options</li>
   <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled>Do a <code class="language-plaintext highlighter-rouge">build:assets</code> before <code class="language-plaintext highlighter-rouge">watch</code> in case <code class="language-plaintext highlighter-rouge">_includes/_generated_assets/app-development-body.html</code> does not exist</li>
+<input type="checkbox" class="task-list-item-checkbox" disabled>Remove all occurances of docker/container, possibly bundle <code class="language-plaintext highlighter-rouge">_jekyll/jekyll.sh</code> with Lanyon</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Deprecate LANYON_MINIMAL, and then delete many lines from .lanyonrc in c repo</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled>Remove example</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Do a <code class="language-plaintext highlighter-rouge">build:assets</code> before <code class="language-plaintext highlighter-rouge">watch</code> in case <code class="language-plaintext highlighter-rouge">_includes/_generated_assets/app-development-body.html</code> does not exist &lt;– can be resolved via <code class="language-plaintext highlighter-rouge">lanyon config</code> these days</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch from Travis to GitHub Actions</li>
+</ul>
+
+<h2 id="v036">v0.3.6</h2>
+
+<p>Released: 2021-04-29
+<a href="https://github.com/kvz/lanyon/compare/v0.3.4...v0.3.6">Diff</a>.</p>
+
+<ul class="task-list">
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Do not build containers by default anymore. Docker is just too slow on macOS, so we’re going native Jekyll there via <code class="language-plaintext highlighter-rouge">LANYON_JEKYLL</code>.</li>
+  <li class="task-list-item">
+<input type="checkbox" class="task-list-item-checkbox" disabled checked>Switch to Dart Sass</li>
 </ul>
 
 <h2 id="v034">v0.3.4</h2>
@@ -292,7 +306,7 @@
   <li class="task-list-item">
 <input type="checkbox" class="task-list-item-checkbox" disabled checked><strong>BREAKING</strong> Switch to <code class="language-plaintext highlighter-rouge">splitChunks</code>. This means entrypoints have multiple assets now</li>
   <li class="task-list-item">
-<input type="checkbox" class="task-list-item-checkbox" disabled checked><strong>BREAKING</strong> Switch from <code class="language-plaintext highlighter-rouge">jekyll.lanyon_assets.yml</code> to <code class="language-plaintext highlighter-rouge">HtmlWebpackPlugin</code> which creates html snippets to easier load multiple assets per entrypoint. These files are written to <code class="language-plaintext highlighter-rouge">_includes/_generated_assets/</code>. To include, replace any occurance of <code class="language-plaintext highlighter-rouge">lanyon_assets</code>, with CSS: <code class="language-plaintext highlighter-rouge">&lt;link href="/assets/build/app.db1e5da539a4394c97fe.css" rel="stylesheet"&gt;</code>, for JS: <code class="language-plaintext highlighter-rouge">&lt;script src="/assets/build/app.9f29b4235f83a2ae1285.js"&gt;&lt;/script&gt;</code>. You’ll first want to run a <code class="language-plaintext highlighter-rouge">build</code> before doing a <code class="language-plaintext highlighter-rouge">start</code> to prewarm the generated includes. It’s recommended to commit the development assets, but git ignore production ones by adding <code class="language-plaintext highlighter-rouge">_includes/_generated_assets/*-production-*.html</code> to <code class="language-plaintext highlighter-rouge">.gitignore</code>
+<input type="checkbox" class="task-list-item-checkbox" disabled checked><strong>BREAKING</strong> Switch from <code class="language-plaintext highlighter-rouge">jekyll.lanyon_assets.yml</code> to <code class="language-plaintext highlighter-rouge">HtmlWebpackPlugin</code> which creates html snippets to easier load multiple assets per entrypoint. These files are written to <code class="language-plaintext highlighter-rouge">_includes/_generated_assets/</code>. To include, replace any occurance of <code class="language-plaintext highlighter-rouge">lanyon_assets</code>, with CSS: <code class="language-plaintext highlighter-rouge">&lt;link href="/assets/build/app.db1e5da539a4394c97fe.css" rel="stylesheet"&gt;</code>, for JS: <code class="language-plaintext highlighter-rouge">&lt;script src="/assets/build/app.335e0e403ae647dc9d77.js"&gt;&lt;/script&gt;</code>. You’ll first want to run a <code class="language-plaintext highlighter-rouge">build</code> before doing a <code class="language-plaintext highlighter-rouge">start</code> to prewarm the generated includes. It’s recommended to commit the development assets, but git ignore production ones by adding <code class="language-plaintext highlighter-rouge">_includes/_generated_assets/*-production-*.html</code> to <code class="language-plaintext highlighter-rouge">.gitignore</code>
 </li>
 </ul>
 
@@ -2235,7 +2249,7 @@
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.1.0/languages/bash.min.js"></script>
-    <script src="/assets/build/app.9f29b4235f83a2ae1285.js"></script>
+    <script src="/assets/build/app.335e0e403ae647dc9d77.js"></script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
