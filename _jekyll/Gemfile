@@ -1,0 +1,16 @@
+source "https://rubygems.org"
+
+gem "jekyll", "4.2.0"
+gem "stringex", "2.8.5"
+gem "liquid-c", "4.0.0"
+gem "ffi", "1.15.0"
+
+# Do not use jekyll_plugins group,
+# so we can dynamically disable plugins in lanyonrc.js
+gem "jekyll-feed", "0.15.1"
+gem "jekyll-redirect-from", "0.16.0"
+gem "jekyll-sitemap", "1.4.0"
+
+# Needed for the customized jemoji plugin inside
+# `_plugins` directory
+gem "jemoji", "0.12.0"

@@ -49,7 +49,8 @@ tmpDir="/private/tmp"
 if [ ! -d "${tmpDir}" ]; then
   tmpDir="/tmp"
 fi
-projectDir=${tmpDir}/lanyon-$(date +%s%N)
+projectDir=${tmpDir}/lanyon-test
+rm -rf "${projectDir}"
 mkdir -p "${projectDir}"
 projectDir="$(cd "${projectDir}" && pwd)" # we need to resolve this for docker. Readlink won't work on nested symlinks
 export LANYON_PROJECT=${projectDir}
