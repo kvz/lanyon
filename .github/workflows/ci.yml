@@ -18,11 +18,6 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: 14.x 
-      - uses: sergioramos/yarn-actions/install@master
-        with:
-          frozen-lockfile: true
-          # better yarn cache: https://stackoverflow.com/a/62244232/151666
-          prefer-offline: true
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
@@ -33,6 +28,11 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+      - uses: sergioramos/yarn-actions/install@master
+        with:
+          frozen-lockfile: true
+          # better yarn cache: https://stackoverflow.com/a/62244232/151666
+          prefer-offline: true
       - name: Set up _jekyll dependencies cache
         uses: actions/cache@v1
         with:
@@ -43,10 +43,12 @@ jobs:
         run : |
           export LANYON_JEKYLL=$(pwd)/_jekyll/jekyll.sh
           yarn test
+          yarn link
       - name: Website Build
         if  : true || github.ref == 'refs/heads/master'
         run : |
           export LANYON_JEKYLL=$(pwd)/_jekyll/jekyll.sh
+          (cd website && yarn link lanyon)
           yarn web:build
       - name: Website Deploy 🚀
         if  : true || github.ref == 'refs/heads/master'
