@@ -14,13 +14,20 @@
 ## Next
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.3.6...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.3.7...master).
 
 - [ ] Consider solidifying some hacks like backendProxy or _assets rewrite from the content repo as lanyon options
 - [ ] Remove all occurances of docker/container, possibly bundle `_jekyll/jekyll.sh` with Lanyon
 - [ ] Deprecate LANYON_MINIMAL, and then delete many lines from .lanyonrc in c repo
 - [ ] Remove example
-- [x] Do a `build:assets` before `watch` in case `_includes/_generated_assets/app-development-body.html` does not exist <-- can be resolved via `lanyon config` these days
+
+## v0.3.7
+
+Released: 2021-05-31
+[Diff](https://github.com/kvz/lanyon/compare/v0.3.6...v0.3.7).
+
+- [x] Upgrade css dependencies
+- [-] Do a `build:assets` before `watch` in case `_includes/_generated_assets/app-development-body.html` does not exist <-- can be resolved via `lanyon config` these days
 - [x] Switch from Travis to GitHub Actions
 
 ## v0.3.6
