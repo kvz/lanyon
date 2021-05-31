@@ -95,13 +95,7 @@ module.exports = function ({ runtime }) {
     rules.push({
       test: /\.(sa|sc|c)ss$/,
       use : [
-        {
-          loader : MiniCssExtractPlugin.loader,
-          options: {
-            // Disabled for Webpack5
-            // hmr: runtime.isDev,
-          },
-        },
+        MiniCssExtractPlugin.loader,
         {
           loader : 'cache-loader',
           options: {
@@ -117,13 +111,7 @@ module.exports = function ({ runtime }) {
               sourceMap: true,
               ident    : 'postcss',
               plugins  : [
-                [
-                  'postcss-preset-env',
-                  {
-                    // Options
-                    browsers,
-                  },
-                ],
+                ['postcss-preset-env', { browsers }],
               ],
             },
           },
