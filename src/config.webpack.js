@@ -116,7 +116,15 @@ module.exports = function ({ runtime }) {
             },
           },
         },
-        'sass-loader',
+        {
+          loader : 'sass-loader',
+          options: {
+            sassOptions: {
+              // We can't do anything about deprecations in dependency code
+              quietDeps: true,
+            },
+          },
+        },
       ],
     })
 
