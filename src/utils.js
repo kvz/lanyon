@@ -309,7 +309,7 @@ module.exports.fsCopySync = (src, dst, { mode = '644', encoding = 'utf-8' } = {}
 
 module.exports.writeConfig = (cfg) => {
   try {
-    fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.config.yml`, yaml.safeDump(cfg.jekyll), 'utf-8')
+    fs.writeFileSync(`${cfg.runtime.cacheDir}/jekyll.config.yml`, yaml.dump(cfg.jekyll), 'utf-8')
   } catch (e) {
     console.error({ jekyll: cfg.jekyll })
     throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/jekyll.config.yml. ${e.message}`)
@@ -317,19 +317,19 @@ module.exports.writeConfig = (cfg) => {
 
   if (cfg.runtime.dockerSync && cfg.runtime.dockerSync.enabled === true) {
     try {
-      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-sync.yml`, yaml.safeDump(cfg.dockerSync), 'utf-8')
+      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-sync.yml`, yaml.dump(cfg.dockerSync), 'utf-8')
     } catch (e) {
       console.error({ dockerSync: cfg.dockerSync })
       throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/docker-sync.yml. ${e.message}`)
     }
     try {
-      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-compose.yml`, yaml.safeDump(cfg.dockerCompose), 'utf-8')
+      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-compose.yml`, yaml.dump(cfg.dockerCompose), 'utf-8')
     } catch (e) {
       console.error({ dockerCompose: cfg.dockerCompose })
       throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/docker-compose.yml. ${e.message}`)
     }
     try {
-      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-compose-dev.yml`, yaml.safeDump(cfg.dockerComposeDev), 'utf-8')
+      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-compose-dev.yml`, yaml.dump(cfg.dockerComposeDev), 'utf-8')
     } catch (e) {
       console.error({ dockerComposeDev: cfg.dockerComposeDev })
       throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/docker-compose-dev.yml. ${e.message}`)

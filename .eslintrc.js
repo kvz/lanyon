@@ -12,6 +12,9 @@ module.exports = {
     requireConfigFile: false,
   },
   rules: {
+    // useless rules for this project
+    /// /////////////////////////////////////////////////////////
+    'no-console'               : ['off'],
     // rules we had to turn off just to get a pass, but we'd
     // like to turn on one by one with separate PRs
     /// /////////////////////////////////////////////////////////
@@ -20,6 +23,7 @@ module.exports = {
     'guard-for-in'             : ['warn'],
     'import/no-dynamic-require': ['warn'],
     'import/order'             : ['warn'],
+    'import/extensions'        : ['warn'],
     'no-await-in-loop'         : ['warn'],
     'no-param-reassign'        : ['warn'],
     'no-restricted-syntax'     : ['warn'],

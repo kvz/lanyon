@@ -12,9 +12,11 @@ module.exports = function ({ runtime }) {
   let jekyllCfg = {}
   try {
     const buf = fs.readFileSync(jekyllConfigPath)
-    jekyllCfg = yaml.safeLoad(buf)
+    jekyllCfg = yaml.load(buf)
   } catch (e) {
+    scrolex.failure(e)
     scrolex.failure(`Unable to load ${jekyllConfigPath}`)
+    process.exit(1)
   }
 
   if (!('incremental' in jekyllCfg)) {
