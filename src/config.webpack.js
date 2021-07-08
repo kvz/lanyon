@@ -288,11 +288,12 @@ module.exports = function ({ runtime }) {
       const entries = {}
 
       runtime.entries.forEach(entry => {
-        entries[entry] = [path.join(runtime.assetsSourceDir, `${entry}.js`)]
-
-        if (entry === 'app' && runtime.isDev) {
-          entries[entry].unshift('webpack-hot-middleware/client')
+        entries[entry] = []
+        if (runtime.isDev) {
+          // Push HMR to all entrypoints
+          entries[entry].push('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&overlay=true')
         }
+        entries[entry].push(path.join(runtime.assetsSourceDir, `${entry}.js`))
       })
 
       return entries

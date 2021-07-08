@@ -28,7 +28,7 @@ Released: 2021-05-31
 
 - [x] hide sass deprecation warnings in dependencies (@goto-bus-stop)
 - [x] Upgrade all node modules
-
+- [x] Add `webpack-hot-middleware/client` to all entrypoints in devmode (BC: no longer needed to add this in `.lanyonrc.js`)
 
 ## v0.3.7
 
