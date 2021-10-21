@@ -27,7 +27,27 @@ module.exports = function () {
 
   runtimeCfg.attachHMR = runtimeCfg.isDev && process.argv[1].indexOf('browser-sync') !== -1 && ['start', 'start:crm', 'start:crm2'].indexOf(process.argv[2]) !== -1
 
-  runtimeCfg.projectDir = process.env.LANYON_PROJECT || process.env.PWD || process.cwd() // <-- symlinked npm will mess up process.cwd() and point to ~/code/lanyon
+  if (process.env.LANYON_PROJECT) {
+    runtimeCfg.projectDir = process.env.LANYON_PROJECT
+  } else {
+    // Find path of parent module that lists lanyon as a dependency
+    for (const searchPath of module.paths) {
+      let pkg
+      try {
+        // searchPath always ends with /node_modules
+        pkg = JSON.parse(fs.readFileSync(path.join(searchPath, '..', 'package.json')))
+      } catch (_) {
+        continue
+      }
+      if ({ ...pkg.dependencies, ...pkg.devDependencies }.lanyon) {
+        runtimeCfg.projectDir = path.join(searchPath, '..')
+        break
+      }
+    }
+    if (!runtimeCfg.projectDir) {
+      throw new Error('Could not find path of project requiring lanyon')
+    }
+  }
 
   if (!('uglify' in runtimeCfg) && !runtimeCfg.isDev) {
     runtimeCfg.uglify = true
