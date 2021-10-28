@@ -61,12 +61,6 @@
     "url": "https://github.com/kvz/lanyon/issues"
   },
   "homepage": "https://github.com/kvz/lanyon#readme",
-  "eslintConfig": {
-    "extends": "standard",
-    "env": {
-      "node": true
-    }
-  },
   "devDependencies": {
     "@babel/eslint-parser": "7.14.7",
     "@babel/eslint-plugin": "7.14.5",
