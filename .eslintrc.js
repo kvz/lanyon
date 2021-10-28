@@ -24,7 +24,6 @@ module.exports = {
     'import/no-dynamic-require': ['warn'],
     'import/order'             : ['warn'],
     'import/extensions'        : ['warn'],
-    'no-await-in-loop'         : ['warn'],
     'no-param-reassign'        : ['warn'],
     'no-restricted-syntax'     : ['warn'],
     'no-shadow'                : ['warn'],
