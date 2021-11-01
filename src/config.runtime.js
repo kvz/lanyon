@@ -45,6 +45,9 @@ module.exports = function () {
       }
     }
     if (!runtimeCfg.projectDir) {
+      runtimeCfg.projectDir = process.cwd()
+    }
+    if (!runtimeCfg.projectDir) {
       throw new Error('Could not find path of project requiring lanyon')
     }
   }
