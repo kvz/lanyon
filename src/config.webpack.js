@@ -25,48 +25,22 @@ module.exports = function ({ runtime }) {
 
     rules.push({
       test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,
-      use : [
-        {
-          loader : 'url-loader',
-          options: {
-            limit   : 10000,
-            mimetype: 'application/font-woff',
-          },
-        },
-      ],
+      type: 'asset',
     })
 
     rules.push({
       test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-      use : [
-        {
-          loader : 'url-loader',
-          options: {
-            limit   : 10000,
-            mimetype: 'image/svg+xml',
-          },
-        },
-      ],
+      type: 'asset',
     })
 
     rules.push({
       test: /\.(png|webp|gif|jpe?g|ttf(\?v=\d+\.\d+\.\d+)?)$/,
-      use : [
-        {
-          loader : 'url-loader',
-          options: {
-            limit   : 8096,
-            mimetype: 'application/octet-stream',
-          },
-        },
-      ],
+      type: 'asset',
     })
 
     rules.push({
       test: /\.(eot|cur)(\?v=\d+\.\d+\.\d+)?$/,
-      use : [
-        'file-loader',
-      ],
+      type: 'asset/resource',
     })
 
     rules.push({
@@ -103,7 +77,6 @@ module.exports = function ({ runtime }) {
           },
         },
         'css-loader',
-        'resolve-url-loader',
         {
           loader : 'postcss-loader',
           options: {
