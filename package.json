@@ -91,7 +91,7 @@
     "common-tags": "1.8.2",
     "css-loader": "6.7.1",
     "css-minimizer-webpack-plugin": "4.0.0",
-    "globby": "4",
+    "globby": "11",
     "html-webpack-plugin": "5.5.0",
     "imports-loader": "4.0.0",
     "js-yaml": "4.1.0",
