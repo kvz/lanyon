@@ -7,7 +7,6 @@ module.exports = {
     jest: true,
     node: true,
   },
-  parser       : 'babel-eslint',
   parserOptions: {
     requireConfigFile: false,
   },
