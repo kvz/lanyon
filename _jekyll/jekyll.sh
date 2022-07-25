@@ -19,8 +19,8 @@ set -o nounset
 # set -o xtrace
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-rubyVersion="3.0.1"
-rubyInstallVersion="0.8.1"
+rubyVersion="3.1.2"
+rubyInstallVersion="0.8.3"
 chrubyVersion="0.3.9"
 
 if [ "${USER}" = "darkangelbge" ]; then
@@ -34,7 +34,7 @@ pushd "${__dir}" > /dev/null
       echo "--> ruby-install ${rubyVersion} is not installed, installing ruby-install ${rubyVersion} now .. "
       mkdir -p ./tmp
       pushd ./tmp > /dev/null
-        wget -O "ruby-install-v${rubyInstallVersion}.tar.gz" "https://github.com/postmodern/ruby-install/archive/v${rubyInstallVersion}.tar.gz"
+        curl -fsSLo "ruby-install-v${rubyInstallVersion}.tar.gz" "https://github.com/postmodern/ruby-install/archive/v${rubyInstallVersion}.tar.gz"
         tar -xzvf "ruby-install-v${rubyInstallVersion}.tar.gz"
         pushd "ruby-install-${rubyInstallVersion}" > /dev/null
           mkdir -p "${__dir}/bin/" "${__dir}/share/chruby/"
@@ -43,10 +43,12 @@ pushd "${__dir}" > /dev/null
         popd > /dev/null
       popd > /dev/null
     fi
-    if ! "${__dir}/bin/ruby-install" --version |grep -E "${rubyInstallVersion}\$" >/dev/null 2>&1; then
-      echo "--> installation of ruby-install ${rubyInstallVersion} failed"
-      exit 1
-    fi
+    # commented out because ruby-install 8.0.3 still reports as 8.0.1
+    # if ! "${__dir}/bin/ruby-install" --version |grep -E "${rubyInstallVersion}\$" >/dev/null 2>&1; then
+    #   echo "--> installation of ruby-install ${rubyInstallVersion} failed"
+    #   echo "--> Actual version ($("${__dir}/bin/ruby-install" --version)) does not match expected version (${rubyInstallVersion})"
+    #   exit 1
+    # fi
     mkdir -p ./src
     "${__dir}/bin/ruby-install" -s "${__dir}/src" ruby "${rubyVersion}"
 
@@ -57,7 +59,7 @@ pushd "${__dir}" > /dev/null
     echo "--> chruby ${chrubyVersion} is not installed, installing chruby ${chrubyVersion} now .. "
     mkdir -p ./tmp
     pushd ./tmp > /dev/null
-      wget -O "chruby-v${chrubyVersion}.tar.gz" "https://github.com/postmodern/chruby/archive/v${chrubyVersion}.tar.gz"
+      curl -fsSLo "chruby-v${chrubyVersion}.tar.gz" "https://github.com/postmodern/chruby/archive/v${chrubyVersion}.tar.gz"
       tar -xzvf "chruby-v${chrubyVersion}.tar.gz"
       pushd "chruby-${chrubyVersion}" > /dev/null
         mkdir -p "${__dir}/bin/" "${__dir}/share/chruby/"
@@ -76,6 +78,7 @@ pushd "${__dir}" > /dev/null
 
   # Can't use no unset with chruby :'( https://github.com/postmodern/chruby/issues/417
   set +u
+  rm -f "${__dir}/.ruby-version" # avoid RUBY_AUTO_VERSION overrulling the desired ruby version
   source "${__dir}/share/chruby/chruby.sh"
   source "${__dir}/share/chruby/auto.sh"
 

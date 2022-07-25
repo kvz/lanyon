@@ -22,7 +22,7 @@ module.exports.overrideConfig = function ({ config, toolkit }) {
   if (config.runtime.isDev) {
     config.jekyll.unpublished = true
     config.jekyll.future = true
-    config.jekyll.incremental = true // <-- for clarify; incremental is the default also
+    config.jekyll.incremental = true // <-- to clarify; incremental is the default also
   } else {
     config.jekyll.incremental = false
   }
