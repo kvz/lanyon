@@ -61,7 +61,9 @@ pushd "${projectDir}"
   mkdir -p assets _layouts
 
   cat << EOF > assets/app.ts
-var beautifullVarName = 'Very nice'
+type BestString = string
+
+const beautifullVarName: BestString = 'Very nice'
 if (beautifullVarName === 'Very nice') {
   console.log('pretty');
 } else {
@@ -84,9 +86,18 @@ EOF
 EOF
 
   cat << EOF > tsconfig.json
-{
-
-}
+  {
+    "compilerOptions": {
+      "outDir": "./dist/",
+      "sourceMap": true,
+      "noImplicitAny": true,
+      "module": "es6",
+      "target": "es5",
+      "jsx": "react",
+      "allowJs": false,
+      "moduleResolution": "node",
+    }
+  }
 EOF
 
   cat << EOF > _config.yml
@@ -97,7 +108,7 @@ EOF
   cat << EOF > .lanyonrc.js
 module.exports.overrideRuntime = ({ runtime, toolkit }) => {
   runtime.entries = [
-    'app.ts',
+    'app',
   ]
   return runtime
 }

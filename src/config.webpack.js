@@ -159,13 +159,11 @@ module.exports = function ({ runtime }) {
     plugins.push(new webpack.DefinePlugin(defines))
 
     runtime.entries.forEach(entry => {
-      const withoutExtension = entry.replace(/\.(t|j)sx?$/, '')
-
       plugins.push(new HtmlWebpackPlugin({
         inject         : false,
         cache          : true,
         scriptLoading  : 'blocking', // worth an experiment: 'defer'
-        filename       : `${runtime.projectDir}/_includes/_generated_assets/${withoutExtension}-${runtime.lanyonEnv}-head.html`,
+        filename       : `${runtime.projectDir}/_includes/_generated_assets/${entry}-${runtime.lanyonEnv}-head.html`,
         chunks         : [entry],
         templateContent: runtime.headAssetTemplate ? runtime.headAssetTemplate  : ({ htmlWebpackPlugin }) => `${htmlWebpackPlugin.tags.headTags}`,
       }))
@@ -173,7 +171,7 @@ module.exports = function ({ runtime }) {
         inject         : false,
         cache          : true,
         scriptLoading  : 'blocking', // worth an experiment: 'defer'
-        filename       : `${runtime.projectDir}/_includes/_generated_assets/${withoutExtension}-${runtime.lanyonEnv}-body.html`,
+        filename       : `${runtime.projectDir}/_includes/_generated_assets/${entry}-${runtime.lanyonEnv}-body.html`,
         chunks         : [entry],
         templateContent: runtime.bodyAssetTemplate ? runtime.bodyAssetTemplate : ({ htmlWebpackPlugin }) => `${htmlWebpackPlugin.tags.bodyTags}`,
       }))
@@ -275,10 +273,10 @@ module.exports = function ({ runtime }) {
           entries[entry].push('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&overlay=true')
         }
 
-        // Add .js if we do not have a valid extension (js/ts) already for the entrypoint
-        const entryWithExt = ['.js', '.ts'].includes(path.extname(entry)) ? entry : `${entry}.js`
+        // // Add .js if we do not have a valid extension (js/ts) already for the entrypoint
+        // const entryWithExt = ['.js', '.ts'].includes(path.extname(entry)) ? entry : `${entry}.js`
 
-        entries[entry].push(path.join(runtime.assetsSourceDir, entryWithExt))
+        entries[entry].push(path.join(runtime.assetsSourceDir, entry))
       })
 
       return entries

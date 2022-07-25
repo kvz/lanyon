@@ -43,10 +43,12 @@ pushd "${__dir}" > /dev/null
         popd > /dev/null
       popd > /dev/null
     fi
-    if ! "${__dir}/bin/ruby-install" --version |grep -E "${rubyInstallVersion}\$" >/dev/null 2>&1; then
-      echo "--> installation of ruby-install ${rubyInstallVersion} failed"
-      exit 1
-    fi
+    # commented out because ruby-install 8.0.3 still reports as 8.0.1
+    # if ! "${__dir}/bin/ruby-install" --version |grep -E "${rubyInstallVersion}\$" >/dev/null 2>&1; then
+    #   echo "--> installation of ruby-install ${rubyInstallVersion} failed"
+    #   echo "--> Actual version ($("${__dir}/bin/ruby-install" --version)) does not match expected version (${rubyInstallVersion})"
+    #   exit 1
+    # fi
     mkdir -p ./src
     "${__dir}/bin/ruby-install" -s "${__dir}/src" ruby "${rubyVersion}"
 
@@ -76,6 +78,7 @@ pushd "${__dir}" > /dev/null
 
   # Can't use no unset with chruby :'( https://github.com/postmodern/chruby/issues/417
   set +u
+  rm -f "${__dir}/.ruby-version" # avoid RUBY_AUTO_VERSION overrulling the desired ruby version
   source "${__dir}/share/chruby/chruby.sh"
   source "${__dir}/share/chruby/auto.sh"
 
