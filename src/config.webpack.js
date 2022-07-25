@@ -102,6 +102,12 @@ module.exports = function ({ runtime }) {
     })
 
     rules.push({
+      test   : /\.tsx?$/,
+      use    : 'ts-loader',
+      exclude: /node_modules/,
+    })
+
+    rules.push({
       test   : /\.(js|jsx)$/,
       include: assetDirs,
       exclude: [
@@ -248,7 +254,7 @@ module.exports = function ({ runtime }) {
       mainFields      : ['browser', 'main'],
       mainFiles       : ['index'],
       aliasFields     : ['browser'],
-      extensions      : ['.js'],
+      extensions      : ['.tsx', '.ts', '.js'],
       enforceExtension: false,
       fallback        : {
         stream: require.resolve('stream-browserify'),
@@ -266,7 +272,11 @@ module.exports = function ({ runtime }) {
           // Push HMR to all entrypoints
           entries[entry].push('webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true&overlay=true')
         }
-        entries[entry].push(path.join(runtime.assetsSourceDir, `${entry}.js`))
+
+        // Add .js if we do not have a valid extension (js/ts) already for the entrypoint
+        const entryWithExt = ['.js', '.ts'].includes(path.extname(entry)) ? entry : `${entry}.js`
+
+        entries[entry].push(path.join(runtime.assetsSourceDir, entryWithExt))
       })
 
       return entries

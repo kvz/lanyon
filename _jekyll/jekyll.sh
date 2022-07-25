@@ -34,7 +34,7 @@ pushd "${__dir}" > /dev/null
       echo "--> ruby-install ${rubyVersion} is not installed, installing ruby-install ${rubyVersion} now .. "
       mkdir -p ./tmp
       pushd ./tmp > /dev/null
-        wget -O "ruby-install-v${rubyInstallVersion}.tar.gz" "https://github.com/postmodern/ruby-install/archive/v${rubyInstallVersion}.tar.gz"
+        curl -fsSLo "ruby-install-v${rubyInstallVersion}.tar.gz" "https://github.com/postmodern/ruby-install/archive/v${rubyInstallVersion}.tar.gz"
         tar -xzvf "ruby-install-v${rubyInstallVersion}.tar.gz"
         pushd "ruby-install-${rubyInstallVersion}" > /dev/null
           mkdir -p "${__dir}/bin/" "${__dir}/share/chruby/"
@@ -57,7 +57,7 @@ pushd "${__dir}" > /dev/null
     echo "--> chruby ${chrubyVersion} is not installed, installing chruby ${chrubyVersion} now .. "
     mkdir -p ./tmp
     pushd ./tmp > /dev/null
-      wget -O "chruby-v${chrubyVersion}.tar.gz" "https://github.com/postmodern/chruby/archive/v${chrubyVersion}.tar.gz"
+      curl -fsSLo "chruby-v${chrubyVersion}.tar.gz" "https://github.com/postmodern/chruby/archive/v${chrubyVersion}.tar.gz"
       tar -xzvf "chruby-v${chrubyVersion}.tar.gz"
       pushd "chruby-${chrubyVersion}" > /dev/null
         mkdir -p "${__dir}/bin/" "${__dir}/share/chruby/"

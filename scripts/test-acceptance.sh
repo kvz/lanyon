@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# set -o pipefail
+set -o pipefail
 set -o errexit
 set -o nounset
 # set -o xtrace
 
-lanyonDir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+lanyonDir="$(cd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")" && pwd)"
 
 function mdfive () {
   local filepath="${1}"
@@ -54,13 +54,13 @@ rm -rf "${projectDir}"
 mkdir -p "${projectDir}"
 projectDir="$(cd "${projectDir}" && pwd)" # we need to resolve this for docker. Readlink won't work on nested symlinks
 export LANYON_PROJECT=${projectDir}
-
+export LANYON_JEKYLL=${lanyonDir}/_jekyll/jekyll.sh
 pushd "${projectDir}"
   echo "--> Setting up sample project"
   git init
   mkdir -p assets _layouts
 
-  cat << EOF > assets/app.js
+  cat << EOF > assets/app.ts
 var beautifullVarName = 'Very nice'
 if (beautifullVarName === 'Very nice') {
   console.log('pretty');
@@ -78,8 +78,14 @@ EOF
     "build:production": "LANYON_ENV=production lanyon build"
   },
   "dependencies": {
-    "lanyon": "0.3.6"
+    "lanyon": "@latest"
   }
+}
+EOF
+
+  cat << EOF > tsconfig.json
+{
+
 }
 EOF
 
@@ -87,6 +93,17 @@ EOF
 name: Transloadit
 baseurl: null
 assets_base_url: /
+EOF
+  cat << EOF > .lanyonrc.js
+module.exports.overrideRuntime = ({ runtime, toolkit }) => {
+  runtime.entries = [
+    'app.ts',
+  ]
+  return runtime
+}
+module.exports.overrideConfig = ({ config, toolkit }) => {
+  return config
+}
 EOF
 
   cat << EOF > _layouts/default.html
@@ -111,7 +128,8 @@ Hello, world!
 EOF
 
   echo "--> Yarn"
-  yarn
+  (cd "${lanyonDir}" && yarn link)
+  yarn link lanyon
 
   echo "--> Building site for 'development' in '${projectDir}'"
   yarn build
