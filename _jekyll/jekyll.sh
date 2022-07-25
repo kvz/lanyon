@@ -19,8 +19,8 @@ set -o nounset
 # set -o xtrace
 
 __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-rubyVersion="3.0.1"
-rubyInstallVersion="0.8.1"
+rubyVersion="3.1.2"
+rubyInstallVersion="0.8.3"
 chrubyVersion="0.3.9"
 
 if [ "${USER}" = "darkangelbge" ]; then
