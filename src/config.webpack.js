@@ -159,11 +159,13 @@ module.exports = function ({ runtime }) {
     plugins.push(new webpack.DefinePlugin(defines))
 
     runtime.entries.forEach(entry => {
+      const withoutExtension = entry.replace(/\.(t|j)sx?$/, '')
+
       plugins.push(new HtmlWebpackPlugin({
         inject         : false,
         cache          : true,
         scriptLoading  : 'blocking', // worth an experiment: 'defer'
-        filename       : `${runtime.projectDir}/_includes/_generated_assets/${entry}-${runtime.lanyonEnv}-head.html`,
+        filename       : `${runtime.projectDir}/_includes/_generated_assets/${withoutExtension}-${runtime.lanyonEnv}-head.html`,
         chunks         : [entry],
         templateContent: runtime.headAssetTemplate ? runtime.headAssetTemplate  : ({ htmlWebpackPlugin }) => `${htmlWebpackPlugin.tags.headTags}`,
       }))
@@ -171,7 +173,7 @@ module.exports = function ({ runtime }) {
         inject         : false,
         cache          : true,
         scriptLoading  : 'blocking', // worth an experiment: 'defer'
-        filename       : `${runtime.projectDir}/_includes/_generated_assets/${entry}-${runtime.lanyonEnv}-body.html`,
+        filename       : `${runtime.projectDir}/_includes/_generated_assets/${withoutExtension}-${runtime.lanyonEnv}-body.html`,
         chunks         : [entry],
         templateContent: runtime.bodyAssetTemplate ? runtime.bodyAssetTemplate : ({ htmlWebpackPlugin }) => `${htmlWebpackPlugin.tags.bodyTags}`,
       }))
