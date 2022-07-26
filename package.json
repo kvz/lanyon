@@ -87,7 +87,7 @@
     "babel-loader": "8.2.5",
     "browser-sync": "2.27.10",
     "cache-loader": "4.1.0",
-    "chalk": "5.0.1",
+    "chalk": "4",
     "common-tags": "1.8.2",
     "css-loader": "6.7.1",
     "css-minimizer-webpack-plugin": "4.0.0",
