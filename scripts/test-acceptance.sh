@@ -140,7 +140,7 @@ EOF
 
   echo "--> Yarn"
   (cd "${lanyonDir}" && yarn link)
-  yarn link lanyon
+  (cd "${lanyonDir}" && ( (yarn unlink|| true); yarn && yarn link) )
 
   echo "--> Building site for 'development' in '${projectDir}'"
   yarn build
