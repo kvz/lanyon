@@ -10,7 +10,9 @@ let mods = {
 const cfg = {}
 let runtime = require('./config.runtime.js')()
 
-if (fs.existsSync(`${runtime.projectDir}/.lanyonrc.js`)) {
+if (fs.existsSync(`${runtime.projectDir}/.lanyonrc.cjs`)) {
+  mods = require(`${runtime.projectDir}/.lanyonrc.cjs`)
+} else if (fs.existsSync(`${runtime.projectDir}/.lanyonrc.js`)) {
   mods = require(`${runtime.projectDir}/.lanyonrc.js`)
 }
 

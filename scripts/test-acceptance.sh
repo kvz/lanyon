@@ -105,7 +105,7 @@ name: Transloadit
 baseurl: null
 assets_base_url: /
 EOF
-  cat << EOF > .lanyonrc.js
+  cat << EOF > .lanyonrc.cjs
 module.exports.overrideRuntime = ({ runtime, toolkit }) => {
   runtime.entries = [
     'app',
