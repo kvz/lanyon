@@ -52,7 +52,7 @@ module.exports = async function dispatch () {
 
   const scripts = {
     configure            : (_runtime, cb) => cb(null),
-    'build:assets'       : `[webpack] ${extraWebpackFlags}--config [cacheDir]/webpack.config.js`,
+    'build:assets'       : `[webpack] ${extraWebpackFlags}--config [cacheDir]/webpack.config.cjs`,
     'build:content:watch': `${process.env.LANYON_DEBUG === '1' ? 'env DEBUG=nodemon:* ' : ''}[nodemon] --exitcrash --config [cacheDir]/nodemon.config.json --exec '${formattedBuildCmd} ${strPostBuildContentHooks}'`,
     'build:content'      : buildCmd,
     // 'build:images'             : '[imagemin] [projectDir]/assets/images --out-dir=[projectDir]/assets/build/images',
@@ -68,7 +68,7 @@ module.exports = async function dispatch () {
     deploy,
     encrypt,
     help : '[jekyll] build --help',
-    serve: '[browser-sync] start --config [cacheDir]/browsersync.config.js',
+    serve: '[browser-sync] start --config [cacheDir]/browsersync.config.cjs',
     start: {
       mode    : 'all',
       commands: [
@@ -119,33 +119,6 @@ module.exports = async function dispatch () {
 
   // Write all config files to cacheDir
   utils.writeConfig(config)
-
-  if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
-    let runs = 0
-    while (true) {
-      runs++
-      const c = utils.dockerString(`stat ${runtime.cacheDir}/jekyll.config.yml`, { runtime })
-      let gotErr = false
-      try {
-        await scrolex.exe(`${c}`, { cwd: runtime.cacheDir, mode: 'silent' })
-      } catch (err) {
-        gotErr = err
-        console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does not exist yet inside container, waiting on docker-sync ... `)
-        if (runs === 1) {
-          await scrolex.exe('(docker-sync-stack clean; docker-sync stop; docker-compose stop; bash -c "docker-sync-stack start &") && sleep 5', {
-            cwd                  : runtime.cacheDir,
-            addCommandAsComponent: false,
-            components           : `lanyon>${cmdName}>docker-sync-stack`,
-          })
-        }
-      }
-      if (!gotErr) {
-        console.log(`   --> ${runtime.cacheDir}/jekyll.config.yml does exist inside container, docker-sync active ✅`)
-        break
-      }
-      await scrolex.exe('sleep 2', { cwd: runtime.cacheDir, mode: 'silent' })
-    }
-  }
 
   process.on('exit', (code) => {
     utils.trapCleanup({ runtime, code })

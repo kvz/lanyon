@@ -1,9 +1,9 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable guard-for-in */
 const childProcess = require('child_process')
 const fs           = require('fs')
 const path         = require('path')
-const os           = require('os')
 const yaml         = require('js-yaml')
-const oneLine      = require('common-tags/lib/oneLine')
 const scrolex      = require('scrolex').persistOpts({
   announce             : true,
   addCommandAsComponent: true,
@@ -55,13 +55,10 @@ module.exports.formatCmd = function formatCmd (cmd, { runtime }) {
     const pat = new RegExp(`(\\s|^)\\[${name}\\](\\s|$)`)
 
     cmd = cmd.replace(pat, `$1node --trace-deprecation ${npmBins[name]}$2`)
-
-    // let nodeBin = utils.dockerString('node', { extraArgs: extraVolumes, runtime })
-    // cmd = cmd.replace(pat, `$1${nodeBin} ${npmBins[name]}$2`)
   }
 
   // cp -f ${runtime.projectDir}/Gemfile ${runtime.cacheDir}/Gemfile &&
-  const jekyllBin = utils.dockerString('jekyll', { runtime })
+  const jekyllBin = 'jekyll'
 
   // Replace shims
   if (process.env.LANYON_JEKYLL) {
@@ -92,17 +89,10 @@ module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal =
   }
   runtime.dying = true
 
-  let cleanupCmds = [
+  const cleanupCmds = [
     'pkill -f nodemon',
     'pkill -f browser-sync',
   ]
-
-  if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
-    cleanupCmds = cleanupCmds.concat([
-      'docker-sync stop',
-      // `docker-compose stop`,
-    ])
-  }
 
   if (process.env.LANYON_DEBUG === '1') {
     console.error(`>>> About to exit. code=${code}, signal=${signal}. Cleaning up... `)
@@ -126,53 +116,6 @@ module.exports.trapCleanup = function trapCleanup ({ runtime, code = 0, signal =
     }
     process.exit(1)
   }
-}
-
-module.exports.dockerString = function dockerString (cmd, { opts = {}, runtime } = {}) {
-  const volumePaths = utils.volumePaths({ runtime })
-  const listVolumes = []
-  for (const key in volumePaths) {
-    listVolumes.push(`--volume ${key}:${volumePaths[key]}`)
-  }
-
-  if (runtime.dockerSync && runtime.dockerSync.enabled === true) {
-    // -i
-    // --rm
-    // ${cmd}
-    // --workdir=${runtime.cacheDir}
-    // -e "JEKYLL_ENV=${runtime.lanyonEnv}"
-    // docker-sync start && docker-compose up && docker-compose exec
-    return oneLine`
-      docker-compose exec -T
-        lanyon-container
-      ${cmd}
-    `
-  }
-
-  if (!opts || !('priviliged' in opts)) {
-    opts.priviliged = false
-  }
-
-  // https://github.com/envygeeks/jekyll-docker/issues/223
-  // --env "JEKYLL_GID=${os.userInfo().gid}" // <-- runs the risk of: groupmod: GID '20' already exists
-  let userstr = ''
-  if (opts.priviliged === false) {
-    userstr = oneLine`
-      --env "JEKYLL_UID=${os.userInfo().uid}"
-    `
-  }
-
-  return oneLine`
-    docker run
-      --rm
-      --interactive
-      ${userstr}
-      --env "JEKYLL_ENV=${runtime.lanyonEnv}"
-      --workdir ${runtime.cacheDir}
-      ${listVolumes.join('\n')}
-      ${runtime.dockerImage}
-    ${cmd}
-  `
 }
 
 module.exports.volumePaths = function volumePaths ({ runtime }) {
@@ -315,30 +258,9 @@ module.exports.writeConfig = (cfg) => {
     throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/jekyll.config.yml. ${e.message}`)
   }
 
-  if (cfg.runtime.dockerSync && cfg.runtime.dockerSync.enabled === true) {
-    try {
-      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-sync.yml`, yaml.dump(cfg.dockerSync), 'utf-8')
-    } catch (e) {
-      console.error({ dockerSync: cfg.dockerSync })
-      throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/docker-sync.yml. ${e.message}`)
-    }
-    try {
-      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-compose.yml`, yaml.dump(cfg.dockerCompose), 'utf-8')
-    } catch (e) {
-      console.error({ dockerCompose: cfg.dockerCompose })
-      throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/docker-compose.yml. ${e.message}`)
-    }
-    try {
-      fs.writeFileSync(`${cfg.runtime.cacheDir}/docker-compose-dev.yml`, yaml.dump(cfg.dockerComposeDev), 'utf-8')
-    } catch (e) {
-      console.error({ dockerComposeDev: cfg.dockerComposeDev })
-      throw new Error(`Unable to write above config to ${cfg.runtime.cacheDir}/docker-compose-dev.yml. ${e.message}`)
-    }
-  }
-
   fs.writeFileSync(`${cfg.runtime.cacheDir}/nodemon.config.json`, JSON.stringify(cfg.nodemon, null, '  '), 'utf-8')
   fs.writeFileSync(`${cfg.runtime.cacheDir}/full-config-dump.json`, JSON.stringify(cfg, null, '  '), 'utf-8')
-  fs.writeFileSync(`${cfg.runtime.cacheDir}/browsersync.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/src/config.js").browsersync`, 'utf-8')
-  fs.writeFileSync(`${cfg.runtime.cacheDir}/webpack.config.js`, `module.exports = require("${cfg.runtime.lanyonDir}/src/config.js").webpack`, 'utf-8')
+  fs.writeFileSync(`${cfg.runtime.cacheDir}/browsersync.config.cjs`, `module.exports = require("${cfg.runtime.lanyonDir}/src/config.js").browsersync`, 'utf-8')
+  fs.writeFileSync(`${cfg.runtime.cacheDir}/webpack.config.cjs`, `module.exports = require("${cfg.runtime.lanyonDir}/src/config.js").webpack`, 'utf-8')
   fs.writeFileSync(cfg.runtime.recordsPath, JSON.stringify({}, null, '  '), 'utf-8')
 }

@@ -21,9 +21,6 @@
     "lanyon": "src/cli.js"
   },
   "scripts": {
-    "container:build:reset": "env DOCKER_RESET=1 ./container/main.sh build",
-    "container:build": " ./container/main.sh build",
-    "container:connect": " ./container/main.sh connect",
     "fix": "DEBUG=eslint:cli-engine eslint . --fix",
     "jest:update": "env DEBUG=scrolex:* NODE_ENV=test jest --updateSnapshot",
     "jest:watch": "env DEBUG=scrolex:* NODE_ENV=test jest --watch",
@@ -36,7 +33,7 @@
     "release:patch": "env SEMANTIC=patch yarn release",
     "release": "npm version ${SEMANTIC:-patch} -m \"Release %s\" && npm-run-all push npublish",
     "test:acceptance": "export LANYON_JEKYLL=$(pwd)/_jekyll/jekyll.sh && ./scripts/test-acceptance.sh",
-    "test": "npm-run-all lint jest test:acceptance",
+    "test": "npm-run-all lint test:acceptance",
     "web:build": "cd website && yarn && yarn build:production",
     "web:install": "cd website && yarn install",
     "web:start": "cd website && yarn start"

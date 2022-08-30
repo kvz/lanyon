@@ -20,9 +20,6 @@ _jekyll/wget-log
 *.seed
 assets/build
 build/Release
-container/package.json
-container/vendor/
-container/yarn.lock
 coverage
 deps/
 env.sh

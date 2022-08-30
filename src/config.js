@@ -1,6 +1,5 @@
 const fs      = require('fs')
 const scrolex = require('scrolex')
-const utils   = require('./utils')
 
 let mods = {
   overrideRuntime ({ runtime }) { return runtime },
@@ -8,7 +7,7 @@ let mods = {
 }
 
 const cfg = {}
-let runtime = require('./config.runtime.js')()
+let runtime = require('./config.runtime.cjs')()
 
 if (fs.existsSync(`${runtime.projectDir}/.lanyonrc.cjs`)) {
   mods = require(`${runtime.projectDir}/.lanyonrc.cjs`)
@@ -17,7 +16,6 @@ if (fs.existsSync(`${runtime.projectDir}/.lanyonrc.cjs`)) {
 }
 
 const toolkit = {
-  dockerString: utils.dockerString,
   scrolex,
 }
 
@@ -29,13 +27,10 @@ if ('scrolexMode' in runtime) {
   })
 }
 
-cfg.webpack = require('./config.webpack.js')({ runtime, toolkit })
-cfg.browsersync = require('./config.browsersync.js')({ runtime, webpack: cfg.webpack, toolkit })
-cfg.jekyll = require('./config.jekyll.js')({ runtime, toolkit })
-cfg.dockerSync = require('./config.dockerSync.js')({ runtime, jekyll: cfg.jekyll, toolkit })
-cfg.dockerCompose = require('./config.dockerCompose.js')({ runtime, toolkit })
-cfg.dockerComposeDev = require('./config.dockerComposeDev.js')({ runtime, toolkit })
-cfg.nodemon = require('./config.nodemon.js')({ runtime, jekyll: cfg.jekyll, toolkit })
+cfg.webpack = require('./config.webpack.cjs')({ runtime, toolkit })
+cfg.browsersync = require('./config.browsersync.cjs')({ runtime, webpack: cfg.webpack, toolkit })
+cfg.jekyll = require('./config.jekyll.cjs')({ runtime, toolkit })
+cfg.nodemon = require('./config.nodemon.cjs')({ runtime, jekyll: cfg.jekyll, toolkit })
 
 cfg.runtime = runtime
 

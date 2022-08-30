@@ -63,10 +63,6 @@ module.exports = function () {
   }
   runtimeCfg.gitRoot = utils.upwardDirContaining('.git', runtimeCfg.npmRoot)
 
-  const wantVersion = runtimeCfg.lanyonVersion
-  // wantVersion = '0.0.109'
-  runtimeCfg.dockerImage = `kevinvz/lanyon:${wantVersion}`
-
   runtimeCfg.entries = [
     'app',
   ]
@@ -78,10 +74,6 @@ module.exports = function () {
     node: {
       preferred: '8.11.0',
       range    : '>=8',
-    },
-    docker: {
-      preferred: '1.12.3',
-      range    : '>=1.12',
     },
   }
   runtimeCfg.ports = {
