@@ -14,21 +14,28 @@
 ## Next
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/0.3.26...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.3.27...master).
 
 - [ ] Consider solidifying some hacks like backendProxy or _assets rewrite from the content repo as lanyon options
 - [ ] Remove all occurances of docker/container, possibly bundle `_jekyll/jekyll.sh` with Lanyon
 - [ ] Deprecate LANYON_MINIMAL, and then delete many lines from .lanyonrc in c repo
 - [ ] Remove example
 
-## 0.3.26
+## v0.3.27
+
+Released: 2022-08-31
+[Diff](https://github.com/kvz/lanyon/compare/v0.3.26...v0.3.27).
+
+- [x] Upgrade dependencies (such as to TypeScript 4.8)
+
+## v0.3.26
 
 Released: 2022-07-25
 [Diff](https://github.com/kvz/lanyon/compare/v0.3.25...v0.3.26).
 
 - [x] Remove remnants of Docker history
 
-## 0.3.25
+## v0.3.25
 
 Released: 2022-07-25
 [Diff](https://github.com/kvz/lanyon/compare/v0.3.19...v0.3.25).
