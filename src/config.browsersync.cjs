@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-syntax */
-const webpackDevMiddleware = require('webpack-dev-middleware')
+// const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
 
 module.exports = function ({ runtime, webpack }) {
@@ -29,6 +29,8 @@ module.exports = function ({ runtime, webpack }) {
         const middlewares = []
 
         if (runtime.attachHMR) {
+          // This errored out before NormalModuleReplacementPlugin
+          // got a chance to fix typescript esm .js -> .ts paths
           // middlewares.push(webpackDevMiddleware(bundler, {
           //   publicPath: runtime.publicPath,
           //   // Disabled for Webpack5

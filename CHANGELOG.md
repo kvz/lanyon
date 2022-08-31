@@ -14,12 +14,20 @@
 ## Next
 
 Released: TBA.
-[Diff](https://github.com/kvz/lanyon/compare/v0.3.28...master).
+[Diff](https://github.com/kvz/lanyon/compare/v0.3.31...master).
 
 - [ ] Consider solidifying some hacks like backendProxy or _assets rewrite from the content repo as lanyon options
 - [ ] Remove all occurances of docker/container, possibly bundle `_jekyll/jekyll.sh` with Lanyon
 - [ ] Deprecate LANYON_MINIMAL, and then delete many lines from .lanyonrc in c repo
 - [ ] Remove example
+
+## v0.3.31
+
+Released: 2022-08-31
+[Diff](https://github.com/kvz/lanyon/compare/v0.3.28...v0.3.31).
+
+- [x] (BREAKING) disable webpackDevMiddleware, as did not respect the `webpack.resolve.extensionAlias` and broke upon `yarn serve` with e.g. `[webpack-dev-middleware] ModuleNotFoundError: Module not found: Error: Can't resolve './uppy-homepage-demo.js'` while a build already succeeded.
+- [x] Assign webpack instance to `config.runtime.webpack` so you can pass its plugins in `.lanyonrc.cjs`. E.g.: `config.webpack.plugins.unshift(new config.runtime.webpack.NormalModuleReplacementPlugin())`
 
 ## v0.3.28
 
