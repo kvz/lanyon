@@ -206,6 +206,18 @@ module.exports = function ({ runtime }) {
       }))
     }
 
+    // Allow for typescript esm to be used in the browser
+    if (runtime.tsESM) {
+      plugins.unshift(
+        new webpack.NormalModuleReplacementPlugin(/^\..+\.js$/, resource => {
+          resource.request = resource.request.replace(/\.ts$/, '')
+        }),
+        new webpack.NormalModuleReplacementPlugin(/^\..+\.jsx$/, resource => {
+          resource.request = resource.request.replace(/\.tsx$/, '')
+        }),
+      )
+    }
+
     return plugins
   }
 
