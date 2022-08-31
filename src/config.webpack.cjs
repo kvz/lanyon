@@ -7,6 +7,8 @@ const CssMinimizerPlugin      = require('css-minimizer-webpack-plugin')
 const HtmlWebpackPlugin       = require('html-webpack-plugin')
 
 module.exports = function ({ runtime }) {
+  runtime.webpack = webpack
+
   const assetDirs = [
     `${runtime.assetsSourceDir}`,
   ].concat((runtime.extraAssetsSourceDirs || []))
@@ -204,18 +206,6 @@ module.exports = function ({ runtime }) {
         logLevel    : 'info',
         openAnalyzer: true,
       }))
-    }
-
-    // Allow for typescript esm to be used in the browser
-    if (runtime.tsESM) {
-      plugins.unshift(
-        new webpack.NormalModuleReplacementPlugin(/^\..+\.js$/, resource => {
-          resource.request = resource.request.replace(/\.ts$/, '')
-        }),
-        new webpack.NormalModuleReplacementPlugin(/^\..+\.jsx$/, resource => {
-          resource.request = resource.request.replace(/\.tsx$/, '')
-        }),
-      )
     }
 
     return plugins
