@@ -256,7 +256,7 @@ module.exports = function ({ runtime }) {
       mainFields      : ['browser', 'main'],
       mainFiles       : ['index'],
       aliasFields     : ['browser'],
-      extensions      : ['.tsx', '.ts', '.js'],
+      extensions      : ['.tsx', '.ts', '.js', '.jsx'],
       enforceExtension: false,
       fallback        : {
         stream: require.resolve('stream-browserify'),
